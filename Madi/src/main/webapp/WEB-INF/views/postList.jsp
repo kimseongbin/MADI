@@ -2,6 +2,7 @@
   <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
   <html>
   <head>
+  <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=divice-width, initial-scale=1">
   <title>Insert title here</title>
@@ -531,6 +532,12 @@
   					<br>
   						<div align="center">
   							<form id="boardForm" action="postProcess.do" method="post">
+  							<div class="boardDiv">
+  								<div><button class="btn" style="margin-bottom: 10px">썸네일등록</button></div>
+  								<div><input type="text" placeholder="요리명" style="margin-bottom: 3px"></div>
+  								<div><input type="text" placeholder="한줄설명"></div>
+  							</div>  
+<!--   														
   								<table border="0" cellspacing="3" align="center">
   									<tr>
   										<td colspan="2" align="center"><button style="margin-bottom: 10px">썸네일등록</button></td>
@@ -542,11 +549,25 @@
   										<td><input type="text" placeholder="한줄설명"></td>
   									</tr>
   								</table>
+-->
   							</form>
   							<br>
   							
   							<!-- 재료 / 분량 -->
   							<form id="irdntForm"  action="postProcess.do" method="post">
+  								<div class="irdnt">
+  									<div>
+  										<h2>재료입력</h2>
+  									</div>
+  									<div id="irdnt_input">
+  										<input type="text" placeholder="재료입력" style="margin-right: 5px; margin-bottom: 3px;">
+  										<input type="text" placeholder="분량입력">
+  									</div>
+  									<div>
+  										<button id="irdntAdd" type="button" class="btn btn-warning" style="border-radius: 100%" align="center">+</button>
+  									</div>
+  								</div>
+<!--   							
   								<table id="abc" border="0" cellspacing="3">
   									<thead>
   										<tr>
@@ -567,11 +588,26 @@
   										</tr>
   									</tfoot>
   								</table>
+-->
   							</form>
   							<br>
   							
   							<!-- 레시피 / 사진 /  설명 -->
   							<form id="recipeProcess.do"  action="postProcess.do" method="post">
+  								<div class="recipe">
+  									<div><h2>레시피</h2></div>
+  									<div style="margin-bottom: 10px;">
+  										<button class="btn" style="vertical-align: top;">사진등록</button>
+  									</div>
+  									<div>
+  										<textarea class="form-control"></textarea>
+  									</div>
+  									<div>
+  										<button id="recipeProcessAdd" type="button" class="btn btn-warning" style="border-radius: 100%">+</button>
+  									</div>
+  								</div>
+  							
+<!--   							
   								<table id="def" border="0" cellspacing="3">
   									<thead>
   										<tr>
@@ -592,6 +628,7 @@
   										</tr>
   									</tfoot>
   								</table>
+ -->  								
   							</form>
   						</div>
   				<br><br>
@@ -606,8 +643,10 @@
   					
   					$('#irdntAdd').click(function() {
   						var length = $("#abc tr").length;
-  						$('#abc > tbody:last').append('<tr><td><input type="text" placeholder="재료입력" style="margin-right: 5px; margin-bottom: 3px;"></td>' +  
-  						'<td><input type="text" placeholder="분량입력"></td></tr>');
+  						//$('#abc > tbody:last').append('<tr><td><input type="text" placeholder="재료입력" style="margin-right: 5px; margin-bottom: 3px;"></td>' +  
+  						//'<td><input type="text" placeholder="분량입력"></td></tr>');
+  						
+  						$('#irdnt_input').append('<br><input type="text" placeholder="재료입력" style="margin-right: 5px; margin-bottom: 3px;"><input type="text" placeholder="분량입력">');
   						return false;
   					 });	 
   					  
