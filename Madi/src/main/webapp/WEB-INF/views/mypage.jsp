@@ -90,6 +90,21 @@ footer {
 		height: 100%;
 	}
 }
+@media screen and (min-width: 320px) {
+	.modal-dialog.modal-size {
+	width: 80%;
+	height: 60%;
+	margin: 0;
+	padding: 0;
+	}
+.modal-dialog .follow-size .modal-center {
+	width: 320px;
+	height: 50%;
+	margin: 0;
+	padding: 0;
+	}
+
+}
 
 .modal-dialog.modal-center {
 	display: inline-block;

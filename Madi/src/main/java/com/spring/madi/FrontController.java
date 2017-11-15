@@ -35,10 +35,10 @@ public class FrontController {
 		return "postList";
 	}
 	
-	@RequestMapping("/myPage.do")
+	@RequestMapping("/mypage.do")
 	public String myPage()
 	{
-		return "myPage";
+		return "mypage";
 	}
 	
 	@RequestMapping("/recipe.do")
