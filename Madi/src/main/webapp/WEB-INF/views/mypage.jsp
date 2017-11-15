@@ -65,7 +65,7 @@ footer {
 	padding-top: 70px;
 }
 
-/* Modal 크기 조절 */
+/* Modal 크기 조절 
 .modal-dialog.modal-size {
 	width: 20%;
 	height: 60%;
@@ -111,7 +111,7 @@ footer {
 	text-align: left;
 	vertical-align: middle;
 }
-/* follow 모달 크기 조절 */
+/* follow 모달 크기 조절 
 .modal-dialog.follow-size {
 	width: 23%;
 	height: 50%;
@@ -123,6 +123,8 @@ footer {
 	height: auto;
 	min-height: 50%;
 }
+*/
+
 /*table 디자인*/
 table {
 	border-radius: 10px;
@@ -166,7 +168,7 @@ td {
 					<div style="padding-top: 9px; padding-left: 5px;">
 						<button type="button" class="btn form" data-toggle="modal"
 							data-target="#fridge">
-							<img src="./resources/ingredient_icon/fridge.png" style="width:20px; height:20px;">
+							<img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
 						</button>
 						<div class="modal fade" id="fridge" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
