@@ -65,7 +65,7 @@ footer {
 	padding-top: 70px;
 }
 
-/* Modal 크기 조절 
+/* Modal 크기 조절 */
 .modal-dialog.modal-size {
 	width: 20%;
 	height: 60%;
@@ -90,28 +90,13 @@ footer {
 		height: 100%;
 	}
 }
-@media screen and (min-width: 320px) {
-	.modal-dialog.modal-size {
-	width: 80%;
-	height: 60%;
-	margin: 0;
-	padding: 0;
-	}
-.modal-dialog .follow-size .modal-center {
-	width: 320px;
-	height: 50%;
-	margin: 0;
-	padding: 0;
-	}
-
-}
 
 .modal-dialog.modal-center {
 	display: inline-block;
 	text-align: left;
 	vertical-align: middle;
 }
-/* follow 모달 크기 조절 
+/* follow 모달 크기 조절 */
 .modal-dialog.follow-size {
 	width: 23%;
 	height: 50%;
@@ -123,8 +108,6 @@ footer {
 	height: auto;
 	min-height: 50%;
 }
-*/
-
 /*table 디자인*/
 table {
 	border-radius: 10px;
@@ -132,8 +115,6 @@ table {
 /* 테이블 간격 */
 td {
 	padding: 5px;
-}
-ee {
 }
 </style>
 </head>
@@ -237,11 +218,11 @@ ee {
 				<li>
 					<div style="padding-top: 9px; padding-left: 5px;">
 						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#myModal">
+							data-target="#alarm">
 							<span class="glyphicon glyphicon-align-justify color"></span>
 						</button>
 						<!-- Modal bar -->
-						<div class="modal modal-center fade" id="myModal" tableindex="-1"
+						<div class="modal modal-center fade" id="alarm" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
 							<div class="modal-dialog modal-size modal-center" role="document">
 								<div class="modal-content modal-size">
