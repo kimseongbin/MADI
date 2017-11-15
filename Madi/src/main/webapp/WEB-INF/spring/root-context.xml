@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 뷰(jsp)와 관련 없는 빈 설정에 사용. servlet-context.xml은 뷰(jsp)와 관련된 빈 설정에 사용 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
+        <!-- 아래 부분은 오라클 버전이나 계정에 따라 다르게 적는다 -->
+        <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+        <property name="username" value="madi"/>
+        <property name="password" value="1234"/>
+    </bean>
+    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="com.spring.madi" />
+        <!--
+        <property name="mapperLocations" value="classpath:/com/spring/mybatis/MemberMapper.xml"></property> 
+        -->
+        <property name="mapperLocations" value="classpath:/com/spring/madi/**/*.xml"></property>
+    </bean>
+    
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory"/>
+    </bean>
+    	
+</beans>
