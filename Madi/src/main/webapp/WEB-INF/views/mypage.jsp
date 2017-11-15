@@ -133,6 +133,8 @@ table {
 td {
 	padding: 5px;
 }
+ee {
+}
 </style>
 </head>
 <body style="background-color: #F6F6F6">
