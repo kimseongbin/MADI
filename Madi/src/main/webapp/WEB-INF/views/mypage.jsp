@@ -82,7 +82,7 @@ footer {
 	text-align: center;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 320px) {
 	.modal.modal-center:before {
 		display: inline-block;
 		vertical-align: middle;
@@ -90,23 +90,10 @@ footer {
 		height: 100%;
 	}
 }
-
 .modal-dialog.modal-center {
 	display: inline-block;
 	text-align: left;
 	vertical-align: middle;
-}
- follow 모달 크기 조절 
-.modal-dialog.follow-size {
-	width: 23%;
-	height: 50%;
-	margin: 0;
-	padding: 0;
-}
-
-.modal-content.follow-size {
-	height: auto;
-	min-height: 50%;
 }
 */
 
@@ -220,19 +207,19 @@ td {
 				                                            	<td>  
 				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/rice.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>흰쌀</strong>
+				                                                      style="width: 40px; height: 40px;"><br> <strong>흰쌀</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
+				                                                      style="width: 40px; height: 40px;"><br> <strong>파스타</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>라면</strong>
+				                                                      style="width: 40px; height: 40px;"><br> <strong>라면</strong>
 				                                                  	</a>
 				                                                </td>
 				                                            </tr>
@@ -245,19 +232,19 @@ td {
 				                                            	<td>  
 				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>상추</strong>
+				                                                      style="width: 40px; height: 40px;"><br> <strong>상추</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>시금치</strong>
+				                                                      style="width: 40px; height: 40px;"><br> <strong>시금치</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>대파</strong>
+				                                                      style="width: 40px; height: 40px;"><br> <strong>대파</strong>
 				                                                  	</a>
 				                                                </td>
 				                                            </tr>
@@ -270,19 +257,19 @@ td {
 					                                            <td>  
 					                                                <a href="#" class="text-muted">
 					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>삼겹살</strong>
+					                                                      style="width: 40px; height: 40px;"><br><strong>삼겹살</strong>
 					                                                </a>
 					                                            </td>
 					                                            <td>
 					                                                <a href="#" class="text-muted">
 					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>소고기</strong>
+					                                                      style="width: 40px; height: 40px;"><br><strong>소고기</strong>
 					                                                </a>
 					                                            </td>
 					                                            <td>
 					                                                <a href="#" class="text-muted">
 					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 50px; height: 50px;"><br> <strong>소시지</strong>
+					                                                      style="width: 40px; height: 40px;"><br> <strong>소시지</strong>
 					                                            	</a>
 					                                    		</td>
 					                                    	</tr>
@@ -295,13 +282,13 @@ td {
 					                                            <td>  
 					                                                <a href="#" class="text-muted">
 					                                                	<img src="./resources/food_icon/fish.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>고등어</strong>
+					                                                      style="width: 40px; height: 40px;"><br><strong>고등어</strong>
 					                                                </a>
 					                                            </td>
 					                                            <td>
 					                                                <a href="#" class="text-muted">
 					                                                	<img src="./resources/food_icon/fish.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>참치캔</strong>
+					                                                      style="width: 40px; height: 40px;"><br><strong>참치캔</strong>
 					                                                </a>
 					                                            </td>
 					                                    	</tr>
@@ -314,19 +301,19 @@ td {
 					                                            <td>  
 					                                                <a href="#" class="text-muted">
 					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>간장</strong>
+					                                                      style="width: 40px; height: 40px;"><br><strong>간장</strong>
 					                                                </a>
 					                                            </td>
 					                                            <td>
 					                                                <a href="#" class="text-muted">
 					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>미림</strong>
+					                                                      style="width: 40px; height: 40px;"><br><strong>미림</strong>
 					                                                </a>
 					                                            </td>
 					                                            <td>
 					                                                <a href="#" class="text-muted">
 					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 50px; height: 50px;"><br> <strong>진간장</strong>
+					                                                      style="width: 40px; height: 40px;"><br> <strong>진간장</strong>
 					                                            	</a>
 					                                    		</td>
 					                                    	</tr>
@@ -338,8 +325,17 @@ td {
 						            		</div>
 						       		<!-- 오른쪽 내가 가진 재료들? -->
 						            		<div class="col-sm-4">
-						            			<div class="row" style="background-color:#FFE400;">
-						            			
+						            			<div class="row">
+						            				<ul class="list-group">
+						            					<li class="list-group-item">
+						            					<img src="./resources/food_icon/sauce.png"
+					                                     style="width: 40px; height: 40px;"><br> <strong>진간장</strong>
+						            					</li>
+						            				</ul>
+						            			</div>
+						            			<br>
+						            			<div class="row">
+						            				<button type="button" class="btn btn-danger">등록하기</button>
 						            			</div>
 						            		</div>
 						            	</div>
@@ -384,7 +380,7 @@ td {
 						<!-- Modal bar -->
 						<div class="modal fade" id="myModal" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
-							<div class="modal-dialog modal-sm" role="document">
+							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<!-- 알림, 메시지 탭 -->
 									<div class="modal-header">
