@@ -2,6 +2,7 @@
   <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
   <html>
   <head>
+  <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=divice-width, initial-scale=1">
   <title>Insert title here</title>
@@ -9,7 +10,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
-  
+
   	#columns {
   		column-width: 220px;
   		column-gap: 10px;
@@ -82,6 +83,7 @@
 	.btn.form {
 	    background-color: #DE4F4F;
 	}
+
 	/*헤더 색*/
 	.navbar.head {
 	    background-color: #DE4F4F;
@@ -135,14 +137,58 @@
 	}
 	<!-- 헤더 스타일 끝 -->
 	
-/*   	/*table 디자인*/
+	/*postModal*/
+	@media (max-width: 600px) {
+	    .carousel-caption {
+	      display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
+	    }
+  	}
+  	
+  	.bg-1 {
+	      color: #bdbdbd;
+	}
+	    
+	.list-group-item:first-child {
+		border-top-right-radius: 0;
+	    border-top-left-radius: 0;
+	}
+	.list-group-item:last-child {
+		border-bottom-right-radius: 0;
+	    border-bottom-left-radius: 0;
+	}
+	  
+	.btn {
+	    padding: 10px 20px;
+	    background-color: #DE4F4F;
+	    color: #f1f1f1;
+	    border-radius: 0;
+	    transition: .2s;
+	}
+	  
+	.btn:hover, .btn:focus {
+	    border: 1px solid #333;
+	    background-color: #fff;
+	    color: #000;
+	}
+	.modal-header, h4, .close {
+	    background-color: #DE4F4F;
+	    color: #fff !important;
+	    text-align: center;
+	    font-size: 30px;
+	}
+	.modal-header, .modal-body {
+	    padding: 20px 50px;
+	}
+	
+   	/*table 디자인*/
   	table {
   		border-radius: 10px;
   		background-color: #EAEAEA;
-  	} */
+  	}
   	
   </style>
-  	<script type="text/javascript">
+  
+  <script type="text/javascript">
   
   	$("#postBtn").affix({
   		offset: {
@@ -152,14 +198,9 @@
   			}
   		}
   	});
-  
-  	/* 	function post() {
-  		// 페이지 이동
-  		location.href="post.do";
-  	} */
   	
-  	$(document).ready(function () {		
-  		
+  	$(document).ready(function () {	
+  		  		
   		// 무한 스크롤 이벤트
   		$(document).scroll(function() { // 스크롤이 변경될 때마다 이벤트 발생
   			var maxHeight = $(document).height(); // 현재 페이지의 높이
@@ -189,19 +230,16 @@
   		});
   				
   	});
-  	</script>
+  </script>
   	
   </head>
   
-  <body>
   <body style="background-color: #F6F6F6">
      <!-- 헤더 시작 -->
-    <nav class="navbar navbar-default head" data-spy="affix"
-        data-offset-top="197">
+    <nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
     <div class="container-fluid">
         <div class="navbar-header" style="padding-right: 30%;">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                data-target="#myNavbar">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                 <span class="icon-bar"></span><span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#">MADI</a>
@@ -211,8 +249,8 @@
             <ul class="nav navbar-nav navbar">
                 <form class="navbar-form navbar-right" role="search">
                     <div class="form-group input-group">
-                        <input type="text" class="form-control" placeholder="Search.."
-                            size="80%"> <span class="input-group-btn">
+                        <input type="text" class="form-control" placeholder="Search.." size="80%"> 
+                        	<span class="input-group-btn">
                             <button class="btn btn-default" type="button">
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
@@ -225,12 +263,10 @@
                 <!-- 냉장고 아이콘 -->
                 <li>
                     <div style="padding-top: 9px; padding-left: 5px;">
-                        <button type="button" class="btn form" data-toggle="modal"
-                            data-target="#fridge">
+                        <button type="button" class="btn form" data-toggle="modal" data-target="#fridge">
                             <img src="./resources/ingredient_icon/fridge.png" style="width:20px; height:20px;">
                         </button>
-                        <div class="modal fade" id="fridge" tableindex="-1"
-                            role="dialog" aria-labelledby="modallabel">
+                        <div class="modal fade" id="fridge" tableindex="-1" role="dialog" aria-labelledby="modallabel">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <!-- 알림, 메시지 탭 -->
@@ -257,8 +293,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
@@ -266,51 +301,58 @@
                     </div>
                 </li>
                 <!--home 아이콘 -->
-                <li><button type="button" class="btn form"
-                        style="padding-top: 15px;">
-                        <span class="glyphicon glyphicon-home color"></span>
+                <li>
+                	<button type="button" class="btn form" style="padding-top: 15px;">
+                    	<span class="glyphicon glyphicon-home color"></span>
                     </button>
                 </li>
                 <li>
                     <div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
-                        <button class="btn dropdown-toggle form" type="button"
-                            data-toggle="dropdown">
+                        <button class="btn dropdown-toggle form" type="button" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-user color"></span>
                         </button>
                         <ul class="dropdown-menu" style="text-align:center; background-color:#F6F6F6;">
-                            <li><img src="./resources/profile/bird.jpg" class="img-circle" height="70"
-                                width="70" alt="Avatar"></li>
+                            <li>
+                            	<img src="./resources/profile/bird.jpg" class="img-circle" height="70" width="70" alt="Avatar">
+                            </li>
                             <li>
                                 <h4>
                                     <p class="text-primary">이글이글</p>
                                 </h4>
                             </li>
-                            <li><a href="#">회원수정</a></li>
-                            <li><a href="#">로그아웃</a></li>
+                            <li>
+                            	<a href="#">회원수정</a>
+                            </li>
+                            <li>
+                            	<a href="#">로그아웃</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
                 <!--알림 아이콘 -->
                 <li>
                     <div style="padding-top: 9px; padding-left: 5px;">
-                        <button type="button" class="btn form" data-toggle="modal"
-                            data-target="#myModal">
+                        <button type="button" class="btn form" data-toggle="modal" data-target="#myModal">
                             <span class="glyphicon glyphicon-align-justify color"></span>
                         </button>
                         <!-- Modal bar -->
-                        <div class="modal modal-center fade" id="myModal" tableindex="-1"
-                            role="dialog" aria-labelledby="modallabel">
-                            <div class="modal-dialog modal-size modal-center" role="document">
-                                <div class="modal-content modal-size">
-                                    <!-- 알림, 메시지 탭 -->
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <ul class="nav nav-tabs">
-                                            <li class="active"><a data-toggle="tab" href="#home">알림
-                                                    <span class="badge">New</span>
-                                            </a></li>
-                                            <li><a data-toggle="tab" href="#message">메시지 <span
-                                                    class="badge">New</span></a></li>
+                        <div class="modal modal-center fade" id="myModal" tableindex="-1"role="dialog" aria-labelledby="modallabel">
+                        	<div class="modal-dialog modal-size modal-center" role="document">
+                        		<div class="modal-content modal-size">
+                        			<!-- 알림, 메시지 탭 -->
+                        			<div class="modal-header">
+                        				<button type="button" class="close" data-dismiss="modal">&times;</button>
+                        				<ul class="nav nav-tabs">
+                        					<li class="active">
+                        						<a data-toggle="tab" href="#home">알림
+                        							<span class="badge">New</span>
+                        						</a>
+                        					</li>
+                                            <li>
+                                            	<a data-toggle="tab" href="#message">메시지 
+                                            		<span class="badge">New</span>
+                                            	</a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <!-- Modal bar 내용들 -->
@@ -328,48 +370,61 @@
                                                         </div>
                                                     </div>
                                                     <!-- 알림 내용들 -->
-                                                    <li class="list-group-item"><img src="./resources/profile/bird.jpg"
+                                                    <li class="list-group-item">
+                                                    	<img src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20" alt="Avatar">
+                                                    	<a>AAA</a>
+                                                    	<em> 님이 ~~~ 게시물을 공유했습니다.</em>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                    	<img src="./resources/profile/bird.jpg"
                                                         class="img-circle" height="20" width="20" alt="Avatar">
-                                                        <a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
-                                                    <li class="list-group-item"><img src="./resources/profile/bird.jpg"
-                                                        class="img-circle" height="20" width="20" alt="Avatar">
-                                                        <a>BBB</a><em> 님이 ~~~ 게시물을 공유했습니다.</em>
-                                                        <div class="row"></div></li>
-                                                    <li class="list-group-item"><img src="./resources/profile/bird.jpg"
-                                                        class="img-circle" height="20" width="20" alt="Avatar">
-                                                        <a>CCC</a> <em> 님이 ~~~ 게시물을 공유했습니다.</em>
-                                                        <div class="row"></div></li>
+                                                        <a>BBB</a>
+                                                        <em> 님이 ~~~ 게시물을 공유했습니다.</em>
+                                                        <div class="row"></div>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                    	<img src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20" alt="Avatar">
+                                                    	<a>CCC</a> 
+                                                    	<em> 님이 ~~~ 게시물을 공유했습니다.</em>
+                                                        <div class="row"></div>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <div id="message" class="tab-pane fade">
                                                 <ul class="list-group">
                                                     <div class="row">
                                                         <div class="col-sm-2" style="padding-bottom: 5px;">
-                                                            <img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-                                                                width="40" alt="Avatar">
+                                                            <img src="./resources/profile/bird.jpg" class="img-circle" height="40" width="40" alt="Avatar">
                                                         </div>
                                                         <div class="col-sm-4">
                                                             <h4 class="text-primary" style="">이글이글</h4>
                                                         </div>
                                                     </div>
                                                     <!-- 메시지 내용들 -->
-                                                    <li class="list-group-item"><strong>From </strong> <img
-                                                        src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-                                                        alt="Avatar"> <a>AAA</a> <strong>: "지금
-                                                            뭐하는지"</strong></li>
-                                                    <li class="list-group-item"><strong>From </strong> <img
-                                                        src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-                                                        alt="Avatar"> <a>BBB</a> <strong>: "먹을게 없다"</strong></li>
-                                                    <li class="list-group-item"><strong>From </strong> <img
-                                                        src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-                                                        alt="Avatar"> <a>CCC</a> <strong>: "사진"</strong></li>
+                                                    <li class="list-group-item">
+                                                    	<strong>From </strong> 
+                                                    	<img src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20" alt="Avatar"> 
+                                                    	<a>AAA</a> 
+                                                    	<strong>: "지금 뭐하는지"</strong>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                    	<strong>From </strong>
+                                                    	<img src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20" alt="Avatar"> 
+                                                    	<a>BBB</a> 
+                                                    	<strong>: "먹을게 없다"</strong>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                    	<strong>From </strong>
+                                                    	<img src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20" alt="Avatar"> 
+                                                    	<a>CCC</a> 
+                                                    	<strong>: "사진"</strong>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
@@ -507,7 +562,7 @@
   	
   	<!-- 게시물 post 버튼 -->
   	<div id="postQuick" >
-  		<button type="button" id="postBtn" class="btn btn-danger" data-spy="affixBtn"  style="border-radius: 100%; margin-left: 97%">+</button> <!--  onclick="javascript:post();" -->
+  		<button type="button" data-target="#postModal" id="postBtn" class="btn btn-danger" data-spy="affixBtn"  style="margin-left: 97%">+</button> <!--  onclick="javascript:post();" -->
   	</div>
   	
   	<!-- Footer -->
@@ -516,110 +571,96 @@
   	</footer>
   	
   	<!-- Post Modal -->
-  		  	<!-- Modal -->
-  	  	<div class="modal fade" id="postModal" role="dialog" data-backdrop="static"> <!-- data-backdrop: 모달창 밖 눌렀을 때 방지 -->
-  	    	<div class="modal-dialog">
-  	
-  		      	<!-- Modal content-->
-  		      	<div class="modal-content">
-  		        	<div class="modal-header">
-  		          		<button type="button" class="close" data-dismiss="modal">&times;</button>
-  		          		<h1 class="modal-title" align="center">레시피등록하기</h1>
-  		        	</div>
-  		       		<div class="modal-body">
-  		         		    <!-- 썸네일 / 요리명 / 한줄 설명 -->
-  					<br>
-  						<div align="center">
-  							<form id="boardForm" action="postProcess.do" method="post">
-  								<table border="0" cellspacing="3" align="center">
-  									<tr>
-  										<td colspan="2" align="center"><button style="margin-bottom: 10px">썸네일등록</button></td>
-  									</tr>
-  									<tr>
-  										<td><input type="text" placeholder="요리명" style="margin-bottom: 3px"></td>
-  									</tr>
-  									<tr>
-  										<td><input type="text" placeholder="한줄설명"></td>
-  									</tr>
-  								</table>
-  							</form>
-  							<br>
-  							
-  							<!-- 재료 / 분량 -->
-  							<form id="irdntForm"  action="postProcess.do" method="post">
-  								<table id="abc" border="0" cellspacing="3">
-  									<thead>
-  										<tr>
-  											<td colspan="2" align="center"><h2>재료입력</h2></td>
-  										</tr>
-  									</thead>
-  									<tbody>
-  										<tr>
-  											<td><input type="text" placeholder="재료입력" style="margin-right: 5px; margin-bottom: 3px;"></td>
-  											<td><input type="text" placeholder="분량입력"></td>
-  										</tr>
-  									</tbody>
-  									<tfoot>
-  										<tr>
-  											<td colspan="2" align="right">
-  												<button id="irdntAdd" type="button" class="btn btn-warning" style="border-radius: 100%" align="center">+</button>
-  											</td>
-  										</tr>
-  									</tfoot>
-  								</table>
-  							</form>
-  							<br>
-  							
-  							<!-- 레시피 / 사진 /  설명 -->
-  							<form id="recipeProcess.do"  action="postProcess.do" method="post">
-  								<table id="def" border="0" cellspacing="3">
-  									<thead>
-  										<tr>
-  												<td colspan="2" align="center"><h2>레시피</h2></td>
-  										</tr>
-  									</thead>
-  									<tbody>
-  									<tr>
-  										<td><button>사진등록</button>&nbsp;&nbsp;&nbsp;</td>
-  										<td><textarea></textarea></td>
-  									</tr>
-  									</tbody>
-  									<tfoot>
-  										<tr>
-  											<td colspan="2" align="right">
-  												<button id="recipeProcessAdd" type="button" class="btn btn-warning" style="border-radius: 100%">+</button>
-  											</td>
-  										</tr>
-  									</tfoot>
-  								</table>
-  							</form>
-  						</div>
-  				<br><br>
-  				<div align="center">
-  					<button class="btn btn-danger" onclick="javascript:submit()">submit</button>
-  				</div>
+	<!-- Modal -->
+	<div class="modal fade" id="postModal" role="dialog" style="margin-top: 130px;">
+	  <div class="modal-dialog">
+	    
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">x</button>
+	        <recipe style="font-size:20px;font-weight:bold"><span class="glyphicon glyphicon-cutlery"></span> 레시피 등록</recipe>
+	      </div>
+	      <div>
+	      <div class="modal-body">
+	        <form role="form">
+	            <div class="form-group">
+	            	<label for="usrname"><span class="glyphicon glyphicon-cutlery"></span> 요리명</label>
+	            	<button type="submit" class="btn btn-block" style="margin-bottom:5px;">사진등록
+	              		<span class="glyphicon glyphicon-camera"></span>
+	              	</button>
+	            
+		            <div>
+			            <input type="text" class="form-control" id="usrname" placeholder="요리명 입력" style="margin-bottom: 5px">
+			            <input type="text" class="form-control" id="usrname" placeholder="한줄 설명">
+		            </div>
+	            </div>
+	         </form>	
+	      </div>
+	      
+	      <div class="modal-body">
+	      	<form role="form">
+	      		<div class="form-group">
+	      			<label for="psw"><span class="glyphicon glyphicon-shopping-cart"></span> 재료 입력</label>
+	      			<button type="button" id="irdntAddBtn" class="btn btn-primary btn-xs" style="float:right;padding-top:0px;padding-bottom:0px;padding-left:5px;padding-right:5px">+</button>
+	      			
+	      			<div class="row">
+	      				<div id="irdntAdd" id ="irdintInput" class="col-sm-8">
+	      					<input type="text" class="form-control" id="irdnt" placeholder="재료 입력" style="margin-bottom: 5px;">
+	      				</div>
+	      				
+	      				<div id="cpctyAdd" class="col-sm-4">
+	      					<input type="number" class="form-control" id="cpcty" step="0.5" min="0" placeholder="분량 입력" style="margin-bottom: 5px;">
+	      				</div>
+	      			</div>
+	      		</div>
+	          </form>
+	        </div>
+	        <div class="modal-body">
+	        	<form role="form">
+	        		<div class="form-group">
+	        			<label for="psw"><span class="glyphicon glyphicon-tasks"></span> 레시피 입력</label>
+	        			<button type="button" id="recipeProcessAddBtn" class="btn btn-primary btn-xs" style="float:right;padding-top:0px;padding-bottom:0px;padding-left:5px;padding-right:5px">+</button>
+	        			
+	        			<div id="reciptInput">
+	        				<button type="submit" class="btn btn-block" style="margin-bottom:5px;">사진등록
+	        					<span class="glyphicon glyphicon-camera"></span>
+	        				</button>
+	        				<input type="textarea" class="form-control" style="margin-bottom: 5px;"id="psw" placeholder="입력">
+	        			</div>
+	        		</div>
+	        		
+	        		<button type="submit" class="btn btn-block">submit
+	        			<span class="glyphicon glyphicon-ok"></span>
+	        		</button>
+	          </form>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
   				
-  				<script>
-  	
-  					var duration = document.getElementById("videoTest").duration;
-  					document.getElementById("videoDuration").innerHTML = duration;
-  					
-  					$('#irdntAdd').click(function() {
-  						var length = $("#abc tr").length;
-  						$('#abc > tbody:last').append('<tr><td><input type="text" placeholder="재료입력" style="margin-right: 5px; margin-bottom: 3px;"></td>' +  
-  						'<td><input type="text" placeholder="분량입력"></td></tr>');
-  						return false;
-  					 });	 
-  					  
-  					 $('#recipeProcessAdd').click(function() {
-  					 	var length = $("#def tr").length;
-  						$('#def > tbody:last').append('<tr><td><button>사진등록</button></td><td><textarea></textarea></td></tr>');
-  						return false;
-  					  });
-  					  
-  					  function submit() {
-  						  alert('?');
-  				  }
- 				</script>
+  	<script>  	
+	  	var duration = document.getElementById("videoTest").duration;
+	  	document.getElementById("videoDuration").innerHTML = duration;
+	  	
+	  	$('#irdntAddBtn').click(function() {
+	  		$("#irdntAdd").append('<input type="text" class="form-control" id="irdnt" placeholder="재료 입력" style="margin-bottom: 5px">');
+	  		$("#cpctyAdd").append('<input type="number" class="form-control" id="cpcty" step="0.5" min="0" placeholder="분량 입력" style="margin-bottom: 5px;">');
+	  		
+	  		return false;
+	  	});
+	  	
+	  	$('#recipeProcessAddBtn').click(function() {
+	  		$("#reciptInput").append('<button type="submit" class="btn btn-block" style="margin-bottom:5px;">사진등록<span class="glyphicon glyphicon-camera"></span></button>');
+	  		$("#reciptInput").append(' <input type="textarea" class="form-control" id="psw" placeholder="입력" style="margin-bottom: 5px;">');
+	  		
+	  		return false;
+	  	});
+	  	
+	  	function submit() {
+	  		alert('?');
+	  	}
+  	</script>
  </body>
  </html>

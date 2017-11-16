@@ -151,7 +151,7 @@ td {
 					<div style="padding-top: 9px; padding-left: 5px;">
 						<button type="button" class="btn form" data-toggle="modal"
 							data-target="#fridge">
-							<img src="./resources/ingredient_icon/fridge.png" style="width:20px; height:20px;">
+							<img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
 						</button>
 						<div class="modal fade" id="fridge" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
@@ -218,11 +218,11 @@ td {
 				<li>
 					<div style="padding-top: 9px; padding-left: 5px;">
 						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#myModal">
+							data-target="#alarm">
 							<span class="glyphicon glyphicon-align-justify color"></span>
 						</button>
 						<!-- Modal bar -->
-						<div class="modal modal-center fade" id="myModal" tableindex="-1"
+						<div class="modal modal-center fade" id="alarm" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
 							<div class="modal-dialog modal-size modal-center" role="document">
 								<div class="modal-content modal-size">
