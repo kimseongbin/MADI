@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 이 안에다가 쿼리문 작업하셔야 합니다 -->
+<mapper namespace="com.spring.madi.RecipeMapper">
+	<resultMap type="RecipeVO" id="RecipeResultMap">
+		<result property="recipe_id" column="RECIPE_ID" />
+		<result property="recipe_title" column="RECIPE_TITLE" />
+		<result property="recipe_desc" column="RECIPE_DESC" />
+		<result property="nation_code" column="NATION_CODE" />
+		<result property="ty_code" column="TY_CODE" />
+		<result property="cooking_time" column="COOKING_TIME" />
+		<result property="img_url" column="IMG_URL" />
+		<result property="detail_url" column="DERAIL_URL" />
+		<result property="user_id" column="USER_ID" />
+		<result property="irdnt_name" column="IRDNT_NAME" />
+		<result property="irdnt_cpcty" column="IRDNT_CPCTY" />
+		<result property="irdnt_ty_code" column="IRDNT_TY_CODE" />
+		<result property="cooking_no" column="COOKING_NO" />
+		<result property="cooking_desc" column="COOKING_DESC" />
+		<result property="step_img_url" column="STEP_IMG_URL" />
+		<result property="step_tip" column="STEP_TIP" />
+		<result property="nation_name" column="NATION_NAME" />
+		<result property="ty_name" column="TY_NAME" />
+	</resultMap>
+
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper 태그 안에 작성하기 -->
+<mapper namespace="com.spring.madi.BoardMapper">
+	<resultMap type="BoardVO" id="BoardResultMap">
+		<result property="board_num" column="BOARD_NUM" />
+		<result property="user_id" column="USER_ID" />
+		<result property="board_title" column="BOARD_TITLE" />
+		<result property="board_summry" column="BOARD_SUMMRY" />
+		<result property="board_img" column="BOARD_IMG" />
+		<result property="board_recipe_id" column="BOARD_RECIPE_ID" />
+		<result property="board_like" column="BOARD_LIKE" />
+		<result property="board_time" column="BOARD_TIME" />
+	</resultMap>
+	
+	<resultMap type="BoardReplyVO" id="BoardReplyResultMap">
+		<result property="board_num" column="BOARD_NUM" />
+		<result property="user_id" column="USER_ID" />
+		<result property="rep_content" column="REP_CONTENT" />
+	</resultMap>
+	
+	<resultMap type="UserLikeBoVO" id="UserLikeBoResultMap">
+		<result property="user_id" column="USER_ID" />
+		<result property="board_num" column="BOARD_NUM" />
+	</resultMap>	
+	
+</mapper>
