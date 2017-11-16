@@ -118,9 +118,9 @@ table {
 td {
 	padding: 10px;
 }
-/*comment 배경색*/
-.comment{
- 	background-color:#F6F6F6;
+/*본문 배경색*/
+.well.content_color{
+ 	background-color:#FFFFFF;
 }
 </style>
 </head>
@@ -201,6 +201,11 @@ td {
 						            				<li>
 						            					<a data-toggle="tab" href="#menu4">
 						            						<strong>해산물</strong>
+						            					</a>
+						            				</li>
+						            				<li>
+						            					<a data-toggle="tab" href="#menu5">
+						            						<strong>소스/양념</strong>
 						            					</a>
 						            				</li>
 						            			</ul>
@@ -328,10 +333,14 @@ td {
 					                                	</table>
 							            			</div>
 							           <!-- 메뉴6 -->
+							           <!-- 메뉴7 -->
 						            			</div>
 						            		</div>
 						       		<!-- 오른쪽 내가 가진 재료들? -->
 						            		<div class="col-sm-4">
+						            			<div class="row" style="background-color:#FFE400;">
+						            			
+						            			</div>
 						            		</div>
 						            	</div>
 						            </div>
@@ -375,7 +384,7 @@ td {
 						<!-- Modal bar -->
 						<div class="modal fade" id="myModal" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
-							<div class="modal-dialog" role="document">
+							<div class="modal-dialog modal-sm" role="document">
 								<div class="modal-content">
 									<!-- 알림, 메시지 탭 -->
 									<div class="modal-header">
@@ -398,7 +407,7 @@ td {
 															<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
 																width="40" alt="Avatar">
 														</div>
-														<div class="col-sm-4">
+														<div class="col-sm-6">
 															<h4 class="text-primary" style="">이글이글</h4>
 														</div>
 													</div>
@@ -423,7 +432,7 @@ td {
 															<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
 																width="40" alt="Avatar">
 														</div>
-														<div class="col-sm-4">
+														<div class="col-sm-6">
 															<h4 class="text-primary" style="">이글이글</h4>
 														</div>
 													</div>
@@ -694,57 +703,46 @@ td {
 				</div>
 				<!-- 팔로워 추천 -->
 				<div style="margin-top: 20%; margin-right:20px;">
-					<h4>
+					<h4 style="margin-bottom:10px; margin-left:30px;">
 						<strong>팔로워 추천 : </strong><a href="#">새로고침</a>
 					</h4>
-					<div class="btn-group-vertical">
-						<table style="font-size: 17px; background-color: #F6F6F6">
-							<tr>
-								<td><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-									width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-									&emsp;
-									<button type="button" class="btn btn-danger btn"
-										style="border-radius: 10px;">
-										<strong>팔로우</strong>
-									</button>&nbsp;</td>
-							</tr>
-							<tr>
-								<td><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-									width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-									&emsp;
-									<button type="button" class="btn btn-danger btn"
-										style="border-radius: 10px;">
-										<strong>팔로우</strong>
-									</button>&nbsp;</td>
-							</tr>
-							<tr>
-								<td><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-									width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-									&emsp;
-									<button type="button" class="btn btn-danger btn"
-										style="border-radius: 10px;">
-										<strong>팔로우</strong>
-									</button>&nbsp;</td>
-							</tr>
-							<tr>
-								<td><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-									width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-									&emsp;
-									<button type="button" class="btn btn-danger btn"
-										style="border-radius: 10px;">
-										<strong>팔로우</strong>
-									</button>&nbsp;</td>
-							</tr>
-							<tr>
-								<td><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-									width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-									&emsp;
-									<button type="button" class="btn btn-danger btn"
-										style="border-radius: 10px;">
-										<strong>팔로우</strong>
-									</button>&nbsp;</td>
-							</tr>
-						</table>
+					<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
+						<ul>
+							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
+								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
+								&emsp;
+								<button type="button" class="btn btn-danger btn"
+								style="border-radius: 10px;">
+								<strong>팔로우</strong>
+								</button>&nbsp;</p>
+						</ul>
+						<ul>
+							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
+								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
+								&emsp;
+								<button type="button" class="btn btn-danger btn"
+								style="border-radius: 10px;">
+								<strong>팔로우</strong>
+								</button>&nbsp;</p>
+						</ul>
+						<ul>
+							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
+								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
+								&emsp;
+								<button type="button" class="btn btn-danger btn"
+								style="border-radius: 10px;">
+								<strong>팔로우</strong>
+								</button>&nbsp;</p>
+						</ul>
+						<ul>
+							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
+								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
+								&emsp;
+								<button type="button" class="btn btn-danger btn"
+								style="border-radius: 10px;">
+								<strong>팔로우</strong>
+								</button>&nbsp;</p>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -753,7 +751,7 @@ td {
 			<div class="col-sm-7">
 				<div class="row text-center" style="border-radius: 10px;">
 					<!-- 1번 글 시작 -->
-					<div class="well">
+					<div class="well content_color">
 						<div class="row">
 							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
 								<!-- profile -->
@@ -824,7 +822,7 @@ td {
 					</div>
 					<!--1번글 끝 -->
 					<!-- 2번 글 시작 -->
-					<div class="well">
+					<div class="well content_color">
 						<div class="row">
 							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
 								<!-- profile -->
@@ -895,7 +893,7 @@ td {
 					</div>
 					<!--2번글 끝 -->
 					<!-- 3번 글 시작 -->
-					<div class="well">
+					<div class="well content_color">
 						<div class="row">
 							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
 								<!-- profile -->
