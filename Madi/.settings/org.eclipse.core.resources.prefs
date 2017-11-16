@@ -3,3 +3,4 @@
 >>>>>>>=branch 'master' of https\://github.com/kimseongbin/madi.git
 eclipse.preferences.version=1
 encoding//src/main/webapp/WEB-INF/views/myPage.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/recipeDetail.jsp=UTF-8
