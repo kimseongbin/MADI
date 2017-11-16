@@ -193,54 +193,64 @@ td {
 						            						<strong>채소</strong>
 						            					</a>
 						            				</li>
+						            				<li>
+						            					<a data-toggle="tab" href="#menu3">
+						            						<strong>고기</strong>
+						            					</a>
+						            				</li>
+						            				<li>
+						            					<a data-toggle="tab" href="#menu4">
+						            						<strong>해산물</strong>
+						            					</a>
+						            				</li>
 						            			</ul>
 						            		</div>
 						            <!--  가운데 리스트 나열 -->
-						            		<div class="col-sm-6" style="background-color:#BDBDBD;">
+						            		<div class="col-sm-6" style="background-color:#FFD8D8;">
 						            			<div class="tab-content">
 						            <!-- 메뉴1 곡류 -->
 						            				<div id="menu1" class="tab-pane fade in active">
 														<table>
 				                                        	<tr>
 				                                            	<td>  
-				                                                	<a href="#" class="text-danger">
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/rice.png"
+				                                                      style="width: 50px; height: 50px;"><br> <strong>흰쌀</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/noodle.png"
+				                                                      style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/noodle.png"
 				                                                      style="width: 50px; height: 50px;"><br> <strong>라면</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-danger">
-				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-danger">
-				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
 				                                                  	</a>
 				                                                </td>
 				                                            </tr>
 				                                        </table>
 						            				</div>
-						           <!-- 메뉴2 면류 -->
+						           <!-- 메뉴2 채소 -->
 						            				<div id="menu2" class="tab-pane fade">
 						            					<table>
 				                                        	<tr>
 				                                            	<td>  
-				                                                	<a href="#" class="text-danger">
+				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/vege.png"
 				                                                      style="width: 50px; height: 50px;"><br> <strong>상추</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
-				                                                	<a href="#" class="text-danger">
+				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/vege.png"
 				                                                      style="width: 50px; height: 50px;"><br> <strong>시금치</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
-				                                                	<a href="#" class="text-danger">
+				                                                	<a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/vege.png"
 				                                                      style="width: 50px; height: 50px;"><br> <strong>대파</strong>
 				                                                  	</a>
@@ -248,6 +258,76 @@ td {
 				                                            </tr>
 				                                        </table>
 						            				</div>
+						            <!-- 메뉴3 고기 -->
+							            			<div id="menu3" class="tab-pane fade">
+							            				<table>
+					                                        <tr>
+					                                            <td>  
+					                                                <a href="#" class="text-muted">
+					                                                	<img src="./resources/food_icon/beef.png"
+					                                                      style="width: 50px; height: 50px;"><br><strong>삼겹살</strong>
+					                                                </a>
+					                                            </td>
+					                                            <td>
+					                                                <a href="#" class="text-muted">
+					                                                	<img src="./resources/food_icon/beef.png"
+					                                                      style="width: 50px; height: 50px;"><br><strong>소고기</strong>
+					                                                </a>
+					                                            </td>
+					                                            <td>
+					                                                <a href="#" class="text-muted">
+					                                                	<img src="./resources/food_icon/beef.png"
+					                                                      style="width: 50px; height: 50px;"><br> <strong>소시지</strong>
+					                                            	</a>
+					                                    		</td>
+					                                    	</tr>
+					                                	</table>
+							            			</div>
+							           <!-- 메뉴4 해산물 -->
+							            			<div id="menu4" class="tab-pane fade">
+							            				<table>
+					                                        <tr>
+					                                            <td>  
+					                                                <a href="#" class="text-muted">
+					                                                	<img src="./resources/food_icon/fish.png"
+					                                                      style="width: 50px; height: 50px;"><br><strong>고등어</strong>
+					                                                </a>
+					                                            </td>
+					                                            <td>
+					                                                <a href="#" class="text-muted">
+					                                                	<img src="./resources/food_icon/fish.png"
+					                                                      style="width: 50px; height: 50px;"><br><strong>참치캔</strong>
+					                                                </a>
+					                                            </td>
+					                                    	</tr>
+					                                	</table>
+							            			</div>
+							           <!-- 메뉴5 소스 -->
+							            			<div id="menu5" class="tab-pane fade">
+							            				<table>
+					                                        <tr>
+					                                            <td>  
+					                                                <a href="#" class="text-muted">
+					                                                	<img src="./resources/food_icon/sauce.png"
+					                                                      style="width: 50px; height: 50px;"><br><strong>간장</strong>
+					                                                </a>
+					                                            </td>
+					                                            <td>
+					                                                <a href="#" class="text-muted">
+					                                                	<img src="./resources/food_icon/sauce.png"
+					                                                      style="width: 50px; height: 50px;"><br><strong>미림</strong>
+					                                                </a>
+					                                            </td>
+					                                            <td>
+					                                                <a href="#" class="text-muted">
+					                                                	<img src="./resources/food_icon/sauce.png"
+					                                                      style="width: 50px; height: 50px;"><br> <strong>진간장</strong>
+					                                            	</a>
+					                                    		</td>
+					                                    	</tr>
+					                                	</table>
+							            			</div>
+							           <!-- 메뉴6 -->
 						            			</div>
 						            		</div>
 						       		<!-- 오른쪽 내가 가진 재료들? -->
@@ -399,34 +479,26 @@ td {
 					<br>
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center" style="font-size: 14px;">
-						<div class="col-sm-2"></div>
-						<div class="col-sm-3 bg-danger">
-							<strong>게시글</strong>
+                    	<div class="col-sm-2"></div>
+						<div class="col-sm-3">
+							<p data-target="#follower"><strong>게시글</strong>
+                            <br>
+                            10
+                            </p>
 						</div>
-						<div class="col-sm-3 bg-danger">
-							<span style="cursor: pointer" data-toggle="modal"
-								data-target="#follower"><strong>팔로워</strong></span>
+						<div class="col-sm-3">
+							<p style="cursor: pointer" data-toggle="modal" data-target="#follower"><strong>팔로워</strong>
+                            <br>
+                            10
+                            </p>
 						</div>
-						<div class="col-sm-3 bg-danger">
-							<span style="cursor: pointer" data-toggle="modal"
-								data-target="#following"><strong>팔로잉</strong></span>
+						<div class="col-sm-3">
+							<p style="cursor: pointer" data-toggle="modal" data-target="#following"><strong>팔로잉</strong>
+                            <br>
+                            20
+                            </p>
 						</div>
-						<div class="col-sm-1"></div>
-					</div>
-					<div class="row text-center" style="font-size: 17px;">
-						<div class="col-sm-2"></div>
-						<div class="col-sm-3 bg-default">
-							<span>10</span>
-						</div>
-						<div class="col-sm-3 bg-default">
-							<span style="cursor: pointer" data-toggle="modal"
-								data-target="#follower">20</span>
-						</div>
-						<div class="col-sm-3 bg-default">
-							<span style="cursor: pointer" data-toggle="modal"
-								data-target="#following">30</span>
-						</div>
-						<div class="col-sm-1"></div>
+                        <div class="col-sm-1"></div>
 					</div>
 					<br>
 					<!-- 팔로워 모달 -->
