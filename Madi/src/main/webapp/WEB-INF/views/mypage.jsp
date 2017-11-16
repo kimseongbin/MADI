@@ -20,7 +20,7 @@ footer {
 }
 /* ICON Design */
 .glyphicon {
-	font-size: 17px;
+	font-size: 18px;
 }
 
 .glyphicon.top {
@@ -44,7 +44,7 @@ footer {
 }
 
 .glyphicon.icon-size {
-	font-size: 25px;
+	font-size: 23px;
 }
 /* 헤더버튼 주변색 */
 .btn.form {
@@ -65,7 +65,7 @@ footer {
 	padding-top: 70px;
 }
 
-/* Modal 크기 조절 */
+/* Modal 크기 조절 
 .modal-dialog.modal-size {
 	width: 20%;
 	height: 60%;
@@ -96,7 +96,7 @@ footer {
 	text-align: left;
 	vertical-align: middle;
 }
-/* follow 모달 크기 조절 */
+ follow 모달 크기 조절 
 .modal-dialog.follow-size {
 	width: 23%;
 	height: 50%;
@@ -108,13 +108,19 @@ footer {
 	height: auto;
 	min-height: 50%;
 }
+*/
+
 /*table 디자인*/
 table {
 	border-radius: 10px;
 }
 /* 테이블 간격 */
 td {
-	padding: 5px;
+	padding: 10px;
+}
+/*comment 배경색*/
+.comment{
+ 	background-color:#F6F6F6;
 }
 </style>
 </head>
@@ -146,54 +152,119 @@ td {
 			</ul>
 			<!--오른쪽 아이콘 -->
 			<ul class="nav navbar-nav navbar-right">
-				<!-- 냉장고 아이콘 -->
-				<li>
-					<div style="padding-top: 9px; padding-left: 5px;">
-						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#fridge">
-							<img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
-						</button>
-						<div class="modal fade" id="fridge" tableindex="-1"
-							role="dialog" aria-labelledby="modallabel">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<!-- 알림, 메시지 탭 -->
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-									</div>
-									<!-- Modal bar 내용들 -->
-									<div class="modal-body">
-										<div class="tab-content">
-											<div id="home" class="tab-pane fade in active">
-												<ul class="list-group">
-													<!-- ?? 내용들 -->
-													<li>
-                                                    </li>
-												</ul>
-											</div>
-											<div id="message" class="tab-pane fade">
-												<ul class="list-group">
-													<!-- ?? 내용들 -->
-													<li class="list-group-item">
-                                                    </li>
-												</ul>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</li>
 				<!--home 아이콘 -->
 				<li><button type="button" class="btn form"
 						style="padding-top: 15px;">
 						<span class="glyphicon glyphicon-home color"></span>
 					</button>
+				</li>
+				<!-- 냉장고 아이콘 -->
+				<li>
+					<div style="padding-top: 9px;">
+						<button type="button" class="btn form" data-toggle="modal"
+							data-target="#fridge">
+							<img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
+						</button>
+						<!-- 냉장고 모달바 -->
+						<div class="modal fade" id="fridge" tableindex="-1" role="dialog" 
+						aria-labelledy="modallabel">
+							<div class="modal-dialog modal-lg" role="document">
+						    	<!-- content 시작 -->
+						        <div class="modal-content">
+						        <!-- 탭 -->
+						        	<div class="modal-header" style="background-color:#DE4F4F;">
+						          		<button type="button" class="close" data-dismiss="modal">&times;</button>	
+						            	<h3 style="color:#FFFFFF; text-align:center;">
+						            	<img src="./resources/food_icon/fridge_white.png" style="width:35px; height:35px;">
+						            	<strong>냉장고 재료들</strong></h3>	
+						            </div>
+						            <div class="modal-body" style="text-align:center;">
+						            	<div class="row">
+						            <!-- 왼쪽 카테고리 -->
+						            		<div class="col-sm-2">
+						            			<ul class="nav nav-stacked">
+						            				<li class="active">
+						            					<a data-toggle="tab" href="#menu1">
+						            						<strong>곡류/면류</strong>
+						            					</a>
+						            				</li>
+						            				<li>
+						            					<a data-toggle="tab" href="#menu2">
+						            						<strong>채소</strong>
+						            					</a>
+						            				</li>
+						            			</ul>
+						            		</div>
+						            <!--  가운데 리스트 나열 -->
+						            		<div class="col-sm-6" style="background-color:#BDBDBD;">
+						            			<div class="tab-content">
+						            <!-- 메뉴1 곡류 -->
+						            				<div id="menu1" class="tab-pane fade in active">
+														<table>
+				                                        	<tr>
+				                                            	<td>  
+				                                                	<a href="#" class="text-danger">
+				                                                	<img src="./resources/food_icon/noodle.png"
+				                                                      style="width: 50px; height: 50px;"><br> <strong>라면</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-danger">
+				                                                	<img src="./resources/food_icon/noodle.png"
+				                                                      style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-danger">
+				                                                	<img src="./resources/food_icon/noodle.png"
+				                                                      style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
+				                                                  	</a>
+				                                                </td>
+				                                            </tr>
+				                                        </table>
+						            				</div>
+						           <!-- 메뉴2 면류 -->
+						            				<div id="menu2" class="tab-pane fade">
+						            					<table>
+				                                        	<tr>
+				                                            	<td>  
+				                                                	<a href="#" class="text-danger">
+				                                                	<img src="./resources/food_icon/vege.png"
+				                                                      style="width: 50px; height: 50px;"><br> <strong>상추</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-danger">
+				                                                	<img src="./resources/food_icon/vege.png"
+				                                                      style="width: 50px; height: 50px;"><br> <strong>시금치</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-danger">
+				                                                	<img src="./resources/food_icon/vege.png"
+				                                                      style="width: 50px; height: 50px;"><br> <strong>대파</strong>
+				                                                  	</a>
+				                                                </td>
+				                                            </tr>
+				                                        </table>
+						            				</div>
+						            			</div>
+						            		</div>
+						       		<!-- 오른쪽 내가 가진 재료들? -->
+						            		<div class="col-sm-4">
+						            		</div>
+						            	</div>
+						            </div>
+						        <!-- 내용 끝 -->
+						            <div class="modal-footer">
+						            	<button type="button" class="btn btn-default" 
+						                data-dismiss="modal">Close</button>
+						            </div>
+						        </div>
+						      <!-- 모달 content 끝 -->  
+						   </div>
+						</div>
+					</div>	
 				</li>
 				<li>
 					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
@@ -201,7 +272,7 @@ td {
 							data-toggle="dropdown">
 							<span class="glyphicon glyphicon-user color"></span>
 						</button>
-						<ul class="dropdown-menu" style="text-align: center">
+						<ul class="dropdown-menu" style="text-align: center; background-color:#F6F6F6;">
 							<li><img src="./resources/profile/bird.jpg" class="img-circle" height="70"
 								width="70" alt="Avatar"></li>
 							<li>
@@ -216,16 +287,16 @@ td {
 				</li>
 				<!--알림 아이콘 -->
 				<li>
-					<div style="padding-top: 9px; padding-left: 5px;">
+						<div style="padding-top: 9px; padding-left: 3px;">
 						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#alarm">
-							<span class="glyphicon glyphicon-align-justify color"></span>
+							data-target="#myModal">
+							<span class="glyphicon glyphicon-align-justify color" style="padding-right:7px;"></span>
 						</button>
 						<!-- Modal bar -->
-						<div class="modal modal-center fade" id="alarm" tableindex="-1"
+						<div class="modal fade" id="myModal" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
-							<div class="modal-dialog modal-size modal-center" role="document">
-								<div class="modal-content modal-size">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
 									<!-- 알림, 메시지 탭 -->
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -302,7 +373,7 @@ td {
 				</li>
 				<!--소셜 아이콘 -->
 				<li>
-					<button type="button" class="btn form" style="padding-top: 15px;">
+					<button type="button" class="btn form" style="padding-top: 15px; padding-right:13px;">
 						<span class="glyphicon glyphicon-globe color"></span>
 					</button>
 				</li>
@@ -364,7 +435,7 @@ td {
 							<div class="modal-content follow-size">
 								<div class="modal-header" style="background-color: #DE4F4F;">
 									<h4 class="modal-title">
-										<strong><em>Follower 목록</em></strong>
+										<strong style="color:#FFFFFF;"><em>Follower 목록</em></strong>
 									</h4>
 								</div>
 								<!-- 팔로워 Content -->
@@ -451,7 +522,7 @@ td {
 							<div class="modal-content follow-size">
 								<div class="modal-header" style="background-color: #DE4F4F;">
 									<h4 class="modal-title">
-										<strong><em>Following 목록</em></strong>
+										<strong style="color:#FFFFFF;"><em>Following 목록</em></strong>
 									</h4>
 								</div>
 								<!-- 팔로잉 Content -->
@@ -550,7 +621,7 @@ td {
 					</div>
 				</div>
 				<!-- 팔로워 추천 -->
-				<div style="margin-top: 150px; margin-right:20px;">
+				<div style="margin-top: 20%; margin-right:20px;">
 					<h4>
 						<strong>팔로워 추천 : </strong><a href="#">새로고침</a>
 					</h4>
@@ -660,10 +731,10 @@ td {
 									class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; <span
 									class="glyphicon glyphicon-pencil icon-size"></span> &emsp;
 							</div>
-						</div>
+						</div> 
 						<!-- comment -->
 						<div id="comment" class="collapse">
-							<ul class="list-group" style="text-align: left">
+							<ul class="list-group" style="text-align: left;">
 								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
 									class="img-circle" height="30" width="30">&nbsp; <a
 									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글1</strong>
