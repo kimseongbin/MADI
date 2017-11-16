@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
   <style>
     /* Add a gray background color and some padding to the footer */
     footer {
@@ -28,6 +29,45 @@
       }
     }
   </style>
+  <script>
+
+  $(document).ready(function() {
+  	$("#category_selected_form").on("submit", function(event) {
+      	event.preventDefault();
+    });
+  }); 
+  
+  function addCategory(element) {
+    	var category_selected_form = document.getElementById("category_selected_form");
+    	
+    	if(element.style.background == "blue") { 
+        	element.style.background = "";
+            document.getElementById(element.textContent).remove();
+            category_selected_form.submit();
+        } else {
+        	console.log("1");
+        	element.style.background = "blue";
+    		category_selected_form.innerHTML += "<button id='" + element.textContent + "' class='btn btn-default' style='border:none; outline:none;' onclick='removeCategory(this);'>";
+    		category_selected_form.innerHTML += 	element.textContent + "<span class='glyphicon glyphicon-remove'>";
+    		category_selected_form.innerHTML += 	"<input type='hidden' name='category' value="+element.value+"/>";
+    		category_selected_form.innerHTML += "</buton>";
+            category_selected_form.submit();
+        }
+    }
+  	
+    function removeCategory(element) {
+    	var category_selected_form = document.getElementById("category_selected_form");
+    	element.remove();
+        document.getElementsByName(element.textContent)[0].style.background = "";
+        category_selected_form.submit();
+    }
+    
+    function stay() {
+    	return false;
+    }
+    
+
+  </script>
 </head>
 <body>
 
@@ -256,148 +296,222 @@
   <br/>
   <hr/>
   <div class="row">
-    <div class="col-sm-3 col-lg-3 thumbnail">
+  	<div class="col-sm-3 col-lg-3">
+   <div class="thumbnail">
       <img src="https://placehold.it/234x234?text=IMAGE" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image">
-      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative;">
+      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0;">
       	<img src="bird.jpg" class="img-circle" height="61"
                                     width="61" alt="Avatar">
                                     <p><strong>이글이글</strong></p>
         <h5><b>Title</b></h5>
-        <span>Title Description</span>
-        <div class="container-fluid">
-        	<div class="col-sm-4">
+        <span>Title Description Title Description Title Description Title Description Title Description Title Description Title Description Title Description</span>
+      </div>
+       <div class="container-fluid">
+        	<div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
         </div>
-      </div>
     </div>
-    <div class="col-sm-3 col-lg-3 thumbnail">
+    </div>
+    <div class="col-sm-3 col-lg-3">
+   <div class="thumbnail">
       <img src="https://placehold.it/234x234?text=IMAGE" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image">
-      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative;">
+      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0;">
       	<img src="bird.jpg" class="img-circle" height="61"
                                     width="61" alt="Avatar">
                                     <p><strong>이글이글</strong></p>
         <h5><b>Title</b></h5>
         <span>Title Description</span>
-        <div class="container-fluid">
-        	<div class="col-sm-4">
+      </div>
+       <div class="container-fluid">
+        	<div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
         </div>
-      </div>
     </div>
-    <div class="col-sm-3 col-lg-3 thumbnail">
+    </div>
+    <div class="col-sm-3 col-lg-3">
+   <div class="thumbnail">
       <img src="https://placehold.it/234x234?text=IMAGE" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image">
-      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative;">
+      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0;">
       	<img src="bird.jpg" class="img-circle" height="61"
                                     width="61" alt="Avatar">
                                     <p><strong>이글이글</strong></p>
         <h5><b>Title</b></h5>
         <span>Title Description</span>
-        <div class="container-fluid">
-        	<div class="col-sm-4">
+      </div>
+       <div class="container-fluid">
+        	<div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
         </div>
-      </div>
     </div>
-   <div class="col-sm-3 col-lg-3 thumbnail">
+    </div>
+    <div class="col-sm-3 col-lg-3">
+   <div class="thumbnail">
       <img src="https://placehold.it/234x234?text=IMAGE" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image">
-      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative;">
+      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0;">
       	<img src="bird.jpg" class="img-circle" height="61"
                                     width="61" alt="Avatar">
                                     <p><strong>이글이글</strong></p>
         <h5><b>Title</b></h5>
         <span>Title Description</span>
-        <div class="container-fluid">
-        	<div class="col-sm-4">
+      </div>
+       <div class="container-fluid">
+        	<div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4 col-sm-4" style="padding-left:0; padding-right:0;">
             	<button class="btn" style="background:white; border:none;">
                 	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 30분
                 </button>
             </div>
         </div>
-      </div>
     </div>
-    
+    </div>
   <hr>
 </div>
 
-<div class="container text-center">    
-  <h3>레시피 목록</h3>
-  <br>
-  <div class="row">
-    <div class="col-sm-2">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>category1</p>
+<div class="container">
+  <div class="container-fluid text-center" style="padding:0;">    
+    <div class="container-fluid"><h3>레시피 목록</h3></div>
+    <br>
+    <div class="row" style="padding:0;">
+    	<div class="col-xs-12 col-sm-6" style="padding:0;">
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+            	<button name = "밥" class="btn btn-default btn-block" value="3010001" onclick="addCategory(this);">밥</button>
+            </div>
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+        		<button name = "국" class="btn btn-default btn-block" value="3010002" onclick="addCategory(this);">국</button>
+      		</div>
+      		<div class="col-xs-4 col-sm-4" style="padding:0;"> 
+        		<button name = "조림" class="btn btn-default btn-block" value="3010003" onclick="addCategory(this);">조림</button>
+      		</div>
+		</div>
+    	<div class="col-xs-12 col-sm-6" style="padding:0;">
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+            	<button name = "구이" class="btn btn-default btn-block" value="3010004" onclick="addCategory(this);">구이</button>
+            </div>
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+        		<button name = "튀김/커틀릿" class="btn btn-default btn-block" value="3010005" onclick="addCategory(this);">튀김/커틀릿</button>
+      		</div>
+      		<div class="col-xs-4 col-sm-4" style="padding:0;"> 
+        		<button name = "찜" class="btn btn-default btn-block" value="3010006" onclick="addCategory(this);">찜</button>
+      		</div>
+		</div>
+        <div class="col-xs-12 col-sm-6" style="padding:0;">
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+            	<button name = "나물/생채/샐러드" class="btn btn-default btn-block" value="3010007" onclick="addCategory(this);">나물/생채/샐러드</button>
+            </div>
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+        		<button name = "밑반찬/김치" class="btn btn-default btn-block" value="3010008" onclick="addCategory(this);">밑반찬/김치</button>
+      		</div>
+      		<div class="col-xs-4 col-sm-4" style="padding:0;"> 
+        		<button name = "양식" class="btn btn-default btn-block" value="3010009" onclick="addCategory(this);">양식</button>
+      		</div>
+		</div>
+        <div class="col-xs-12 col-sm-6" style="padding:0;">
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+            	<button name = "도시락/간식" class="btn btn-default btn-block" value="3010010" onclick="addCategory(this);">도시락/간식</button>
+            </div>
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+        		<button name = "양념장" class="btn btn-default btn-block" value="3010012" onclick="addCategory(this);">양념장</button>
+      		</div>
+      		<div class="col-xs-4 col-sm-4" style="padding:0;"> 
+        		<button name = "떡/한과" class="btn btn-default btn-block" value="3010013" onclick="addCategory(this);">떡/한과</button>
+      		</div>
+		</div>
+        <div class="col-xs-12 col-sm-6" style="padding:0;">
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+            	<button name = "빵/과자" class="btn btn-default btn-block" value="3010014" onclick="addCategory(this);">빵/과자</button>
+            </div>
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+        		<button name = "음료" class="btn btn-default btn-block" value="3010015" onclick="addCategory(this);">음료</button>
+      		</div>
+      		<div class="col-xs-4 col-sm-4" style="padding:0;"> 
+        		<button name = "만두/면류" class="btn btn-default btn-block" value="3010016" onclick="addCategory(this);">만두/면류</button>
+      		</div>
+		</div>
+        <div class="col-xs-12 col-sm-6" style="padding:0;">
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+            	<button name = "찌개/전골/스튜" class="btn btn-default btn-block" value="3010017" onclick="addCategory(this);">찌개/전골/스튜</button>
+            </div>
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+        		<button name = "부침" class="btn btn-default btn-block" value="3010018" onclick="addCategory(this);">부침</button>
+      		</div>
+      		<div class="col-xs-4 col-sm-4" style="padding:0;"> 
+        		<button name = "그랑조/리조또" class="btn btn-default btn-block" value="3010019" onclick="addCategory(this);">그랑조/리조또</button>
+      		</div>
+		</div>
+        <div class="col-xs-12 col-sm-6" style="padding:0;">
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+            	<button name = "샌드위치/햄버거" class="btn btn-default btn-block" value="3010020" onclick="addCategory(this);">샌드위치/햄버거</button>
+            </div>
+        	<div class="col-xs-4 col-sm-4" style="padding:0;">
+        		<button name = "피자" class="btn btn-default btn-block" value="3010021" onclick="addCategory(this);">피자</button>
+      		</div>
+      		<div class="col-xs-4 col-sm-4" style="padding:0;"> 
+        		<button name = "볶음" class="btn btn-default btn-block" value="3010022" onclick="addCategory(this);">볶음</button>
+      		</div>
+		</div>
     </div>
-    <div class="col-sm-2"> 
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>category2</p>    
+  </div><br>
+</div>
+<div class="container">
+	<div class="row">
+    	<div class="col-xs-3 col-sm-3 panel panel-default" style="padding:0;">
+        	결과
+        </div>
+        <div id="category_selected"class="col-xs-9 col-sm-9 panel panel-default text-left" style="padding-left:20px;">
+        	<form id="category_selected_form" name="category_selected_form" onsubmit="return stay();">
+            	
+            </form>
+        </div>
     </div>
-    <div class="col-sm-2"> 
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>category3</p>
-    </div>
-    <div class="col-sm-2"> 
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>category4</p>
-    </div> 
-    <div class="col-sm-2"> 
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>category5</p>
-    </div>     
-    <div class="col-sm-2"> 
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>category6</p>
-    </div> 
-  </div>
-</div><br>
+</div>
 
 <footer class="container-fluid text-center">
   <p>Footer Text</p>
@@ -405,4 +519,5 @@
 
 </body>
 </html>
+    
     

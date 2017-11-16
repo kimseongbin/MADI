@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.*, com.spring.madi.*" %>
   <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
   <html>
   <head>
@@ -179,12 +181,6 @@
 	.modal-header, .modal-body {
 	    padding: 20px 50px;
 	}
-	
-   	/*table 디자인*/
-  	table {
-  		border-radius: 10px;
-  		background-color: #EAEAEA;
-  	}
   	
   </style>
   
@@ -446,6 +442,7 @@
   	<div id="columns">
   	   <!-- 핀터레스트 형식으로 하려면 css의 멀티컬럼을 사용해야 함: 공통의 부모가 필요 -->
   	   <!-- 삽화를 그룹핑 -->
+
   		<figure>
   			<a href="#" class="imageHover">
   				<img class="imgsrc" src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/cinderella.jpg">
@@ -518,51 +515,53 @@
   	
   		 <figure style="overflow: hidden">
   			<img src="./resources/image/6.jpg">
-  		 </figure>			
-  			
-  			<figure>
-  				<img src="./resources/image/7.jpg">
-  			</figure>					
+  		 </figure>		
+  		 
+  		 <figure>
+  		 	<img src="./resources/image/7.jpg">
+  		 </figure>					
   				
-  		    <figure>
-  				<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/tiana.jpg">
-  			</figure>	
+         <figure>
+  			<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/tiana.jpg">
+  	     </figure>	
   			
-  		    <figure>
-  				<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/tiana.jpg">
-  			</figure>
+  		 <figure>
+  		    <img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/tiana.jpg">
+  		 </figure>
   			
-  		    <figure>
-  				<img src="./resources/image/8.jpg">
-  			</figure>
+  		 <figure>
+  		   <img src="./resources/image/8.jpg">
+  		 </figure>
   					
-  		    <figure>
-  				<img src="./resources/image/9.jpg">
-  			</figure>		
+  		 <figure>
+  			<img src="./resources/image/9.jpg">
+  		 </figure>		
   			
-  		    <figure>
-  				<img src="./resources/image/10.gif">
-  			</figure>
-  			
-  			<figure>
-  				<img src="./resources/image/11.PNG">
-  			</figure>
-  			
-  		    <figure>
-  				<img src="./resources/image/11.gif">
-  			</figure>
-  			
-  			<figure>
-  				<video width="220" autoplay="autoplay" id="videoTest">
-  					<source src="./resources/video/Wildlife.mp4" type="video/mp4">
-  				</video>
-  				<figurecaption id="videoDuration"></figurecaption>
-  			</figure>
+  		 <figure>
+  		 	<img src="./resources/image/10.gif">
+  		 </figure>
+  		 
+  		 <figure>
+  		 	<img src="./resources/image/11.PNG">
+  		 </figure>
+  		 
+  		 <figure>
+  		 	<img src="./resources/image/11.gif">
+  		 </figure>
+  		 
+  		 <figure>
+  		 	<video width="220" autoplay="autoplay" id="videoTest">
+  		 		<source src="./resources/video/Wildlife.mp4" type="video/mp4">
+  		 	</video>
+  		 	<figurecaption id="videoDuration"></figurecaption>
+  		 </figure>
+  		 
   	</div>
   	
   	<!-- 게시물 post 버튼 -->
   	<div id="postQuick" >
-  		<button type="button" data-target="#postModal" id="postBtn" class="btn btn-danger" data-spy="affixBtn"  style="margin-left: 97%">+</button> <!--  onclick="javascript:post();" -->
+  		<button type="button" data-target="#postModal" id="postBtn" class="btn btn-danger" data-spy="affixBtn"  style="margin-left: 97%">+</button> 
+  		<!--  onclick="javascript:post();" -->
   	</div>
   	
   	<!-- Footer -->
@@ -582,51 +581,62 @@
 	        <recipe style="font-size:20px;font-weight:bold"><span class="glyphicon glyphicon-cutlery"></span> 레시피 등록</recipe>
 	      </div>
 	      <div>
+	      
+	      <!-- 요리명/사진등록 -->
 	      <div class="modal-body">
-	        <form role="form">
+	        <form name="" action="" method="post" role="form">
 	            <div class="form-group">
 	            	<label for="usrname"><span class="glyphicon glyphicon-cutlery"></span> 요리명</label>
-	            	<button type="submit" class="btn btn-block" style="margin-bottom:5px;">사진등록
+	            	<!-- 사진: board_img -->
+	            	<button type="button" class="btn btn-block" style="margin-bottom:5px;">사진등록
 	              		<span class="glyphicon glyphicon-camera"></span>
 	              	</button>
 	            
 		            <div>
-			            <input type="text" class="form-control" id="usrname" placeholder="요리명 입력" style="margin-bottom: 5px">
-			            <input type="text" class="form-control" id="usrname" placeholder="한줄 설명">
+			            <input type="text" class="form-control" id="board_title" placeholder="요리명 입력" style="margin-bottom: 5px">
+			            <input type="text" class="form-control" id="board_summry" placeholder="한줄 설명">
 		            </div>
 	            </div>
 	         </form>	
 	      </div>
 	      
+	      <!-- 재료/분량입력 -->
 	      <div class="modal-body">
-	      	<form role="form">
+	      	<form name="" action="" method="post" role="form">
 	      		<div class="form-group">
-	      			<label for="psw"><span class="glyphicon glyphicon-shopping-cart"></span> 재료 입력</label>
+	      			<label for="psw">
+	      				<span class="glyphicon glyphicon-shopping-cart"></span> 재료 입력
+	      			</label>
 	      			<button type="button" id="irdntAddBtn" class="btn btn-primary btn-xs" style="float:right;padding-top:0px;padding-bottom:0px;padding-left:5px;padding-right:5px">+</button>
 	      			
 	      			<div class="row">
 	      				<div id="irdntAdd" id ="irdintInput" class="col-sm-8">
-	      					<input type="text" class="form-control" id="irdnt" placeholder="재료 입력" style="margin-bottom: 5px;">
+	      					<input type="text" class="form-control" id="irdnt_name" placeholder="재료 입력" style="margin-bottom: 5px;">
 	      				</div>
 	      				
 	      				<div id="cpctyAdd" class="col-sm-4">
-	      					<input type="number" class="form-control" id="cpcty" step="0.5" min="0" placeholder="분량 입력" style="margin-bottom: 5px;">
+	      					<input type="text" class="form-control" id="irdnt_cpcty" placeholder="분량 입력" style="margin-bottom: 5px;">
 	      				</div>
+	      				
+	      				<!-- 재료타입(주재료/부재료/양념) select option -->
 	      			</div>
 	      		</div>
 	          </form>
 	        </div>
+	        
+	        <!-- 사진/과정 -->
 	        <div class="modal-body">
-	        	<form role="form">
+	        	<form name="" action="" method="" role="form">
 	        		<div class="form-group">
 	        			<label for="psw"><span class="glyphicon glyphicon-tasks"></span> 레시피 입력</label>
 	        			<button type="button" id="recipeProcessAddBtn" class="btn btn-primary btn-xs" style="float:right;padding-top:0px;padding-bottom:0px;padding-left:5px;padding-right:5px">+</button>
 	        			
 	        			<div id="reciptInput">
-	        				<button type="submit" class="btn btn-block" style="margin-bottom:5px;">사진등록
+	        				<!-- 사진이미지: step_img_url -->
+	        				<button type="button" class="btn btn-block" style="margin-bottom:5px;">사진등록
 	        					<span class="glyphicon glyphicon-camera"></span>
 	        				</button>
-	        				<input type="textarea" class="form-control" style="margin-bottom: 5px;"id="psw" placeholder="입력">
+	        				<input type="textarea" id="cooking_desc" class="form-control" style="margin-bottom: 5px;" placeholder="입력">
 	        			</div>
 	        		</div>
 	        		
@@ -645,22 +655,19 @@
 	  	document.getElementById("videoDuration").innerHTML = duration;
 	  	
 	  	$('#irdntAddBtn').click(function() {
-	  		$("#irdntAdd").append('<input type="text" class="form-control" id="irdnt" placeholder="재료 입력" style="margin-bottom: 5px">');
-	  		$("#cpctyAdd").append('<input type="number" class="form-control" id="cpcty" step="0.5" min="0" placeholder="분량 입력" style="margin-bottom: 5px;">');
+	  		$("#irdntAdd").append('<input type="text" class="form-control" id="irdnt_name" placeholder="재료 입력" style="margin-bottom: 5px">');
+	  		$("#cpctyAdd").append('<input type="number" class="form-control" id="irdnt_cpcty" step="0.5" min="0" placeholder="분량 입력" style="margin-bottom: 5px;">');
 	  		
 	  		return false;
 	  	});
 	  	
 	  	$('#recipeProcessAddBtn').click(function() {
 	  		$("#reciptInput").append('<button type="submit" class="btn btn-block" style="margin-bottom:5px;">사진등록<span class="glyphicon glyphicon-camera"></span></button>');
-	  		$("#reciptInput").append(' <input type="textarea" class="form-control" id="psw" placeholder="입력" style="margin-bottom: 5px;">');
+	  		$("#reciptInput").append(' <input type="textarea" class="form-control" id="cooking_desc" placeholder="입력" style="margin-bottom: 5px;">');
 	  		
 	  		return false;
 	  	});
 	  	
-	  	function submit() {
-	  		alert('?');
-	  	}
   	</script>
  </body>
  </html>

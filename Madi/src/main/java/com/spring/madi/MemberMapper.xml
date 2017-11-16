@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Warnning: you MUST write below -->
+<mapper namespace="com.spring.madi.MemberMapper">
+	<resultMap type="MemberVO" id="MemberResultMap">
+		<!-- select * 했을 때 컬럼명을 매핑 -->
+		<!-- column의 내용을 property의 속성에 저장한다. MemberVO객체에 4개의 컬럼을 저장 / -->
+		<result property="user_id" column="USER_ID" />
+		<result property="user_pw" column="USER_PW" />
+		<result property="user_name" column="USER_NAME" />
+		<result property="user_email" column="USER_EMAIL" />
+		<result property="user_img" column="USER_IMG" />
+	</resultMap>
+	
+	<resultMap type="MemberFollowVO" id="MemberFollowResultMap">
+		<result property="user_id" column="USER_ID" />
+		<result property="following_user_id" column="FOLLOWING_USER_ID" />
+	</resultMap>
+	
+	<resultMap type="MemberBoxVO" id="MemberBoxResultMap">
+		<result property="user_id" column="USER_ID" />
+		<result property="my_irdnt" column="MY_IRDNT" />
+	</resultMap>
+</mapper>

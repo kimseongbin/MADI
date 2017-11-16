@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 마찬가지로 이 안에다가 작성하셔야 합니다 -->
+<mapper namespace="com.spring.madi.MessageMapper">
+	<resultMap type="MessageVO" id="MessageResultMap">
+		<result property="user_id" column="USER_ID" />
+		<result property="content" column="CONTENT" />
+		<result property="time" column="TIME" />
+		<result property="sender_id" column="SENDER_ID" />
+		<result property="check_msg" column="CHECK_MSG" />
+	</resultMap>
+
+</mapper>
