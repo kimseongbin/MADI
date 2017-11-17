@@ -27,22 +27,6 @@ footer {
 	color: #000000;
 }
 
-.glyphicon.glyphicon-comment {
-	color: #4C4C4C;
-}
-
-.glyphicon.glyphicon-heart {
-	color: #DB005B;
-}
-
-.glyphicon.glyphicon-pencil {
-	color: #3D3D3D;
-}
-
-.glyphicon.glyphicon-share-alt {
-	color: #487BE1;
-}
-
 .glyphicon.icon-size {
 	font-size: 23px;
 }
@@ -65,10 +49,10 @@ footer {
 	padding-top: 70px;
 }
 
-/* Modal 크기 조절 
+/* Modal 크기 조절 */
 .modal-dialog.modal-size {
-	width: 20%;
-	height: 60%;
+	width: 300px;
+	height: 600px;
 	margin: 0;
 	padding: 0;
 }
@@ -81,7 +65,7 @@ footer {
 .modal.modal-center {
 	text-align: center;
 }
-
+/* 모달 창이 모바일일 경우 바꿔주는 설정 */
 @media screen and (min-width: 320px) {
 	.modal.modal-center:before {
 		display: inline-block;
@@ -95,8 +79,23 @@ footer {
 	text-align: left;
 	vertical-align: middle;
 }
-*/
+/* 헤더 디자인 끝 */
 
+.glyphicon.glyphicon-comment {
+	color: #4C4C4C;
+}
+
+.glyphicon.glyphicon-heart {
+	color: #DB005B;
+}
+
+.glyphicon.glyphicon-pencil {
+	color: #3D3D3D;
+}
+
+.glyphicon.glyphicon-share-alt {
+	color: #487BE1;
+}
 /*table 디자인*/
 table {
 	border-radius: 10px;
@@ -108,6 +107,34 @@ td {
 /*본문 배경색*/
 .well.content_color{
  	background-color:#FFFFFF;
+}
+/* 냉장고 재료들 리스트 정렬 */
+.ul.hori {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.li.hori {
+    margin: 0 0 0 0;
+    padding: 15px;
+    border : 0;
+    float: left;
+    font-size:17px;
+}
+/* 팔로워, 팔로잉 리스트 정렬 */
+.ul.fol {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.li.fol {
+    margin: 0 0 0 0;
+    padding: 15px;
+    border : 0;
+    float: left;
+    font-size:17px;
 }
 </style>
 </head>
@@ -188,113 +215,64 @@ td {
 						            			</ul>
 						            		</div>
 						            <!--  가운데 리스트 나열 -->
-						            		<div class="col-sm-8" style="background-color:#FFD8D8;">
+						            		<div class="col-sm-8" style="background-color:#FFD8D8; text-align:center;">
 						            			<div class="tab-content">
 						            <!-- 메뉴1 주재료 -->
 						            				<div id="menu1" class="tab-pane fade in active">
-														<table>
-				                                        	<tr>
-				                                            	<td>  
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>빵</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>꽃빵</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>식빵</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>모닝빵</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>바게트</strong>
-				                                                  	</a>
-				                                                </td>
-				                                            </tr>
-				                                        </table>
+												        <ul class="ul hori">
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												         </ul>
 						            				</div>
 						           <!-- 메뉴2 부재료-->
 						            				<div id="menu2" class="tab-pane fade">
-						            					<table>
-				                                        	<tr>
-				                                            	<td>  
-				                                                	<a href="#" class="text-muted">
+												        <ul class="ul hori">
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>녹두</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>서티태콩</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>풋콩</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>메주콩</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>콩비지</strong>
-				                                                  	</a>
-				                                                </td>
-				                                            </tr>
-				                                        </table>
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												         </ul>
 						            				</div>
 						            <!-- 메뉴3 양념/조미료 -->
 							            			<div id="menu3" class="tab-pane fade">
-							            				<table>
-					                                        <tr>
-					                                            <td>  
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>진간장</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>식초</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/salt.png"
-					                                                      style="width: 40px; height: 40px;"><br> <strong>설탕</strong>
-					                                            	</a>
-					                                    		</td>
-					                                    	</tr>
-					                                	</table>
+												        <ul class="ul hori">
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												         </ul>
 							            			</div>
 							       <!-- 재료 입력 끝 -->
 						            			</div>
 						            		</div>
 						       		<!-- 오른쪽 내가 가진 재료들? -->
-						            		<div class="col-sm-4">
-
+						            		<div class="col-sm-2">
 						            		</div>
 						            	</div>
 						            </div>
@@ -337,10 +315,10 @@ td {
 							<span class="glyphicon glyphicon-align-justify color" style="padding-right:7px;"></span>
 						</button>
 						<!-- Modal bar -->
-						<div class="modal fade" id="myModal" tableindex="-1"
+						<div class="modal modal-center fade" id="myModal" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
+							<div class="modal-dialog modal-size modal-center" role="document">
+								<div class="modal-content modal-size">
 									<!-- 알림, 메시지 탭 -->
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -372,12 +350,10 @@ td {
 														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
 													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
 														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>BBB</a><em> 님이 ~~~ 게시물을 공유했습니다.</em>
-														<div class="row"></div></li>
+														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
 													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
 														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>CCC</a> <em> 님이 ~~~ 게시물을 공유했습니다.</em>
-														<div class="row"></div></li>
+														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
 												</ul>
 											</div>
 											<div id="message" class="tab-pane fade">
@@ -398,10 +374,12 @@ td {
 															뭐하는지"</strong></li>
 													<li class="list-group-item"><strong>From </strong> <img
 														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>BBB</a> <strong>: "먹을게 없다"</strong></li>
+														alt="Avatar"> <a>AAA</a> <strong>: "지금
+															뭐하는지"</strong></li>
 													<li class="list-group-item"><strong>From </strong> <img
 														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>CCC</a> <strong>: "사진"</strong></li>
+														alt="Avatar"> <a>AAA</a> <strong>: "지금
+															뭐하는지"</strong></li>
 												</ul>
 											</div>
 										</div>
@@ -445,19 +423,21 @@ td {
 					<div class="row text-center" style="font-size: 14px;">
                     	<div class="col-sm-2"></div>
 						<div class="col-sm-3">
-							<p data-target="#follower"><strong>게시글</strong>
+							<p data-target="#follower"><strong class="bg-danger">게시글</strong>
                             <br>
                             10
                             </p>
 						</div>
 						<div class="col-sm-3">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#follower"><strong>팔로워</strong>
+							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
+							<strong class="bg-danger">팔로워</strong>
                             <br>
                             10
                             </p>
 						</div>
 						<div class="col-sm-3">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#following"><strong>팔로잉</strong>
+							<p style="cursor: pointer" data-toggle="modal" data-target="#following">
+							<strong class="bg-danger">팔로잉</strong>
                             <br>
                             20
                             </p>
@@ -466,83 +446,47 @@ td {
 					</div>
 					<br>
 					<!-- 팔로워 모달 -->
-					<div class="modal modal-center fade" id="follower" role="dialog">
-						<div class="modal-dialog follow-size modal-center">
-							<div class="modal-content follow-size">
+					<div class="modal fade" id="follower" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
 								<div class="modal-header" style="background-color: #DE4F4F;">
-									<h4 class="modal-title">
-										<strong style="color:#FFFFFF;"><em>Follower 목록</em></strong>
-									</h4>
+									<h3 class="modal-title">
+										<strong style="color:#FFFFFF;">Follower 목록</strong>
+									</h3>
 								</div>
 								<!-- 팔로워 Content -->
 								<div class="modal-body">
 									<div class="btn-group-vertical">
-										<table style="font-size: 15px;">
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-										</table>
+										<ul class="ul fol">
+											<li class="li fol">
+									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+									        </li>
+											<li class="li fol">
+									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+									        </li>
+											<li class="li fol">
+									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+									        </li>
+											<li class="li fol">
+									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+									        </li>
+									    </ul>
 									</div>
 								</div>
 								<div class="modal-footer">
@@ -553,99 +497,47 @@ td {
 						</div>
 					</div>
 					<!-- 팔로잉 Modal -->
-					<div class="modal modal-center fade" id="following" role="dialog">
-						<div class="modal-dialog follow-size modal-center">
-							<div class="modal-content follow-size">
+					<div class="modal fade" id="following" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
 								<div class="modal-header" style="background-color: #DE4F4F;">
-									<h4 class="modal-title">
-										<strong style="color:#FFFFFF;"><em>Following 목록</em></strong>
-									</h4>
+									<h3 class="modal-title">
+										<strong style="color:#FFFFFF;">Following 목록</strong>
+									</h3>
 								</div>
 								<!-- 팔로잉 Content -->
 								<div class="modal-body">
 									<div class="btn-group-vertical">
-										<table style="font-size: 15px;">
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-										</table>
+										<ul class="ul fol">
+											<li class="li fol">
+									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+									        </li>
+											<li class="li fol">
+									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+									        </li>
+											<li class="li fol">
+									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+									        </li>
+											<li class="li fol">
+									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+									        </li>
+									    </ul>
 									</div>
 								</div>
 								<div class="modal-footer">
