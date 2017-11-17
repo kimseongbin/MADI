@@ -4,7 +4,7 @@
 <mapper namespace="com.spring.madi.RecipeMapper">
 	<resultMap type="RecipeVO" id="RecipeResultMap">
 		<result property="recipe_id" column="RECIPE_ID" />
-		<result property="recipe_title" column="RECIPE_TITLE" />
+		<result property="recipe_title" colusmn="RECIPE_TITLE" />
 		<result property="recipe_desc" column="RECIPE_DESC" />
 		<result property="nation_code" column="NATION_CODE" />
 		<result property="ty_code" column="TY_CODE" />
@@ -12,15 +12,33 @@
 		<result property="img_url" column="IMG_URL" />
 		<result property="detail_url" column="DERAIL_URL" />
 		<result property="user_id" column="USER_ID" />
-		<result property="irdnt_name" column="IRDNT_NAME" />
-		<result property="irdnt_cpcty" column="IRDNT_CPCTY" />
-		<result property="irdnt_ty_code" column="IRDNT_TY_CODE" />
-		<result property="cooking_no" column="COOKING_NO" />
-		<result property="cooking_desc" column="COOKING_DESC" />
-		<result property="step_img_url" column="STEP_IMG_URL" />
-		<result property="step_tip" column="STEP_TIP" />
 		<result property="nation_name" column="NATION_NAME" />
 		<result property="ty_name" column="TY_NAME" />
+		<!-- recipe의 모든 재료정보를 ArrayList에 담아 recipeIrdnt로 리턴 -->
+		<collection property="recipeIrdnt" column="RECIPE_ID" javaType="java.util.ArrayList" ofType = "com.spring.madi.RecipeIrdntVO" select="getRecipeIrdntById"/>
+		<!-- recipe의 모든 과정정보를 ArrayList에 담아 recipeProcess로 리턴 -->
+		<collection property="recipeProcess" column="RECIPE_ID" javaType="java.util.ArrayList" ofType="com.spring.madi.RecipeProcessVO" select="getRecipeProcessById"/>
 	</resultMap>
+	
+	<select id="getRecipeById" resultMap="RecipeResultMap" parameterType="com.spring.madi.RecipeVO">
+			SELECT recipe_id, recipe_title, recipe_desc, 
+				   a.nation_code as nation_code, a.ty_code as ty_code, 
+				   cooking_time, img_url, detail_url, user_id, 
+				   nation_name, ty_name
+			FROM recipe_info a, nation b, recipe_type c
+			WHERE a.nation_code = b.nation_code AND a.TY_CODE = c.TY_CODE AND recipe_id = #{recipe_id, javaType=int}
+		</select>
+		
+		<select id="getRecipeIrdntById" resultType="com.spring.madi.RecipeIrdntVO">
+			SELECT recipe_id, irdnt_name, irdnt_cpcty, b.irdnt_ty_code as irdnt_ty_code, b.irdnt_ty_name as irdnt_ty_name
+			FROM recipe_irdnt a, irdnt_type b
+			WHERE a.irdnt_ty_code = b.irdnt_ty_code AND recipe_id = #{recipe_id}
+		</select>
+		
+		<select id="getRecipeProcessById" resultType="com.spring.madi.RecipeProcessVO">
+			SELECT recipe_id, cooking_no, cooking_desc, step_img_url, step_tip
+			FROM recipe_process
+			WHERE recipe_id = #{recipe_id}
+		</select>
 
 </mapper>

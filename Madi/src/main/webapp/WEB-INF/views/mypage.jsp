@@ -172,172 +172,129 @@ td {
 						            			<ul class="nav nav-stacked">
 						            				<li class="active">
 						            					<a data-toggle="tab" href="#menu1">
-						            						<strong>곡류/면류</strong>
+						            						<strong>주재료</strong>
 						            					</a>
 						            				</li>
 						            				<li>
 						            					<a data-toggle="tab" href="#menu2">
-						            						<strong>채소</strong>
+						            						<strong>부재료</strong>
 						            					</a>
 						            				</li>
 						            				<li>
 						            					<a data-toggle="tab" href="#menu3">
-						            						<strong>고기</strong>
-						            					</a>
-						            				</li>
-						            				<li>
-						            					<a data-toggle="tab" href="#menu4">
-						            						<strong>해산물</strong>
-						            					</a>
-						            				</li>
-						            				<li>
-						            					<a data-toggle="tab" href="#menu5">
-						            						<strong>소스/양념</strong>
+						            						<strong>양념/소스</strong>
 						            					</a>
 						            				</li>
 						            			</ul>
 						            		</div>
 						            <!--  가운데 리스트 나열 -->
-						            		<div class="col-sm-6" style="background-color:#FFD8D8;">
+						            		<div class="col-sm-8" style="background-color:#FFD8D8;">
 						            			<div class="tab-content">
-						            <!-- 메뉴1 곡류 -->
+						            <!-- 메뉴1 주재료 -->
 						            				<div id="menu1" class="tab-pane fade in active">
 														<table>
 				                                        	<tr>
 				                                            	<td>  
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/rice.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>흰쌀</strong>
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>빵</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>파스타</strong>
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>꽃빵</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>라면</strong>
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>식빵</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>모닝빵</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>바게트</strong>
 				                                                  	</a>
 				                                                </td>
 				                                            </tr>
 				                                        </table>
 						            				</div>
-						           <!-- 메뉴2 채소 -->
+						           <!-- 메뉴2 부재료-->
 						            				<div id="menu2" class="tab-pane fade">
 						            					<table>
 				                                        	<tr>
 				                                            	<td>  
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>상추</strong>
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>녹두</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>시금치</strong>
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>서티태콩</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>대파</strong>
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>풋콩</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>메주콩</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>콩비지</strong>
 				                                                  	</a>
 				                                                </td>
 				                                            </tr>
 				                                        </table>
 						            				</div>
-						            <!-- 메뉴3 고기 -->
+						            <!-- 메뉴3 양념/조미료 -->
 							            			<div id="menu3" class="tab-pane fade">
 							            				<table>
 					                                        <tr>
 					                                            <td>  
 					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>삼겹살</strong>
+					                                                	<img src="./resources/food_icon/sauce.png"
+					                                                      style="width: 40px; height: 40px;"><br><strong>진간장</strong>
 					                                                </a>
 					                                            </td>
 					                                            <td>
 					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>소고기</strong>
+					                                                	<img src="./resources/food_icon/sauce.png"
+					                                                      style="width: 40px; height: 40px;"><br><strong>식초</strong>
 					                                                </a>
 					                                            </td>
 					                                            <td>
 					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 40px; height: 40px;"><br> <strong>소시지</strong>
+					                                                	<img src="./resources/food_icon/salt.png"
+					                                                      style="width: 40px; height: 40px;"><br> <strong>설탕</strong>
 					                                            	</a>
 					                                    		</td>
 					                                    	</tr>
 					                                	</table>
 							            			</div>
-							           <!-- 메뉴4 해산물 -->
-							            			<div id="menu4" class="tab-pane fade">
-							            				<table>
-					                                        <tr>
-					                                            <td>  
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/fish.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>고등어</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/fish.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>참치캔</strong>
-					                                                </a>
-					                                            </td>
-					                                    	</tr>
-					                                	</table>
-							            			</div>
-							           <!-- 메뉴5 소스 -->
-							            			<div id="menu5" class="tab-pane fade">
-							            				<table>
-					                                        <tr>
-					                                            <td>  
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>간장</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>미림</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 40px; height: 40px;"><br> <strong>진간장</strong>
-					                                            	</a>
-					                                    		</td>
-					                                    	</tr>
-					                                	</table>
-							            			</div>
-							           <!-- 메뉴6 -->
-							           
-							           <!-- 메뉴7 -->
+							       <!-- 재료 입력 끝 -->
 						            			</div>
 						            		</div>
 						       		<!-- 오른쪽 내가 가진 재료들? -->
 						            		<div class="col-sm-4">
-						            			<div class="row">
-						            				<ul class="list-group">
-						            					<li class="list-group-item">
-						            					<img src="./resources/food_icon/sauce.png"
-					                                     style="width: 40px; height: 40px;"><br> <strong>진간장</strong>
-						            					</li>
-						            				</ul>
-						            			</div>
-						            			<br>
-						            			<div class="row">
-						            				<button type="button" class="btn btn-danger">등록하기</button>
-						            			</div>
+
 						            		</div>
 						            	</div>
 						            </div>
@@ -352,6 +309,7 @@ td {
 						</div>
 					</div>	
 				</li>
+				<!-- profile 아이콘 -->
 				<li>
 					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
 						<button class="btn dropdown-toggle form" type="button"

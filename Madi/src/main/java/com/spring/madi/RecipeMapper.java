@@ -1,5 +1,11 @@
 package com.spring.madi;
 
-public interface RecipeMapper {
+import java.util.ArrayList;
 
+public interface RecipeMapper {
+	
+	RecipeVO getRecipeById(RecipeVO recipeVO);
+	ArrayList<RecipeIrdntVO> getRecipeIrdntById(RecipeVO recipeVO);
+	ArrayList<RecipeProcessVO> getRecipeProcessById(RecipeVO recipeVO);
+	
 }
