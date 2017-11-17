@@ -120,7 +120,7 @@ td {
     padding: 15px;
     border : 0;
     float: left;
-    font-size:17px;
+    font-size:15px;
 }
 /* 팔로워, 팔로잉 리스트 정렬 */
 .ul.fol {

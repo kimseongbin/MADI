@@ -12,8 +12,6 @@
 		<result property="img_url" column="IMG_URL" />
 		<result property="detail_url" column="DERAIL_URL" />
 		<result property="user_id" column="USER_ID" />
-		<result property="irdnt_ty_code" column="IRDNT_TY_CODE" />
-
 		<result property="nation_name" column="NATION_NAME" />
 		<result property="ty_name" column="TY_NAME" />
 		<!-- recipe의 모든 재료정보를 ArrayList에 담아 recipeIrdnt로 리턴 -->
