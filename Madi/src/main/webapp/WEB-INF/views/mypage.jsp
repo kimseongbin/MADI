@@ -196,20 +196,32 @@ td {
 				                                        	<tr>
 				                                            	<td>  
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/rice.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>흰쌀</strong>
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>빵</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>파스타</strong>
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>꽃빵</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/beef.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>삼겹살</strong>
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>식빵</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>모닝빵</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bread.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>바게트</strong>
 				                                                  	</a>
 				                                                </td>
 				                                            </tr>
@@ -221,20 +233,32 @@ td {
 				                                        	<tr>
 				                                            	<td>  
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>양파</strong>
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>녹두</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>시금치</strong>
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>서티태콩</strong>
 				                                                  	</a>
 				                                                </td>
 				                                                <td>
 				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>대파</strong>
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>풋콩</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>메주콩</strong>
+				                                                  	</a>
+				                                                </td>
+				                                                <td>
+				                                                	<a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 40px; height: 40px;"><br> <strong>콩비지</strong>
 				                                                  	</a>
 				                                                </td>
 				                                            </tr>
@@ -285,6 +309,7 @@ td {
 						</div>
 					</div>	
 				</li>
+				<!-- profile 아이콘 -->
 				<li>
 					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
 						<button class="btn dropdown-toggle form" type="button"
