@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.*, com.spring.madi.*" %>
+<%
+	List<RecipeVO> postList = (ArrayList<RecipeVO>)request.getAttribute("postList");
+%>
   <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
   <html>
   <head>
@@ -25,6 +28,7 @@
   		margin-bottom: 15px;
   		padding: 4px;
   		max-height: 800px;
+  		width: 100%;
   	}
   	
   	#columns figure img {
@@ -181,7 +185,22 @@
 	.modal-header, .modal-body {
 	    padding: 20px 50px;
 	}
+	
+	#irdntAddBtn {
+		float:right;
+		padding-top:0px;
+		padding-bottom:0px;
+		padding-left:5px;
+		padding-right:5px;
+	}
   	
+  	#recipeProcessAddBtn {
+  		float:right;
+  		padding-top:0px;
+  		padding-bottom:0px;
+  		padding-left:5px;
+  		padding-right:5px;
+  	}
   </style>
   
   <script type="text/javascript">
@@ -200,11 +219,12 @@
   		// 무한 스크롤 이벤트
   		$(document).scroll(function() { // 스크롤이 변경될 때마다 이벤트 발생
   			var maxHeight = $(document).height(); // 현재 페이지의 높이
-  			var currentScroll = $(window).scrollTop() + $(window).height();  // 브라우저의 스크롤 위치값   현재 페이지 문서의 높이
-  			
+  			var currentScroll = $(window).scrollTop() + $(window).height();  // 브라우저의 스크롤 위치값  + 현재 페이지 문서의 높이
+  			console.log(maxHeight+":"+currentScroll);
   			if (maxHeight <= currentScroll + 100) {
   				$.ajax ({
   					// ajax로 비동기식으로 데이터 받아와서 무한 스크롤 구현하는 부분 
+  					
   				});
   			}
   		});
@@ -226,6 +246,11 @@
   		});
   				
   	});
+  	
+  	function post(recipe_id) {
+  		console.log(recipe_id);
+  		//location.href="post.do?recipe_id="+recipe_id;
+  	}
   </script>
   	
   </head>
@@ -439,123 +464,23 @@
     </nav>
     <!-- 헤더 끝 -->
   	
-  	<div id="columns">
+  	<!-- 게시물 핀터레스트형식 리스트 -->
+  	<div id="columns" style="margin: 50px;">
   	   <!-- 핀터레스트 형식으로 하려면 css의 멀티컬럼을 사용해야 함: 공통의 부모가 필요 -->
   	   <!-- 삽화를 그룹핑 -->
-
+<%
+		for(int i = 0; i < postList.size(); i++)
+		{
+			RecipeVO recipe = postList.get(i);
+%>
   		<figure>
   			<a href="#" class="imageHover">
-  				<img class="imgsrc" src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/cinderella.jpg">
+  				<img class="imgsrc" id="enters" src="<%= recipe.getImg_url()%>" onclick="post(<%=recipe.getRecipe_id()%>)">
   			</a>
   		</figure>
-  			
-  		<figure>
-  			<a href="#" class="imageHover">
-  				<img src="./resources/image/3.jpg">
-  			</a>
-  		</figure>	
-  					
-  		<figure>
-  			<a href="#" class="imageHover">
-  				<img class="imgsrc"  src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/rapunzel.jpg">
-  			</a>
-  		</figure>
-  			
-  		<figure>
-  			<a href="#" class="imageHover">
-  				<img src="./resources/image/2.jpg">
-  			</a>
-  		</figure>	
-  			
-  		 <figure>
-  			<a href="#" class="imageHover">
-  				<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/belle.jpg">
-  			</a>
-  		</figure>
-  		  
-  		<figure>
-  			<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/mulan_2.jpg">
-  		</figure>
-  			
-  	   <figure>
-  		 	<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/sleeping-beauty.jpg">
-  		</figure>
-  			
-  		<figure>
-  			<img src="./resources/image/1.jpg">
-  		</figure>	
-  			
-  	    <figure>
-  			<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/pocahontas_2.jpg">
-  	 	</figure>
-  			
-  	 	<figure>
-  	 		<img src="./resources/image/10.jpg">
-  		</figure>
-  			
-  		<figure>
-  			<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/snow-white.jpg">
-  		</figure>	
-  		  		
-  	    <figure>
-  			<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/ariel.jpg">
-  		</figure>
-  		  
-  		 <figure>
-  			<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/tiana.jpg">
-  		 </figure>	
-  			
-  		 <figure>
-  			<img src="./resources/image/4.jpg">
-  		 </figure>	
-  			
-  		 <figure>
-  			<img src="./resources/image/5.jpg">
-  		 </figure>	
-  	
-  		 <figure style="overflow: hidden">
-  			<img src="./resources/image/6.jpg">
-  		 </figure>		
-  		 
-  		 <figure>
-  		 	<img src="./resources/image/7.jpg">
-  		 </figure>					
-  				
-         <figure>
-  			<img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/tiana.jpg">
-  	     </figure>	
-  			
-  		 <figure>
-  		    <img src="//s3-us-west-2.amazonaws.com/s.cdpn.io/4273/tiana.jpg">
-  		 </figure>
-  			
-  		 <figure>
-  		   <img src="./resources/image/8.jpg">
-  		 </figure>
-  					
-  		 <figure>
-  			<img src="./resources/image/9.jpg">
-  		 </figure>		
-  			
-  		 <figure>
-  		 	<img src="./resources/image/10.gif">
-  		 </figure>
-  		 
-  		 <figure>
-  		 	<img src="./resources/image/11.PNG">
-  		 </figure>
-  		 
-  		 <figure>
-  		 	<img src="./resources/image/11.gif">
-  		 </figure>
-  		 
-  		 <figure>
-  		 	<video width="220" autoplay="autoplay" id="videoTest">
-  		 		<source src="./resources/video/Wildlife.mp4" type="video/mp4">
-  		 	</video>
-  		 	<figurecaption id="videoDuration"></figurecaption>
-  		 </figure>
-  		 
+<%
+		}
+%>  		 
   	</div>
   	
   	<!-- 게시물 post 버튼 -->
@@ -607,7 +532,7 @@
 	      			<label for="psw">
 	      				<span class="glyphicon glyphicon-shopping-cart"></span> 재료 입력
 	      			</label>
-	      			<button type="button" id="irdntAddBtn" class="btn btn-primary btn-xs" style="float:right;padding-top:0px;padding-bottom:0px;padding-left:5px;padding-right:5px">+</button>
+	      			<button type="button" id="irdntAddBtn" class="btn btn-primary btn-xs">+</button>
 	      			
 	      			<div class="row">
 	      				<div id="irdntAdd" id ="irdintInput" class="col-sm-8">
@@ -629,7 +554,7 @@
 	        	<form name="" action="" method="" role="form">
 	        		<div class="form-group">
 	        			<label for="psw"><span class="glyphicon glyphicon-tasks"></span> 레시피 입력</label>
-	        			<button type="button" id="recipeProcessAddBtn" class="btn btn-primary btn-xs" style="float:right;padding-top:0px;padding-bottom:0px;padding-left:5px;padding-right:5px">+</button>
+	        			<button type="button" id="recipeProcessAddBtn" class="btn btn-primary btn-xs">+</button>
 	        			
 	        			<div id="reciptInput">
 	        				<!-- 사진이미지: step_img_url -->

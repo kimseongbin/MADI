@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class FrontController {
-
+	
+	@Autowired
+	private RecipeDAOService recipeDAOService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(FrontController.class);
 	
 	/**
@@ -48,8 +52,12 @@ public class FrontController {
 	}
 	
 	@RequestMapping("/recipeDetail.do")
-	public String recipeDetail()
-	{
+	public String recipeDetail(RecipeVO recipeVO, Model model)
+	{	
+		
+		RecipeVO vo = recipeDAOService.getRecipeById(recipeVO);
+		model.addAttribute("recipeVO", vo);
+		
 		return "recipeDetail";
 	}
 	
