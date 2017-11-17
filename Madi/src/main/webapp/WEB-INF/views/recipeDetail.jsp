@@ -254,8 +254,8 @@
 		$('#지방').highcharts(json);
 	});
 </script>
-	
-	
+
+
 <style>
 footer {
 	background-color: #DE4F4F;
@@ -292,11 +292,11 @@ footer {
 .affix+.container-fluid {
 	padding-top: 70px;
 }
-img {
-    display: block;
-    margin: 0 auto;
-}
 
+img {
+	display: block;
+	margin: 0 auto;
+}
 </style>
 </head>
 <body style="background-color: #F6F6F6">
@@ -331,195 +331,163 @@ img {
 				<li><button type="button" class="btn form"
 						style="padding-top: 15px;">
 						<span class="glyphicon glyphicon-home color"></span>
-					</button>
-				</li>
+					</button></li>
 				<!-- 냉장고 아이콘 -->
 				<li>
 					<div style="padding-top: 9px;">
 						<button type="button" class="btn form" data-toggle="modal"
 							data-target="#fridge">
-							<img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
+							<img src="./resources/food_icon/fridge.png"
+								style="width: 20px; height: 20px;">
 						</button>
 						<!-- 냉장고 모달바 -->
-						<div class="modal fade" id="fridge" tableindex="-1" role="dialog" 
-						aria-labelledy="modallabel">
+						<div class="modal fade" id="fridge" tableindex="-1" role="dialog"
+							aria-labelledy="modallabel">
 							<div class="modal-dialog modal-lg" role="document">
-						    	<!-- content 시작 -->
-						        <div class="modal-content">
-						        <!-- 탭 -->
-						        	<div class="modal-header" style="background-color:#DE4F4F;">
-						          		<button type="button" class="close" data-dismiss="modal">&times;</button>	
-						            	<h3 style="color:#FFFFFF; text-align:center;">
-						            	<img src="./resources/food_icon/fridge_white.png" style="width:35px; height:35px;">
-						            	<strong>냉장고 재료들</strong></h3>	
-						            </div>
-						            <div class="modal-body" style="text-align:center;">
-						            	<div class="row">
-						            <!-- 왼쪽 카테고리 -->
-						            		<div class="col-sm-2">
-						            			<ul class="nav nav-stacked">
-						            				<li class="active">
-						            					<a data-toggle="tab" href="#menu1">
-						            						<strong>곡류/면류</strong>
-						            					</a>
-						            				</li>
-						            				<li>
-						            					<a data-toggle="tab" href="#menu2">
-						            						<strong>채소</strong>
-						            					</a>
-						            				</li>
-						            				<li>
-						            					<a data-toggle="tab" href="#menu3">
-						            						<strong>고기</strong>
-						            					</a>
-						            				</li>
-						            				<li>
-						            					<a data-toggle="tab" href="#menu4">
-						            						<strong>해산물</strong>
-						            					</a>
-						            				</li>
-						            			</ul>
-						            		</div>
-						            <!--  가운데 리스트 나열 -->
-						            		<div class="col-sm-6" style="background-color:#BDBDBD;">
-						            			<div class="tab-content">
-						            <!-- 메뉴1 곡류 -->
-						            				<div id="menu1" class="tab-pane fade in active">
+								<!-- content 시작 -->
+								<div class="modal-content">
+									<!-- 탭 -->
+									<div class="modal-header" style="background-color: #DE4F4F;">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h3 style="color: #FFFFFF; text-align: center;">
+											<img src="./resources/food_icon/fridge_white.png"
+												style="width: 35px; height: 35px;"> <strong>냉장고
+												재료들</strong>
+										</h3>
+									</div>
+									<div class="modal-body" style="text-align: center;">
+										<div class="row">
+											<!-- 왼쪽 카테고리 -->
+											<div class="col-sm-2">
+												<ul class="nav nav-stacked">
+													<li class="active"><a data-toggle="tab" href="#menu1">
+															<strong>곡류/면류</strong>
+													</a></li>
+													<li><a data-toggle="tab" href="#menu2"> <strong>채소</strong>
+													</a></li>
+													<li><a data-toggle="tab" href="#menu3"> <strong>고기</strong>
+													</a></li>
+													<li><a data-toggle="tab" href="#menu4"> <strong>해산물</strong>
+													</a></li>
+												</ul>
+											</div>
+											<!--  가운데 리스트 나열 -->
+											<div class="col-sm-6" style="background-color: #BDBDBD;">
+												<div class="tab-content">
+													<!-- 메뉴1 곡류 -->
+													<div id="menu1" class="tab-pane fade in active">
 														<table>
-				                                        	<tr>
-				                                            	<td>  
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/rice.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>흰쌀</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/noodle.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>라면</strong>
-				                                                  	</a>
-				                                                </td>
-				                                            </tr>
-				                                        </table>
-						            				</div>
-						           <!-- 메뉴2 채소 -->
-						            				<div id="menu2" class="tab-pane fade">
-						            					<table>
-				                                        	<tr>
-				                                            	<td>  
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>상추</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>시금치</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/vege.png"
-				                                                      style="width: 50px; height: 50px;"><br> <strong>대파</strong>
-				                                                  	</a>
-				                                                </td>
-				                                            </tr>
-				                                        </table>
-						            				</div>
-						            <!-- 메뉴3 고기 -->
-							            			<div id="menu3" class="tab-pane fade">
-							            				<table>
-					                                        <tr>
-					                                            <td>  
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>삼겹살</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>소고기</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/beef.png"
-					                                                      style="width: 50px; height: 50px;"><br> <strong>소시지</strong>
-					                                            	</a>
-					                                    		</td>
-					                                    	</tr>
-					                                	</table>
-							            			</div>
-							           <!-- 메뉴4 해산물 -->
-							            			<div id="menu4" class="tab-pane fade">
-							            				<table>
-					                                        <tr>
-					                                            <td>  
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/fish.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>고등어</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/fish.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>참치캔</strong>
-					                                                </a>
-					                                            </td>
-					                                    	</tr>
-					                                	</table>
-							            			</div>
-							           <!-- 메뉴5 소스 -->
-							            			<div id="menu5" class="tab-pane fade">
-							            				<table>
-					                                        <tr>
-					                                            <td>  
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>간장</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 50px; height: 50px;"><br><strong>미림</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 50px; height: 50px;"><br> <strong>진간장</strong>
-					                                            	</a>
-					                                    		</td>
-					                                    	</tr>
-					                                	</table>
-							            			</div>
-							           <!-- 메뉴6 -->
-						            			</div>
-						            		</div>
-						       		<!-- 오른쪽 내가 가진 재료들? -->
-						            		<div class="col-sm-4">
-						            		</div>
-						            	</div>
-						            </div>
-						        <!-- 내용 끝 -->
-						            <div class="modal-footer">
-						            	<button type="button" class="btn btn-default" 
-						                data-dismiss="modal">Close</button>
-						            </div>
-						        </div>
-						      <!-- 모달 content 끝 -->  
-						   </div>
+															<tr>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/rice.png"
+																		style="width: 50px; height: 50px;"><br> <strong>흰쌀</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/noodle.png"
+																		style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/noodle.png"
+																		style="width: 50px; height: 50px;"><br> <strong>라면</strong>
+																</a></td>
+															</tr>
+														</table>
+													</div>
+													<!-- 메뉴2 채소 -->
+													<div id="menu2" class="tab-pane fade">
+														<table>
+															<tr>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/vege.png"
+																		style="width: 50px; height: 50px;"><br> <strong>상추</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/vege.png"
+																		style="width: 50px; height: 50px;"><br> <strong>시금치</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/vege.png"
+																		style="width: 50px; height: 50px;"><br> <strong>대파</strong>
+																</a></td>
+															</tr>
+														</table>
+													</div>
+													<!-- 메뉴3 고기 -->
+													<div id="menu3" class="tab-pane fade">
+														<table>
+															<tr>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/beef.png"
+																		style="width: 50px; height: 50px;"><br>
+																	<strong>삼겹살</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/beef.png"
+																		style="width: 50px; height: 50px;"><br>
+																	<strong>소고기</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/beef.png"
+																		style="width: 50px; height: 50px;"><br> <strong>소시지</strong>
+																</a></td>
+															</tr>
+														</table>
+													</div>
+													<!-- 메뉴4 해산물 -->
+													<div id="menu4" class="tab-pane fade">
+														<table>
+															<tr>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/fish.png"
+																		style="width: 50px; height: 50px;"><br>
+																	<strong>고등어</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/fish.png"
+																		style="width: 50px; height: 50px;"><br>
+																	<strong>참치캔</strong>
+																</a></td>
+															</tr>
+														</table>
+													</div>
+													<!-- 메뉴5 소스 -->
+													<div id="menu5" class="tab-pane fade">
+														<table>
+															<tr>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/sauce.png"
+																		style="width: 50px; height: 50px;"><br>
+																	<strong>간장</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/sauce.png"
+																		style="width: 50px; height: 50px;"><br>
+																	<strong>미림</strong>
+																</a></td>
+																<td><a href="#" class="text-muted"> <img
+																		src="./resources/food_icon/sauce.png"
+																		style="width: 50px; height: 50px;"><br> <strong>진간장</strong>
+																</a></td>
+															</tr>
+														</table>
+													</div>
+													<!-- 메뉴6 -->
+												</div>
+											</div>
+											<!-- 오른쪽 내가 가진 재료들? -->
+											<div class="col-sm-4"></div>
+										</div>
+									</div>
+									<!-- 내용 끝 -->
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">Close</button>
+									</div>
+								</div>
+								<!-- 모달 content 끝 -->
+							</div>
 						</div>
-					</div>	
+					</div>
 				</li>
 				<li>
 					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
@@ -527,9 +495,10 @@ img {
 							data-toggle="dropdown">
 							<span class="glyphicon glyphicon-user color"></span>
 						</button>
-						<ul class="dropdown-menu" style="text-align: center; background-color:#F6F6F6;">
-							<li><img src="./resources/profile/bird.jpg" class="img-circle" height="70"
-								width="70" alt="Avatar"></li>
+						<ul class="dropdown-menu"
+							style="text-align: center; background-color: #F6F6F6;">
+							<li><img src="./resources/profile/bird.jpg"
+								class="img-circle" height="70" width="70" alt="Avatar"></li>
 							<li>
 								<h4>
 									<p class="text-primary">이글이글</p>
@@ -542,14 +511,15 @@ img {
 				</li>
 				<!--알림 아이콘 -->
 				<li>
-						<div style="padding-top: 9px; padding-left: 3px;">
+					<div style="padding-top: 9px; padding-left: 3px;">
 						<button type="button" class="btn form" data-toggle="modal"
 							data-target="#myModal">
-							<span class="glyphicon glyphicon-align-justify color" style="padding-right:7px;"></span>
+							<span class="glyphicon glyphicon-align-justify color"
+								style="padding-right: 7px;"></span>
 						</button>
 						<!-- Modal bar -->
-						<div class="modal fade" id="myModal" tableindex="-1"
-							role="dialog" aria-labelledby="modallabel">
+						<div class="modal fade" id="myModal" tableindex="-1" role="dialog"
+							aria-labelledby="modallabel">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<!-- 알림, 메시지 탭 -->
@@ -570,24 +540,27 @@ img {
 												<ul class="list-group">
 													<div class="row">
 														<div class="col-sm-2" style="padding-bottom: 5px;">
-															<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-																width="40" alt="Avatar">
+															<img src="./resources/profile/bird.jpg"
+																class="img-circle" height="40" width="40" alt="Avatar">
 														</div>
 														<div class="col-sm-4">
 															<h4 class="text-primary" style="">이글이글</h4>
 														</div>
 													</div>
 													<!-- 알림 내용들 -->
-													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
-													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>BBB</a><em> 님이 ~~~ 게시물을 공유했습니다.</em>
+													<li class="list-group-item"><img
+														src="./resources/profile/bird.jpg" class="img-circle"
+														height="20" width="20" alt="Avatar"> <a>AAA</a><em>
+															님이 ~~~ 게시물을 공유했습니다.</em></li>
+													<li class="list-group-item"><img
+														src="./resources/profile/bird.jpg" class="img-circle"
+														height="20" width="20" alt="Avatar"> <a>BBB</a><em>
+															님이 ~~~ 게시물을 공유했습니다.</em>
 														<div class="row"></div></li>
-													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>CCC</a> <em> 님이 ~~~ 게시물을 공유했습니다.</em>
+													<li class="list-group-item"><img
+														src="./resources/profile/bird.jpg" class="img-circle"
+														height="20" width="20" alt="Avatar"> <a>CCC</a> <em>
+															님이 ~~~ 게시물을 공유했습니다.</em>
 														<div class="row"></div></li>
 												</ul>
 											</div>
@@ -595,8 +568,8 @@ img {
 												<ul class="list-group">
 													<div class="row">
 														<div class="col-sm-2" style="padding-bottom: 5px;">
-															<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-																width="40" alt="Avatar">
+															<img src="./resources/profile/bird.jpg"
+																class="img-circle" height="40" width="40" alt="Avatar">
 														</div>
 														<div class="col-sm-4">
 															<h4 class="text-primary" style="">이글이글</h4>
@@ -604,15 +577,17 @@ img {
 													</div>
 													<!-- 메시지 내용들 -->
 													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>AAA</a> <strong>: "지금
-															뭐하는지"</strong></li>
+														src="./resources/profile/bird.jpg" class="img-circle"
+														height="20" width="20" alt="Avatar"> <a>AAA</a> <strong>:
+															"지금 뭐하는지"</strong></li>
 													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>BBB</a> <strong>: "먹을게 없다"</strong></li>
+														src="./resources/profile/bird.jpg" class="img-circle"
+														height="20" width="20" alt="Avatar"> <a>BBB</a> <strong>:
+															"먹을게 없다"</strong></li>
 													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>CCC</a> <strong>: "사진"</strong></li>
+														src="./resources/profile/bird.jpg" class="img-circle"
+														height="20" width="20" alt="Avatar"> <a>CCC</a> <strong>:
+															"사진"</strong></li>
 												</ul>
 											</div>
 										</div>
@@ -628,7 +603,8 @@ img {
 				</li>
 				<!--소셜 아이콘 -->
 				<li>
-					<button type="button" class="btn form" style="padding-top: 15px; padding-right:13px;">
+					<button type="button" class="btn form"
+						style="padding-top: 15px; padding-right: 13px;">
 						<span class="glyphicon glyphicon-globe color"></span>
 					</button>
 				</li>
@@ -646,7 +622,7 @@ img {
 
 			<img src="./resources/image/orangejuice.png"
 				class="img-rounded thumbnail" alt="Cinque Terre" width="100%"
-				height="70%"> &nbsp;
+				height="100%" style="max-height: 500px"> &nbsp;
 			<p>음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한
 				설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한
 				설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한
@@ -666,22 +642,28 @@ img {
 
 
 
-		
+
 
 		<div class="row">
 
 			<div class="col-xs-12 col-md-6 text-center" style="height: 400px">
 				<h2>재료</h2>
-				<img src="./resources/image/orange.jpg" class="img-rounded"
+				<img src="./resources/image/orange.jpg" class="img-rounded thumbnail"
 					align="middle" alt="cinque terre" width="400px" height="200px">
 			</div>
 			<div class="col-xs-12 col-md-6">
 
 				<h2>재료리스트</h2>
-				<div class="panel panel-default text-center col-xs-6 col-md-3">재료명</div>
-				<div class="panel panel-default text-center col-xs-6 col-md-3">재료용량</div>
-				<div class="panel panel-default text-center col-xs-6 col-md-3">재료명</div>
-				<div class="panel panel-default text-center col-xs-6 col-md-3">재료용량</div>
+				
+				<div class="panel panel-default text-center col-xs-6 col-md-5" style="padding:0;">
+					<div class="panel-heading">재료명</div>
+  					<div class="panel-body" style="padding:0;">말린미이이이이이이이역</div>
+				</div>
+				<div class="panel panel-default text-center col-xs-6 col-md-5" style="padding:0;">
+					<div class="panel-heading">재료용량</div>
+  					<div class="panel-body" style="padding:0">100g</div>
+				</div>
+				
 			</div>
 
 
@@ -698,14 +680,14 @@ img {
 				<h1 align="center">만드는법</h1>
 				<img src="https://placehold.it/900x500?text=IMAGE"
 					class="img-rounded"
-					style="width: 70%; height: 70%; margin:0 auto;">
-					
+					style="width: 70%; height: 70%; margin: 0 auto;">
+
 				<p>설명설명</p>
 
 				<hr>
 
 				<h1>한줄 댓글</h1>
-				
+
 				<div class="container-fluid input-group"
 					style="padding-right: 0; padding-left: 0">
 					<textarea id="textarea" class="form-control"
@@ -732,7 +714,7 @@ img {
 				<hr>
 
 
-			<div class="col-xs-0 col-md-1"></div>
+				<div class="col-xs-0 col-md-1"></div>
 			</div>
 
 
@@ -746,9 +728,9 @@ img {
 
 	</div>
 
-  
-  <!-- 마지막 footer -->
-  <footer class="container-fluid text-center">
+
+	<!-- 마지막 footer -->
+	<footer class="container-fluid text-center">
 	<p>MADI</p>
 	</footer>
 </body>
