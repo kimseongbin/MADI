@@ -1,5 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.*,com.spring.madi.*"%>
+<%
+//로그인한 아이디
+String user_id = (String)session.getAttribute("user_id");
 
+MemberVO myInfo= (MemberVO)request.getAttribute("myInfo");
+
+List<MemberFollowVO> followerList= (ArrayList<MemberFollowVO>)request.getAttribute("followerList");
+
+List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttribute("followingList");
+
+List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
+
+List<BoardVO> boardList= (ArrayList<BoardVO>)request.getAttribute("getBoards");
+
+List<BoardReplyVO> boardReplyList= (ArrayList<BoardReplyVO>)request.getAttribute("boardReplyList");
+
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -137,9 +155,22 @@ td {
     font-size:17px;
 }
 </style>
+<script>
+	function updateBoardLike(){
+		location.href="updateBoardLike.do";
+	}
+
+	function deleteFollowing(following_user_id) {
+		location.href="deleteFollowing.do?following_user_id=" + following_user_id;
+	}
+	
+	function insertFollowing(user_id, following_user_id) {
+		location.href="insertFollowing.do";
+	}
+</script>
 </head>
-<body style="background-color: #F6F6F6">
-	<!-- 왼쪽 헤더 -->
+<body style="background-color: #F6F6F6;">
+	<!-- 헤더 시작 -->
 	<nav class="navbar navbar-default head" data-spy="affix"
 		data-offset-top="197">
 	<div class="container-fluid">
@@ -287,7 +318,7 @@ td {
 						</div>
 					</div>	
 				</li>
-				<!-- profile 아이콘 -->
+				<!-- profile 아이콘(누르면 mypage로 넘어간다) -->
 				<li>
 					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
 						<button class="btn dropdown-toggle form" type="button"
@@ -295,11 +326,11 @@ td {
 							<span class="glyphicon glyphicon-user color"></span>
 						</button>
 						<ul class="dropdown-menu" style="text-align: center; background-color:#F6F6F6;">
-							<li><img src="./resources/profile/bird.jpg" class="img-circle" height="70"
+							<li><img src="<%=myInfo.getUser_img()%>" class="img-circle" height="70"
 								width="70" alt="Avatar"></li>
 							<li>
 								<h4>
-									<p class="text-primary">이글이글</p>
+									<p class="text-primary"><%=myInfo.getUser_id()%></p>
 								</h4>
 							</li>
 							<li><a href="#">회원수정</a></li>
@@ -393,7 +424,7 @@ td {
 						</div>
 					</div>
 				</li>
-				<!--소셜 아이콘 -->
+				<!--소셜(post로 넘어간다) 아이콘 -->
 				<li>
 					<button type="button" class="btn form" style="padding-top: 15px; padding-right:13px;">
 						<span class="glyphicon glyphicon-globe color"></span>
@@ -410,14 +441,14 @@ td {
 		<div class="row">
 			<div class="col-sm-3 text-center" style="border-radius: 10px;">
 				<div>
-					<img src="./resources/profile/bird.jpg" class="img-circle" height="65" width="65"
+					<img src="<%=myInfo.getUser_img()%>" class="img-circle" height="65" width="65"
 						alt="Avatar"> <br>
 					<h4>
 						<p class="text-primary" style="font-size: 20px;">
-							<strong>이글이글</strong>
+							<strong><%=myInfo.getUser_id()%></strong>
 						</p>
 					</h4>
-					<H4>굽는건 다 좋아</H4>
+					<h5><strong><%=myInfo.getUser_email()%></strong></h5>
 					<br>
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center" style="font-size: 14px;">
@@ -425,21 +456,21 @@ td {
 						<div class="col-sm-3">
 							<p data-target="#follower"><strong class="bg-danger">게시글</strong>
                             <br>
-                            10
+                            <%=boardList.size()%>
                             </p>
 						</div>
 						<div class="col-sm-3">
 							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
 							<strong class="bg-danger">팔로워</strong>
                             <br>
-                            10
+                            <%=followerList.size()%>
                             </p>
 						</div>
 						<div class="col-sm-3">
 							<p style="cursor: pointer" data-toggle="modal" data-target="#following">
 							<strong class="bg-danger">팔로잉</strong>
                             <br>
-                            20
+                            <%=followingList.size()%>
                             </p>
 						</div>
                         <div class="col-sm-1"></div>
@@ -457,36 +488,23 @@ td {
 								<!-- 팔로워 Content -->
 								<div class="modal-body">
 									<div class="btn-group-vertical">
-										<ul class="ul fol">
-											<li class="li fol">
-									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-									        </li>
-											<li class="li fol">
-									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-									        </li>
-											<li class="li fol">
-									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-									        </li>
-											<li class="li fol">
-									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-									        </li>
-									    </ul>
+										<form>
+											<ul class="ul fol">
+											<%for(int i= 0; i<followerList.size(); i++) {
+												MemberFollowVO follower= followerList.get(i);
+												MemberVO follower1= (MemberVO)request.getAttribute("follower1");
+											%>
+												<li class="li fol">
+											        <img src="<%=follower1.getUser_img()%>" class="img-circle" height="40"
+													width="40">&nbsp;<a href="#"><strong><%=follower.getUser_id()%></strong></a>
+													&nbsp;
+													<button type="button" class="btn btn-danger btn-sm"
+													onclick="deleteFollowing('<%=follower.getUser_id()%>')"
+													style="border-radius: 20px;"><strong>삭제</strong></button>
+											    </li>
+										    <%} %>
+										    </ul>
+									    </form>
 									</div>
 								</div>
 								<div class="modal-footer">
@@ -509,34 +527,19 @@ td {
 								<div class="modal-body">
 									<div class="btn-group-vertical">
 										<ul class="ul fol">
-											<li class="li fol">
-									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-									        </li>
-											<li class="li fol">
-									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-									        </li>
-											<li class="li fol">
-									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-									        </li>
-											<li class="li fol">
-									        	<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong>Apple</strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-									        </li>
+											<%for(int j= 0; j<followerList.size(); j++) {
+												MemberFollowVO following= followingList.get(j);
+												MemberVO following1= (MemberVO)request.getAttribute("following1");
+											%>
+												<li class="li fol">
+											        <img src="<%=following1.getUser_img()%>" class="img-circle" height="40"
+													width="40">&nbsp;<a href="#"><strong><%=following.getUser_id()%></strong></a>
+													&nbsp;
+													<button type="button" class="btn btn-danger btn-sm"
+													onclick="deleteFollowing('<%=following.getUser_id()%>')"
+													style="border-radius: 20px;"><strong>삭제</strong></button>
+											    </li>
+										    <%} %>
 									    </ul>
 									</div>
 								</div>
@@ -555,41 +558,21 @@ td {
 					</h4>
 					<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
 						<ul>
-							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
+						<%for(int z=0; z<3; z++) {
+							MemberFollowVO recommend= recommendList.get(z);
+							MemberVO recommendUser= (MemberVO)request.getAttribute("recommendUser");
+						%>
+							<p><img src="<%=recommendUser.getUser_img()%>" class="img-circle" height="30"
+								width="30">&nbsp; <a href="#"><strong><%=recommend.getUser_id()%></strong></a>
 								&emsp;
 								<button type="button" class="btn btn-danger btn"
 								style="border-radius: 10px;">
 								<strong>팔로우</strong>
-								</button>&nbsp;</p>
+								</button>&nbsp;
+							</p>
+						<%} %>
 						</ul>
-						<ul>
-							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								style="border-radius: 10px;">
-								<strong>팔로우</strong>
-								</button>&nbsp;</p>
-						</ul>
-						<ul>
-							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								style="border-radius: 10px;">
-								<strong>팔로우</strong>
-								</button>&nbsp;</p>
-						</ul>
-						<ul>
-							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								style="border-radius: 10px;">
-								<strong>팔로우</strong>
-								</button>&nbsp;</p>
-						</ul>
+
 					</div>
 				</div>
 			</div>
@@ -597,36 +580,41 @@ td {
 			<!-- middle side -->
 			<div class="col-sm-7">
 				<div class="row text-center" style="border-radius: 10px;">
-					<!-- 1번 글 시작 -->
+					<!-- 본문 글 시작 -->
+				<%
+					for(int i=0; i<boardList.size(); i++) {
+						BoardVO board= boardList.get(i);
+						MemberVO user= (MemberVO)request.getAttribute("user");
+				%>
 					<div class="well content_color">
 						<div class="row">
 							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
 								<!-- profile -->
-								<img src="./resources/profile/bird.jpg" class="img-circle" height="35" width="35">&nbsp;<a
-									href="#"><strong>이글이글</strong></a>
+								<img src="<%=user.getUser_img()%>" class="img-circle" height="35" width="35">&nbsp;<a
+									href="#"><strong><%=board.getUser_id()%></strong></a>
 							</div>
 							<!-- title -->
 							<div class="col-sm-9" style="text-align: left;">
 								<h4>
-									<strong>abcdefghigklmnopqrstu</strong>
+									<strong><%=board.getBoard_title()%></strong>
 								</h4>
 							</div>
 						</div>
 						<!-- image and date, like-->
-						<img src="./resources/image/4.jpg" style="width:30%; height:30%;" class="img-squere"><br>
+						<img src="<%=board.getBoard_img()%>" style="width:30%; height:30%;" class="img-squere"><br>
 						<div class="row">
 							<table style="border-spacing: 20px; font-size: 17px;">
 								<tr>
 									<td>
 										<p>
-											<strong>2017.11.14</strong>
+											<strong><%=board.getBoard_time()%></strong>
 										</p>
 									</td>
 									<td><span class="glyphicon glyphicon-heart"
 										style="padding-bottom: 14px;"></span></td>
 									<td>
 										<p style="padding-bottom: 3px;">
-											<em>300</em>
+											<em><%=board.getBoard_like()%></em>
 										</p>
 									</td>
 								</tr>
@@ -634,182 +622,38 @@ td {
 						</div>
 						<!-- 글 내용 -->
 						<div class="row">
-							<p style="font-size: 17px;">글 내용~~~~~~~~~~</p>
+							<p style="font-size: 17px;"><%=board.getBoard_summry()%></p>
 						</div>
 						<br>
 						<br>
 						<!-- Icon -->
 						<div class="row">
 							<div class="pull-right">
-								<span style="cursor: pointer"
-									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment"></span>&emsp; <span
-									class="glyphicon glyphicon-heart icon-size"></span> &emsp; <span
-									class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; <span
-									class="glyphicon glyphicon-pencil icon-size"></span> &emsp;
+								<span style="cursor: pointer" class="glyphicon glyphicon-comment icon-size"
+									data-toggle="collapse" data-target="#comment"></span>&emsp;
+								<span class="glyphicon glyphicon-heart icon-size"></span> &emsp; 
+								<span class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; 
 							</div>
 						</div> 
 						<!-- comment -->
 						<div id="comment" class="collapse">
 							<ul class="list-group" style="text-align: left;">
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
+							<%for(int j=0; j<boardReplyList.size(); j++) {
+								BoardReplyVO reply= boardReplyList.get(i);
+								MemberVO commentuser= (MemberVO)request.getAttribute("commentuser");
+							%>
+								<li class="list-group-item">
+									<img src="<%=commentuser.getUser_img()%>"
 									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글1</strong>
+									href="#"><strong><%=reply.getUser_id()%></strong></a> &emsp;
+									<strong><%=reply.getRep_content()%></strong>
 								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글2</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글3</strong>
-								</li>
+							<%} %>
 							</ul>
 						</div>
 					</div>
-					<!--1번글 끝 -->
-					<!-- 2번 글 시작 -->
-					<div class="well content_color">
-						<div class="row">
-							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
-								<!-- profile -->
-								<img src="./resources/profile/bird.jpg" class="img-circle" height="35" width="35">&nbsp;<a
-									href="#"><strong>이글이글</strong></a>
-							</div>
-							<!-- title -->
-							<div class="col-sm-9" style="text-align: left;">
-								<h4>
-									<strong>abcdefghigklmnopqrstu</strong>
-								</h4>
-							</div>
-						</div>
-						<!-- image and date, like-->
-						<img src="./resources/image/4.jpg" style="width:30%; height:30%;" class="img-squere"><br>
-						<div class="row">
-							<table style="border-spacing: 20px; font-size: 17px;">
-								<tr>
-									<td>
-										<p>
-											<strong>2017.11.14</strong>
-										</p>
-									</td>
-									<td><span class="glyphicon glyphicon-heart"
-										style="padding-bottom: 14px;"></span></td>
-									<td>
-										<p style="padding-bottom: 3px;">
-											<em>300</em>
-										</p>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<!-- 글 내용 -->
-						<div class="row">
-							<p style="font-size: 17px;">글 내용~~~~~~~~~~</p>
-						</div>
-						<br>
-						<br>
-						<!-- Icon -->
-						<div class="row">
-							<div class="pull-right">
-								<span style="cursor: pointer"
-									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment"></span>&emsp; <span
-									class="glyphicon glyphicon-heart icon-size"></span> &emsp; <span
-									class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; <span
-									class="glyphicon glyphicon-pencil icon-size"></span> &emsp;
-							</div>
-						</div>
-						<!-- comment -->
-						<div id="comment" class="collapse">
-							<ul class="list-group" style="text-align: left">
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글1</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글2</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글3</strong>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!--2번글 끝 -->
-					<!-- 3번 글 시작 -->
-					<div class="well content_color">
-						<div class="row">
-							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
-								<!-- profile -->
-								<img src="./resources/profile/bird.jpg" class="img-circle" height="35" width="35">&nbsp;<a
-									href="#"><strong>이글이글</strong></a>
-							</div>
-							<!-- title -->
-							<div class="col-sm-9" style="text-align: left;">
-								<h4>
-									<strong>abcdefghigklmnopqrstu</strong>
-								</h4>
-							</div>
-						</div>
-						<!-- image and date, like-->
-						<img src="./resources/image/4.jpg" style="width:30%; height:30%;" class="img-squere"><br>
-						<div class="row">
-							<table style="border-spacing: 20px; font-size: 17px;">
-								<tr>
-									<td>
-										<p>
-											<strong>2017.11.14</strong>
-										</p>
-									</td>
-									<td><span class="glyphicon glyphicon-heart"
-										style="padding-bottom: 14px;"></span></td>
-									<td>
-										<p style="padding-bottom: 3px;">
-											<em>300</em>
-										</p>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<!-- 글 내용 -->
-						<div class="row">
-							<p style="font-size: 17px;">글 내용~~~~~~~~~~</p>
-						</div>
-						<br>
-						<br>
-						<!-- Icon -->
-						<div class="row">
-							<div class="pull-right">
-								<span style="cursor: pointer"
-									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment"></span>&emsp; <span
-									class="glyphicon glyphicon-heart icon-size"></span> &emsp; <span
-									class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; <span
-									class="glyphicon glyphicon-pencil icon-size"></span> &emsp;
-							</div>
-						</div>
-						<!-- comment -->
-						<div id="comment" class="collapse">
-							<ul class="list-group" style="text-align: left">
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글1</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글2</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글3</strong>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!--3번글 끝 -->
+				<%} %>
+				<!-- 본문 글 끝 -->
 				</div>
 			</div>
 		</div>
