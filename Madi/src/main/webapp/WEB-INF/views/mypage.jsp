@@ -3,9 +3,12 @@
 <%@ page import="java.util.*,com.spring.madi.*"%>
 <%
 //로그인한 아이디
-String user_id = (String)session.getAttribute("user_id");
 
-MemberVO myInfo= (MemberVO)request.getAttribute("myInfo");
+String user_id = (String)session.getAttribute("user_id");
+//본문 왼쪽 프로필에서 사용함
+MemberVO member= (MemberVO)request.getAttribute("member");
+//콘솔에 확인용
+System.out.println("member=" + user_id);
 
 List<MemberFollowVO> followerList= (ArrayList<MemberFollowVO>)request.getAttribute("followerList");
 
@@ -13,11 +16,12 @@ List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttrib
 
 List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
 
-List<BoardVO> boardList= (ArrayList<BoardVO>)request.getAttribute("getBoards");
+List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
 
 List<BoardReplyVO> boardReplyList= (ArrayList<BoardReplyVO>)request.getAttribute("boardReplyList");
 
 %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -160,10 +164,14 @@ td {
 		location.href="updateBoardLike.do";
 	}
 
-	function deleteFollowing(following_user_id) {
-		location.href="deleteFollowing.do?following_user_id=" + following_user_id;
+	function deleteFollowing(following_user_id, user_id) {
+		location.href="deleteFollowing.do?following_user_id=" + following_user_id + "&user_id=" + user_id;
+		alert("success");
 	}
-	
+	function deleteFollower(user_id, following_user_id) {
+		location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
+		alert("success");
+	}	
 	function insertFollowing(user_id, following_user_id) {
 		location.href="insertFollowing.do";
 	}
@@ -171,8 +179,7 @@ td {
 </head>
 <body style="background-color: #F6F6F6;">
 	<!-- 헤더 시작 -->
-	<nav class="navbar navbar-default head" data-spy="affix"
-		data-offset-top="197">
+	<nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
 	<div class="container-fluid">
 		<div class="navbar-header" style="padding-right: 30%;">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -326,11 +333,11 @@ td {
 							<span class="glyphicon glyphicon-user color"></span>
 						</button>
 						<ul class="dropdown-menu" style="text-align: center; background-color:#F6F6F6;">
-							<li><img src="<%=myInfo.getUser_img()%>" class="img-circle" height="70"
+							<li><img src="<%=member.getUser_img()%>" class="img-circle" height="70"
 								width="70" alt="Avatar"></li>
 							<li>
 								<h4>
-									<p class="text-primary"><%=myInfo.getUser_id()%></p>
+									<p class="text-primary"><%=member.getUser_id()%></p>
 								</h4>
 							</li>
 							<li><a href="#">회원수정</a></li>
@@ -441,14 +448,14 @@ td {
 		<div class="row">
 			<div class="col-sm-3 text-center" style="border-radius: 10px;">
 				<div>
-					<img src="<%=myInfo.getUser_img()%>" class="img-circle" height="65" width="65"
+					<img src="<%=member.getUser_img()%>" class="img-circle" height="65" width="65"
 						alt="Avatar"> <br>
 					<h4>
 						<p class="text-primary" style="font-size: 20px;">
-							<strong><%=myInfo.getUser_id()%></strong>
+							<strong><%=member.getUser_id()%></strong>
 						</p>
 					</h4>
-					<h5><strong><%=myInfo.getUser_email()%></strong></h5>
+					<h5><strong><%=member.getUser_email()%></strong></h5>
 					<br>
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center" style="font-size: 14px;">
@@ -456,7 +463,7 @@ td {
 						<div class="col-sm-3">
 							<p data-target="#follower"><strong class="bg-danger">게시글</strong>
                             <br>
-                            <%=boardList.size()%>
+                            <%=myBoardList.size()%>
                             </p>
 						</div>
 						<div class="col-sm-3">
@@ -476,182 +483,163 @@ td {
                         <div class="col-sm-1"></div>
 					</div>
 					<br>
+				<br>
 					<!-- 팔로워 모달 -->
-					<div class="modal fade" id="follower" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header" style="background-color: #DE4F4F;">
-									<h3 class="modal-title">
-										<strong style="color:#FFFFFF;">Follower 목록</strong>
-									</h3>
+				<div class="modal fade" id="follower" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #DE4F4F;">
+								<h3 class="modal-title">
+									<strong style="color:#FFFFFF;">Follower 목록</strong>
+								</h3>
+							</div>
+							<!-- 팔로워 Content -->
+							<div class="modal-body">
+								<div class="btn-group-vertical">
+									<form>
+										<ul class="ul fol">
+										<%for(int i= 0; i<followerList.size(); i++) {
+											MemberFollowVO follower= followerList.get(i);
+										%>
+											<li class="li fol">
+										        <img src="<%=follower.getUser_img()%>" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong><%=follower.getUser_id()%></strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												onclick="deleteFollower('<%=follower.getUser_id()%>', '<%=follower.getFollowing_user_id()%>')"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+										    </li>
+									   <%} %>
+									    </ul>
+								   </form>
 								</div>
-								<!-- 팔로워 Content -->
-								<div class="modal-body">
-									<div class="btn-group-vertical">
-										<form>
-											<ul class="ul fol">
-											<%for(int i= 0; i<followerList.size(); i++) {
-												MemberFollowVO follower= followerList.get(i);
-												MemberVO follower1= (MemberVO)request.getAttribute("follower1");
-											%>
-												<li class="li fol">
-											        <img src="<%=follower1.getUser_img()%>" class="img-circle" height="40"
-													width="40">&nbsp;<a href="#"><strong><%=follower.getUser_id()%></strong></a>
-													&nbsp;
-													<button type="button" class="btn btn-danger btn-sm"
-													onclick="deleteFollowing('<%=follower.getUser_id()%>')"
-													style="border-radius: 20px;"><strong>삭제</strong></button>
-											    </li>
-										    <%} %>
-										    </ul>
-									    </form>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">Close</button>
-								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
 							</div>
 						</div>
 					</div>
-					<!-- 팔로잉 Modal -->
-					<div class="modal fade" id="following" role="dialog">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header" style="background-color: #DE4F4F;">
-									<h3 class="modal-title">
-										<strong style="color:#FFFFFF;">Following 목록</strong>
-									</h3>
-								</div>
-								<!-- 팔로잉 Content -->
-								<div class="modal-body">
-									<div class="btn-group-vertical">
+				</div>
+			<!-- 팔로잉 Modal -->
+				<div class="modal fade" id="following" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #DE4F4F;">
+								<h3 class="modal-title">
+									<strong style="color:#FFFFFF;">Following 목록</strong>
+								</h3>
+							</div>
+							<!-- 팔로잉 Content -->
+							<div class="modal-body">
+								<div class="btn-group-vertical">
+									<form>
 										<ul class="ul fol">
-											<%for(int j= 0; j<followerList.size(); j++) {
+											<%for(int j= 0; j<followingList.size(); j++) {
 												MemberFollowVO following= followingList.get(j);
-												MemberVO following1= (MemberVO)request.getAttribute("following1");
 											%>
 												<li class="li fol">
-											        <img src="<%=following1.getUser_img()%>" class="img-circle" height="40"
+											        <img src="<%=following.getUser_img()%>" class="img-circle" height="40"
 													width="40">&nbsp;<a href="#"><strong><%=following.getUser_id()%></strong></a>
 													&nbsp;
 													<button type="button" class="btn btn-danger btn-sm"
-													onclick="deleteFollowing('<%=following.getUser_id()%>')"
+													onclick="deleteFollowing('<%=following.getUser_id()%>', '<%=following.getFollowing_user_id()%>')"
 													style="border-radius: 20px;"><strong>삭제</strong></button>
 											    </li>
 										    <%} %>
 									    </ul>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
+									</form>
 								</div>
 							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+								data-dismiss="modal">Close</button>
+							</div>
 						</div>
-					</div>
-				</div>
-				<!-- 팔로워 추천 -->
-				<div style="margin-top: 20%; margin-right:20px;">
-					<h4 style="margin-bottom:10px; margin-left:30px;">
-						<strong>팔로워 추천 : </strong><a href="#">새로고침</a>
-					</h4>
-					<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
-						<ul>
-						<%for(int z=0; z<3; z++) {
-							MemberFollowVO recommend= recommendList.get(z);
-							MemberVO recommendUser= (MemberVO)request.getAttribute("recommendUser");
-						%>
-							<p><img src="<%=recommendUser.getUser_img()%>" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong><%=recommend.getUser_id()%></strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								style="border-radius: 10px;">
-								<strong>팔로우</strong>
-								</button>&nbsp;
-							</p>
-						<%} %>
-						</ul>
-
 					</div>
 				</div>
 			</div>
-
-			<!-- middle side -->
-			<div class="col-sm-7">
-				<div class="row text-center" style="border-radius: 10px;">
-					<!-- 본문 글 시작 -->
+			<!-- 팔로워 추천 -->
+			<div style="margin-top: 20%; margin-right:20px;">
+				<h4 style="margin-bottom:10px; margin-left:30px;">
+					<strong>팔로워 추천 : </strong><a href="#">새로고침</a>
+				</h4>
+				<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
+					<ul>
+					<%for(int z=0; z<3; z++) {
+						MemberFollowVO recommend= recommendList.get(z);
+					%>
+						<p><img src="<%=recommend.getUser_img()%>" class="img-circle" height="30"
+							width="30">&nbsp; <a href="#"><strong><%=recommend.getUser_id()%></strong></a>
+							&emsp;
+							<button type="button" class="btn btn-danger btn"
+							style="border-radius: 10px;">
+							<strong>팔로우</strong>
+							</button>&nbsp;
+						</p>
+					<%} %>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- middle side -->
+		<div class="col-sm-7">
+			<div class="row text-center" style="border-radius: 10px;">
+				<!-- 본문 글 시작 -->
 				<%
-					for(int i=0; i<boardList.size(); i++) {
-						BoardVO board= boardList.get(i);
-						MemberVO user= (MemberVO)request.getAttribute("user");
+					for(int i=0; i<myBoardList.size(); i++) {
+						BoardVO board= myBoardList.get(i);
 				%>
-					<div class="well content_color">
-						<div class="row">
-							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
-								<!-- profile -->
-								<img src="<%=user.getUser_img()%>" class="img-circle" height="35" width="35">&nbsp;<a
-									href="#"><strong><%=board.getUser_id()%></strong></a>
-							</div>
-							<!-- title -->
-							<div class="col-sm-9" style="text-align: left;">
-								<h4>
-									<strong><%=board.getBoard_title()%></strong>
-								</h4>
-							</div>
+				<div class="well content_color">
+					<div class="row">
+						<div class="col-sm-3" style="font-size: 16px; text-align: left;">
+						<!-- profile -->
+							<img src="<%=board.getUser_img()%>" class="img-circle" height="35" width="35">&nbsp;<a
+								href="#"><strong><%=board.getUser_id()%></strong></a>
 						</div>
-						<!-- image and date, like-->
-						<img src="<%=board.getBoard_img()%>" style="width:30%; height:30%;" class="img-squere"><br>
-						<div class="row">
-							<table style="border-spacing: 20px; font-size: 17px;">
-								<tr>
-									<td>
-										<p>
-											<strong><%=board.getBoard_time()%></strong>
-										</p>
-									</td>
-									<td><span class="glyphicon glyphicon-heart"
-										style="padding-bottom: 14px;"></span></td>
-									<td>
-										<p style="padding-bottom: 3px;">
-											<em><%=board.getBoard_like()%></em>
-										</p>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<!-- 글 내용 -->
-						<div class="row">
-							<p style="font-size: 17px;"><%=board.getBoard_summry()%></p>
-						</div>
-						<br>
-						<br>
-						<!-- Icon -->
-						<div class="row">
-							<div class="pull-right">
-								<span style="cursor: pointer" class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment"></span>&emsp;
-								<span class="glyphicon glyphicon-heart icon-size"></span> &emsp; 
-								<span class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; 
-							</div>
-						</div> 
-						<!-- comment -->
-						<div id="comment" class="collapse">
-							<ul class="list-group" style="text-align: left;">
-							<%for(int j=0; j<boardReplyList.size(); j++) {
-								BoardReplyVO reply= boardReplyList.get(i);
-								MemberVO commentuser= (MemberVO)request.getAttribute("commentuser");
-							%>
-								<li class="list-group-item">
-									<img src="<%=commentuser.getUser_img()%>"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong><%=reply.getUser_id()%></strong></a> &emsp;
-									<strong><%=reply.getRep_content()%></strong>
-								</li>
-							<%} %>
-							</ul>
+						<!-- title -->
+						<div class="col-sm-9" style="text-align: left;">
+							<h4>
+								<strong><%=board.getBoard_title()%></strong>
+							</h4>
 						</div>
 					</div>
+					<!-- image and date, like-->
+					<img src="<%=board.getBoard_img()%>" style="width:30%; height:30%;" class="img-squere"><br>
+					<div class="row">
+						<table style="border-spacing: 20px; font-size: 17px;">
+							<tr>
+								<td>
+									<p>
+										<strong><%=board.getBoard_time()%></strong>
+									</p>
+								</td>
+								<td><span class="glyphicon glyphicon-heart"
+									style="padding-bottom: 14px;"></span></td>
+								<td>
+									<p style="padding-bottom: 3px;">
+										<em><%=board.getBoard_like()%></em>
+									</p>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<!-- 글 내용 -->
+					<div class="row">
+						<p style="font-size: 17px;"><%=board.getBoard_summry()%></p>
+					</div>
+					<br>
+					<br>
+					<!-- Icon -->
+					<div class="row">
+						<div class="pull-right">
+							<span style="cursor: pointer" class="glyphicon glyphicon-comment icon-size"
+								data-toggle="collapse" data-target="#comment"></span>&emsp;
+							<span class="glyphicon glyphicon-heart icon-size"></span> &emsp; 
+							<span class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; 
+						</div>
+					</div> 
+				<!-- 댓글 comment -->
 				<%} %>
 				<!-- 본문 글 끝 -->
 				</div>

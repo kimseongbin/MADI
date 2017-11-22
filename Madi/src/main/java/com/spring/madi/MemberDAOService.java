@@ -49,9 +49,15 @@ public class MemberDAOService implements MemberDAO {
 	}
 	//(진산)팔로잉 한 명 삭제
 	@Override
-	public void deleteFollowing(String following_user_id) {
+	public void deleteFollowing(String user_id, String following_user_id) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		memberMapper.deleteFollowing(following_user_id);
+		memberMapper.deleteFollowing(user_id, following_user_id);
+	}
+	//(진산)팔로워 한 명 삭제
+	@Override
+	public void deleteFollower(String following_user_id, String user_id) {
+		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
+		memberMapper.deleteFollower(following_user_id, user_id);
 	}
 	//(진산)팔로잉 한 명 추가
 	@Override

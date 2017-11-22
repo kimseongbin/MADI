@@ -15,8 +15,9 @@ public interface MemberDAO {
 	//(진산)팔로워 추천 리스트
 	ArrayList<MemberFollowVO> getRecommendFollower();
 	//(진산)팔로잉 한 명 삭제
-	void deleteFollowing(String following_user_id);
+	void deleteFollowing(String following_user_id, String user_id);
+	//(진산)팔로워 한 명 삭제
+	void deleteFollower(String user_id, String following_user_id);
 	//(진산)팔로잉 한 명 추가
 	void insertFollowing(MemberFollowVO memberFollow);
-
 }

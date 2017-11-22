@@ -20,13 +20,13 @@ public class BoardDAOService implements BoardDAO {
 		return boardList;
 	}
 	//(진산)팔로잉한 사람들의 게시글 목록 구하기
-	@Override
-	public ArrayList<BoardVO> getFollowingBoards(String[] following_user_id2) {
-		BoardMapper boardMapper= sqlSession.getMapper(BoardMapper.class);
-		ArrayList<BoardVO> followingboardList= new ArrayList<BoardVO>();
-		followingboardList= boardMapper.getFollowingBoards(following_user_id2);
-		return followingboardList;
-	}
+//	@Override
+//	public ArrayList<BoardVO> getFollowingBoards(String[] following_user_id2) {
+//		BoardMapper boardMapper= sqlSession.getMapper(BoardMapper.class);
+//		ArrayList<BoardVO> followingboardList= new ArrayList<BoardVO>();
+//		followingboardList= boardMapper.getFollowingBoards(following_user_id2);
+//		return followingboardList;
+//	}
 	//(진산)좋아요 누르면 하나 오른다
 	public void updateBoardLike(String user_id) {
 		BoardMapper boardMapper= sqlSession.getMapper(BoardMapper.class);

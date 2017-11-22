@@ -54,13 +54,13 @@ public class FrontController {
 	}
 	
 	//(진산)mypage.do 작업
-	@RequestMapping("/home.do")
-	public String myPage(HttpSession session)
+	@RequestMapping("/mypage.do")
+	public ModelAndView myPage(HttpSession session)
 	{	
 		//String user_id = (String)session.getAttribute("user_id");
-		String user_id = "user2";
+		String user_id = "madi";
 		//session.setAttribute("madi", user_id);
-		String[] following_user_id= null;
+		//String[] following_user_id= null;
 		ModelAndView result= new ModelAndView();
 		//자기 자신에 대한 member정보
 		MemberVO member= memberDAOService.getMember(user_id);
@@ -77,26 +77,39 @@ public class FrontController {
 		
 		//가운데 게시글 리스트
 		List<BoardVO> myBoardList= boardDAOService.getBoards(user_id);
-		List<BoardVO> followingBoardList= boardDAOService.getFollowingBoards(following_user_id);
+		//List<BoardVO> followingBoardList= boardDAOService.getFollowingBoards(following_user_id);
 		result.addObject("myBoardList", myBoardList);
-		result.addObject("followingBoardList", followingBoardList);
-		result.setViewName("home");
+		//result.addObject("followingBoardList", followingBoardList);
+		result.setViewName("mypage");
 		
-		return "home";
+		return result;
 	}
 	//(진산)팔로잉 한 명 삭제
 	@RequestMapping("/deleteFollowing.do")
 	public ModelAndView deleteFollowing(MemberFollowVO memberFollow) {
-		String following_user_id= memberFollow.getFollwing_user_id();
+		String following_user_id= memberFollow.getFollowing_user_id();
 		String user_id= memberFollow.getUser_id();
 		ModelAndView result= new ModelAndView();	
-		memberDAOService.deleteFollowing(following_user_id);
+		memberDAOService.deleteFollowing(following_user_id, user_id);
 		System.out.println("delete complete");
 		List<MemberFollowVO> followingList= memberDAOService.getFollowing(user_id);
 		result.addObject("followingList", followingList);
-		result.setViewName("home");
+		result.setViewName("mypage");
 		return result;
 	}
+	//(진산)팔로워 한 명 삭제
+	@RequestMapping("/deleteFollower.do")
+	public ModelAndView deleteFollower(MemberFollowVO memberFollow) {
+		String user_id= memberFollow.getUser_id();
+		String following_user_id= memberFollow.getFollowing_user_id();
+		ModelAndView result= new ModelAndView();	
+		memberDAOService.deleteFollower(user_id, following_user_id);
+		System.out.println("delete complete");
+		List<MemberFollowVO> followerList= memberDAOService.getFollower(user_id);
+		result.addObject("followerList", followerList);
+		result.setViewName("mypage");
+		return result;
+	}	
 	//(진산) 팔로잉 한 명 추가
 	@RequestMapping("/insertFollowing.do")
 	public ModelAndView insertFollowing(MemberFollowVO memberFollow) {
@@ -109,17 +122,16 @@ public class FrontController {
 		result.setViewName("home");
 		return result;
 	}
-	
 	//(진산) 좋아요 클릭시 한 개 추가
 	@RequestMapping("/updateBoardLike.do")
 	public ModelAndView updateBoardLike(BoardVO board) {
 		String user_id= null;
-		String[] following_user_id= null;
+		//String[] following_user_id= null;
 		ModelAndView result= new ModelAndView();
 		boardDAOService.updateBoardLike(user_id);
 		System.out.println("update complete");
-		List<BoardVO> followingBoardList= boardDAOService.getFollowingBoards(following_user_id);
-		result.addObject("followingBoardList ", followingBoardList);
+		//List<BoardVO> followingBoardList= boardDAOService.getFollowingBoards(following_user_id);
+		//result.addObject("followingBoardList ", followingBoardList);
 		result.setViewName("home");
 		return result;
 	}
