@@ -8,6 +8,8 @@ public class BoardReplyVO {
 	private int board_num;
 	private String user_id;
 	private String rep_content;
+	//(진산) 본문 댓글의 프로필 이미지를 위해 넣음
+	private String user_img;
 	
 	public int getBoard_num() {
 		return board_num;
@@ -26,6 +28,12 @@ public class BoardReplyVO {
 	}
 	public void setRep_content(String rep_content) {
 		this.rep_content = rep_content;
+	}
+	public String getUser_img() {
+		return user_img;
+	}
+	public void setUser_img(String user_img) {
+		this.user_img = user_img;
 	}
 	
 	
