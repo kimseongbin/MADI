@@ -33,6 +33,15 @@
 			<version>1.4</version>
 		</dependency>
 		<!-- File Upload -->	
+
+		<!-- Jackson JSON Mapper -->
+	    <dependency>
+	        <groupId>org.codehaus.jackson</groupId>
+	        <artifactId>jackson-mapper-asl</artifactId>
+	        <version>1.9.13</version>
+	    </dependency>
+	    <!-- Jackson JSON Mapper -->
+		
 		<!--Oracle(변경된부분:2017.06.12 현재)  -->
 		<dependency>
 			<groupId>com.oracle</groupId>

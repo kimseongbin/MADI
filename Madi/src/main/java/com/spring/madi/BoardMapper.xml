@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- mapper 태그 안에 작성하기 -->
 <mapper namespace="com.spring.madi.BoardMapper">
-	<resultMap type="BoardVO" id="BoardResultMap">
+	<resultMap type="com.spring.madi.BoardVO" id="BoardResultMap">
 		<result property="board_num" column="BOARD_NUM" />
 		<result property="user_id" column="USER_ID" />
 		<result property="board_title" column="BOARD_TITLE" />
@@ -11,11 +11,15 @@
 		<result property="board_recipe_id" column="BOARD_RECIPE_ID" />
 		<result property="board_like" column="BOARD_LIKE" />
 		<result property="board_time" column="BOARD_TIME" />
+		<!-- (진산) 본문 글쓴이의 프로필 이미지를 위해 넣음 -->
+		<result property="user_img" column="USER_IMG" />
 	</resultMap>
 	
 	<resultMap type="BoardReplyVO" id="BoardReplyResultMap">
 		<result property="board_num" column="BOARD_NUM" />
 		<result property="user_id" column="USER_ID" />
+		<!-- (진산) 본문 댓글의 프로필 이미지를 위해 넣음 -->
+		<result property="user_img" column="USER_IMG" />
 		<result property="rep_content" column="REP_CONTENT" />
 	</resultMap>
 	
@@ -23,12 +27,13 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="board_num" column="BOARD_NUM" />
 	</resultMap>	
+
 	<!-- 댓글에 입력하면 DB에 저장 -->
 	<insert id="writeBoard" parameterType="BoardReplyVO">
 		insert into board_reply(board_num, user_id, rep_content) values (#{board_num}, #{user_id}, #{rep_content})	
 	</insert>
 	<!-- DB저장 내용 뽑아서 뿌려줌 -->
-	<select id="getBoards" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardReplyVO">
+	<select id="getBoard" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardReplyVO">
 		Select * from board_reply order by rep_date
 	
 	</select>
@@ -38,8 +43,53 @@
 		from board_reply c,(select a.board_num, b.recipe_id from board a, recipe_info b where a.board_recipe_id = b.recipe_id) d 
 		where c.board_num = d.board_num 
 		and recipe_id=466 order by rep_date
+		</select>
+
+
+	<insert id="insertBoard" parameterType="com.spring.madi.BoardVO">
+		<selectKey resultType="int" keyProperty="board_num" order="BEFORE">
+			SELECT NVL(MAX(board_num), 0) + 1 FROM board
+		</selectKey>
+		INSERT INTO board (board_num, user_id, board_title, board_summry, board_img, board_recipe_id, board_like, board_time)
+		VALUES (#{board_num}, 'madi', #{board_title}, #{board_summry}, #{board_img}, #{board_recipe_id}, 0, SYSDATE)
+	</insert>
+
 	
+	<!-- <select id="boardList" resultMap="BoardResultMap">
+		SELECT * FROM BOARD;
+	</select> -->
 	
+<!-- 	<Select id="boardList" resultMap="BoardResultMap">
+		select board_recipe_id, board_img
+		from board
+		union
+		select recipe_id, img_url
+		from recipe_info;
+	</Select> -->
+
+	<!-- (진산)게시글 목록 구하기 -->
+	<select id="getBoards" resultMap="BoardResultMap" parameterType="String">
+	<!--SELECT a.board_num, a.user_id, c.user_img, a.board_title, a.board_summry, 
+		a.board_img, a.board_recipe_id, a.board_like, a.board_time, b.rep_content
+		FROM board a, board_reply b, member c 
+		WHERE a.user_id = b_user_id and a.user_id = c.user_id and user_id= #{user_id, javaType=String} -->
+		SELECT * FROM board WHERE user_id= #{user_id, javaType=String}
 	</select>
-	
+	<!-- (진산)팔로잉한 사람들의 게시글 목록 구하기..foreach로 팔로잉한 사람들의 게시글을 보여준다 -->
+	<!-- <select id="getFollowingBoards" resultMap="BoardResultMap">
+		SELECT a.board_num, a.user_id, d.user_img, a.board_title, a.board_summry, 
+		a.board_img, a.board_recipe_id, a.board_like, a.board_time, b.rep_content
+		FROM board a, board_reply b, member_follow c, member d
+		WHERE a.user_id= b.user_id and a.user_id=c.following_user_id and a.user_id= d.user_id
+		and following_user_id in
+			<foreach item="following_user_id" collection="array" open="(" separator="," close=")">
+				#{following_user_id}
+			</foreach>
+		ORDER BY board_time desc
+	</select> -->
+	<!-- (진산)좋아요 버튼 누르면 하나 추가하기 -->
+	<update id="updateBoardLike" parameterType="com.spring.madi.BoardVO">
+		UPDATE board SET board_like= #{board_like} + 1 WHERE user_id= #{user_id}
+	</update>	
+
 </mapper>
