@@ -33,6 +33,15 @@
 			<version>1.4</version>
 		</dependency>
 		<!-- File Upload -->	
+
+		<!-- Jackson JSON Mapper -->
+	    <dependency>
+	        <groupId>org.codehaus.jackson</groupId>
+	        <artifactId>jackson-mapper-asl</artifactId>
+	        <version>1.9.13</version>
+	    </dependency>
+	    <!-- Jackson JSON Mapper -->
+		
 		<!--Oracle(변경된부분:2017.06.12 현재)  -->
 		<dependency>
 			<groupId>com.oracle</groupId>
@@ -63,6 +72,18 @@
 			<version>1.4</version>
 		</dependency>
 		<!--mybatis(추가) 끝  -->
+		
+		<!-- JSON -->
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20160810</version>
+		</dependency>
+
+
+
+		
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

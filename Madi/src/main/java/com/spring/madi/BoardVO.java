@@ -14,6 +14,8 @@ public class BoardVO {
 	private int board_recipe_id;
 	private int board_like;
 	private Timestamp board_time;
+	//(진산) 본문의 프로필 이미지를 위해 넣음
+	private String user_img;
 	
 	public int getBoard_num() {
 		return board_num;
@@ -62,6 +64,12 @@ public class BoardVO {
 	}
 	public void setBoard_time(Timestamp board_time) {
 		this.board_time = board_time;
+	}
+	public String getUser_img() {
+		return user_img;
+	}
+	public void setUser_img(String user_img) {
+		this.user_img = user_img;
 	}
 	
 	

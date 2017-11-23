@@ -1,11 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.*,com.spring.madi.*"%>
+<%
+//로그인한 아이디
+
+String user_id = (String)session.getAttribute("user_id");
+//본문 왼쪽 프로필에서 사용함
+MemberVO member= (MemberVO)request.getAttribute("member");
+//콘솔에 확인용
+System.out.println("member=" + user_id);
+
+List<MemberFollowVO> followerList= (ArrayList<MemberFollowVO>)request.getAttribute("followerList");
+
+List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttribute("followingList");
+
+List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
+
+List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
+
+List<BoardReplyVO> boardReplyList= (ArrayList<BoardReplyVO>)request.getAttribute("boardReplyList");
+
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=divice-width, initial-scale=1">
-<title>Insert title here</title>
+<title>MADI MAIN PAGE</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
@@ -25,22 +47,6 @@ footer {
 
 .glyphicon.top {
 	color: #000000;
-}
-
-.glyphicon.glyphicon-comment {
-	color: #4C4C4C;
-}
-
-.glyphicon.glyphicon-heart {
-	color: #DB005B;
-}
-
-.glyphicon.glyphicon-pencil {
-	color: #3D3D3D;
-}
-
-.glyphicon.glyphicon-share-alt {
-	color: #487BE1;
 }
 
 .glyphicon.icon-size {
@@ -65,10 +71,10 @@ footer {
 	padding-top: 70px;
 }
 
-/* Modal 크기 조절 
+/* Modal 크기 조절 */
 .modal-dialog.modal-size {
-	width: 20%;
-	height: 60%;
+	width: 300px;
+	height: 600px;
 	margin: 0;
 	padding: 0;
 }
@@ -81,7 +87,7 @@ footer {
 .modal.modal-center {
 	text-align: center;
 }
-
+/* 모달 창이 모바일일 경우 바꿔주는 설정 */
 @media screen and (min-width: 320px) {
 	.modal.modal-center:before {
 		display: inline-block;
@@ -95,8 +101,23 @@ footer {
 	text-align: left;
 	vertical-align: middle;
 }
-*/
+/* 헤더 디자인 끝 */
 
+.glyphicon.glyphicon-comment {
+	color: #4C4C4C;
+}
+
+.glyphicon.glyphicon-heart {
+	color: #DB005B;
+}
+
+.glyphicon.glyphicon-pencil {
+	color: #3D3D3D;
+}
+
+.glyphicon.glyphicon-share-alt {
+	color: #487BE1;
+}
 /*table 디자인*/
 table {
 	border-radius: 10px;
@@ -109,12 +130,56 @@ td {
 .well.content_color{
  	background-color:#FFFFFF;
 }
+/* 냉장고 재료들 리스트 정렬 */
+.ul.hori {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.li.hori {
+    margin: 0 0 0 0;
+    padding: 15px;
+    border : 0;
+    float: left;
+    font-size:15px;
+}
+/* 팔로워, 팔로잉 리스트 정렬 */
+.ul.fol {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.li.fol {
+    margin: 0 0 0 0;
+    padding: 15px;
+    border : 0;
+    float: left;
+    font-size:17px;
+}
 </style>
+<script>
+	function updateBoardLike(){
+		location.href="updateBoardLike.do";
+	}
+
+	function deleteFollowing(following_user_id, user_id) {
+		location.href="deleteFollowing.do?following_user_id=" + following_user_id + "&user_id=" + user_id;
+		alert("success");
+	}
+	function deleteFollower(user_id, following_user_id) {
+		location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
+		alert("success");
+	}	
+	function insertFollowing(user_id, following_user_id) {
+		location.href="insertFollowing.do";
+	}
+</script>
 </head>
-<body style="background-color: #F6F6F6">
-	<!-- 왼쪽 헤더 -->
-	<nav class="navbar navbar-default head" data-spy="affix"
-		data-offset-top="197">
+<body style="background-color: #F6F6F6;">
+	<!-- 헤더 시작 -->
+	<nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
 	<div class="container-fluid">
 		<div class="navbar-header" style="padding-right: 30%;">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -188,113 +253,64 @@ td {
 						            			</ul>
 						            		</div>
 						            <!--  가운데 리스트 나열 -->
-						            		<div class="col-sm-8" style="background-color:#FFD8D8;">
+						            		<div class="col-sm-8" style="background-color:#FFD8D8; text-align:center;">
 						            			<div class="tab-content">
 						            <!-- 메뉴1 주재료 -->
 						            				<div id="menu1" class="tab-pane fade in active">
-														<table>
-				                                        	<tr>
-				                                            	<td>  
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>빵</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>꽃빵</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>식빵</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>모닝빵</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bread.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>바게트</strong>
-				                                                  	</a>
-				                                                </td>
-				                                            </tr>
-				                                        </table>
+												        <ul class="ul hori">
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												         </ul>
 						            				</div>
 						           <!-- 메뉴2 부재료-->
 						            				<div id="menu2" class="tab-pane fade">
-						            					<table>
-				                                        	<tr>
-				                                            	<td>  
-				                                                	<a href="#" class="text-muted">
+												        <ul class="ul hori">
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>녹두</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
 				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>서티태콩</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>풋콩</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>메주콩</strong>
-				                                                  	</a>
-				                                                </td>
-				                                                <td>
-				                                                	<a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 40px; height: 40px;"><br> <strong>콩비지</strong>
-				                                                  	</a>
-				                                                </td>
-				                                            </tr>
-				                                        </table>
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												         </ul>
 						            				</div>
 						            <!-- 메뉴3 양념/조미료 -->
 							            			<div id="menu3" class="tab-pane fade">
-							            				<table>
-					                                        <tr>
-					                                            <td>  
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>진간장</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/sauce.png"
-					                                                      style="width: 40px; height: 40px;"><br><strong>식초</strong>
-					                                                </a>
-					                                            </td>
-					                                            <td>
-					                                                <a href="#" class="text-muted">
-					                                                	<img src="./resources/food_icon/salt.png"
-					                                                      style="width: 40px; height: 40px;"><br> <strong>설탕</strong>
-					                                            	</a>
-					                                    		</td>
-					                                    	</tr>
-					                                	</table>
+												        <ul class="ul hori">
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												        	<li class="li hori">
+				                                                <a href="#" class="text-muted">
+				                                                	<img src="./resources/food_icon/bean.png"
+				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
+				                                                </a>
+												        	</li>
+												         </ul>
 							            			</div>
 							       <!-- 재료 입력 끝 -->
 						            			</div>
 						            		</div>
 						       		<!-- 오른쪽 내가 가진 재료들? -->
-						            		<div class="col-sm-4">
-
+						            		<div class="col-sm-2">
 						            		</div>
 						            	</div>
 						            </div>
@@ -309,7 +325,7 @@ td {
 						</div>
 					</div>	
 				</li>
-				<!-- profile 아이콘 -->
+				<!-- profile 아이콘(누르면 mypage로 넘어간다) -->
 				<li>
 					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
 						<button class="btn dropdown-toggle form" type="button"
@@ -317,11 +333,11 @@ td {
 							<span class="glyphicon glyphicon-user color"></span>
 						</button>
 						<ul class="dropdown-menu" style="text-align: center; background-color:#F6F6F6;">
-							<li><img src="./resources/profile/bird.jpg" class="img-circle" height="70"
+							<li><img src="<%=member.getUser_img()%>" class="img-circle" height="70"
 								width="70" alt="Avatar"></li>
 							<li>
 								<h4>
-									<p class="text-primary">이글이글</p>
+									<p class="text-primary"><%=member.getUser_id()%></p>
 								</h4>
 							</li>
 							<li><a href="#">회원수정</a></li>
@@ -337,10 +353,10 @@ td {
 							<span class="glyphicon glyphicon-align-justify color" style="padding-right:7px;"></span>
 						</button>
 						<!-- Modal bar -->
-						<div class="modal fade" id="myModal" tableindex="-1"
+						<div class="modal modal-center fade" id="myModal" tableindex="-1"
 							role="dialog" aria-labelledby="modallabel">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
+							<div class="modal-dialog modal-size modal-center" role="document">
+								<div class="modal-content modal-size">
 									<!-- 알림, 메시지 탭 -->
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -372,12 +388,10 @@ td {
 														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
 													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
 														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>BBB</a><em> 님이 ~~~ 게시물을 공유했습니다.</em>
-														<div class="row"></div></li>
+														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
 													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
 														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>CCC</a> <em> 님이 ~~~ 게시물을 공유했습니다.</em>
-														<div class="row"></div></li>
+														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
 												</ul>
 											</div>
 											<div id="message" class="tab-pane fade">
@@ -398,10 +412,12 @@ td {
 															뭐하는지"</strong></li>
 													<li class="list-group-item"><strong>From </strong> <img
 														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>BBB</a> <strong>: "먹을게 없다"</strong></li>
+														alt="Avatar"> <a>AAA</a> <strong>: "지금
+															뭐하는지"</strong></li>
 													<li class="list-group-item"><strong>From </strong> <img
 														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>CCC</a> <strong>: "사진"</strong></li>
+														alt="Avatar"> <a>AAA</a> <strong>: "지금
+															뭐하는지"</strong></li>
 												</ul>
 											</div>
 										</div>
@@ -415,7 +431,7 @@ td {
 						</div>
 					</div>
 				</li>
-				<!--소셜 아이콘 -->
+				<!--소셜(post로 넘어간다) 아이콘 -->
 				<li>
 					<button type="button" class="btn form" style="padding-top: 15px; padding-right:13px;">
 						<span class="glyphicon glyphicon-globe color"></span>
@@ -432,495 +448,202 @@ td {
 		<div class="row">
 			<div class="col-sm-3 text-center" style="border-radius: 10px;">
 				<div>
-					<img src="./resources/profile/bird.jpg" class="img-circle" height="65" width="65"
+					<img src="<%=member.getUser_img()%>" class="img-circle" height="65" width="65"
 						alt="Avatar"> <br>
 					<h4>
 						<p class="text-primary" style="font-size: 20px;">
-							<strong>이글이글</strong>
+							<strong><%=member.getUser_id()%></strong>
 						</p>
 					</h4>
-					<H4>굽는건 다 좋아</H4>
+					<h5><strong><%=member.getUser_email()%></strong></h5>
 					<br>
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center" style="font-size: 14px;">
                     	<div class="col-sm-2"></div>
 						<div class="col-sm-3">
-							<p data-target="#follower"><strong>게시글</strong>
+							<p data-target="#follower"><strong class="bg-danger">게시글</strong>
                             <br>
-                            10
+                            <%=myBoardList.size()%>
                             </p>
 						</div>
 						<div class="col-sm-3">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#follower"><strong>팔로워</strong>
+							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
+							<strong class="bg-danger">팔로워</strong>
                             <br>
-                            10
+                            <%=followerList.size()%>
                             </p>
 						</div>
 						<div class="col-sm-3">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#following"><strong>팔로잉</strong>
+							<p style="cursor: pointer" data-toggle="modal" data-target="#following">
+							<strong class="bg-danger">팔로잉</strong>
                             <br>
-                            20
+                            <%=followingList.size()%>
                             </p>
 						</div>
                         <div class="col-sm-1"></div>
 					</div>
 					<br>
+				<br>
 					<!-- 팔로워 모달 -->
-					<div class="modal modal-center fade" id="follower" role="dialog">
-						<div class="modal-dialog follow-size modal-center">
-							<div class="modal-content follow-size">
-								<div class="modal-header" style="background-color: #DE4F4F;">
-									<h4 class="modal-title">
-										<strong style="color:#FFFFFF;"><em>Follower 목록</em></strong>
-									</h4>
-								</div>
-								<!-- 팔로워 Content -->
-								<div class="modal-body">
-									<div class="btn-group-vertical">
-										<table style="font-size: 15px;">
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">Close</button>
+				<div class="modal fade" id="follower" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #DE4F4F;">
+								<h3 class="modal-title">
+									<strong style="color:#FFFFFF;">Follower 목록</strong>
+								</h3>
+							</div>
+							<!-- 팔로워 Content -->
+							<div class="modal-body">
+								<div class="btn-group-vertical">
+									<form>
+										<ul class="ul fol">
+										<%for(int i= 0; i<followerList.size(); i++) {
+											MemberFollowVO follower= followerList.get(i);
+										%>
+											<li class="li fol">
+										        <img src="<%=follower.getUser_img()%>" class="img-circle" height="40"
+												width="40">&nbsp;<a href="#"><strong><%=follower.getUser_id()%></strong></a>
+												&nbsp;
+												<button type="button" class="btn btn-danger btn-sm"
+												onclick="deleteFollower('<%=follower.getUser_id()%>', '<%=follower.getFollowing_user_id()%>')"
+												style="border-radius: 20px;"><strong>삭제</strong></button>
+										    </li>
+									   <%} %>
+									    </ul>
+								   </form>
 								</div>
 							</div>
-						</div>
-					</div>
-					<!-- 팔로잉 Modal -->
-					<div class="modal modal-center fade" id="following" role="dialog">
-						<div class="modal-dialog follow-size modal-center">
-							<div class="modal-content follow-size">
-								<div class="modal-header" style="background-color: #DE4F4F;">
-									<h4 class="modal-title">
-										<strong style="color:#FFFFFF;"><em>Following 목록</em></strong>
-									</h4>
-								</div>
-								<!-- 팔로잉 Content -->
-								<div class="modal-body">
-									<div class="btn-group-vertical">
-										<table style="font-size: 15px;">
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-											<tr>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-												<td><img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-													width="40">&emsp; <a href="#"><strong>Apple</strong></a>
-													&emsp;&emsp;
-													<button type="button" class="btn btn-danger btn-sm"
-														style="border-radius: 20px;">
-														<strong>삭제</strong>
-													</button>&nbsp;</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
 									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			<!-- 팔로잉 Modal -->
+				<div class="modal fade" id="following" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #DE4F4F;">
+								<h3 class="modal-title">
+									<strong style="color:#FFFFFF;">Following 목록</strong>
+								</h3>
+							</div>
+							<!-- 팔로잉 Content -->
+							<div class="modal-body">
+								<div class="btn-group-vertical">
+									<form>
+										<ul class="ul fol">
+											<%for(int j= 0; j<followingList.size(); j++) {
+												MemberFollowVO following= followingList.get(j);
+											%>
+												<li class="li fol">
+											        <img src="<%=following.getUser_img()%>" class="img-circle" height="40"
+													width="40">&nbsp;<a href="#"><strong><%=following.getUser_id()%></strong></a>
+													&nbsp;
+													<button type="button" class="btn btn-danger btn-sm"
+													onclick="deleteFollowing('<%=following.getUser_id()%>', '<%=following.getFollowing_user_id()%>')"
+													style="border-radius: 20px;"><strong>삭제</strong></button>
+											    </li>
+										    <%} %>
+									    </ul>
+									</form>
 								</div>
 							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+								data-dismiss="modal">Close</button>
+							</div>
 						</div>
-					</div>
-				</div>
-				<!-- 팔로워 추천 -->
-				<div style="margin-top: 20%; margin-right:20px;">
-					<h4 style="margin-bottom:10px; margin-left:30px;">
-						<strong>팔로워 추천 : </strong><a href="#">새로고침</a>
-					</h4>
-					<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
-						<ul>
-							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								style="border-radius: 10px;">
-								<strong>팔로우</strong>
-								</button>&nbsp;</p>
-						</ul>
-						<ul>
-							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								style="border-radius: 10px;">
-								<strong>팔로우</strong>
-								</button>&nbsp;</p>
-						</ul>
-						<ul>
-							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								style="border-radius: 10px;">
-								<strong>팔로우</strong>
-								</button>&nbsp;</p>
-						</ul>
-						<ul>
-							<p><img src="./resources/profile/bird.jpg" class="img-circle" height="30"
-								width="30">&nbsp; <a href="#"><strong>Apple</strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								style="border-radius: 10px;">
-								<strong>팔로우</strong>
-								</button>&nbsp;</p>
-						</ul>
 					</div>
 				</div>
 			</div>
-
-			<!-- middle side -->
-			<div class="col-sm-7">
-				<div class="row text-center" style="border-radius: 10px;">
-					<!-- 1번 글 시작 -->
-					<div class="well content_color">
-						<div class="row">
-							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
-								<!-- profile -->
-								<img src="./resources/profile/bird.jpg" class="img-circle" height="35" width="35">&nbsp;<a
-									href="#"><strong>이글이글</strong></a>
-							</div>
-							<!-- title -->
-							<div class="col-sm-9" style="text-align: left;">
-								<h4>
-									<strong>abcdefghigklmnopqrstu</strong>
-								</h4>
-							</div>
-						</div>
-						<!-- image and date, like-->
-						<img src="./resources/image/4.jpg" style="width:30%; height:30%;" class="img-squere"><br>
-						<div class="row">
-							<table style="border-spacing: 20px; font-size: 17px;">
-								<tr>
-									<td>
-										<p>
-											<strong>2017.11.14</strong>
-										</p>
-									</td>
-									<td><span class="glyphicon glyphicon-heart"
-										style="padding-bottom: 14px;"></span></td>
-									<td>
-										<p style="padding-bottom: 3px;">
-											<em>300</em>
-										</p>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<!-- 글 내용 -->
-						<div class="row">
-							<p style="font-size: 17px;">글 내용~~~~~~~~~~</p>
-						</div>
-						<br>
-						<br>
-						<!-- Icon -->
-						<div class="row">
-							<div class="pull-right">
-								<span style="cursor: pointer"
-									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment"></span>&emsp; <span
-									class="glyphicon glyphicon-heart icon-size"></span> &emsp; <span
-									class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; <span
-									class="glyphicon glyphicon-pencil icon-size"></span> &emsp;
-							</div>
-						</div> 
-						<!-- comment -->
-						<div id="comment" class="collapse">
-							<ul class="list-group" style="text-align: left;">
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글1</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글2</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글3</strong>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!--1번글 끝 -->
-					<!-- 2번 글 시작 -->
-					<div class="well content_color">
-						<div class="row">
-							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
-								<!-- profile -->
-								<img src="./resources/profile/bird.jpg" class="img-circle" height="35" width="35">&nbsp;<a
-									href="#"><strong>이글이글</strong></a>
-							</div>
-							<!-- title -->
-							<div class="col-sm-9" style="text-align: left;">
-								<h4>
-									<strong>abcdefghigklmnopqrstu</strong>
-								</h4>
-							</div>
-						</div>
-						<!-- image and date, like-->
-						<img src="./resources/image/4.jpg" style="width:30%; height:30%;" class="img-squere"><br>
-						<div class="row">
-							<table style="border-spacing: 20px; font-size: 17px;">
-								<tr>
-									<td>
-										<p>
-											<strong>2017.11.14</strong>
-										</p>
-									</td>
-									<td><span class="glyphicon glyphicon-heart"
-										style="padding-bottom: 14px;"></span></td>
-									<td>
-										<p style="padding-bottom: 3px;">
-											<em>300</em>
-										</p>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<!-- 글 내용 -->
-						<div class="row">
-							<p style="font-size: 17px;">글 내용~~~~~~~~~~</p>
-						</div>
-						<br>
-						<br>
-						<!-- Icon -->
-						<div class="row">
-							<div class="pull-right">
-								<span style="cursor: pointer"
-									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment"></span>&emsp; <span
-									class="glyphicon glyphicon-heart icon-size"></span> &emsp; <span
-									class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; <span
-									class="glyphicon glyphicon-pencil icon-size"></span> &emsp;
-							</div>
-						</div>
-						<!-- comment -->
-						<div id="comment" class="collapse">
-							<ul class="list-group" style="text-align: left">
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글1</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글2</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글3</strong>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!--2번글 끝 -->
-					<!-- 3번 글 시작 -->
-					<div class="well content_color">
-						<div class="row">
-							<div class="col-sm-3" style="font-size: 16px; text-align: left;">
-								<!-- profile -->
-								<img src="./resources/profile/bird.jpg" class="img-circle" height="35" width="35">&nbsp;<a
-									href="#"><strong>이글이글</strong></a>
-							</div>
-							<!-- title -->
-							<div class="col-sm-9" style="text-align: left;">
-								<h4>
-									<strong>abcdefghigklmnopqrstu</strong>
-								</h4>
-							</div>
-						</div>
-						<!-- image and date, like-->
-						<img src="./resources/image/4.jpg" style="width:30%; height:30%;" class="img-squere"><br>
-						<div class="row">
-							<table style="border-spacing: 20px; font-size: 17px;">
-								<tr>
-									<td>
-										<p>
-											<strong>2017.11.14</strong>
-										</p>
-									</td>
-									<td><span class="glyphicon glyphicon-heart"
-										style="padding-bottom: 14px;"></span></td>
-									<td>
-										<p style="padding-bottom: 3px;">
-											<em>300</em>
-										</p>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<!-- 글 내용 -->
-						<div class="row">
-							<p style="font-size: 17px;">글 내용~~~~~~~~~~</p>
-						</div>
-						<br>
-						<br>
-						<!-- Icon -->
-						<div class="row">
-							<div class="pull-right">
-								<span style="cursor: pointer"
-									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment"></span>&emsp; <span
-									class="glyphicon glyphicon-heart icon-size"></span> &emsp; <span
-									class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; <span
-									class="glyphicon glyphicon-pencil icon-size"></span> &emsp;
-							</div>
-						</div>
-						<!-- comment -->
-						<div id="comment" class="collapse">
-							<ul class="list-group" style="text-align: left">
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글1</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글2</strong>
-								</li>
-								<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-									class="img-circle" height="30" width="30">&nbsp; <a
-									href="#"><strong>Apple</strong></a> &emsp; <strong>댓글3</strong>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!--3번글 끝 -->
+			<!-- 팔로워 추천 -->
+			<div style="margin-top: 20%; margin-right:20px;">
+				<h4 style="margin-bottom:10px; margin-left:30px;">
+					<strong>팔로워 추천 : </strong><a href="#">새로고침</a>
+				</h4>
+				<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
+					<ul>
+					<%for(int z=0; z<3; z++) {
+						MemberFollowVO recommend= recommendList.get(z);
+					%>
+						<p><img src="<%=recommend.getUser_img()%>" class="img-circle" height="30"
+							width="30">&nbsp; <a href="#"><strong><%=recommend.getUser_id()%></strong></a>
+							&emsp;
+							<button type="button" class="btn btn-danger btn"
+							style="border-radius: 10px;">
+							<strong>팔로우</strong>
+							</button>&nbsp;
+						</p>
+					<%} %>
+					</ul>
 				</div>
 			</div>
-
+		</div>
+		<!-- middle side -->
+		<div class="col-sm-7">
+			<div class="row text-center" style="border-radius: 10px;">
+				<!-- 본문 글 시작 -->
+				<%
+					for(int i=0; i<myBoardList.size(); i++) {
+						BoardVO board= myBoardList.get(i);
+				%>
+				<div class="well content_color">
+					<div class="row">
+						<div class="col-sm-3" style="font-size: 16px; text-align: left;">
+						<!-- profile -->
+							<img src="<%=board.getUser_img()%>" class="img-circle" height="35" width="35">&nbsp;<a
+								href="#"><strong><%=board.getUser_id()%></strong></a>
+						</div>
+						<!-- title -->
+						<div class="col-sm-9" style="text-align: left;">
+							<h4>
+								<strong><%=board.getBoard_title()%></strong>
+							</h4>
+						</div>
+					</div>
+					<!-- image and date, like-->
+					<img src="<%=board.getBoard_img()%>" style="width:30%; height:30%;" class="img-squere"><br>
+					<div class="row">
+						<table style="border-spacing: 20px; font-size: 17px;">
+							<tr>
+								<td>
+									<p>
+										<strong><%=board.getBoard_time()%></strong>
+									</p>
+								</td>
+								<td><span class="glyphicon glyphicon-heart"
+									style="padding-bottom: 14px;"></span></td>
+								<td>
+									<p style="padding-bottom: 3px;">
+										<em><%=board.getBoard_like()%></em>
+									</p>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<!-- 글 내용 -->
+					<div class="row">
+						<p style="font-size: 17px;"><%=board.getBoard_summry()%></p>
+					</div>
+					<br>
+					<br>
+					<!-- Icon -->
+					<div class="row">
+						<div class="pull-right">
+							<span style="cursor: pointer" class="glyphicon glyphicon-comment icon-size"
+								data-toggle="collapse" data-target="#comment"></span>&emsp;
+							<span class="glyphicon glyphicon-heart icon-size"></span> &emsp; 
+							<span class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; 
+						</div>
+					</div> 
+				<!-- 댓글 comment -->
+				<%} %>
+				<!-- 본문 글 끝 -->
+				</div>
+			</div>
 		</div>
 	</div>
 	<footer class="container-fluid text-center">
