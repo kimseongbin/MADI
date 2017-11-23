@@ -1,5 +1,9 @@
 package com.spring.madi;
 
-public interface BoardMapper {
+import java.util.ArrayList;
 
+public interface BoardMapper {
+	
+	public void insertBoard(BoardVO boardVO);
+	public ArrayList<BoardVO> boardList();
 }

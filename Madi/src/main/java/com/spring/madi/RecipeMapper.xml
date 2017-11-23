@@ -4,7 +4,7 @@
 <mapper namespace="com.spring.madi.RecipeMapper">
 	<resultMap type="RecipeVO" id="RecipeResultMap">
 		<result property="recipe_id" column="RECIPE_ID" />
-		<result property="recipe_title" colusmn="RECIPE_TITLE" />
+		<result property="recipe_title" column="RECIPE_TITLE" />
 		<result property="recipe_desc" column="RECIPE_DESC" />
 		<result property="nation_code" column="NATION_CODE" />
 		<result property="ty_code" column="TY_CODE" />
@@ -27,18 +27,44 @@
 				   nation_name, ty_name
 			FROM recipe_info a, nation b, recipe_type c
 			WHERE a.nation_code = b.nation_code AND a.TY_CODE = c.TY_CODE AND recipe_id = #{recipe_id, javaType=int}
-		</select>
+	</select>
 		
-		<select id="getRecipeIrdntById" resultType="com.spring.madi.RecipeIrdntVO">
+	<select id="getRecipeIrdntById" resultType="com.spring.madi.RecipeIrdntVO">
 			SELECT recipe_id, irdnt_name, irdnt_cpcty, b.irdnt_ty_code as irdnt_ty_code, b.irdnt_ty_name as irdnt_ty_name
 			FROM recipe_irdnt a, irdnt_type b
 			WHERE a.irdnt_ty_code = b.irdnt_ty_code AND recipe_id = #{recipe_id}
-		</select>
+	</select>
 		
-		<select id="getRecipeProcessById" resultType="com.spring.madi.RecipeProcessVO">
+	<select id="getRecipeProcessById" resultType="com.spring.madi.RecipeProcessVO">
 			SELECT recipe_id, cooking_no, cooking_desc, step_img_url, step_tip
 			FROM recipe_process
 			WHERE recipe_id = #{recipe_id}
-		</select>
+	</select>
+	
+	<!-- 게시글 전체 보기/ BOARD와 RECIPE_INFO를 출력해야하는데..-->
+	<select id="postList" resultMap="RecipeResultMap">
+		SELECT * FROM RECIPE_INFO
+	</select>
+	
+	<!--
+	 SELECT * FROM (
+	    SELECT RECIPE_ID,  IMG_URL,  USER_ID
+	    FROM RECIPE_INFO 
+	    UNION ALL
+	    SELECT BOARD_RECIPE_ID, BOARD_IMG, USER_ID
+	    FROM BOARD
+	) 
+	ORDER BY RECIPE_ID;	 
+	 -->
+	
+	<!-- 게시글 올리기 -->
+	<insert id="insertRecipe" parameterType="com.spring.madi.RecipeVO">
+		<selectKey resultType="int" keyProperty="recipe_id" order="BEFORE">
+			SELECT MAX(recipe_id) + 1 FROM recipe_info
+		</selectKey>
+		INSERT INTO recipe_info (recipe_id, recipe_title, recipe_desc, nation_code, ty_code, cooking_time, img_url, detail_url, user_id)
+		VALUES (#{recipe_id}, #{recipe_title}, #{recipe_desc}, #{nation_code}, #{ty_code}, #{cooking_time}, #{img_url}, 'test', 'madi')
+	</insert>
+
 
 </mapper>

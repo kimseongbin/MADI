@@ -24,4 +24,25 @@
 		<result property="board_num" column="BOARD_NUM" />
 	</resultMap>	
 	
+	<insert id="insertBoard" parameterType="com.spring.madi.BoardVO">
+		<selectKey resultType="int" keyProperty="board_num" order="BEFORE">
+			SELECT NVL(MAX(board_num), 0) + 1 FROM board
+		</selectKey>
+		INSERT INTO board (board_num, user_id, board_title, board_summry, board_img, board_recipe_id, board_like, board_time)
+		VALUES (#{board_num}, 'madi', #{board_title}, #{board_summry}, #{board_img}, #{board_recipe_id}, 0, SYSDATE)
+	</insert>
+	
+	<!-- <select id="boardList" resultMap="BoardResultMap">
+		SELECT * FROM BOARD;
+	</select> -->
+	
+<!-- 	<Select id="boardList" resultMap="BoardResultMap">
+		select board_recipe_id, board_img
+		from board
+		union
+		select recipe_id, img_url
+		from recipe_info;
+	</Select> -->
+	
+	
 </mapper>
