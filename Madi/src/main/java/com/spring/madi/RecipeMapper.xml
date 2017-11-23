@@ -4,7 +4,7 @@
 <mapper namespace="com.spring.madi.RecipeMapper">
 	<resultMap type="RecipeVO" id="RecipeResultMap">
 		<result property="recipe_id" column="RECIPE_ID" />
-		<result property="recipe_title" colusmn="RECIPE_TITLE" />
+		<result property="recipe_title" column="RECIPE_TITLE" />
 		<result property="recipe_desc" column="RECIPE_DESC" />
 		<result property="nation_code" column="NATION_CODE" />
 		<result property="ty_code" column="TY_CODE" />
