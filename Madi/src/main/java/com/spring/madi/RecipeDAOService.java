@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RecipeDAOService implements RecipeDAO {
 	
 	// DB와 Mybatis 연결을 위한 연결 객체

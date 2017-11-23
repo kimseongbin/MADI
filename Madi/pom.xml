@@ -63,6 +63,18 @@
 			<version>1.4</version>
 		</dependency>
 		<!--mybatis(추가) 끝  -->
+		
+		<!-- JSON -->
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20160810</version>
+		</dependency>
+
+
+
+		
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

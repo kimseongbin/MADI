@@ -21,4 +21,8 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="my_irdnt" column="MY_IRDNT" />
 	</resultMap>
+	
+	<insert id="writeBoard"></insert>
+	
+	
 </mapper>

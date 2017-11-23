@@ -23,5 +23,23 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="board_num" column="BOARD_NUM" />
 	</resultMap>	
+	<!-- 댓글에 입력하면 DB에 저장 -->
+	<insert id="writeBoard" parameterType="BoardReplyVO">
+		insert into board_reply(board_num, user_id, rep_content) values (#{board_num}, #{user_id}, #{rep_content})	
+	</insert>
+	<!-- DB저장 내용 뽑아서 뿌려줌 -->
+	<select id="getBoards" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardReplyVO">
+		Select * from board_reply order by rep_date
+	
+	</select>
+	<!-- 인욱: recipe_id 에 따른 보드내용 뽑아옴 -->
+	<select id="contentBoard" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardReplyVO">
+		select c.board_num,c.USER_ID,c.REP_CONTENT,c.REP_DATE, d.recipe_id 
+		from board_reply c,(select a.board_num, b.recipe_id from board a, recipe_info b where a.board_recipe_id = b.recipe_id) d 
+		where c.board_num = d.board_num 
+		and recipe_id=466 order by rep_date
+	
+	
+	</select>
 	
 </mapper>
