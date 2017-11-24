@@ -8,7 +8,6 @@
 <%@page import="com.spring.madi.RecipeVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 	//내 정보 받아오기
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
@@ -16,7 +15,9 @@
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
+	
 %>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
   <style>  	
 	footer {
 	    background-color: #DE4F4F;
@@ -197,7 +198,7 @@
 <!-- 헤더 시작 -->
  <nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
     <div class="container-fluid">
-        <div class="navbar-header" style="padding-right: 0;" id="navbar_toggle"/>
+        <div class="navbar-header" style="padding-right: 0;" id="navbar_toggle">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="background-color:#DE4F4F;">
                 <span class="icon-bar" style="background-color:white;"></span>
                 <span class="icon-bar" style="background-color:white;"></span>
@@ -215,11 +216,11 @@
                             <button class="btn btn-default" type="button" style="padding-bottom:2px; margin-top:1px;">
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
-                        </span>
+                        	</span>
                     </div>
                 </form>
             </ul>
-            <!--오른쪽 아이콘 -->
+              <!--오른쪽 아이콘 -->
             <ul class="nav navbar-nav navbar-right">
                 <!--home 아이콘 -->
                 <li>
@@ -268,7 +269,7 @@
                 }
                 </script>              	
                 <!--알림 아이콘 -->
-                <li onclick="getNotification(this.value);" value="<%=memberVO.getUser_id()%>">
+                <li onclick="getNotification();">
                     <div style="padding-top: 10px; padding-left: 5px;">
                         <button type="button" class="btn form" data-toggle="modal" data-target="#myModal">
                             <span class="glyphicon glyphicon-envelope color"></span>
@@ -281,12 +282,10 @@
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>
-            </ul>
-        </div>
+          	</ul>
+       	</div>
     </div>
-    </nav>
-<!-- 헤더 끝 -->
-<!-- 알림 및 메시지 모달 -->
+</nav>
 <!-- 냉장고 모달바 -->
 <div class="modal fade" id="fridge" tableindex="-1" role="dialog"
 	aria-labelledy="modallabel">
@@ -385,7 +384,7 @@
 					<li class="active"><a data-toggle="tab" href="#home">알림 <span
 							class="badge" id="no"><%=notificationList.size() %></span>
 					</a></li>
-					<li onclick="getMessage(this.value);" value="<%=memberVO.getUser_id()%>"><a data-toggle="tab" href="#message">메시지 <span
+					<li onclick="getMessage();"><a data-toggle="tab" href="#message">메시지 <span
 							class="badge" id="me"><%=messageList.size() %></span></a></li>
 				</ul>
 			</div>
@@ -435,11 +434,11 @@
 	</div>
 </div>
 <script>
-	function getMessage(value) {
-		var user_id = value;
+	function getMessage() {
+		var user_id = "<%=memberVO.getUser_id()%>";
 		$.ajax({
 			url: "./message.do",
-			type: "POST",
+			type: "GET",
 			data: {
 				user_id : user_id
 			},
@@ -447,14 +446,14 @@
 			success: function(data) {
 				$("#messageList").empty();
 				$("#messageList").append(data);
-			}
+			}  
 		});
 	}
-	function getNotification(value) {
-		var user_id = value;
+	function getNotification() {
+		var user_id = "<%=memberVO.getUser_id()%>";
 		$.ajax({
 			url: "./notification.do",
-			type: "POST",
+			type: "GET",
 			data: {
 				user_id : user_id
 			},
