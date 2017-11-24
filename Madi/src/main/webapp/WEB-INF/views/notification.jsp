@@ -8,7 +8,7 @@
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 %>
 <%
-	if(notificationList == null) {
+	if(notificationList.size() == 0) {
 %>
 		<li class="list-group-item">
 			메시지가 없습니다.

@@ -135,6 +135,7 @@
 	}
 	.btn:hover, .btn:focus {
 	    color: #000;
+	 	outline: none;   
 	}
 	.modal-header, h4, .close {
 	    background-color: #DE4F4F;
@@ -197,7 +198,7 @@
 <!-- 헤더 시작 -->
  <nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
     <div class="container-fluid">
-        <div class="navbar-header" style="padding-right: 0;" id="navbar_toggle"/>
+        <div class="navbar-header" style="padding-right: 0;" id="navbar_toggle">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="background-color:#DE4F4F;">
                 <span class="icon-bar" style="background-color:white;"></span>
                 <span class="icon-bar" style="background-color:white;"></span>
@@ -223,23 +224,23 @@
             <ul class="nav navbar-nav navbar-right">
                 <!--home 아이콘 -->
                 <li>
-                	<button type="button" class="btn form" style="padding-top: 10px; margin-top:10px;">
+                	<button type="button" class="btn form" style="padding-top: 10px; margin-top:10px; outline:none;" onclick="recipeDo();">
                     	<span class="glyphicon glyphicon-home color"></span>
                     </button>
                 </li>
                 <!-- profile 아이콘 -->
                 <li>
                     <div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
-                        <button class="btn dropdown-toggle form" type="button" data-toggle="dropdown">
+                        <button class="btn dropdown-toggle form" type="button" data-toggle="dropdown" style="outline:none;">
                             <span class="glyphicon glyphicon-user color"></span>
                         </button>
                         <ul class="dropdown-menu" style="text-align:center; background-color:#F6F6F6;">
                             <li>
-                            	<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="70" width="70" alt="Avatar">
+                            	<a href="./mypage.do"><img src="<%=memberVO.getUser_img()%>" class="img-circle" height="70" width="70" alt="Avatar"></a>
                             </li>
                             <li>
                                 <h4>
-                                    <p class="text-primary"><%=memberVO.getUser_id()%></p>
+                                    <a href="./mypage.do"><p class="text-primary"><%=memberVO.getUser_id()%></p></a>
                                 </h4>
                             </li>
                             <li>
@@ -254,7 +255,7 @@
                  <!-- 냉장고 아이콘 -->
                 <li>
                     <div style="padding-top: 9px; padding-left: 5px;">
-                        <button type="button" class="btn form" data-toggle="modal" data-target="#fridge">
+                        <button type="button" class="btn form" data-toggle="modal" data-target="#fridge" style="outline:none;">
                             <img src="./resources/food_icon/fridge_white.png" style="width:20px; height:20px;" onmouseover="hover(this);" onmouseout="unhover(this);"/>
                         </button>
                     </div>
@@ -268,16 +269,16 @@
                 }
                 </script>              	
                 <!--알림 아이콘 -->
-                <li onclick="getNotification(this.value);" value="<%=memberVO.getUser_id()%>">
+                <li onclick="getNotification();">
                     <div style="padding-top: 10px; padding-left: 5px;">
-                        <button type="button" class="btn form" data-toggle="modal" data-target="#myModal">
+                        <button type="button" class="btn form" data-toggle="modal" data-target="#myModal" style="outline:none;">
                             <span class="glyphicon glyphicon-envelope color"></span>
                         </button>
                     </div>
                 </li>
                 <!--소셜 아이콘 -->
                 <li>
-                    <button type="button" class="btn form" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
+                    <button type="button" class="btn form" style="padding-top: 10px; margin-top:10px; margin-left:1px; outline:none;" onclick="postListDo();">
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>
@@ -385,7 +386,7 @@
 					<li class="active"><a data-toggle="tab" href="#home">알림 <span
 							class="badge" id="no"><%=notificationList.size() %></span>
 					</a></li>
-					<li onclick="getMessage(this.value);" value="<%=memberVO.getUser_id()%>"><a data-toggle="tab" href="#message">메시지 <span
+					<li onclick="getMessage();"><a data-toggle="tab" href="#message">메시지 <span
 							class="badge" id="me"><%=messageList.size() %></span></a></li>
 				</ul>
 			</div>
@@ -435,8 +436,14 @@
 	</div>
 </div>
 <script>
-	function getMessage(value) {
-		var user_id = value;
+	function recipeDo() {
+		location.href = "./recipe.do";
+	}
+	function postListDo() {
+		location.href = "./postList.do"
+	}
+	function getMessage() {
+		var user_id = "<%=memberVO.getUser_id()%>";
 		$.ajax({
 			url: "./message.do",
 			type: "POST",
@@ -450,8 +457,8 @@
 			}
 		});
 	}
-	function getNotification(value) {
-		var user_id = value;
+	function getNotification() {
+		var user_id = "<%=memberVO.getUser_id()%>";
 		$.ajax({
 			url: "./notification.do",
 			type: "POST",

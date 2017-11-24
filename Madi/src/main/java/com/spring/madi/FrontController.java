@@ -256,8 +256,14 @@ public class FrontController {
 		MemberVO MemberVO = memberDAOService.getUserInfoById(user_id);
 		// message 리스트 받아오기
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
+		if(messageList.size() == 0) {
+			messageList = new ArrayList<MessageVO>();
+		}
 		// 알림 리스트 받아오기
 		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
+		if(notificationList.size() == 0) {
+			notificationList = new ArrayList<NotificationVO>();
+		}
 		// 모델에 객체 추가
 		model.addAttribute("messageList", messageList);
 		model.addAttribute("notificationList", notificationList);
@@ -387,13 +393,23 @@ public class FrontController {
 	// 결과를 recipeListByMybox에 보여주고 비동기 통신에 의해
 	// recipe.jsp에 출력한다
 	@RequestMapping(value = "/recipe.do", params = "sb=mybox")
-	public String getRecipesByMybox(Model model, HttpSession session) {
+	public String getRecipesByMybox(Model model, HttpSession session, HttpServletResponse response) {
 		String user_id = (String) session.getAttribute("user_id");
 		SearchEngine se = new SearchEngine();
 		ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(user_id);
-		ArrayList<RecipeVO> recipeList;
+		ArrayList<RecipeVO> recipeList = null;
 		if (myIrdntList.size() == 0) {
-			recipeList = null;
+			try {
+				response.setCharacterEncoding("utf-8");
+				response.setContentType("text/html");
+				PrintWriter writer = response.getWriter();
+				writer.write("<script>");
+				writer.write("alert('현재 입력되어 있는 재료가 존재하지 않습니다.');");
+				writer.write("<script>");
+				return null;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			recipeList = se.searchRecipeListByMybox(myIrdntList);
 			recipeList = se.getRecipeListByMybox(recipeList);
@@ -433,8 +449,8 @@ public class FrontController {
 	}
 
 	@RequestMapping(value = "/notification.do")
-	public String getNotification(HttpSession session, Model model) {
-		String user_id = (String)session.getAttribute("user_id");
+	public String getNotification(String user_id, Model model) {
+
 		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
 		if(notificationList.size()==0) {
 			notificationList = null;
@@ -445,8 +461,8 @@ public class FrontController {
 	
 	// 성빈 : 안 읽은 메시지를 읽어오는 메소드
 	@RequestMapping(value = "/message.do")
-	public String getMessage(HttpSession session, Model model) {
-		String user_id = (String)session.getAttribute("user_id");
+	public String getMessage(String user_id, Model model) {
+
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
 		if(messageList.size()==0) {
 			messageList = null;

@@ -7,7 +7,7 @@
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 %>
 <%
-	if (messageList == null) {
+	if (messageList.size() == 0) {
 %>
 		<li class="list-group-item">
 			메시지가 없습니다.

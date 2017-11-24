@@ -94,7 +94,7 @@
 	</insert>
 	
 	<!-- 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 쿼리 -->
-	<select id="getMyIrdntByUserId" resultMap="MemberBoxResultMap" parameterType="java.lang.String">
+	<select id="getMyIrdntByUserId" resultMap="MemberBoxResultMap">
 		SELECT *
 		FROM MEMBER_BOX
 		WHERE USER_ID = ${user_id}

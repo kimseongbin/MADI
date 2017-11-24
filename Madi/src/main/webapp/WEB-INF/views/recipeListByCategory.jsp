@@ -29,11 +29,11 @@
 				<div class="col-sm-3 col-lg-3s">
 				   <div class="thumbnail">
 				   	  <!-- 이미지 링크 recipe_id값 전달 클릭 시 recipe_detail화면으로-->
-				      <a href="#"><img src="<%=recipeVO.getImg_url() %>" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image"></a>
+				      <a href="./recipeDetail.do?recipe_id=<%=recipeVO.getRecipe_id()%>"><img src="<%=recipeVO.getImg_url() %>" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image"></a>
 				      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0; height:180px; overflow:hidden;">
 				      	<!-- user_id 링크 -->
-				      	<a href=""><img src="./resources/profile/bird.jpg" class="img-circle" height="61" width="61" alt="Avatar"></a>
-				                                    <p><strong><%=recipeVO.getUser_id() %></strong></p>
+				      	<img src="./resources/profile/bird.jpg" class="img-circle" height="61" width="61" alt="Avatar">
+				        <p><strong><%=recipeVO.getUser_id() %></strong></p>
 				        <h5><b><%=recipeVO.getRecipe_title() %></b></h5>
 				        <span><%=recipeVO.getRecipe_desc() %></span>
 				      </div>
