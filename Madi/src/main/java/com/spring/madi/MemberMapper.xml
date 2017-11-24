@@ -26,6 +26,10 @@
 		<result property="my_irdnt" column="MY_IRDNT" />
 	</resultMap>
 
+	
+	<insert id="writeBoard"></insert>
+
+
 	<!-- (진산) 로그인한 아이디 자신에 대한 member정보 -->
 	<select id="getMember" resultMap="MemberResultMap">
 		SELECT * FROM member WHERE user_id= #{user_id, javaType=String}
@@ -74,4 +78,5 @@
 		VALUES (#{user_id, javaType=String}, #{following_user_id, javaType=String}, 
 		#{user_img, javaType=String}, #{following_user_img, javaType=String})
 	</insert>
+
 </mapper>

@@ -2,7 +2,19 @@ package com.spring.madi;
 
 import java.util.ArrayList;
 
+
 public interface BoardMapper {
+
+	//인욱
+	void writeBoard(BoardReplyVO boardReplyVO);
+	//인욱
+	ArrayList<BoardReplyVO> getBoard();
+	//인욱
+	ArrayList<BoardReplyVO> contentBoard();
+
+	public void insertBoard(BoardVO boardVO);
+	public ArrayList<BoardVO> boardList();
+
 	//(진산) 자신의 게시글 목록 구하기
 	ArrayList<BoardVO> getBoards(String user_id);
 	//(진산) 자신의 게시글 개수 구하기

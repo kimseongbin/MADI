@@ -42,5 +42,25 @@ public class RecipeDAOService implements RecipeDAO {
 			
 			return recipeProcess;
 		}
+		
+		
+		@Override
+		public ArrayList<RecipeVO> postList() {
+			// 게시물 목록
+			ArrayList<RecipeVO> postList = new ArrayList<RecipeVO>();
+			RecipeMapper recipeMapper = sqlSession.getMapper(RecipeMapper.class);
+			
+			postList = recipeMapper.postList();
+		
+			return postList;
+		}
+		
+		@Override
+		public void insertRecipe(RecipeVO recipeVO) {
+			
+			// 게시물 등록
+			RecipeMapper recipeMapper = sqlSession.getMapper(RecipeMapper.class);
+			recipeMapper.insertRecipe(recipeVO);
+		}
 	
 }

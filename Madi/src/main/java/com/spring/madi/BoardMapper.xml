@@ -28,7 +28,45 @@
 		<result property="board_num" column="BOARD_NUM" />
 	</resultMap>	
 
+	<!-- 댓글에 입력하면 DB에 저장 -->
+	<insert id="writeBoard" parameterType="BoardReplyVO">
+		insert into board_reply(board_num, user_id, rep_content) values (#{board_num}, #{user_id}, #{rep_content})	
+	</insert>
+	<!-- DB저장 내용 뽑아서 뿌려줌 -->
+	<select id="getBoard" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardReplyVO">
+		Select * from board_reply order by rep_date
 	
+	</select>
+	<!-- 인욱: recipe_id 에 따른 보드내용 뽑아옴 -->
+	<select id="contentBoard" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardReplyVO">
+		select c.board_num,c.USER_ID,c.REP_CONTENT,c.REP_DATE, d.recipe_id 
+		from board_reply c,(select a.board_num, b.recipe_id from board a, recipe_info b where a.board_recipe_id = b.recipe_id) d 
+		where c.board_num = d.board_num 
+		and recipe_id=466 order by rep_date
+		</select>
+
+
+	<insert id="insertBoard" parameterType="com.spring.madi.BoardVO">
+		<selectKey resultType="int" keyProperty="board_num" order="BEFORE">
+			SELECT NVL(MAX(board_num), 0) + 1 FROM board
+		</selectKey>
+		INSERT INTO board (board_num, user_id, board_title, board_summry, board_img, board_recipe_id, board_like, board_time)
+		VALUES (#{board_num}, 'madi', #{board_title}, #{board_summry}, #{board_img}, #{board_recipe_id}, 0, SYSDATE)
+	</insert>
+
+	
+	<!-- <select id="boardList" resultMap="BoardResultMap">
+		SELECT * FROM BOARD;
+	</select> -->
+	
+<!-- 	<Select id="boardList" resultMap="BoardResultMap">
+		select board_recipe_id, board_img
+		from board
+		union
+		select recipe_id, img_url
+		from recipe_info;
+	</Select> -->
+
 	<!-- (진산)게시글 목록 구하기 -->
 	<select id="getBoards" resultMap="BoardResultMap" parameterType="String">
 	<!--SELECT a.board_num, a.user_id, c.user_img, a.board_title, a.board_summry, 

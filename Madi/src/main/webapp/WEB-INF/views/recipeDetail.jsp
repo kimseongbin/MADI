@@ -1,7 +1,24 @@
+<%@page import="com.spring.madi.RecipeProcessVO"%>
+<%@page import="com.spring.madi.RecipeIrdntVO"%>
+<%@page import="com.spring.madi.RecipeVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="com.spring.madi.BoardReplyVO"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+	List<BoardReplyVO> replyList = (ArrayList<BoardReplyVO>)request.getAttribute("replyList");
+	//레시피 아이디에 따른 댓글 리스트
+	List<BoardReplyVO> boardReplyVO = (ArrayList<BoardReplyVO>)request.getAttribute("boardReplyVO");
+	//레시피정보, 타이틀, 설명, 만드는법 등 객체
+	RecipeVO recipeVO = (RecipeVO) request.getAttribute("recipeVO");
+	// 레시피정보, 타이틀, 설명, 만드는법 등 객체 담겨있는 배열 품
+	List<RecipeIrdntVO> recipeIrdnt = recipeVO.getRecipeIrdnt();
+	List<RecipeProcessVO> recipeProcess = recipeVO.getRecipeProcess();
+%>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -23,6 +40,8 @@
 <script src="http://code.highcharts.com/highcharts.js"></script>
 
 <!-- 하이차트 끝 -->
+
+
 <script language="JavaScript">
 	$(document).ready(function() {
 
@@ -253,6 +272,32 @@
 		json.plotOptions = plotOptions;
 		$('#지방').highcharts(json);
 	});
+
+	//ajax 댓글 비동기화 
+	function reply_save() {
+
+		// 아이디:reply form의 값을 serialize() ==전부다 긁어와서  x에 정렬하여 저장
+		var x = $("#reply").serialize();
+		$.ajax({
+
+			data : x,
+			dataType : "text",
+			type : "GET",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8", //인코딩 타입 설정
+			async : false, //비동기 동기 여부(false: 동기), 
+			url : "./writeBoard.do", //맵핑 주소      맵핑주소에서는 -->recipeDetail1.jsp 로  보냄
+			success : function(data) {
+
+				//아이디 :reply의 데이터 다 지우고
+				$("#replyreply").empty();
+				//아이디:reply의 데이터 다시 추가
+				$("#replyreply").append(data);
+			},
+			error : function() {
+				alert('실패');
+			}
+		});
+	};
 </script>
 
 
@@ -418,13 +463,11 @@ img {
 															<tr>
 																<td><a href="#" class="text-muted"> <img
 																		src="./resources/food_icon/beef.png"
-																		style="width: 50px; height: 50px;"><br>
-																	<strong>삼겹살</strong>
+																		style="width: 50px; height: 50px;"><br> <strong>삼겹살</strong>
 																</a></td>
 																<td><a href="#" class="text-muted"> <img
 																		src="./resources/food_icon/beef.png"
-																		style="width: 50px; height: 50px;"><br>
-																	<strong>소고기</strong>
+																		style="width: 50px; height: 50px;"><br> <strong>소고기</strong>
 																</a></td>
 																<td><a href="#" class="text-muted"> <img
 																		src="./resources/food_icon/beef.png"
@@ -439,13 +482,11 @@ img {
 															<tr>
 																<td><a href="#" class="text-muted"> <img
 																		src="./resources/food_icon/fish.png"
-																		style="width: 50px; height: 50px;"><br>
-																	<strong>고등어</strong>
+																		style="width: 50px; height: 50px;"><br> <strong>고등어</strong>
 																</a></td>
 																<td><a href="#" class="text-muted"> <img
 																		src="./resources/food_icon/fish.png"
-																		style="width: 50px; height: 50px;"><br>
-																	<strong>참치캔</strong>
+																		style="width: 50px; height: 50px;"><br> <strong>참치캔</strong>
 																</a></td>
 															</tr>
 														</table>
@@ -456,13 +497,11 @@ img {
 															<tr>
 																<td><a href="#" class="text-muted"> <img
 																		src="./resources/food_icon/sauce.png"
-																		style="width: 50px; height: 50px;"><br>
-																	<strong>간장</strong>
+																		style="width: 50px; height: 50px;"><br> <strong>간장</strong>
 																</a></td>
 																<td><a href="#" class="text-muted"> <img
 																		src="./resources/food_icon/sauce.png"
-																		style="width: 50px; height: 50px;"><br>
-																	<strong>미림</strong>
+																		style="width: 50px; height: 50px;"><br> <strong>미림</strong>
 																</a></td>
 																<td><a href="#" class="text-muted"> <img
 																		src="./resources/food_icon/sauce.png"
@@ -617,16 +656,13 @@ img {
 	<div class="container" style="background-color: #fcf8e3">
 		<div class=" container col-xs-0 col-md-3"></div>
 		<div class=" container col-xs-12 col-md-6">
-			<h1 align="center">음식 이름</h1>
+			<h1 align="center"><%=recipeVO.getRecipe_title()%></h1>
 
 
-			<img src="./resources/image/orangejuice.png"
-				class="img-rounded thumbnail" alt="Cinque Terre" width="100%"
-				height="100%" style="max-height: 500px"> &nbsp;
-			<p>음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한
-				설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한
-				설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한 설명음식에 대한 간단한
-				설명음식에 대한 간단한 설명</p>
+			<img src="<%=recipeVO.getImg_url()%>" class="img-rounded thumbnail"
+				alt="Cinque Terre" width="100%" height="100%"
+				style="max-height: 500px"> &nbsp;
+			<p><%=recipeVO.getRecipe_desc()%></p>
 
 			<h2 align="center">영양정보</h2>
 			<div id="칼로리" style="float: left; width: 135px; height: 135px;"></div>
@@ -648,86 +684,130 @@ img {
 
 			<div class="col-xs-12 col-md-6 text-center" style="height: 400px">
 				<h2>재료</h2>
-				<img src="./resources/image/orange.jpg" class="img-rounded thumbnail"
-					align="middle" alt="cinque terre" width="400px" height="200px">
+				<img src="./resources/image/orange.jpg"
+					class="img-rounded thumbnail" align="middle" alt="cinque terre"
+					width="400px" height="200px">
 			</div>
-			<div class="col-xs-12 col-md-6">
-
+			<div class="col-xs-12 col-md-4">
 				<h2>재료리스트</h2>
-				
-				<div class="panel panel-default text-center col-xs-6 col-md-5" style="padding:0;">
-					<div class="panel-heading">재료명</div>
-  					<div class="panel-body" style="padding:0;">말린미이이이이이이이역</div>
-				</div>
-				<div class="panel panel-default text-center col-xs-6 col-md-5" style="padding:0;">
-					<div class="panel-heading">재료용량</div>
-  					<div class="panel-body" style="padding:0">100g</div>
-				</div>
-				
+				<table class="table table-bordered ">
+					
+						<tr>
+							<th>재료명</th>
+							<th>재료용량</th>
+						</tr>
+					
+					<%
+						for (int i = 0; i < recipeIrdnt.size(); i++) {
+							RecipeIrdntVO x = recipeIrdnt.get(i);
+					%>
+
+					<tbody>
+						<tr>
+							<td><%=x.getIrdnt_name()%></td>
+							<td><%=x.getIrdnt_cpcty()%></td>
+						</tr>
+					</tbody>	
+						<%
+							}
+						%>
+					
+				</table>
 			</div>
-
-
-
-
-
 		</div>
-
 		<hr>
-
 		<div class="row">
-			<div class="col-xs-0 col-md-1"></div>
-			<div class="col-xs-12 col-md-10">
+			<div class="col-xs-0 col-md-2"></div>
+			<div class="col-xs-12 col-md-8">
 				<h1 align="center">만드는법</h1>
-				<img src="https://placehold.it/900x500?text=IMAGE"
+				<%
+						for (int i = 0; i < recipeProcess.size(); i++) {
+							RecipeProcessVO x = recipeProcess.get(i);
+						if(x.getStep_img_url().equals("null")){
+									
+						}else{
+				%>
+				
+				<img src="<%=x.getStep_img_url() %>"
 					class="img-rounded"
 					style="width: 70%; height: 70%; margin: 0 auto;">
+				<%}
+				
+						if(x.getStep_tip().equals("null")) { 
+				
+						}else{
+				%>
+				<h5>TIP : <%=x.getStep_tip() %></h5>
+				<%
+						}
+				%>	
 
-				<p>설명설명</p>
-
+				<p><%=x.getCooking_no() %> : <%=x.getCooking_desc() %></p>
 				<hr>
+				<%
+						}
+						
+				%>
+				
+			<div class="col-xs-0 col-md-2"></div>	
 
 				<h1>한줄 댓글</h1>
-
-				<div class="container-fluid input-group"
-					style="padding-right: 0; padding-left: 0">
-					<textarea id="textarea" class="form-control"
-						placeholder="한줄 댓글을 남겨주세요." style="width: 100%" rows="4"></textarea>
-					<span class="input-group-addon"> <input
-						class="btn btn-default" type="button" value="댓글쓰기"
-						style="width: 100px">
-					</span>
-				</div>
-
+				<form method="get" id="reply">
+					<div class="container-fluid input-group"
+						style="padding-right: 0; padding-left: 0">
+						<textarea id="rep_content" name="rep_content" class="form-control"
+							placeholder="한줄 댓글을 남겨주세요." style="width: 100%" rows="4"></textarea>
+						<span class="input-group-addon"> <input
+							class="btn btn-default" type="button" value="댓글쓰기"
+							onclick="reply_save()" style="width: 100px">
+						</span> <input type="text" name="user_id" id="user_id"> <input
+							type="text" name="board_num" id="board_num">
+					</div>
+				</form>
 				<hr>
-
+				<%for(int i=0; i<boardReplyVO.size(); i++) {
+					BoardReplyVO reply1 = boardReplyVO.get(i);
+					
+				%>	
+				<form id="replyreply">
 				<div class="container-fluid input-group"
 					style="padding-right: 0; padding-left: 0; margin: 0">
+					
 					<div class="col-xs-2 col-md-2 thumbnail"
 						style="padding-right: 0; padding-left: 0;">
-						<img class="img-circle" src="./resources/image/1.jpg"
+						<img class="img-circle" src="<%=reply1.getUser_id() %>"
+							
 							style="width: 100%;">
 					</div>
 					<div class="col-xs-10 col-md-10">
-						<p>asd</p>
+						
+						<input type="hidden" value="<%=reply1.getBoard_num() %>"> 
+						<p>
+						
+						<%=reply1.getRep_content() %>
+						
+						
+						
+						</p>
+						
 					</div>
 				</div>
-				<hr>
+				<%
+				}
+				%>
+				</form>
 
 
-				<div class="col-xs-0 col-md-1"></div>
+
+
+
+
 			</div>
-
-
-
-
-
 
 
 		</div>
 
-
 	</div>
-
 
 	<!-- 마지막 footer -->
 	<footer class="container-fluid text-center">
