@@ -3,12 +3,9 @@
 <%@ page import="java.util.*,com.spring.madi.*"%>
 <%
 //로그인한 아이디
-
 String user_id = (String)session.getAttribute("user_id");
-//본문 왼쪽 프로필에서 사용함
+//마이페이지에 로그인 한 자기 자신. 
 MemberVO member= (MemberVO)request.getAttribute("member");
-//콘솔에 확인용
-System.out.println("member=" + user_id);
 
 List<MemberFollowVO> followerList= (ArrayList<MemberFollowVO>)request.getAttribute("followerList");
 
@@ -17,6 +14,7 @@ List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttrib
 List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
 
 List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
+List<BoardVO> followingBoardList= (ArrayList<BoardVO>)request.getAttribute("followingBoardList");
 
 List<BoardReplyVO> boardReplyList= (ArrayList<BoardReplyVO>)request.getAttribute("boardReplyList");
 
@@ -24,9 +22,9 @@ List<BoardReplyVO> boardReplyList= (ArrayList<BoardReplyVO>)request.getAttribute
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
+<head style="position: relative; z-index: 1; height: 260px;  margin:0 auto;">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=divice-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MADI MAIN PAGE</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -158,26 +156,148 @@ td {
     float: left;
     font-size:17px;
 }
+/* 팔로우 추천 정렬 */
+.ul.fol2 {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.li.fol2 {
+    padding: 4px;
+    font-size:17px;
+}
+/* 본문 아이콘 정렬 */
+.li.fol3 {
+    padding: 2px;
+    float: left;
+    border : 0;
+    margin: 0 0 0 0;
+}
 </style>
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script>
-	function updateBoardLike(){
+	function updateBoardLike() {
 		location.href="updateBoardLike.do";
 	}
 
-	function deleteFollowing(following_user_id, user_id) {
-		location.href="deleteFollowing.do?following_user_id=" + following_user_id + "&user_id=" + user_id;
-		alert("success");
+	function deleteFollowing(user_id, following_user_id) {
+		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
+		//alert("팔로잉 삭제 성공");
+		$.ajax({
+			url: "./deleteFollowing.do",
+			type: "GET",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id
+			},
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				$("#following_modal").empty();
+				$("#following_modal").append(data);
+			}
+		});
 	}
 	function deleteFollower(user_id, following_user_id) {
-		location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
-		alert("success");
+		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
+		//alert("팔로워 삭제 성공");
+		$.ajax({
+			url: "./deleteFollower.do",
+			type: "GET",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id 
+			},
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				/* location.href="./mypage.do"; */
+				$("#follower_modal").empty();
+				$("#follower_modal").append(data);
+			}
+		});
 	}	
-	function insertFollowing(user_id, following_user_id) {
-		location.href="insertFollowing.do";
+	function insertFollowing(user_id, following_user_id, user_img, following_user_img) {
+		//location.href="insertFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id +
+		//"&user_img=" + user_img + "&following_user_img=" + following_user_img;
+		//alert("팔로잉 추가 성공");
+		$.ajax({
+			url: "./insertFollowing.do",
+			type: "POST",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id,
+				user_img: user_img,
+				following_user_img: following_user_img
+			},
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				location.href="./mypage.do";
+				//location.href="./mypage.do";
+				//$("#insertFollowing_modal").empty();
+				//$("#insertFollowing_modal").append(data);
+			}
+		});
 	}
+	function updateBoardLike(board_num, user_id) {
+		//location.href="updateBoardLike.do?user_id=" + user_id;
+		//alert("좋아요 성공")
+		$.ajax({
+			url: "./updateBoardLike.do",
+			type: "GET",
+			data: {
+				board_num: board_num,
+				user_id: user_id
+			},
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				/* location.href="./mypage.do"; */
+				$("#updateBoardLike_modal").empty();
+				$("#updateBoardLike_modal").append(data);
+			},
+			error: function(jqXHR, exception) {
+		        if (jqXHR.status === 0) {
+		            alert('Not connect.\n Verify Network.');
+		        }
+		        else if (jqXHR.status == 400) {
+		            alert('Server understood the request, but request content was invalid. [400]');
+		        }
+		        else if (jqXHR.status == 401) {
+		            alert('Unauthorized access. [401]');
+		        }
+		        else if (jqXHR.status == 403) {
+		            alert('Forbidden resource can not be accessed. [403]');
+		        }
+		        else if (jqXHR.status == 404) {
+		            alert('Requested page not found. [404]');
+		        }
+		        else if (jqXHR.status == 500) {
+		            alert('Internal server error. [500]');
+		        }
+		        else if (jqXHR.status == 503) {
+		            alert('Service unavailable. [503]');
+		        }
+		        else if (exception === 'parsererror') {
+		            alert('Requested JSON parse failed. [Failed]');
+		        }
+		        else if (exception === 'timeout') {
+		            alert('Time out error. [Timeout]');
+		        }
+		        else if (exception === 'abort') {
+		            alert('Ajax request aborted. [Aborted]');
+		        }
+		        else {
+		            alert('Uncaught Error.n' + jqXHR.responseText);
+		        }
+		        
+		    }
+		});
+	}	
 </script>
 </head>
-<body style="background-color: #F6F6F6;">
+<body style="background-color: #F6F6F6; height: 100%;  margin: 0; padding: 0;">
 	<!-- 헤더 시작 -->
 	<nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
 	<div class="container-fluid">
@@ -443,9 +563,10 @@ td {
 	</nav>
 	<!-- 헤더 끝 -->
 	<!-- 내용 시작 -->
-	<div class="container">
-		<!--left side -->
+	<div class="container">		
 		<div class="row">
+		<!--left side -->
+			<div class="col-sm-1"></div>
 			<div class="col-sm-3 text-center" style="border-radius: 10px;">
 				<div>
 					<img src="<%=member.getUser_img()%>" class="img-circle" height="65" width="65"
@@ -467,61 +588,24 @@ td {
                             </p>
 						</div>
 						<div class="col-sm-3">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
-							<strong class="bg-danger">팔로워</strong>
-                            <br>
-                            <%=followerList.size()%>
-                            </p>
-						</div>
-						<div class="col-sm-3">
+
 							<p style="cursor: pointer" data-toggle="modal" data-target="#following">
 							<strong class="bg-danger">팔로잉</strong>
                             <br>
                             <%=followingList.size()%>
                             </p>
 						</div>
+						<div class="col-sm-3">
+							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
+							<strong class="bg-danger">팔로워</strong>
+                            <br>
+                            <%=followerList.size()%>
+                            </p>
+						</div>
                         <div class="col-sm-1"></div>
 					</div>
 					<br>
-				<br>
-					<!-- 팔로워 모달 -->
-				<div class="modal fade" id="follower" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header" style="background-color: #DE4F4F;">
-								<h3 class="modal-title">
-									<strong style="color:#FFFFFF;">Follower 목록</strong>
-								</h3>
-							</div>
-							<!-- 팔로워 Content -->
-							<div class="modal-body">
-								<div class="btn-group-vertical">
-									<form>
-										<ul class="ul fol">
-										<%for(int i= 0; i<followerList.size(); i++) {
-											MemberFollowVO follower= followerList.get(i);
-										%>
-											<li class="li fol">
-										        <img src="<%=follower.getUser_img()%>" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong><%=follower.getUser_id()%></strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												onclick="deleteFollower('<%=follower.getUser_id()%>', '<%=follower.getFollowing_user_id()%>')"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-										    </li>
-									   <%} %>
-									    </ul>
-								   </form>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			<!-- 팔로잉 Modal -->
+				<!-- 팔로잉 Modal -->
 				<div class="modal fade" id="following" role="dialog">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -530,17 +614,17 @@ td {
 									<strong style="color:#FFFFFF;">Following 목록</strong>
 								</h3>
 							</div>
-							<!-- 팔로잉 Content -->
+							<!-- 팔로잉 삭제 목록 Content -->
 							<div class="modal-body">
 								<div class="btn-group-vertical">
 									<form>
-										<ul class="ul fol">
+										<ul class="ul fol" id="following_modal">
 											<%for(int j= 0; j<followingList.size(); j++) {
 												MemberFollowVO following= followingList.get(j);
 											%>
 												<li class="li fol">
-											        <img src="<%=following.getUser_img()%>" class="img-circle" height="40"
-													width="40">&nbsp;<a href="#"><strong><%=following.getUser_id()%></strong></a>
+											        <img src="<%=following.getFollowing_user_img()%>" class="img-circle" height="40"
+													width="40">&nbsp;<a href="#"><strong><%=following.getFollowing_user_id()%></strong></a>
 													&nbsp;
 													<button type="button" class="btn btn-danger btn-sm"
 													onclick="deleteFollowing('<%=following.getUser_id()%>', '<%=following.getFollowing_user_id()%>')"
@@ -558,32 +642,81 @@ td {
 						</div>
 					</div>
 				</div>
+				<!-- 팔로워 모달 -->
+				<div class="modal fade" id="follower" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #DE4F4F;">
+								<h3 class="modal-title">
+									<strong style="color:#FFFFFF;">Follower 목록</strong>
+								</h3>
+							</div>
+							<!-- 팔로워 삭제 목록 Content -->
+							<div class="modal-body">
+								<div class="btn-group-vertical">
+									<form>
+										<ul class="ul fol" id="follower_modal">
+											<%for(int i= 0; i<followerList.size(); i++) {
+												MemberFollowVO follower= followerList.get(i);
+											%>
+												<li class="li fol">
+											        <img src="<%=follower.getUser_img()%>" class="img-circle" height="40"
+													width="40">&nbsp;<a href="#"><strong><%=follower.getUser_id()%></strong></a>
+													&nbsp;
+													<button type="button" class="btn btn-danger btn-sm"
+													onclick="deleteFollower('<%=follower.getUser_id()%>', '<%=follower.getFollowing_user_id()%>')"
+													style="border-radius: 20px;"><strong>삭제</strong></button>
+											    </li>
+										   <%} %>
+									    </ul>
+								   </form>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!-- 팔로워 추천 -->
 			<div style="margin-top: 20%; margin-right:20px;">
 				<h4 style="margin-bottom:10px; margin-left:30px;">
-					<strong>팔로워 추천 : </strong><a href="#">새로고침</a>
+					<strong>팔로워 추천 : </strong><p onclick="">새로고침</p>
 				</h4>
 				<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
-					<ul>
-					<%for(int z=0; z<3; z++) {
-						MemberFollowVO recommend= recommendList.get(z);
-					%>
-						<p><img src="<%=recommend.getUser_img()%>" class="img-circle" height="30"
-							width="30">&nbsp; <a href="#"><strong><%=recommend.getUser_id()%></strong></a>
-							&emsp;
-							<button type="button" class="btn btn-danger btn"
-							style="border-radius: 10px;">
-							<strong>팔로우</strong>
-							</button>&nbsp;
-						</p>
-					<%} %>
-					</ul>
+					<form>	
+					<ul class="ul fol2" id="insertFollowing_modal">
+						<%for(int y=0; y<3; y++) {
+							MemberFollowVO recommend= recommendList.get(y);
+						%>
+							<li class="li fol2"><img src="<%=recommend.getUser_img()%>" class="img-circle" height="40"
+								width="40">&nbsp; <a href="#">
+								<strong><%=recommend.getUser_id()%></strong></a>
+								&nbsp;
+								<button type="button" class="btn btn-danger btn"
+								onclick="insertFollowing('<%=member.getUser_id()%>', 
+								'<%=recommend.getUser_id()%>',
+								'<%=member.getUser_img()%>', '<%=recommend.getUser_img()%>')"
+								style="border-radius: 10px;">
+								<strong>팔로우</strong>
+								</button>&nbsp;
+							</li>
+						<%
+						//System.out.println("u=" + recommend.getUser_id());
+						//System.out.println("f=" + member.getUser_id());
+						//System.out.println("u-i=" + recommend.getUser_img());
+						//System.out.println("f-i=" + member.getUser_img());
+						} %>
+						</ul>
+					</form>
 				</div>
 			</div>
+			<br>
 		</div>
 		<!-- middle side -->
-		<div class="col-sm-7">
+		<div class="col-sm-6">
 			<div class="row text-center" style="border-radius: 10px;">
 				<!-- 본문 글 시작 -->
 				<%
@@ -592,32 +725,32 @@ td {
 				%>
 				<div class="well content_color">
 					<div class="row">
-						<div class="col-sm-3" style="font-size: 16px; text-align: left;">
+						<div class="col-sm-4" style="font-size: 16px; text-align: left;">
 						<!-- profile -->
-							<img src="<%=board.getUser_img()%>" class="img-circle" height="35" width="35">&nbsp;<a
+							<img src="<%=board.getUser_img()%>" class="img-circle" height="40" width="40">&nbsp;<a
 								href="#"><strong><%=board.getUser_id()%></strong></a>
 						</div>
 						<!-- title -->
-						<div class="col-sm-9" style="text-align: left;">
+						<div class="col-sm-8" style="text-align: left;">
 							<h4>
 								<strong><%=board.getBoard_title()%></strong>
 							</h4>
 						</div>
 					</div>
 					<!-- image and date, like-->
-					<img src="<%=board.getBoard_img()%>" style="width:30%; height:30%;" class="img-squere"><br>
+					<img src="<%=board.getBoard_img()%>" style="width:40%; height:40%;" class="img-squere"><br>
 					<div class="row">
 						<table style="border-spacing: 20px; font-size: 17px;">
 							<tr>
 								<td>
 									<p>
-										<strong><%=board.getBoard_time()%></strong>
+										<%=board.getBoard_time()%>
 									</p>
 								</td>
 								<td><span class="glyphicon glyphicon-heart"
 									style="padding-bottom: 14px;"></span></td>
 								<td>
-									<p style="padding-bottom: 3px;">
+									<p style="padding-bottom: 3px;" id="updateBoardLike_modal">
 										<em><%=board.getBoard_like()%></em>
 									</p>
 								</td>
@@ -633,19 +766,37 @@ td {
 					<!-- Icon -->
 					<div class="row">
 						<div class="pull-right">
-							<span style="cursor: pointer" class="glyphicon glyphicon-comment icon-size"
-								data-toggle="collapse" data-target="#comment"></span>&emsp;
-							<span class="glyphicon glyphicon-heart icon-size"></span> &emsp; 
-							<span class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; 
+							<form>
+							<ul class="ul fol2" id="updateBoardLike_modal">
+								<li class="li fol3">
+									<span style="cursor: pointer" 
+									class="glyphicon glyphicon-comment icon-size"
+									data-toggle="collapse" data-target="#comment">
+									</span>&emsp;
+								</li>
+								<li class="li fol3">
+									<span style="cursor: pointer"  
+										class="glyphicon glyphicon-heart icon-size"
+										onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=board.getUser_id()%>')">
+									</span> &emsp;
+								</li>
+								<li class="li fol3">
+									<span style="cursor: pointer" 
+									 class="glyphicon glyphicon-share-alt icon-size">
+									</span>&emsp; 
+								</li>
+							</ul>
+							</form>
 						</div>
 					</div> 
 				<!-- 댓글 comment -->
-				<%} %>
 				<!-- 본문 글 끝 -->
 				</div>
+				<%} %>
 			</div>
 		</div>
 	</div>
+</div>
 	<footer class="container-fluid text-center">
 	<p>MADI</p>
 	</footer>

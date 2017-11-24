@@ -7,17 +7,10 @@ public class MemberFollowVO {
 	
 	private String user_id;
 	private String following_user_id;
-	//(진산)팔로워, 팔로잉 받기위해 임시로 생성
+	//(진산)팔로워, 팔로잉 받기위해  생성
 	private String user_img;
 	private String following_user_img;
 	
-	
-	public String getFollowing_user_img() {
-		return following_user_img;
-	}
-	public void setFollowing_user_img(String following_user_img) {
-		this.following_user_img = following_user_img;
-	}
 	public void setFollowing_user_id(String following_user_id) {
 		this.following_user_id = following_user_id;
 	}
@@ -38,6 +31,12 @@ public class MemberFollowVO {
 	}
 	public void setUser_img(String user_img) {
 		this.user_img = user_img;
+	}
+	public String getFollowing_user_img() {
+		return following_user_img;
+	}
+	public void setFollowing_user_img(String following_user_img) {
+		this.following_user_img = following_user_img;
 	}
 	
 	
