@@ -17,53 +17,13 @@
 	// 알림 리스트 받아오기
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 %>
-  <style>
-  	#columns {
-  		column-width: 220px;
-  		column-gap: 10px;
-  		margin: 10px;
-  	}
-  	
-  	#columns figure {
-  		display: inline-block;
-  		margin: 0;
-  		margin-bottom: 15px;
-  		padding: 4px;
-  		max-height: 800px;
-  		width: 100%;
-  	}
-  	
-  	#columns figure img {
-  		width: 100%;
-  		border-radius: 3%;
-  		overflow: hidden;
-  	} 
-  	
-  	#columns figure video {
-  		width: 100%;
-  		border-radius: 3%;
-  		overflow: hidden;
-  	} 
-  	
-  	video {
-  		autostart: 0;
-  	}
-  	
+  <style>  	
 	footer {
 	    background-color: #DE4F4F;
 	    color: white;
 	    padding: 15px;
 	}
-  	
-  	#postBtn {	 	
-  		position:fixed;
-  		right:0;
-  		bottom:0;
-  		margin-bottom: 80px;
-  		margin-right: 25px;
-  		z-index:10000;
-  	}
-  	
+  	  	
 	/* ICON Design */
 	.glyphicon {
 	    font-size: 17px;
@@ -146,9 +106,10 @@
 	<!-- 헤더 스타일 끝 -->
 	
 	/*postModal*/
-	@media (max-width: 600px) {
-	    .carousel-caption {
-	      display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
+	@media (min-width: 600px) {
+	    #navbar_toggle {
+	      postion:absolute; /* Hide the carousel text when the screen is less than 600 pixels wide */
+	      right: 0;
 	    }
   	}
   	
@@ -172,10 +133,7 @@
 	    border-radius: 0;
 	    transition: .2s;
 	}
-	  
 	.btn:hover, .btn:focus {
-	    border: 1px solid #333;
-	    background-color: #fff;
 	    color: #000;
 	}
 	.modal-header, h4, .close {
@@ -239,20 +197,22 @@
 <!-- 헤더 시작 -->
  <nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
     <div class="container-fluid">
-        <div class="navbar-header" style="padding-right: 30%;">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span><span class="icon-bar"></span>
+        <div class="navbar-header" style="padding-right: 0;" id="navbar_toggle"/>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="background-color:#DE4F4F;">
+                <span class="icon-bar" style="background-color:white;"></span>
+                <span class="icon-bar" style="background-color:white;"></span>
+                <span class="icon-bar" style="background-color:white;"></span>
             </button>
             <a class="navbar-brand" href="#">MADI</a>
         </div>
         <!--검색 창 -->
         <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar">
+            <ul class="nav navbar-nav navbar" style="margin-left:25%;">
                 <form class="navbar-form navbar-right" role="search">
                     <div class="form-group input-group">
                         <input type="text" class="form-control" placeholder="Search.." size="80%"> 
                         	<span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
+                            <button class="btn btn-default" type="button" style="padding-bottom:2px; margin-top:1px;">
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
                         </span>
@@ -263,7 +223,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <!--home 아이콘 -->
                 <li>
-                	<button type="button" class="btn form" style="padding-top: 15px;">
+                	<button type="button" class="btn form" style="padding-top: 10px; margin-top:10px;">
                     	<span class="glyphicon glyphicon-home color"></span>
                     </button>
                 </li>
@@ -292,24 +252,32 @@
                     </div>
                 </li>
                  <!-- 냉장고 아이콘 -->
-                <li onclick="getNotification(this.value);" value="<%=memberVO.getUser_id()%>">
+                <li>
                     <div style="padding-top: 9px; padding-left: 5px;">
                         <button type="button" class="btn form" data-toggle="modal" data-target="#fridge">
-                            <img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
+                            <img src="./resources/food_icon/fridge_white.png" style="width:20px; height:20px;" onmouseover="hover(this);" onmouseout="unhover(this);"/>
                         </button>
                     </div>
                 </li>
+                <script>
+                function hover(element) {
+                    element.setAttribute('src', './resources/food_icon/fridge.png');
+                }
+                function unhover(element) {
+                    element.setAttribute('src', './resources/food_icon/fridge_white.png');
+                }
+                </script>              	
                 <!--알림 아이콘 -->
-                <li>
-                    <div style="padding-top: 9px; padding-left: 5px;">
+                <li onclick="getNotification(this.value);" value="<%=memberVO.getUser_id()%>">
+                    <div style="padding-top: 10px; padding-left: 5px;">
                         <button type="button" class="btn form" data-toggle="modal" data-target="#myModal">
-                            <span class="glyphicon glyphicon-align-justify color"></span>
+                            <span class="glyphicon glyphicon-envelope color"></span>
                         </button>
                     </div>
                 </li>
                 <!--소셜 아이콘 -->
                 <li>
-                    <button type="button" class="btn form" style="padding-top: 15px;">
+                    <button type="button" class="btn form" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>

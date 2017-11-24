@@ -46,13 +46,15 @@
 	function addCategory(element) {
 		var category_selected_form = document
 				.getElementById("category_selected_form");
-		if (element.style.background == "blue") {
+		if (element.style.background == "white") {
 			element.style.background = "";
+			element.style.color ="white";
 			document.getElementById(element.textContent).remove();
 			getRecipeByTy_Code();
 
 		} else {
-			element.style.background = "blue";
+			element.style.background = "white";
+			element.style.color ="black";
 			category_selected_form.innerHTML += "<button id='"
 					+ element.textContent
 					+ "' class='btn btn-default' style='border:none; outline:none;' onclick='removeCategory(this);'>"
@@ -203,8 +205,9 @@
 			style="font-size: 35px; cursor: pointer;"></span> <br />
 		<hr />
 		<div class="row" id="search_Result_Area">
+			<br/><br/>
 			<h1>재료를 입력해 레시피를 조회해주세요.</h1>
-			<hr>
+			<br/><br/><br/>
 		</div>
 	</div>
 	<div class="container">
@@ -245,7 +248,7 @@
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="나물/생채/샐러드" class="btn btn-default btn-block"
-							value="3010007" onclick="addCategory(this);">나물/생채/샐러드</button>
+							value="3010007" onclick="addCategory(this);">나물/샐러드</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="밑반찬/김치" class="btn btn-default btn-block"
@@ -331,16 +334,9 @@
 	</div>
 	<div class="container text-center">
 		<div class="row" id="category_List_Area">
+			<br/><br/>
 			<h1>카테고리를 선택해 레시피를 조회해주세요.</h1>
-			<!-- <div class="col-sm-3"></div>
-		<div class="col-sm-3"></div>
-		<div class="col-sm-3"></div>
-		<div class="col-sm-3"></div>
-		
-		<div class="col-sm-3"></div>
-		<div class="col-sm-3"></div>
-		<div class="col-sm-3"></div>
-		<div class="col-sm-3"></div> -->
+			<br/><br/>
 		</div>
 	</div>
 	<footer class="container-fluid text-center">
