@@ -203,7 +203,7 @@
 			style="font-size: 35px; cursor: pointer;"></span> <br />
 		<hr />
 		<div class="row" id="search_Result_Area">
-			<h1>재룐를 입력해 레시피를 조회해주세요.</h1>
+			<h1>재료를 입력해 레시피를 조회해주세요.</h1>
 			<hr>
 		</div>
 	</div>

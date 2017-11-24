@@ -131,8 +131,7 @@ public class FrontController {
 	// (진산)mypage.do 작업
 	@RequestMapping("/mypage.do")
 	public ModelAndView myPage(HttpSession session) {
-		// String user_id = (String)session.getAttribute("user_id");
-		String user_id = "madi";
+		String user_id = (String)session.getAttribute("user_id");
 		// session.setAttribute("madi", user_id);
 		// String[] following_user_id= null;
 		ModelAndView result = new ModelAndView();

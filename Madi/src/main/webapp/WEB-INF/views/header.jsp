@@ -17,225 +17,306 @@
 	// 알림 리스트 받아오기
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 %>
-<style>
-footer {
-	background-color: #DE4F4F;
-	color: white;
-	padding: 15px;
-}
-/* ICON Design */
-.glyphicon {
-	font-size: 18px;
-}
-
-.glyphicon.top {
-	color: #000000;
-}
-
-.glyphicon.icon-size {
-	font-size: 23px;
-}
-/* 헤더버튼 주변색 */
-.btn.form {
-	background-color: #DE4F4F;
-}
-/*헤더 색*/
-.navbar.head {
-	background-color: #DE4F4F;
-}
-/* 움직이는 헤더 */
-.affix {
-	top: 0;
-	width: 100%;
-	z-index: 9999 !important;
-}
-
-.affix+.container-fluid {
-	padding-top: 70px;
-}
-
-/* Modal 크기 조절 */
-.modal-dialog.modal-size {
-	width: 300px;
-	height: 600px;
-	margin: 0;
-	padding: 0;
-}
-
-.modal-content.modal-size {
-	height: auto;
-	min-height: 60%;
-}
-
-.modal.modal-center {
-	text-align: center;
-}
-/* 모달 창이 모바일일 경우 바꿔주는 설정 */
-@media screen and (min-width: 320px) {
-	.modal.modal-center:before {
-		display: inline-block;
-		vertical-align: middle;
-		content: " ";
-		height: 100%;
+  <style>
+  	#columns {
+  		column-width: 220px;
+  		column-gap: 10px;
+  		margin: 10px;
+  	}
+  	
+  	#columns figure {
+  		display: inline-block;
+  		margin: 0;
+  		margin-bottom: 15px;
+  		padding: 4px;
+  		max-height: 800px;
+  		width: 100%;
+  	}
+  	
+  	#columns figure img {
+  		width: 100%;
+  		border-radius: 3%;
+  		overflow: hidden;
+  	} 
+  	
+  	#columns figure video {
+  		width: 100%;
+  		border-radius: 3%;
+  		overflow: hidden;
+  	} 
+  	
+  	video {
+  		autostart: 0;
+  	}
+  	
+	footer {
+	    background-color: #DE4F4F;
+	    color: white;
+	    padding: 15px;
 	}
-}
-
-.modal-dialog.modal-center {
-	display: inline-block;
-	text-align: left;
-	vertical-align: middle;
-}
-/* 헤더 디자인 끝 */
-.glyphicon.glyphicon-comment {
-	color: #4C4C4C;
-}
-
-.glyphicon.glyphicon-heart {
-	color: #DB005B;
-}
-
-.glyphicon.glyphicon-pencil {
-	color: #3D3D3D;
-}
-
-.glyphicon.glyphicon-share-alt {
-	color: #487BE1;
-}
-/*table 디자인*/
-table {
-	border-radius: 10px;
-}
-/* 테이블 간격 */
-td {
-	padding: 10px;
-}
-/*본문 배경색*/
-.well.content_color {
-	background-color: #FFFFFF;
-}
-/* 냉장고 재료들 리스트 정렬 */
-.ul.hori {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.li.hori {
-	margin: 0 0 0 0;
-	padding: 15px;
-	border: 0;
-	float: left;
-	font-size: 15px;
-}
-/* 팔로워, 팔로잉 리스트 정렬 */
-.ul.fol {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.li.fol {
-	margin: 0 0 0 0;
-	padding: 15px;
-	border: 0;
-	float: left;
-	font-size: 17px;
-}
-/* 모달 창이 모바일일 경우 바꿔주는 설정 */
-@media screen and (min-width: 320px) {
-	.modal.modal-center:before {
-		display: inline-block;
-		vertical-align: middle;
-		content: " ";
-		height: 100%;
+  	
+  	#postBtn {	 	
+  		position:fixed;
+  		right:0;
+  		bottom:0;
+  		margin-bottom: 80px;
+  		margin-right: 25px;
+  		z-index:10000;
+  	}
+  	
+	/* ICON Design */
+	.glyphicon {
+	    font-size: 17px;
 	}
-}
+	.glyphicon.top {
+	    color: #000000;
+	}
+	.glyphicon.glyphicon-comment {
+	    color: #4C4C4C;
+	}
+	.glyphicon.glyphicon-heart {
+	    color: #DB005B;
+	}
+	.glyphicon.glyphicon-pencil {
+	    color: #3D3D3D;
+	}
+	.glyphicon.glyphicon-share-alt {
+	    color: #487BE1;
+	}
+	.glyphicon.icon-size {
+	    font-size: 25px;
+	}
+  	
+	/* 헤더버튼 주변색 */
+	.btn.form {
+	    background-color: #DE4F4F;
+	}
 
-.modal-dialog.modal-center {
-	display: inline-block;
-	text-align: left;
-	vertical-align: middle;
-}
-/* 헤더 디자인 끝 */
-</style>
+	/*헤더 색*/
+	.navbar.head {
+	    background-color: #DE4F4F;
+	}
+	/* 움직이는 헤더 */
+	.affix {
+	    top: 0;
+	    width: 100%;
+	    z-index: 9999 !important;
+	}
+	.affix+.container-fluid {
+	    padding-top: 70px;
+	}
+	/* Modal 크기 조절 */
+	.modal-dialog.modal-size {
+	    width: 20%;
+	    height: 60%;
+	    margin: 0;
+	    padding: 0;
+	}
+	.modal-content.modal-size {
+	    height: auto;
+	    min-height: 60%;
+	}
+	.modal.modal-center {
+	    text-align: center;
+	}
+	@media screen and (min-width: 768px) {
+	    .modal.modal-center:before {
+	        display: inline-block;
+	        vertical-align: middle;
+	        content: " ";
+	        height: 100%;
+	    }
+	}
+	.modal-dialog.modal-center {
+	    display: inline-block;
+	    text-align: left;
+	    vertical-align: middle;
+	}
+	/* follow 모달 크기 조절 */
+	.modal-dialog.follow-size {
+	    width: 23%;
+	    height: 50%;
+	    margin: 0;
+	    padding: 0;
+	}
+	.modal-content.follow-size {
+	    height: auto;
+	    min-height: 50%;
+	}
+	<!-- 헤더 스타일 끝 -->
+	
+	/*postModal*/
+	@media (max-width: 600px) {
+	    .carousel-caption {
+	      display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
+	    }
+  	}
+  	
+  	.bg-1 {
+	      color: #bdbdbd;
+	}
+	    
+	.list-group-item:first-child {
+		border-top-right-radius: 0;
+	    border-top-left-radius: 0;
+	}
+	.list-group-item:last-child {
+		border-bottom-right-radius: 0;
+	    border-bottom-left-radius: 0;
+	}
+	  
+	.btn {
+	    padding: 10px 20px;
+	    background-color: #DE4F4F;
+	    color: #f1f1f1;
+	    border-radius: 0;
+	    transition: .2s;
+	}
+	  
+	.btn:hover, .btn:focus {
+	    border: 1px solid #333;
+	    background-color: #fff;
+	    color: #000;
+	}
+	.modal-header, h4, .close {
+	    background-color: #DE4F4F;
+	    color: #fff !important;
+	    text-align: center;
+	    font-size: 30px;
+	}
+	.modal-header, .modal-body {
+	    padding: 20px 50px;
+	}
+	
+	#irdntAddBtn {
+		float:right;
+		padding-top:0px;
+		padding-bottom:0px;
+		padding-left:5px;
+		padding-right:5px;
+	}
+  	
+  	#recipeProcessAddBtn {
+  		float:right;
+  		padding-top:0px;
+  		padding-bottom:0px;
+  		padding-left:5px;
+  		padding-right:5px;
+  	}
+  	
+  	#cooking_no {
+  		border: none;  		
+  		background-color: white;
+  	}
+  	
+	.file-upload {
+		position: relative;
+		display: inline-block;
+	}
+	
+	.file-upload__label {
+	  display: block;
+	  /* padding: 1em 2em; */
+	  color: #fff;
+	  background: #DE4F4F;
+	  border-radius: .4em;
+	  transition: background .3s;
+	  
+	}
+	    
+	.file-upload__input {
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	    right: 0;
+	    bottom: 0;
+	    font-size: 1;
+	    width:0;
+	    height: 100%;
+	    opacity: 10;
+	}
+  </style>
 <!-- 헤더 시작 -->
-	<nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
-	<div class="container-fluid">
-		<div class="navbar-header" style="padding-right: 30%;">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#myNavbar">
-				<span class="icon-bar"></span><span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">MADI</a>
-		</div>
-		<!--검색 창 -->
-		<div class="collapse navbar-collapse" id="myNavbar">
-			<ul class="nav navbar-nav navbar">
-				<form class="navbar-form navbar-right" role="search">
-					<div class="form-group input-group">
-						<input type="text" class="form-control" placeholder="Search.."
-							size="80%"> <span class="input-group-btn">
-							<button class="btn btn-default" type="button">
-								<span class="glyphicon glyphicon-search"></span>
-							</button>
-						</span>
-					</div>
-				</form>
-			</ul>
-			<!--오른쪽 아이콘 -->
-			<ul class="nav navbar-nav navbar-right">
-				<!--home 아이콘 -->
-				<li><button type="button" class="btn form"
-						style="padding-top: 15px;">
-						<span class="glyphicon glyphicon-home color"></span>
-					</button>
-				</li>
-				<!-- 냉장고 아이콘 -->
-				<li>
-					<div style="padding-top: 9px;">
-						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#fridge">
-							<img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
-						</button>
-				</li>
-				<!-- profile 아이콘(누르면 mypage로 넘어간다) -->
-				<li>
-					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
-						<button class="btn dropdown-toggle form" type="button"
-							data-toggle="dropdown">
-							<span class="glyphicon glyphicon-user color"></span>
-						</button>
-						<ul class="dropdown-menu" style="text-align: center; background-color:#F6F6F6;">
-							<li><img src="<%=memberVO.getUser_img()%>" class="img-circle" height="70"
-								width="70" alt="Avatar"></li>
-							<li>
-								<h4>
-									<p class="text-primary"><%=memberVO.getUser_id()%></p>
-								</h4>
-							</li>
-							<li><a href="#">회원수정</a></li>
-							<li><a href="#">로그아웃</a></li>
-						</ul>
-					</div>
-				</li>
-				<!--알림 아이콘 -->
-				<li onclick="getNotification(this.value);" value="<%=memberVO.getUser_id()%>">
-				<div style="padding-top: 9px; padding-left: 3px;">
-						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#myModal">
-							<span class="glyphicon glyphicon-envelope" style="padding-right:7px;"></span>
-						</button>
-				</li>
-				<!--소셜(post로 넘어간다) 아이콘 -->
-				<li>
-					<button type="button" class="btn form" style="padding-top: 15px; padding-right:13px;">
-						<span class="glyphicon glyphicon-globe color"></span>
-					</button>
-				</li>
-			</ul>
-		</div>
-	</div>
-	</nav>
+ <nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
+    <div class="container-fluid">
+        <div class="navbar-header" style="padding-right: 30%;">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">MADI</a>
+        </div>
+        <!--검색 창 -->
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar">
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" placeholder="Search.." size="80%"> 
+                        	<span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </ul>
+            <!--오른쪽 아이콘 -->
+            <ul class="nav navbar-nav navbar-right">
+                <!--home 아이콘 -->
+                <li>
+                	<button type="button" class="btn form" style="padding-top: 15px;">
+                    	<span class="glyphicon glyphicon-home color"></span>
+                    </button>
+                </li>
+                <!-- profile 아이콘 -->
+                <li>
+                    <div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
+                        <button class="btn dropdown-toggle form" type="button" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-user color"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="text-align:center; background-color:#F6F6F6;">
+                            <li>
+                            	<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="70" width="70" alt="Avatar">
+                            </li>
+                            <li>
+                                <h4>
+                                    <p class="text-primary"><%=memberVO.getUser_id()%></p>
+                                </h4>
+                            </li>
+                            <li>
+                            	<a href="./updateMember.do">회원수정</a>
+                            </li>
+                            <li>
+                            	<a href="./logout.do">로그아웃</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                 <!-- 냉장고 아이콘 -->
+                <li onclick="getNotification(this.value);" value="<%=memberVO.getUser_id()%>">
+                    <div style="padding-top: 9px; padding-left: 5px;">
+                        <button type="button" class="btn form" data-toggle="modal" data-target="#fridge">
+                            <img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
+                        </button>
+                    </div>
+                </li>
+                <!--알림 아이콘 -->
+                <li>
+                    <div style="padding-top: 9px; padding-left: 5px;">
+                        <button type="button" class="btn form" data-toggle="modal" data-target="#myModal">
+                            <span class="glyphicon glyphicon-align-justify color"></span>
+                        </button>
+                    </div>
+                </li>
+                <!--소셜 아이콘 -->
+                <li>
+                    <button type="button" class="btn form" style="padding-top: 15px;">
+                        <span class="glyphicon glyphicon-globe color"></span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </nav>
 <!-- 헤더 끝 -->
 <!-- 알림 및 메시지 모달 -->
 <!-- 냉장고 모달바 -->
