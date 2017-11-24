@@ -27,3 +27,9 @@
 <%
 	}
 %>
+<!-- 지우면 창에서도 -1이 바로 반영된다 -->
+<script>
+	function followerMinus() {
+		document.getElementById("followerSize").innerHTML = <%=followerList.size()%>;
+	}
+</script>

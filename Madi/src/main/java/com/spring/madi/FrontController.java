@@ -137,9 +137,21 @@ public class FrontController {
 		//session.setAttribute("madi", user_id);
 		//String[] following_user_id= null;
 		ModelAndView result= new ModelAndView();
+		//내 알림 메시지 읽어오기
+		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
+		if(notificationList == null) {
+			notificationList = new ArrayList<NotificationVO>();
+		}
+		result.addObject("notificationList", notificationList);
+		// 내 메시지 읽어오기
+		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
+		if(messageList == null) {
+			messageList = new ArrayList<MessageVO>();
+		}
+		result.addObject("messageList", messageList);
 		//자기 자신에 대한 member정보
-		MemberVO member= memberDAOService.getMember(user_id);
-		result.addObject("member", member);
+		MemberVO memberVO= memberDAOService.getMember(user_id);
+		result.addObject("memberVO", memberVO);
 		// 팔로워 리스트
 		List<MemberFollowVO> followerList = memberDAOService.getFollower(user_id);
 		result.addObject("followerList", followerList);
@@ -149,7 +161,7 @@ public class FrontController {
 		//팔로워 추천 리스트
 		List<MemberFollowVO> recommendList= memberDAOService.getRecommendFollower(user_id);
 		result.addObject("recommendList", recommendList);
-
+		
 		// 가운데 게시글 리스트
 		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
 		// List<BoardVO> followingBoardList=
@@ -271,7 +283,6 @@ public class FrontController {
 
 		return "recipe";
 	}
-
 	@RequestMapping("/recipeDetail.do")
 	public String recipeDetail(RecipeVO recipeVO, BoardVO boardVO, BoardReplyVO boardReplyVO, Model model) {
 		// 인욱
@@ -449,8 +460,7 @@ public class FrontController {
 	}
 
 	@RequestMapping(value = "/notification.do")
-	public String getNotification(String user_id, Model model) {
-
+	public String getNotification(Model model, String user_id) {
 		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
 		if(notificationList.size()==0) {
 			notificationList = null;
@@ -461,8 +471,7 @@ public class FrontController {
 	
 	// 성빈 : 안 읽은 메시지를 읽어오는 메소드
 	@RequestMapping(value = "/message.do")
-	public String getMessage(String user_id, Model model) {
-
+	public String getMessage(Model model, String user_id) {
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
 		if(messageList.size()==0) {
 			messageList = null;

@@ -9,7 +9,7 @@
 <%	
 
 	List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList"); 	
-	MemberVO member= (MemberVO)request.getAttribute("member");
+	MemberVO memberVO= (MemberVO)request.getAttribute("memberVO");
 
 %>	
 <%for(int y=0; y<3; y++) {
@@ -21,7 +21,7 @@
 		<strong><%=recommend.getUser_id()%></strong></a>
 		&nbsp;
 		<button type="button" class="btn btn-danger btn"
-			onclick="insertFollowing('<%=recommend.getFollowing_user_id()%>', '<%=recommend.getFollowing_user_id()%>','<%=member.getUser_img()%>', '<%=recommend.getUser_img()%>')"
+			onclick="insertFollowing('<%=recommend.getFollowing_user_id()%>', '<%=recommend.getFollowing_user_id()%>','<%=recommend.getUser_img()%>', '<%=recommend.getUser_img()%>')"
 			style="border-radius: 10px;">
 			<strong>팔로우</strong>
 		</button>&nbsp;
@@ -29,6 +29,6 @@
 <%
 //System.out.println("m-u=" + recommend.getUser_id());
 //System.out.println("m-f=" + recommend.getFollowing_user_id());
-//System.out.println("m-u-i=" + recommend.getUser_img());
+System.out.println("m-u-i=" + recommend.getUser_img());
 //System.out.println("m-f-i=" + recommend.getFollowing_user_img());
 }	%>

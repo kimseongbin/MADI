@@ -8,7 +8,6 @@
 <%@page import="com.spring.madi.RecipeVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 	//내 정보 받아오기
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
@@ -16,7 +15,9 @@
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
+	
 %>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
   <style>  	
 	footer {
 	    background-color: #DE4F4F;
@@ -216,11 +217,11 @@
                             <button class="btn btn-default" type="button" style="padding-bottom:2px; margin-top:1px;">
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>
-                        </span>
+                        	</span>
                     </div>
                 </form>
             </ul>
-            <!--오른쪽 아이콘 -->
+              <!--오른쪽 아이콘 -->
             <ul class="nav navbar-nav navbar-right">
                 <!--home 아이콘 -->
                 <li>
@@ -282,12 +283,10 @@
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>
-            </ul>
-        </div>
+          	</ul>
+       	</div>
     </div>
-    </nav>
-<!-- 헤더 끝 -->
-<!-- 알림 및 메시지 모달 -->
+</nav>
 <!-- 냉장고 모달바 -->
 <div class="modal fade" id="fridge" tableindex="-1" role="dialog"
 	aria-labelledy="modallabel">
@@ -446,7 +445,7 @@
 		var user_id = "<%=memberVO.getUser_id()%>";
 		$.ajax({
 			url: "./message.do",
-			type: "POST",
+			type: "GET",
 			data: {
 				user_id : user_id
 			},
@@ -454,14 +453,14 @@
 			success: function(data) {
 				$("#messageList").empty();
 				$("#messageList").append(data);
-			}
+			}  
 		});
 	}
 	function getNotification() {
 		var user_id = "<%=memberVO.getUser_id()%>";
 		$.ajax({
 			url: "./notification.do",
-			type: "POST",
+			type: "GET",
 			data: {
 				user_id : user_id
 			},
