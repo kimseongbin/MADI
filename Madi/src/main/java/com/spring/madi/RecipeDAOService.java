@@ -54,13 +54,27 @@ public class RecipeDAOService implements RecipeDAO {
 		
 			return postList;
 		}
-		
+		 
 		@Override
 		public void insertRecipe(RecipeVO recipeVO) {
 			
 			// 게시물 등록
 			RecipeMapper recipeMapper = sqlSession.getMapper(RecipeMapper.class);
 			recipeMapper.insertRecipe(recipeVO);
+		}
+		
+		// 성빈 : 배열 형태의 ty_code값이 여러번 입력될 경우 해당 recipe 목록을 조회하는 메소드
+		@Override
+		public ArrayList<RecipeVO> getRecipesByTy_code(String[] ty_code) {
+			//Mapper객체 생성 (Mapper는 정의된 메소드 이름을 사용해 Mybatis를 통해 호출할 쿼리문을 찾는다)
+			System.out.println(ty_code[0]);
+			RecipeMapper recipeMapper = sqlSession.getMapper(RecipeMapper.class);
+			
+			ArrayList<RecipeVO> recipeList = new ArrayList<RecipeVO>();
+			recipeList = recipeMapper.getRecipesByTy_code(ty_code);
+			System.out.println(recipeList==null?"null":"not null");
+			System.out.println("recipeLsit szie is " + recipeList.size());
+			return recipeList;
 		}
 	
 }

@@ -306,7 +306,7 @@
   	});
   	
   	function post(recipe_id) {
-  		location.href="recipeDetail.do?recipe_id="+recipe_id;
+  		location.href="./recipeDetail.do?recipe_id="+recipe_id;
   	}
   	
   	function image () {}

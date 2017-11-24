@@ -6,10 +6,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.madi.MemberFollowVO;
-import com.spring.madi.MemberMapper;
-import com.spring.madi.MemberVO;
-
 @Service
 public class MemberDAOService implements MemberDAO {
 
@@ -64,5 +60,45 @@ public class MemberDAOService implements MemberDAO {
 	public void insertFollowing(MemberFollowVO memberFollow) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
 		memberMapper.insertFollowing(memberFollow);
+	}
+	@Override // 성빈 : 로그인 체크를 위한 password 조회 메소드
+	public MemberVO getPasswordByUserId(MemberVO memberVO) {
+		System.out.println("로그인 요청 : 패스워드 조회 시작");
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		MemberVO vo = memberMapper.getPasswordByUserId(memberVO);
+		System.out.println("로그인 요청 : 패스워드 조회 성공");
+		return vo;
+	}
+
+	@Override // 성빈 : 회원가입 메소드 (입력된 회원정보를 member 테이블에 insert한다)
+	public void setMember(MemberVO memberVO) {
+		System.out.println("회원가입 요청 : 회원가입 시작");
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		try {
+			memberMapper.setMember(memberVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("회원가입 요청 : 회원가입 실패 " + e.getMessage());
+		}
+		System.out.println("회원가입 요청 : 회원가입 성공");
+		return;
+	}
+
+	@Override // 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 메소드
+	public ArrayList<MemberBoxVO> getMyIrdntByUserId(String user_id) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		ArrayList<MemberBoxVO> myIrdntList = memberMapper.getMyIrdntByUserId(user_id);
+		if(myIrdntList.size()==0 || myIrdntList == null) {
+			return null;
+		} else {
+			return myIrdntList;
+		}
+	}
+	
+	@Override // 성빈 : 회원 기본 정보 조회 메소드
+	public MemberVO getUserInfoById(String user_id) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		MemberVO memberVO = memberMapper.getUserInfoById(user_id);
+		return memberVO;
 	}
 }

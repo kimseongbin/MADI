@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- mapper 태그 안에 작성하기 -->
 <mapper namespace="com.spring.madi.BoardMapper">
-	<resultMap type="com.spring.madi.BoardVO" id="BoardResultMap">
+	<resultMap type="BoardVO" id="BoardResultMap">
 		<result property="board_num" column="BOARD_NUM" />
 		<result property="user_id" column="USER_ID" />
 		<result property="board_title" column="BOARD_TITLE" />
@@ -46,7 +46,7 @@
 		</select>
 
 
-	<insert id="insertBoard" parameterType="com.spring.madi.BoardVO">
+	<insert id="insertBoard" parameterType="BoardVO">
 		<selectKey resultType="int" keyProperty="board_num" order="BEFORE">
 			SELECT NVL(MAX(board_num), 0) + 1 FROM board
 		</selectKey>

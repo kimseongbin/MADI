@@ -8,6 +8,7 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="user_pw" column="USER_PW" />
 		<result property="user_name" column="USER_NAME" />
+		<result property="user_gender" column="USER_GENDER" />
 		<result property="user_email" column="USER_EMAIL" />
 		<result property="user_img" column="USER_IMG" />
 	</resultMap>
@@ -17,6 +18,7 @@
 		<result property="following_user_id" column="FOLLOWING_USER_ID" />
 		<!-- (진산)팔로워, 팔로잉 프로필이미지를  위해 임시로 생성 -->
 		<result property="user_img" column="USER_IMG" />
+		<result property="following_user_img" column="FOLLOWING_USER_IMG" /> 
 	</resultMap>
 	
 	<resultMap type="MemberBoxVO" id="MemberBoxResultMap">
@@ -63,5 +65,43 @@
 		INSERT INTO member_follow 
 		VALUES (#{user_id, javaType=String}, #{following_user_id, javaType=String})
 	</insert>
+	
+	<!-- 성빈 : 로그인 체크를 위한 user_pw 조회 쿼리-->
+	<select id="getPasswordByUserId" resultMap="MemberResultMap"  parameterType="com.spring.madi.MemberVO">
+		SELECT USER_PW
+		FROM MEMBER
+		WHERE USER_ID = #{user_id}
+	</select>
+	
+	<!-- 성빈 : 회원가입을 위한 회원정보 삽입 쿼리 -->
+	<insert id="setMember" parameterType="com.spring.madi.MemberVO">
+		INSERT INTO MEMBER(USER_ID, USER_PW, USER_NAME, USER_GENDER, USER_EMAIL, USER_IMG)
+		VALUES (#{user_id}, #{user_pw}, #{user_name}, #{user_gender}, #{user_email}, #{user_img})
+	</insert>
+	
+	<!-- 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 쿼리 -->
+	<select id="getMyIrdntByUserId" resultMap="MemberBoxResultMap" parameterType="java.lang.String">
+		SELECT *
+		FROM MEMBER_BOX
+		WHERE USER_ID = ${user_id}
+	</select>
+	
+	<!-- 성빈: 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
+	<!-- 전달 파라미터 String user_id -->
+	<select id="getUserInfoById" resultMap="MemberResultMap" parameterType="String">
+		SELECT USER_ID, USER_IMG, USER_EMAIL, USER_NAME
+		FROM MEMBER
+		WHERE USER_ID = #{user_id}
+	</select>
+	<!-- 성빈: 회원 기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
+	<!-- 전달 파라미터 String[] user_id -->
+	<select id="getUserInfoByIds" resultMap="MemberResultMap">
+		SELECT USER_ID, USR_IMG, USER_EMAIL, USER_NAME
+		FROM MEMBER
+		WHERE USER_ID IN
+			<foreach item="USER_ID" collection="array" open="(" separator="," close=")">
+					#{user_id}
+			</foreach>
+	</select>
 
 </mapper>

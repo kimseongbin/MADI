@@ -40,7 +40,6 @@
 	<select id="getRecipeProcessById" resultType="com.spring.madi.RecipeProcessVO">
 			SELECT recipe_id, cooking_no, cooking_desc, step_img_url, step_tip
 			FROM recipe_process
-
 			WHERE recipe_id = 466 order by cooking_no  
 		</select>
 
@@ -69,6 +68,14 @@
 		INSERT INTO recipe_info (recipe_id, recipe_title, recipe_desc, nation_code, ty_code, cooking_time, img_url, detail_url, user_id)
 		VALUES (#{recipe_id}, #{recipe_title}, #{recipe_desc}, #{nation_code}, #{ty_code}, #{cooking_time}, #{img_url}, 'test', 'madi')
 	</insert>
-
-
+	
+	<!-- 성빈 : 배열 형태의 ty_code값이 여러번 입력될 경우 해당 recipe 목록을 조회하는 메소드 -->
+	<select id="getRecipesByTy_code" resultType="com.spring.madi.RecipeVO">
+		SELECT recipe_id, recipe_title, recipe_desc, img_url, user_id, cooking_time
+		FROM recipe_info
+		WHERE ty_code IN
+			<foreach item="ty_code" collection="array" open="(" separator="," close=")">
+				#{ty_code}
+			</foreach>  
+	</select>
 </mapper>
