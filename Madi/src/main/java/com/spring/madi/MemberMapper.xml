@@ -15,8 +15,10 @@
 	<resultMap type="MemberFollowVO" id="MemberFollowResultMap">
 		<result property="user_id" column="USER_ID" />
 		<result property="following_user_id" column="FOLLOWING_USER_ID" />
-		<!-- (진산)팔로워, 팔로잉 프로필이미지를  위해 임시로 생성 -->
+		<!-- (진산)팔로워, 팔로잉 프로필이미지를  위해  생성 -->
 		<result property="user_img" column="USER_IMG" />
+		<!-- (진산)팔로워, 팔로잉 프로필이미지를  위해  생성 -->
+		<result property="following_user_img" column="FOLLOWING_USER_IMG" />
 	</resultMap>
 	
 	<resultMap type="MemberBoxVO" id="MemberBoxResultMap">
@@ -28,26 +30,38 @@
 	<select id="getMember" resultMap="MemberResultMap">
 		SELECT * FROM member WHERE user_id= #{user_id, javaType=String}
 	</select>
-	<!-- (진산) 팔로워 구하기 ..following_user_id는 내 아이디를 입력함-->
-	<select id="getFollower" resultMap="MemberFollowResultMap">
-		SELECT * FROM member WHERE user_id in (SELECT user_id FROM member_follow WHERE following_user_id= #{user_id, javaType=String})
+	<!-- (진산) 임시 MemberFollow에서 following_user_id 불러오기 -->
+	<!--
+	<select id="getFollowing_user_id" resultMap="MemberFollowResultMap">
+		SELECT following_user_id FROM member_follow WHERE user_id= #{user_id, javaType=String}
 	</select>
+	-->
+	<!-- (진산) 팔로워 구하기 ..following_user_id는 내 아이디를 입력함-->
+	 <select id="getFollower" resultMap="MemberFollowResultMap">
+		SELECT a.user_id, a.user_img, b.following_user_id, b.following_user_img FROM member a, 
+		(SELECT user_id, following_user_id, user_img, following_user_img 
+		FROM member_follow WHERE following_user_id = #{user_id, javaType=String}) b
+		WHERE a.user_id = b.user_id
+	</select>
+	
 	<!-- (진산) 팔로잉 구하기 -->
 	<select id="getFollowing" resultMap="MemberFollowResultMap">
-		SELECT * FROM member WHERE user_id in 
-		(SELECT following_user_id FROM member_follow WHERE user_id= #{user_id, javaType=String})
+		SELECT a.user_id, a.user_img, b.following_user_id, b.following_user_img FROM member a, 
+		(SELECT user_id, following_user_id, user_img, following_user_img 
+		FROM member_follow WHERE user_id = #{user_id, javaType=String}) b
+		WHERE a.user_id = b.user_id
 	</select>
 	<!-- (진산) 팔로워 추천 목록 불러오기 -->
 	<select id="getRecommendFollower" resultMap="MemberFollowResultMap">
-		SELECT * FROM member WHERE user_id in
-		(SELECT following_user_id FROM (SELECT following_user_id, count(user_id) as follower_count
-		FROM member_follow GROUP BY following_user_id ORDER BY follower_count))
-		
+		SELECT distinct user_id, USER_IMG, FOLLOWING_USER_ID, FOLLOWING_USER_IMG FROM member_follow WHERE user_id in
+			(SELECT following_user_id FROM (SELECT following_user_id, count(user_id) as follower_count
+		FROM member_follow GROUP BY following_user_id ORDER BY follower_count asc)) 
+			and user_id not in #{user_id, javaType=String} and following_user_id not in #{user_id, javaType=String}
 	</select>
 	<!-- (진산) 팔로잉 한 명 지우기 -->
 	<delete id="deleteFollowing" parameterType="com.spring.madi.MemberFollowVO">
 		DELETE FROM member_follow 
-		WHERE following_user_id= #{following_user_id, javaType=String} and user_id= #{user_id, javaType=String}
+		WHERE user_id= #{user_id, javaType=String} and following_user_id= #{following_user_id, javaType=String}
 	</delete>
 	<!-- (진산) 팔로워 한 명 지우기 -->
 	<delete id="deleteFollower" parameterType="com.spring.madi.MemberFollowVO">
@@ -57,6 +71,7 @@
 	<!-- (진산) 팔로잉 한 명 추가 -->
 	<insert id="insertFollowing" parameterType="com.spring.madi.MemberFollowVO">
 		INSERT INTO member_follow 
-		VALUES (#{user_id, javaType=String}, #{following_user_id, javaType=String})
+		VALUES (#{user_id, javaType=String}, #{following_user_id, javaType=String}, 
+		#{user_img, javaType=String}, #{following_user_img, javaType=String})
 	</insert>
 </mapper>

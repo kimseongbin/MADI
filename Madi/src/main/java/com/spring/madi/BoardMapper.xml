@@ -38,19 +38,20 @@
 		SELECT * FROM board WHERE user_id= #{user_id, javaType=String}
 	</select>
 	<!-- (진산)팔로잉한 사람들의 게시글 목록 구하기..foreach로 팔로잉한 사람들의 게시글을 보여준다 -->
-	<!-- <select id="getFollowingBoards" resultMap="BoardResultMap">
-		SELECT a.board_num, a.user_id, d.user_img, a.board_title, a.board_summry, 
+	<select id="getFollowingBoards" resultMap="BoardResultMap">
+		SELECT a.board_num, a.user_id, a.user_img, a.board_title, a.board_summry, 
 		a.board_img, a.board_recipe_id, a.board_like, a.board_time, b.rep_content
-		FROM board a, board_reply b, member_follow c, member d
-		WHERE a.user_id= b.user_id and a.user_id=c.following_user_id and a.user_id= d.user_id
+		FROM board a, board_reply b, member_follow c
+		WHERE a.user_id= b.user_id and a.user_id=c.following_user_id
 		and following_user_id in
 			<foreach item="following_user_id" collection="array" open="(" separator="," close=")">
 				#{following_user_id}
 			</foreach>
 		ORDER BY board_time desc
-	</select> -->
+	</select> 
 	<!-- (진산)좋아요 버튼 누르면 하나 추가하기 -->
 	<update id="updateBoardLike" parameterType="com.spring.madi.BoardVO">
-		UPDATE board SET board_like= #{board_like} + 1 WHERE user_id= #{user_id}
-	</update>	
+		UPDATE board SET board_like= board_like + 1 
+		WHERE board_num= #{board_num, javaType=String} AND user_id= #{user_id, javaType=String} 
+	</update>
 </mapper>
