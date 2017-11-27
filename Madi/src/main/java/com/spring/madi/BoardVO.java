@@ -1,6 +1,7 @@
 package com.spring.madi;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 @Component
@@ -16,6 +17,8 @@ public class BoardVO {
 	private Timestamp board_time;
 	//(진산) 본문의 프로필 이미지를 위해 넣음
 	private String user_img;
+	//(성빈) 하나의 Board에 담겨져 있는 리플 목록을 DB로부터 조회하기 위한 필드
+	private List<BoardReplyVO> boardReplyList;
 	
 	public int getBoard_num() {
 		return board_num;
@@ -63,6 +66,7 @@ public class BoardVO {
 		return board_time;
 	}
 	public void setBoard_time(Timestamp board_time) {
+		
 		this.board_time = board_time;
 	}
 	public String getUser_img() {
@@ -70,6 +74,12 @@ public class BoardVO {
 	}
 	public void setUser_img(String user_img) {
 		this.user_img = user_img;
+	}
+	public List<BoardReplyVO> getBoardReplyList() {
+		return boardReplyList;
+	}
+	public void setBoardReplyList(List<BoardReplyVO> boardReplyList) {
+		this.boardReplyList = boardReplyList;
 	}
 	
 	

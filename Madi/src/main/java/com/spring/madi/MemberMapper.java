@@ -15,6 +15,8 @@ public interface MemberMapper {
 	ArrayList<MemberFollowVO> getFollowing(String user_id);
 	//(진산) 팔로워 추천 리스트
 	ArrayList<MemberFollowVO> getRecommendFollower(String user_id);
+	//(진산) 추천 리스트 새로고침
+	ArrayList<MemberFollowVO> getReloadRecommend();
 	//(진산) 팔로잉 한 명 삭제
 	void deleteFollowing(@Param("user_id") String user_id, @Param("following_user_id") String following_user_id);
 	//(진산) 팔로워 한 명 삭제

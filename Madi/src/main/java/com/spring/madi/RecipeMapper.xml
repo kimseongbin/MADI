@@ -27,7 +27,7 @@
 				   nation_name, ty_name
 			FROM recipe_info a, nation b, recipe_type c
 
-			WHERE a.nation_code = b.nation_code AND a.TY_CODE = c.TY_CODE AND recipe_id = 466
+			WHERE a.nation_code = b.nation_code AND a.TY_CODE = c.TY_CODE AND recipe_id = #{recipe_id}
 		</select>
 		
 	<select id="getRecipeIrdntById" resultType="com.spring.madi.RecipeIrdntVO">

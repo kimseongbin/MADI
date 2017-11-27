@@ -58,10 +58,13 @@
 	</select>
 	<!-- (진산) 팔로워 추천 목록 불러오기 -->
 	<select id="getRecommendFollower" resultMap="MemberFollowResultMap">
-		SELECT distinct user_id, USER_IMG, FOLLOWING_USER_ID, FOLLOWING_USER_IMG FROM member_follow WHERE user_id in
-			(SELECT following_user_id FROM (SELECT following_user_id, count(user_id) as follower_count
-		FROM member_follow GROUP BY following_user_id ORDER BY follower_count asc)) 
-			and user_id not in #{user_id, javaType=String} and following_user_id not in #{user_id, javaType=String}
+		SELECT following_user_id, following_user_img, count(user_id) 
+		FROM member_follow
+		WHERE following_user_id NOT IN (SELECT following_user_id
+										FROM member_follow
+										WHERE user_id = #{user_id, javaType=String})  
+		GROUP BY following_user_id, following_user_img 
+		ORDER BY count(user_id) desc
 	</select>
 	<!-- (진산) 팔로잉 한 명 지우기 -->
 	<delete id="deleteFollowing" parameterType="com.spring.madi.MemberFollowVO">

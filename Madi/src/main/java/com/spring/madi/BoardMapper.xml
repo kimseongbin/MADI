@@ -3,7 +3,7 @@
 <!-- mapper 태그 안에 작성하기 -->
 <mapper namespace="com.spring.madi.BoardMapper">
 	<resultMap type="BoardVO" id="BoardResultMap">
-		<result property="board_num" column="BOARD_NUM" />
+		<result property="board_num" column="BOARD_NUM"/>
 		<result property="user_id" column="USER_ID" />
 		<result property="board_title" column="BOARD_TITLE" />
 		<result property="board_summry" column="BOARD_SUMMRY" />
@@ -13,19 +13,24 @@
 		<result property="board_time" column="BOARD_TIME" />
 		<!-- (진산) 본문 글쓴이의 프로필 이미지를 위해 넣음 -->
 		<result property="user_img" column="USER_IMG" />
+		<!-- (성빈) board_num을 기준으로 Board의 모든 댓글 정보를 List에 담아 boardReplyList 필드로 리턴하는 collection 설정-->
+		<collection property="boardReplyList" column="board_num" javaType="java.util.ArrayList" ofType="com.spring.madi.BoardReplyVO" select="getReplyListByBoardNum"/>
+		<!-- (성빈) 자신과 팔로잉한 사람들 모두의 게시글을 불러온다 
+		<collection property="getAllboards" column="user_id" javaType="java.util.ArrayList" ofType="com.spring.madi.BoardVO" select="getAllBoardsByUser_id"/> -->
 	</resultMap>
 	
 	<resultMap type="BoardReplyVO" id="BoardReplyResultMap">
-		<result property="board_num" column="BOARD_NUM" />
+		<result property="board_num" column="BOARD_NUM"/>
 		<result property="user_id" column="USER_ID" />
 		<!-- (진산) 본문 댓글의 프로필 이미지를 위해 넣음 -->
 		<result property="user_img" column="USER_IMG" />
 		<result property="rep_content" column="REP_CONTENT" />
+		<result property="rep_date" column="REP_DATE" />
 	</resultMap>
 	
 	<resultMap type="UserLikeBoVO" id="UserLikeBoResultMap">
 		<result property="user_id" column="USER_ID" />
-		<result property="board_num" column="BOARD_NUM" />
+		<result property="board_num" column="BOARD_NUM"/>
 	</resultMap>	
 
 	<!-- 댓글에 입력하면 DB에 저장 -->
@@ -86,21 +91,37 @@
 		WHERE a.user_id = b_user_id and a.user_id = c.user_id and user_id= #{user_id, javaType=String} -->
 		SELECT * FROM board WHERE user_id= #{user_id, javaType=String}
 	</select>
-	<!-- (진산)팔로잉한 사람들의 게시글 목록 구하기..foreach로 팔로잉한 사람들의 게시글을 보여준다 -->
-	<select id="getFollowingBoards" resultMap="BoardResultMap">
-		SELECT a.board_num, a.user_id, a.user_img, a.board_title, a.board_summry, 
-		a.board_img, a.board_recipe_id, a.board_like, a.board_time, b.rep_content
-		FROM board a, board_reply b, member_follow c
-		WHERE a.user_id= b.user_id and a.user_id=c.following_user_id
-		and following_user_id in
-			<foreach item="following_user_id" collection="array" open="(" separator="," close=")">
-				#{following_user_id}
-			</foreach>
+	<!-- (성빈) 댓글 구하기 -->
+	<select id="getReplyListByBoardNum" resultType="com.spring.madi.BoardReplyVO">
+		select * from board_reply where board_num= #{board_num} ORDER BY REP_DATE DESC
+	</select>
+	<!-- (진산) 본인 + 팔로잉한 사람들의 게시글 목록 구하기 -->
+	<select id="getAllBoards" resultMap="BoardResultMap">	
+		SELECT * FROM
+		(SELECT * FROM board WHERE user_id= #{user_id, javaType=String}
+		UNION
+		SELECT * FROM board WHERE USER_ID in
+		(SELECT following_user_id FROM member_follow WHERE user_id= #{user_id, javaType=String}))
 		ORDER BY board_time desc
 	</select> 
-	<!-- (진산)좋아요 버튼 누르면 하나 추가하기 -->
-	<update id="updateBoardLike" parameterType="com.spring.madi.BoardVO">
-		UPDATE board SET board_like= board_like + 1 
-		WHERE board_num= #{board_num, javaType=String} AND user_id= #{user_id, javaType=String} 
+	<!-- (진산) 좋아요 버튼: 눌른 적이 있는지  user_like_bo에 체크하기 -->
+	<select id="getUserLike" resultMap="UserLikeBoResultMap" parameterType="com.spring.madi.BoardVO">
+		SELECT * FROM user_like_bo where user_id= #{user_id} and board_num= #{board_num}
+	</select>
+	<!-- (진산) 좋아요 버튼 : user_like_bo에 하나 추가하기 -->
+	<insert id="insertUserLike" parameterType="com.spring.madi.UserLikeBoVO">
+		INSERT INTO user_like_bo VALUES (#{user_id, javaType=String}, #{board_num})
+	</insert>
+	<!-- (진산) 좋아요 버튼: board에 좋아요 숫자 추가 -->
+	<update id="likePlusOne" parameterType="com.spring.madi.BoardVO">
+		UPDATE board SET board_like= board_like + 1 WHERE user_id= #{user_id, javaType=String} and board_num= #{board_num}
+	</update>
+	<!-- (진산) 좋아요 버튼: user_like_bo에 입력정보 삭제하기 -->
+	<delete id="deleteUserLike" parameterType="com.spring.madi.UserLikeBoVO">
+		DELETE FROM user_like_bo WHERE user_id= #{user_id, javaType=String} and board_num= #{board_num}
+	</delete>
+	<!-- (진산) 좋아요 버튼: board에 좋아요 숫자 지우기 -->
+	<update id="likeMinusOne" parameterType="com.spring.madi.BoardVO">
+		UPDATE board SET board_like= board_like - 1 WHERE user_id= #{user_id, javaType=String} and board_num= #{board_num}
 	</update>
 </mapper>

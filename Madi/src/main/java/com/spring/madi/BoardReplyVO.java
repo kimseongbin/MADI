@@ -1,5 +1,7 @@
 package com.spring.madi;
 
+import java.sql.Timestamp;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,6 +12,8 @@ public class BoardReplyVO {
 	private String rep_content;
 	//(진산) 본문 댓글의 프로필 이미지를 위해 넣음
 	private String user_img;
+	//(성빈) 댓글 입력한 시각
+	private Timestamp rep_date;
 	
 	public int getBoard_num() {
 		return board_num;
@@ -34,6 +38,12 @@ public class BoardReplyVO {
 	}
 	public void setUser_img(String user_img) {
 		this.user_img = user_img;
+	}
+	public Timestamp getRep_date() {
+		return rep_date;
+	}
+	public void setRep_date(Timestamp rep_date) {
+		this.rep_date = rep_date;
 	}
 	
 	
