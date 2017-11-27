@@ -125,6 +125,7 @@
 	}
 	.header.btn:hover, .btn:focus {
 	    color: #000;
+	 	outline: none;   
 	}
 	.header.modal-header, .header.h4, .close {
 	    background-color: #DE4F4F;
@@ -215,6 +216,8 @@
                 <li>
                 	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;">
                     	<span class="glyphicon glyphicon-home color header"></span>
+
+
                     </button>
                 </li>
                 <!-- profile 아이콘 -->
@@ -225,11 +228,11 @@
                         </button>
                         <ul class="dropdown-menu" style="text-align:center; background-color:#F6F6F6;">
                             <li>
-                            	<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="70" width="70" alt="Avatar">
+                            	<a href="./mypage.do"><img src="<%=memberVO.getUser_img()%>" class="img-circle" height="70" width="70" alt="Avatar"></a>
                             </li>
                             <li>
-                                <h4 class="header">
-                                    <p><strong><%=memberVO.getUser_id()%></strong></p>
+                                <h4>
+                                    <a href="./mypage.do"><p class="text-primary"><%=memberVO.getUser_id()%></p></a>
                                 </h4>
                             </li>
                             <li>
@@ -426,6 +429,12 @@
 	</div>
 </div>
 <script>
+	function recipeDo() {
+		location.href = "./recipe.do";
+	}
+	function postListDo() {
+		location.href = "./postList.do"
+	}
 	function getMessage() {
 		var user_id = "<%=memberVO.getUser_id()%>";
 		$.ajax({
