@@ -37,6 +37,19 @@
 		Select * from board_reply order by rep_date
 	
 	</select>
+	<!-- 성빈 : recipe_id와 연결된 Board 정보 조회 -->
+	<select id="getBoardByRecipeId" resultMap="BoardResultMap" parameterType="com.spring.madi.RecipeVO">
+		SELECT *
+		FROM BOARD
+		WHERE BOARD_RECIPE_ID = #{recipe_id}
+	</select>
+	<!-- 성빈 : board_num과 연결된 Reply 리스트 조회 -->
+	<select id="getReplyByBoardNum" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardVO">
+		SELECT USER_ID, USER_IMG, REP_CONTENT 
+		FROM BOARD_REPLY
+		WHERE BOARD_NUM = #{board_num}
+		ORDER BY REP_DATE DESC
+	</select>
 	<!-- 인욱: recipe_id 에 따른 보드내용 뽑아옴 -->
 	<select id="contentBoard" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardReplyVO">
 		select c.board_num,c.USER_ID,c.REP_CONTENT,c.REP_DATE, d.recipe_id 
@@ -44,8 +57,6 @@
 		where c.board_num = d.board_num 
 		and recipe_id=466 order by rep_date
 		</select>
-
-
 	<insert id="insertBoard" parameterType="BoardVO">
 		<selectKey resultType="int" keyProperty="board_num" order="BEFORE">
 			SELECT NVL(MAX(board_num), 0) + 1 FROM board

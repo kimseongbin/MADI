@@ -16,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,19 +53,34 @@ public class FrontController {
 
 	// 게시물 보기 controller
 	@RequestMapping("/postList.do")
-	public ModelAndView postList(RecipeVO recipeVO) {
+	public ModelAndView postList(RecipeVO recipeVO, HttpSession session) {
+		//모델 & 뷰 연결 객체 생성
 		ModelAndView result = new ModelAndView();
+		// 레시피 리스트 조회
 		List<RecipeVO> postList = recipeDAOService.postList();
-
+		
+		// Header 기본 정보(알림/메시지/유저이미지) 정보 받아오기
+		String user_id = (String) session.getAttribute("user_id");
+		// 내 정보 받아오기
+		MemberVO memberVO = memberDAOService.getUserInfoById(user_id);
+		// message 리스트 받아오기
+		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
+		// 알림 리스트 받아오기
+		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
+		// 모델에 객체 추가
+		result.addObject("memberVO", memberVO);
+		result.addObject("messageList", messageList);
+		result.addObject("notificationList", notificationList);
 		result.addObject("postList", postList);
+		// 연결 뷰 지정
 		result.setViewName("postList");
-
 		return result;
 	}
 
 	// 성빈 : 로그인 모델
 	// 로그인 성공 시 session에 기본 정보를 저장하고 recipe.do 페이지로 이동한다
 	// 로그인 실패 시 실패한 이유를 알려주고 index화면에 머무른다
+	// 로그인 메소드 비정상 수행 수정 필요
 	@RequestMapping("/login.do")
 	public String loginMadi(MemberVO memberVO, HttpServletResponse response, HttpSession session) {
 		// 입력된 아이디로부터 DB에 있는 password 조회
@@ -268,14 +285,8 @@ public class FrontController {
 		MemberVO MemberVO = memberDAOService.getUserInfoById(user_id);
 		// message 리스트 받아오기
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
-		if(messageList.size() == 0) {
-			messageList = new ArrayList<MessageVO>();
-		}
 		// 알림 리스트 받아오기
 		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
-		if(notificationList.size() == 0) {
-			notificationList = new ArrayList<NotificationVO>();
-		}
 		// 모델에 객체 추가
 		model.addAttribute("messageList", messageList);
 		model.addAttribute("notificationList", notificationList);
@@ -283,17 +294,37 @@ public class FrontController {
 
 		return "recipe";
 	}
+	
+	
 	@RequestMapping("/recipeDetail.do")
-	public String recipeDetail(RecipeVO recipeVO, BoardVO boardVO, BoardReplyVO boardReplyVO, Model model) {
-		// 인욱
-		System.out.println("check1");
-		RecipeVO vo = recipeDAOService.getRecipeById(recipeVO);
-		// vo1 에 recipeID 에 따른 board내용을 저장
-		List<BoardReplyVO> vo1 = boardDAOService.contentBoard();
-		// 레시피정보, 타이틀, 설명, 만드는법 등
-		model.addAttribute("recipeVO", vo);
-		// 레시피 아이디에 따른 댓글 리스트
-		model.addAttribute("boardReplyVO", vo1);
+	public String recipeDetail(HttpSession session, RecipeVO recipeVO, Model model) {
+		// (성빈) : 로그인 체크
+		// session에 로그인 아이디 없을 경우 초기화면으로 이동
+		String user_id = (String) session.getAttribute("user_id");
+		if(user_id == null) {
+			return "redirect:/";
+		}
+		// Header에 전해줄 사용자 개인정보
+		MemberVO memberVO = memberDAOService.getUserInfoById(user_id);
+		// Header에 전해줄 사용자 알림 메시지 리스트
+		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
+		// Header에 전해줄 사용자 개인 메시지 리스트
+		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
+		
+		// recipe_id로 recipe 정보 조회
+		RecipeVO recipe = recipeDAOService.getRecipeById(recipeVO);
+		// (성빈), contentBoard수정 : recipeVO에 저장된 recipe_id를 이용해 해당 Board 데이터를 BoardVO 객체에 담아 리턴하는 메소드
+		BoardVO boardVO = boardDAOService.getBoardByRecipeId(recipeVO);
+		// (성빈), 추가 : BoardVO의 board_num과 연결된 댓글 리스트를 리턴하는 메소드
+		ArrayList<BoardReplyVO> replyList = boardDAOService.getReplyByBoardNum(boardVO);
+		
+		// RecipeDetail.jsp에 객체 전달
+		model.addAttribute("memberVO", memberVO);
+		model.addAttribute("notificationList", notificationList);
+		model.addAttribute("messageList", messageList);
+		model.addAttribute("recipe", recipe);
+		model.addAttribute("boardVO", boardVO);
+		model.addAttribute("replyList", replyList);
 
 		return "recipeDetail";
 	}
@@ -320,12 +351,99 @@ public class FrontController {
 		return rs;
 
 	}
-
-	// 레시피 등록 controller
+	// 주석 쓸 때 자기 이름 꼭 써요
+	// (성빈) 레시피 저장 모델
+	// MF로 파일 객체를 읽어 파일을 로컬 디렉토리에 저장한 뒤 해당 URL을 리턴받아 
+	// recipeVO에 입력한 뒤 recipeVO를 DB에 저장한다.
 	@RequestMapping("/recipeInsert.do")
-	public ModelAndView recipeInsert(RecipeVO recipeVO, MultipartHttpServletRequest request) throws Exception {
+	public String recipeInsert(RecipeVO recipeVO, HttpSession session, @RequestParam("titleImg") MultipartFile titleImg, @RequestParam("stepImg") MultipartFile[] stepImg) throws Exception {
 
 		ModelAndView mav = new ModelAndView();
+		// (성빈) 작성자의 id 값 읽어오기
+		String user_id = (String) session.getAttribute("user_id");
+		// (성빈) titleImg를 Local Directory에 저장하고 저장경로를 리턴받는 메소드
+		String img_url = recipeDAOService.getImgURLByImgFile(titleImg);
+		recipeVO.setImg_url(img_url);
+		recipeVO.setUser_id(user_id);
+		// (성빈) stepImg를 Local Directory에 저장하고 저장한 경로를 배열 형태로 리턴받는 메소드
+		String[] step_img_url = recipeDAOService.getImgURLByImgFiles(stepImg);
+		recipeVO.setStep_img_url(step_img_url);
+		
+		// (성빈) recipeVO에 입력되어 있는 recipe 기본정보를 recipe_Info 테이블에 INSERT
+		recipeDAOService.insertRecipe(recipeVO);
+		// (성빈) recipeVO에 저장되어 있는 recipe 재료정보를 recipe_Irdnt 테이블에 INSERT
+		ArrayList<RecipeIrdntVO> recipeIrdntList = recipeDAOService.getIrdntVOFromRecipeVO(recipeVO);
+		for (int i = 0; i < recipeIrdntList.size(); i++) {
+			recipeDAOService.insertRecipeIrdnt(recipeIrdntList.get(i));
+		}
+		// (성빈) recipeVO에 저장되어 있는 recipe 과정정보를 recipe_Process 테이블에 INSERT
+		ArrayList<RecipeProcessVO> recipeProcessList = recipeDAOService.getProcessVOFromRecipeVO(recipeVO);
+		for (int i = 0; i < recipeProcessList.size(); i++) {
+			recipeDAOService.insertRecipeProcess(recipeProcessList.get(i));
+		}
+		// (성빈) 파라메터 전달 테스트 성공, 각각의 순서에 맞춰 스트링 배열이 얻어짐을 확인
+		/*System.out.println("레시피 입력 테스트 시작");
+		System.out.println("RecipeInfo 기본 정보 입력 결과 확인 시작....");
+		System.out.println("recipe_id : " + recipeVO.getRecipe_id());
+		System.out.println("recipe_title : " + recipeVO.getRecipe_title());
+		System.out.println("recipe_desc : " + recipeVO.getRecipe_desc());
+		System.out.println("nation_code : " + recipeVO.getNation_code());
+		System.out.println("ty_code : " + recipeVO.getTy_code());
+		System.out.println("cooking_time : " + recipeVO.getCooking_time());
+		System.out.println("img_url : " + recipeVO.getImg_url());
+		System.out.println("detail_url : " + recipeVO.getDetail_url());
+		System.out.println("MultipartFile titleImg에 입력되어 있는 사진의 이름은 " + titleImg.getOriginalFilename());
+		System.out.println("MultipartFile titleImg에 입력되어 있는 사진의 크기는 " + titleImg.getSize());
+		
+		System.out.println("RecipeIrdnt 기본 정보 입력 결과 확인 시작....");
+		String[] irdnt_name = recipeVO.getIrdnt_name();
+		for (int i = 0; i < irdnt_name.length; i++) {
+			System.out.println("입력된 총 재료명의 개수는 " + irdnt_name.length);
+			System.out.println(i + "번 째 irdnt_name : " + irdnt_name[i]);
+		}
+		String[] irdnt_cpcty = recipeVO.getIrdnt_cpcty();
+		for (int i = 0; i < irdnt_cpcty.length; i++) {
+			System.out.println("입력된 총 재료용량의 개수는 " + irdnt_cpcty.length);
+			System.out.println(i + "번 째 irdnt_cpcty : " + irdnt_cpcty[i]);
+		}
+		int[] irdnt_ty_code = recipeVO.getIrdnt_ty_code();
+		for (int i = 0; i < irdnt_ty_code.length; i++) {
+			System.out.println("입력된 총 재료타입의 개수는 " + irdnt_ty_code.length);
+			System.out.println(i + "번 째 irdnt_ty_code : " + irdnt_ty_code[i]);
+		}
+		System.out.println("입력된 재료명, 재료용량, 재료타입의 개수가 모두 동일하고, 각각의 순서가 맞는가 ?");
+		
+		System.out.println("RecipeProcess 기본 정보 입력 결과 확인 시작");
+		int[] cooking_no = recipeVO.getCooking_no();
+		for (int i = 0; i < cooking_no.length; i++) {
+			System.out.println("입력된 총 과정순서의 개수는 " + cooking_no.length);
+			System.out.println(i + "번 째 cooking_no : " + cooking_no[i]);
+		}
+		String[] cooking_desc = recipeVO.getCooking_desc();
+		for (int i = 0; i < cooking_desc.length; i++) {
+			System.out.println("입력된 총 과정설명의 개수는 " + cooking_desc.length);
+			System.out.println(i + "번 째 cooking_desc : " + cooking_desc[i]);
+		}
+		String[] step_tip = recipeVO.getStep_tip();
+		for (int i = 0; i < step_tip.length; i++) {
+			System.out.println("입력된 총 과정 팁의 개수는 " + step_tip.length);
+			System.out.println(i + "번 째 step_tip : " + step_tip[i]);
+		}
+		String[] step_img_url = recipeVO.getStep_img_url();
+		if(step_img_url != null) {
+			for (int i = 0; i < step_img_url.length; i++) {
+				System.out.println("입력된 총 과정 사진의 개수는 " + step_img_url.length);
+				System.out.println(i + "번 째 step_img_url : " + step_img_url[i]);
+			}
+		}
+		System.out.println("stepImg 파일 입력 체크 시작");
+		for (int i = 0; i < stepImg.length; i++) {
+			System.out.println("입력된 총 과정 사진 파일의 개수는 " + stepImg.length);
+			System.out.println(i + "번 째 stepImg : " + stepImg[i].getOriginalFilename());
+		}
+		System.out.println("입력된 과정순서, 과정설명, 과정 팁, 과정 사진의 개수가 모두 동일하고, 각각의 순서가 맞는가?");*/
+		
+		
 
 		// 파일 업로드 안돼요 오빠가 하셔야해요
 		/*
@@ -348,7 +466,7 @@ public class FrontController {
 		 * recipeDAOService.insertRecipe(recipeVO);
 		 */
 
-		BoardVO boardVO = new BoardVO();
+		/*BoardVO boardVO = new BoardVO();
 
 		// boardVO.setUser_id(recipeVO.getUser_id());
 		boardVO.setBoard_title(recipeVO.getRecipe_title());
@@ -359,9 +477,9 @@ public class FrontController {
 		boardDAOService.insertBoard(boardVO);
 
 		// mav.addObject("fileName", mf.getOriginalFilename());
-		mav.setViewName("redirect:/postList.do");
-
-		return mav;
+		mav.setViewName("redirect:/postList.do");*/
+		
+		return "redirect:/postList.do";
 
 	}
 
@@ -462,9 +580,6 @@ public class FrontController {
 	@RequestMapping(value = "/notification.do")
 	public String getNotification(Model model, String user_id) {
 		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
-		if(notificationList.size()==0) {
-			notificationList = null;
-		}
 		model.addAttribute("notificationList", notificationList);
 		return "notification";
 	}
@@ -473,9 +588,6 @@ public class FrontController {
 	@RequestMapping(value = "/message.do")
 	public String getMessage(Model model, String user_id) {
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
-		if(messageList.size()==0) {
-			messageList = null;
-		}
 		model.addAttribute("messageList", messageList);
 		return "message";
 	}

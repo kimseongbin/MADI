@@ -17,14 +17,12 @@
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 	
 %>
-  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
   <style>  	
 	footer {
 	    background-color: #DE4F4F;
 	    color: white;
 	    padding: 15px;
-	}
-  	  	
+	}  	
 	/* ICON Design */
 	.glyphicon {
 	    font-size: 17px;
@@ -148,53 +146,6 @@
 	    padding: 20px 50px;
 	}
 	
-	#irdntAddBtn {
-		float:right;
-		padding-top:0px;
-		padding-bottom:0px;
-		padding-left:5px;
-		padding-right:5px;
-	}
-  	
-  	#recipeProcessAddBtn {
-  		float:right;
-  		padding-top:0px;
-  		padding-bottom:0px;
-  		padding-left:5px;
-  		padding-right:5px;
-  	}
-  	
-  	#cooking_no {
-  		border: none;  		
-  		background-color: white;
-  	}
-  	
-	.file-upload {
-		position: relative;
-		display: inline-block;
-	}
-	
-	.file-upload__label {
-	  display: block;
-	  /* padding: 1em 2em; */
-	  color: #fff;
-	  background: #DE4F4F;
-	  border-radius: .4em;
-	  transition: background .3s;
-	  
-	}
-	    
-	.file-upload__input {
-	    position: absolute;
-	    left: 0;
-	    top: 0;
-	    right: 0;
-	    bottom: 0;
-	    font-size: 1;
-	    width:0;
-	    height: 100%;
-	    opacity: 10;
-	}
   </style>
 <!-- 헤더 시작 -->
  <nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
@@ -400,7 +351,7 @@
 										height="40" width="40" alt="Avatar">
 								</div>
 								<div class="col-sm-6">
-									<h4 class="text-primary" style="">이글이글</h4>
+									<h4 class="text-primary" style=""><%=memberVO.getUser_id() %></h4>
 								</div>
 							</div>
 							<!-- 알림 내용들 -->

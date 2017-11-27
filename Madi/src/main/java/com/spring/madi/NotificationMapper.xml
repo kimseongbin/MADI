@@ -46,9 +46,9 @@
 	<!-- NOTICE_FROM이 나 -->
 	<!-- 팔로우, 좋아요, 댓글 남길 경우 NOTIFICATION에 이 INSERT 쿼리가 실행되어야 함 -->
 	<!-- (각 페이지에서 공유, 좋아요, 댓글 버튼에 notificationVO객체로 값을 받을 수 있는 hidden 타입의 input 태그를 배치해놔야 함)
-	// ex>> input type="hidden" name="notice_to" value="[팔로우 할 사람 아이디]"
+	// ex>> input type="hidden" name="notice_to" value="[팔로우 할 사람 아이디]" "[게시물 작성자]"
 	// ex>> input type="hidden" name="notice_from" value="[내 아이디]"
-	// ex>> input type="hidden" name="notice_content" value="000이 좋아요를 눌렀습니다" (좋아요 버튼인 경우)
+	// ex>> input type="hidden" name="notice_content" value="000이 좋아요를 눌렀습니다" (좋아요 버튼인 경우) "000님이 댓글을 남기셨습니다" ""	
 	// ex>> input type="hidden" name="notice_tpye" value="팔로우" (팔로우 버튼인 경우) -->
 	<insert id="sendNoticeById" parameterType="com.spring.madi.NotificationVO">
 		INSERT INTO NOTIFICATION(NOTICE_ID,NOTICE_TO, NOTICE_FROM, CONTENT, NOTICE_TYPE)

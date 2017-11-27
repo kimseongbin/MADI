@@ -46,7 +46,7 @@
 	
 	<!-- 게시글 전체 보기/ BOARD와 RECIPE_INFO를 출력해야하는데..-->
 	<select id="postList" resultMap="RecipeResultMap">
-		SELECT * FROM RECIPE_INFO
+		SELECT * FROM RECIPE_INFO ORDER BY TIME DESC
 	</select>
 	
 	<!--
@@ -65,10 +65,26 @@
 		<selectKey resultType="int" keyProperty="recipe_id" order="BEFORE">
 			SELECT MAX(recipe_id) + 1 FROM recipe_info
 		</selectKey>
-		INSERT INTO recipe_info (recipe_id, recipe_title, recipe_desc, nation_code, ty_code, cooking_time, img_url, detail_url, user_id)
-		VALUES (#{recipe_id}, #{recipe_title}, #{recipe_desc}, #{nation_code}, #{ty_code}, #{cooking_time}, #{img_url}, 'test', 'madi')
+		INSERT INTO recipe_info (recipe_id, recipe_title, recipe_desc, nation_code, ty_code, cooking_time, img_url, user_id)
+		VALUES (#{recipe_id}, #{recipe_title}, #{recipe_desc}, #{nation_code}, #{ty_code}, #{cooking_time}, #{img_url}, #{user_id})
 	</insert>
 	
+	<!-- 성빈 : 레시피 재료 입력하기 -->
+	<insert id="insertRecipeIrdnt" parameterType="com.spring.madi.RecipeIrdntVO">
+		<selectKey resultType="int" keyProperty="recipe_id" order="BEFORE">
+			SELECT MAX(recipe_id) FROM recipe_info
+		</selectKey>
+		INSERT INTO recipe_irdnt(recipe_id, irdnt_name, irdnt_cpcty, irdnt_ty_code)
+		VALUES (#{recipe_id}, #{irdnt_name}, #{irdnt_cpcty}, #{irdnt_ty_code})
+	</insert>
+	<!-- 성빈 : 레시피 과정 입력하기 -->
+	<insert id="insertRecipeProcess" parameterType="com.spring.madi.RecipeProcessVO">
+		<selectKey resultType="int" keyProperty="recipe_id" order="BEFORE">
+			SELECT MAX(recipe_id) FROM recipe_info
+		</selectKey>
+		INSERT INTO recipe_process(recipe_id, cooking_no, cooking_desc, step_img_url, step_tip)
+		VALUES(#{recipe_id}, #{cooking_no}, #{cooking_desc}, #{step_img_url, jdbcType=VARCHAR}, #{step_tip})
+	</insert>
 	<!-- 성빈 : 배열 형태의 ty_code값이 여러번 입력될 경우 해당 recipe 목록을 조회하는 메소드 -->
 	<select id="getRecipesByTy_code" resultType="com.spring.madi.RecipeVO">
 		SELECT recipe_id, recipe_title, recipe_desc, img_url, user_id, cooking_time

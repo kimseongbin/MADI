@@ -1,3 +1,7 @@
+<%@page import="com.spring.madi.BoardVO"%>
+<%@page import="com.spring.madi.MessageVO"%>
+<%@page import="com.spring.madi.NotificationVO"%>
+<%@page import="com.spring.madi.MemberVO"%>
 <%@page import="com.spring.madi.RecipeProcessVO"%>
 <%@page import="com.spring.madi.RecipeIrdntVO"%>
 <%@page import="com.spring.madi.RecipeVO"%>
@@ -9,21 +13,32 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
-	List<BoardReplyVO> replyList = (ArrayList<BoardReplyVO>)request.getAttribute("replyList");
-	//레시피 아이디에 따른 댓글 리스트
-	List<BoardReplyVO> boardReplyVO = (ArrayList<BoardReplyVO>)request.getAttribute("boardReplyVO");
-	//레시피정보, 타이틀, 설명, 만드는법 등 객체
-	RecipeVO recipeVO = (RecipeVO) request.getAttribute("recipeVO");
-	// 레시피정보, 타이틀, 설명, 만드는법 등 객체 담겨있는 배열 품
-	List<RecipeIrdntVO> recipeIrdnt = recipeVO.getRecipeIrdnt();
-	List<RecipeProcessVO> recipeProcess = recipeVO.getRecipeProcess();
+	// 모델로부터 Header에 전달할 객체 받기
+	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
+	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request
+			.getAttribute("notificationList");
+	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
+
+	// Header에 해당 객체 전달
+	request.setAttribute("memberVO", memberVO);
+	request.setAttribute("notificationList", notificationList);
+	request.setAttribute("messageList", messageList);
+
+	// recipe 정보 및 recipe 분해
+	RecipeVO recipe = (RecipeVO) request.getAttribute("recipe");
+	ArrayList<RecipeIrdntVO> recipeIrdnt = (ArrayList<RecipeIrdntVO>) recipe.getRecipeIrdnt();
+	ArrayList<RecipeProcessVO> recipeProcess = (ArrayList<RecipeProcessVO>) recipe.getRecipeProcess();
+
+	// 게시판 정보 및 게시글 목록 받기
+	BoardVO boardVO = (BoardVO) request.getAttribute("boardVO");
+	ArrayList<BoardReplyVO> replyList = (ArrayList<BoardReplyVO>) request.getAttribute("replyList");
 %>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=divice-width, initial-scale=1">
-<title>Insert title here</title>
+<title>마디 - 재료로 요리하다</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
@@ -38,9 +53,6 @@
 
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
-
-<!-- 하이차트 끝 -->
-
 
 <script language="JavaScript">
 	$(document).ready(function() {
@@ -300,360 +312,200 @@
 	};
 </script>
 
+<!-- 하이차트 끝 -->
 
 <style>
+/* 본문 스타일 설정 */
+/* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+.row.content {
+	height: 1500px
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+	background-color: #f1f1f1;
+	height: 100%;
+}
+
+/* Set black background color, white text and some padding */
 footer {
-	background-color: #DE4F4F;
+	background-color: #555;
 	color: white;
 	padding: 15px;
 }
-/* 헤더 아이콘 Design */
-.glyphicon {
-	font-size: 18px;
-}
 
-.glyphicon.top {
-	color: #000000;
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+	.sidenav {
+		height: auto;
+		padding: 15px;
+	}
+	.row.content {
+		height: auto;
+	}
 }
-
-.glyphicon.icon-size {
-	font-size: 23px;
-}
-/* 헤더버튼 주변색 */
-.btn.form {
-	background-color: #DE4F4F;
-}
-/*헤더 색*/
-.navbar.head {
-	background-color: #DE4F4F;
-}
-/* 움직이는 헤더 */
-.affix {
-	top: 0;
-	width: 100%;
-	z-index: 9999 !important;
-}
-
-.affix+.container-fluid {
-	padding-top: 70px;
-}
-
-img {
-	display: block;
-	margin: 0 auto;
-}
+/* 본문 스타일 설정 */
 </style>
 </head>
 <body style="background-color: #F6F6F6">
-	<!-- 왼쪽 헤더 -->
-	<nav class="navbar navbar-default head" data-spy="affix"
-		data-offset-top="197">
+	<!-- Header 시작-->
+	<div class="header">
+		<jsp:include page="header.jsp"></jsp:include>
+	</div>
+	<!-- Header 끝-->
+	<!-- 성빈 수정 -->
 	<div class="container-fluid">
-		<div class="navbar-header" style="padding-right: 30%;">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#myNavbar">
-				<span class="icon-bar"></span><span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">MADI</a>
-		</div>
-		<!--검색 창 -->
-		<div class="collapse navbar-collapse" id="myNavbar">
-			<ul class="nav navbar-nav navbar">
-				<form class="navbar-form navbar-right" role="search">
-					<div class="form-group input-group">
-						<input type="text" class="form-control" placeholder="Search.."
-							size="80%"> <span class="input-group-btn">
-							<button class="btn btn-default" type="button">
-								<span class="glyphicon glyphicon-search"></span>
-							</button>
-						</span>
+		<div class="row content">
+			<!-- 좌측 Sidenav -->
+			<div class="col-sm-3 sidenav">
+				<div class="panel panel-default" style="padding-left: 5px; padding-right:5px; padding-bottom:10px;">
+					<h4><small><%=memberVO.getUser_id() %>님의 레시피</small></h4>
+					<img src="<%=memberVO.getUser_img()%>" class="img-rounded" width="100%;">
+					<br/><br/>
+					<!-- 재료 목록 시작-->
+					<ul class="nav nav-pills nav-stacked">
+						<li>
+							<span>재료명</span>
+							<span>재료용량</span>
+						</li>
+<%
+					for(int i = 0; i < recipeIrdnt.size(); i++) {
+						RecipeIrdntVO recipeIrdntVO = recipeIrdnt.get(i);
+%>
+						<li>
+							<span><%=recipeIrdntVO.getIrdnt_name() %></span>
+							<span><%=recipeIrdntVO.getIrdnt_cpcty() %></span>
+						</li>
+<%
+					}
+%>
+					</ul>
+					<!-- 재료 목록 시작 끝-->
+					<!--  -->
+					<div class=""></div>
+					<br>
+				</div>
+				<div></div>
+			</div>
+			<!-- 좌측 Sidenav 끝-->
+			<div class="col-sm-9">
+				<h4>
+					<small>RECENT POSTS</small>
+				</h4>
+				<hr>
+				<h2>I Love Food</h2>
+				<h5>
+					<span class="glyphicon glyphicon-time"></span> Post by Jane Dane,
+					Sep 27, 2015.
+				</h5>
+				<h5>
+					<span class="label label-danger">Food</span> <span
+						class="label label-primary">Ipsum</span>
+				</h5>
+				<br>
+				<p>Food is my passion. Lorem ipsum dolor sit amet, consectetur
+					adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+					exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Excepteur sint occaecat cupidatat non proident, sunt in
+					culpa qui officia deserunt mollit anim id est laborum consectetur
+					adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+					exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat.</p>
+				<br>
+				<br>
+
+				<h4>
+					<small>RECENT POSTS</small>
+				</h4>
+				<hr>
+				<h2>Officially Blogging</h2>
+				<h5>
+					<span class="glyphicon glyphicon-time"></span> Post by John Doe,
+					Sep 24, 2015.
+				</h5>
+				<h5>
+					<span class="label label-success">Lorem</span>
+				</h5>
+				<br>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+					do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+					enim ad minim veniam, quis nostrud exercitation ullamco laboris
+					nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat
+					cupidatat non proident, sunt in culpa qui officia deserunt mollit
+					anim id est laborum consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+					minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+					aliquip ex ea commodo consequat.</p>
+				<hr>
+
+				<h4>Leave a Comment:</h4>
+				<form role="form">
+					<div class="form-group">
+						<textarea class="form-control" rows="3" required></textarea>
 					</div>
+					<button type="submit" class="btn btn-success">Submit</button>
 				</form>
-			</ul>
-			<!--오른쪽 아이콘 -->
-			<ul class="nav navbar-nav navbar-right">
-				<!--home 아이콘 -->
-				<li><button type="button" class="btn form"
-						style="padding-top: 15px;">
-						<span class="glyphicon glyphicon-home color"></span>
-					</button></li>
-				<!-- 냉장고 아이콘 -->
-				<li>
-					<div style="padding-top: 9px;">
-						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#fridge">
-							<img src="./resources/food_icon/fridge.png"
-								style="width: 20px; height: 20px;">
-						</button>
-						<!-- 냉장고 모달바 -->
-						<div class="modal fade" id="fridge" tableindex="-1" role="dialog"
-							aria-labelledy="modallabel">
-							<div class="modal-dialog modal-lg" role="document">
-								<!-- content 시작 -->
-								<div class="modal-content">
-									<!-- 탭 -->
-									<div class="modal-header" style="background-color: #DE4F4F;">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h3 style="color: #FFFFFF; text-align: center;">
-											<img src="./resources/food_icon/fridge_white.png"
-												style="width: 35px; height: 35px;"> <strong>냉장고
-												재료들</strong>
-										</h3>
-									</div>
-									<div class="modal-body" style="text-align: center;">
-										<div class="row">
-											<!-- 왼쪽 카테고리 -->
-											<div class="col-sm-2">
-												<ul class="nav nav-stacked">
-													<li class="active"><a data-toggle="tab" href="#menu1">
-															<strong>곡류/면류</strong>
-													</a></li>
-													<li><a data-toggle="tab" href="#menu2"> <strong>채소</strong>
-													</a></li>
-													<li><a data-toggle="tab" href="#menu3"> <strong>고기</strong>
-													</a></li>
-													<li><a data-toggle="tab" href="#menu4"> <strong>해산물</strong>
-													</a></li>
-												</ul>
-											</div>
-											<!--  가운데 리스트 나열 -->
-											<div class="col-sm-6" style="background-color: #BDBDBD;">
-												<div class="tab-content">
-													<!-- 메뉴1 곡류 -->
-													<div id="menu1" class="tab-pane fade in active">
-														<table>
-															<tr>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/rice.png"
-																		style="width: 50px; height: 50px;"><br> <strong>흰쌀</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/noodle.png"
-																		style="width: 50px; height: 50px;"><br> <strong>파스타</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/noodle.png"
-																		style="width: 50px; height: 50px;"><br> <strong>라면</strong>
-																</a></td>
-															</tr>
-														</table>
-													</div>
-													<!-- 메뉴2 채소 -->
-													<div id="menu2" class="tab-pane fade">
-														<table>
-															<tr>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/vege.png"
-																		style="width: 50px; height: 50px;"><br> <strong>상추</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/vege.png"
-																		style="width: 50px; height: 50px;"><br> <strong>시금치</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/vege.png"
-																		style="width: 50px; height: 50px;"><br> <strong>대파</strong>
-																</a></td>
-															</tr>
-														</table>
-													</div>
-													<!-- 메뉴3 고기 -->
-													<div id="menu3" class="tab-pane fade">
-														<table>
-															<tr>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/beef.png"
-																		style="width: 50px; height: 50px;"><br> <strong>삼겹살</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/beef.png"
-																		style="width: 50px; height: 50px;"><br> <strong>소고기</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/beef.png"
-																		style="width: 50px; height: 50px;"><br> <strong>소시지</strong>
-																</a></td>
-															</tr>
-														</table>
-													</div>
-													<!-- 메뉴4 해산물 -->
-													<div id="menu4" class="tab-pane fade">
-														<table>
-															<tr>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/fish.png"
-																		style="width: 50px; height: 50px;"><br> <strong>고등어</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/fish.png"
-																		style="width: 50px; height: 50px;"><br> <strong>참치캔</strong>
-																</a></td>
-															</tr>
-														</table>
-													</div>
-													<!-- 메뉴5 소스 -->
-													<div id="menu5" class="tab-pane fade">
-														<table>
-															<tr>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/sauce.png"
-																		style="width: 50px; height: 50px;"><br> <strong>간장</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/sauce.png"
-																		style="width: 50px; height: 50px;"><br> <strong>미림</strong>
-																</a></td>
-																<td><a href="#" class="text-muted"> <img
-																		src="./resources/food_icon/sauce.png"
-																		style="width: 50px; height: 50px;"><br> <strong>진간장</strong>
-																</a></td>
-															</tr>
-														</table>
-													</div>
-													<!-- 메뉴6 -->
-												</div>
-											</div>
-											<!-- 오른쪽 내가 가진 재료들? -->
-											<div class="col-sm-4"></div>
-										</div>
-									</div>
-									<!-- 내용 끝 -->
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-									</div>
-								</div>
-								<!-- 모달 content 끝 -->
-							</div>
-						</div>
+				<br>
+				<br>
+
+				<p>
+					<span class="badge">2</span> Comments:
+				</p>
+				<br>
+
+				<div class="row">
+					<div class="col-sm-2 text-center">
+						<img src="bandmember.jpg" class="img-circle" height="65"
+							width="65" alt="Avatar">
 					</div>
-				</li>
-				<li>
-					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
-						<button class="btn dropdown-toggle form" type="button"
-							data-toggle="dropdown">
-							<span class="glyphicon glyphicon-user color"></span>
-						</button>
-						<ul class="dropdown-menu"
-							style="text-align: center; background-color: #F6F6F6;">
-							<li><img src="./resources/profile/bird.jpg"
-								class="img-circle" height="70" width="70" alt="Avatar"></li>
-							<li>
+					<div class="col-sm-10">
+						<h4>
+							Anja <small>Sep 29, 2015, 9:12 PM</small>
+						</h4>
+						<p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum
+							dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua.</p>
+						<br>
+					</div>
+					<div class="col-sm-2 text-center">
+						<img src="bird.jpg" class="img-circle" height="65" width="65"
+							alt="Avatar">
+					</div>
+					<div class="col-sm-10">
+						<h4>
+							John Row <small>Sep 25, 2015, 8:25 PM</small>
+						</h4>
+						<p>I am so happy for you man! Finally. I am looking forward to
+							read about your trendy life. Lorem ipsum dolor sit amet,
+							consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+							labore et dolore magna aliqua.</p>
+						<br>
+						<p>
+							<span class="badge">1</span> Comment:
+						</p>
+						<br>
+						<div class="row">
+							<div class="col-sm-2 text-center">
+								<img src="bird.jpg" class="img-circle" height="65" width="65"
+									alt="Avatar">
+							</div>
+							<div class="col-xs-10">
 								<h4>
-									<p class="text-primary">이글이글</p>
+									Nested Bro <small>Sep 25, 2015, 8:28 PM</small>
 								</h4>
-							</li>
-							<li><a href="#">회원수정</a></li>
-							<li><a href="#">로그아웃</a></li>
-						</ul>
-					</div>
-				</li>
-				<!--알림 아이콘 -->
-				<li>
-					<div style="padding-top: 9px; padding-left: 3px;">
-						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#myModal">
-							<span class="glyphicon glyphicon-align-justify color"
-								style="padding-right: 7px;"></span>
-						</button>
-						<!-- Modal bar -->
-						<div class="modal fade" id="myModal" tableindex="-1" role="dialog"
-							aria-labelledby="modallabel">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<!-- 알림, 메시지 탭 -->
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<ul class="nav nav-tabs">
-											<li class="active"><a data-toggle="tab" href="#home">알림
-													<span class="badge">New</span>
-											</a></li>
-											<li><a data-toggle="tab" href="#message">메시지 <span
-													class="badge">New</span></a></li>
-										</ul>
-									</div>
-									<!-- Modal bar 내용들 -->
-									<div class="modal-body">
-										<div class="tab-content">
-											<div id="home" class="tab-pane fade in active">
-												<ul class="list-group">
-													<div class="row">
-														<div class="col-sm-2" style="padding-bottom: 5px;">
-															<img src="./resources/profile/bird.jpg"
-																class="img-circle" height="40" width="40" alt="Avatar">
-														</div>
-														<div class="col-sm-4">
-															<h4 class="text-primary" style="">이글이글</h4>
-														</div>
-													</div>
-													<!-- 알림 내용들 -->
-													<li class="list-group-item"><img
-														src="./resources/profile/bird.jpg" class="img-circle"
-														height="20" width="20" alt="Avatar"> <a>AAA</a><em>
-															님이 ~~~ 게시물을 공유했습니다.</em></li>
-													<li class="list-group-item"><img
-														src="./resources/profile/bird.jpg" class="img-circle"
-														height="20" width="20" alt="Avatar"> <a>BBB</a><em>
-															님이 ~~~ 게시물을 공유했습니다.</em>
-														<div class="row"></div></li>
-													<li class="list-group-item"><img
-														src="./resources/profile/bird.jpg" class="img-circle"
-														height="20" width="20" alt="Avatar"> <a>CCC</a> <em>
-															님이 ~~~ 게시물을 공유했습니다.</em>
-														<div class="row"></div></li>
-												</ul>
-											</div>
-											<div id="message" class="tab-pane fade">
-												<ul class="list-group">
-													<div class="row">
-														<div class="col-sm-2" style="padding-bottom: 5px;">
-															<img src="./resources/profile/bird.jpg"
-																class="img-circle" height="40" width="40" alt="Avatar">
-														</div>
-														<div class="col-sm-4">
-															<h4 class="text-primary" style="">이글이글</h4>
-														</div>
-													</div>
-													<!-- 메시지 내용들 -->
-													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle"
-														height="20" width="20" alt="Avatar"> <a>AAA</a> <strong>:
-															"지금 뭐하는지"</strong></li>
-													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle"
-														height="20" width="20" alt="Avatar"> <a>BBB</a> <strong>:
-															"먹을게 없다"</strong></li>
-													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle"
-														height="20" width="20" alt="Avatar"> <a>CCC</a> <strong>:
-															"사진"</strong></li>
-												</ul>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-									</div>
-								</div>
+								<p>Me too! WOW!</p>
+								<br>
 							</div>
 						</div>
 					</div>
-				</li>
-				<!--소셜 아이콘 -->
-				<li>
-					<button type="button" class="btn form"
-						style="padding-top: 15px; padding-right: 13px;">
-						<span class="glyphicon glyphicon-globe color"></span>
-					</button>
-				</li>
-			</ul>
+				</div>
+			</div>
 		</div>
 	</div>
-	</nav>
-	<!-- 헤더 끝 -->
-
-	<div class="container" style="background-color: #fcf8e3">
+	<!-- 인욱이형 부분 -->
+	<%-- <div class="container" style="background-color: #fcf8e3">
 		<div class=" container col-xs-0 col-md-3"></div>
 		<div class=" container col-xs-12 col-md-6">
 			<h1 align="center"><%=recipeVO.getRecipe_title()%></h1>
@@ -808,7 +660,7 @@ img {
 		</div>
 
 	</div>
-
+ --%>
 	<!-- 마지막 footer -->
 	<footer class="container-fluid text-center">
 	<p>MADI</p>

@@ -23,4 +23,8 @@ public interface BoardMapper {
 	ArrayList<BoardVO> getFollowingBoards(String[] following_user_id);
 	//(진산) 좋아요 하나 추가
 	void updateBoardLike(int board_num, String user_id);
+	// (성빈) : recipeId와 연결된 Board 데이터 조회 메소드
+	BoardVO getBoardByRecipeId(RecipeVO recipeVO);
+	// (성빈) : board_num과 연결된 BOARD REPLY 데이터 조회 메소드
+	ArrayList<BoardReplyVO> getReplyByBoardNum(BoardVO boardVO);
 }

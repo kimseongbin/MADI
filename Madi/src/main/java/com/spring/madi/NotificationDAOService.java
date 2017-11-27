@@ -19,8 +19,6 @@ public class NotificationDAOService implements NotificationDAO{
 		ArrayList<NotificationVO> notificationList = notificationMapper.getMyNoticeById(user_id);
 		if(notificationList.size()==0) {
 			System.out.println("내게 온 알림이 없습니다.");
-			notificationList = null;
-			return notificationList;
 		}
 		return notificationList;
 	}

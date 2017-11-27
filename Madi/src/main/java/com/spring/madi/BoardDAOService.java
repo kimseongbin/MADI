@@ -89,5 +89,27 @@ public class BoardDAOService implements BoardDAO {
 		boardMapper.updateBoardLike(board_num, user_id);
 		System.out.println("d-u3=" + user_id);
 	}
+	
+	// (성빈) : recipe_id와 연결된 Board 데이터 조회 메소드
+	@Override
+	public BoardVO getBoardByRecipeId(RecipeVO recipeVO) {
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		BoardVO boardVO = boardMapper.getBoardByRecipeId(recipeVO);
+		if(boardVO == null) {
+			System.out.println("SYSTEM  :  게시글 조회 결과, BoardDAOServcie; getBoardByRecipeId, boardVO가 null입니다. return new BoardVO");
+			boardVO = new BoardVO();
+		}
+		return boardVO;
+	}
+	// (성빈) : board_num과 연결된 BoardReply 데이터 조회 메소드
+	@Override
+	public ArrayList<BoardReplyVO> getReplyByBoardNum(BoardVO boardVO) {
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		ArrayList<BoardReplyVO> ReplyList = boardMapper.getReplyByBoardNum(boardVO);
+		if(ReplyList.size() == 0) {
+			System.out.println("SYSTEM  :  게시글 댓글 리스트 조회 결과, BoardDAOService; getReplyByBoardNum, ArrayList<BoardReplyVO>의 Size가 0입니다.");
+		}
+		return ReplyList;
+	}
 }
 

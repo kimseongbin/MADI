@@ -19,8 +19,7 @@ public class MessageDAOService implements MessageDAO{
 		MessageMapper messageMapper = sqlSession.getMapper(MessageMapper.class);
 		ArrayList<MessageVO> messageList = messageMapper.getMyMessageById(user_id);
 		if(messageList.size()==0) {
-			messageList = null;
-			System.out.println("내게 온 메시지가 없습니다");
+			System.out.println("내개 온 메시지가 없습니다.");
 		}
 		return messageList;
 	}

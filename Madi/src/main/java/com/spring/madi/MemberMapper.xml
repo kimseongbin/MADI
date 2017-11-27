@@ -102,7 +102,7 @@
 	
 	<!-- 성빈: 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
 	<!-- 전달 파라미터 String user_id -->
-	<select id="getUserInfoById" resultMap="MemberResultMap" parameterType="String">
+	<select id="getUserInfoById" resultMap="MemberResultMap">
 		SELECT USER_ID, USER_IMG, USER_EMAIL, USER_NAME
 		FROM MEMBER
 		WHERE USER_ID = #{user_id}
