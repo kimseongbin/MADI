@@ -34,13 +34,13 @@
 			SELECT recipe_id, irdnt_name, irdnt_cpcty, b.irdnt_ty_code as irdnt_ty_code, b.irdnt_ty_name as irdnt_ty_name
 			FROM recipe_irdnt a, irdnt_type b
 
-			WHERE a.irdnt_ty_code = b.irdnt_ty_code AND recipe_id = 466
+			WHERE a.irdnt_ty_code = b.irdnt_ty_code AND recipe_id = #{recipe_id}
 		</select>
 
 	<select id="getRecipeProcessById" resultType="com.spring.madi.RecipeProcessVO">
 			SELECT recipe_id, cooking_no, cooking_desc, step_img_url, step_tip
 			FROM recipe_process
-			WHERE recipe_id = 466 order by cooking_no  
+			WHERE recipe_id = #{recipe_id} order by cooking_no  
 		</select>
 
 	

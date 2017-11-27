@@ -325,10 +325,29 @@
 			        <div>	
 		    			<!-- 사진: board_img -->					
 			        	<div class="file-upload" id="upload_recipe_pic">
+			        		<img src="" id="titlePreview" width=100% height=100% alt="미리보기" />
 						    <label for="upload" class="file-upload__label">
-						    	<span class="glyphicon glyphicon-camera"></span>사진등록
+						    	<span class="glyphicon glyphicon-camera"><input id="recipeInsert" class="file-upload__input" type="file" name="titleImg" ></span>사진등록
 						    </label>
-						    <input id="recipeInsert" class="file-upload__input" type="file" name="titleImg" >
+						    <script>
+							    $(document).ready(function() {
+						            $("#recipeInsert").on('change', function(){
+						                readURL(this);
+						            });
+						        });
+	
+						        function readURL(input) {
+						            if (input.files && input.files[0]) {
+						            var reader = new FileReader();
+	
+						            reader.onload = function (e) {
+						                    $('#titlePreview').attr('src', e.target.result);
+						                }
+	
+						              reader.readAsDataURL(input.files[0]);
+						            }
+						        }
+						    </script>
 						</div>
 			        	<input type="text" class="form-control" name="recipe_title" id="recipe_title" placeholder="요리명 입력" style="margin-bottom: 5px">
 			        	<input type="text" class="form-control" name="recipe_desc" id="recipe_desc" placeholder="한줄 설명">
