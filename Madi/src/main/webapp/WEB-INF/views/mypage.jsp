@@ -17,9 +17,7 @@ List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttrib
 List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
 
 List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
-List<BoardVO> followingBoardList= (ArrayList<BoardVO>)request.getAttribute("followingBoardList");
-
-List<BoardReplyVO> boardReplyList= (ArrayList<BoardReplyVO>)request.getAttribute("boardReplyList");
+List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
 
 // 메시지 리시트 받아오기 
 ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
@@ -59,6 +57,9 @@ request.setAttribute("messageList", messageList);
 .glyphicon.glyphicon-share-alt {
 	color: #487BE1;
 }
+.glyphicon.icon-size {
+	font-size: 25px;
+}
 /*table 디자인*/
 table {
 	border-radius: 10px;
@@ -94,7 +95,7 @@ td {
 
 .li.fol {
     margin: 0 0 0 0;
-    padding: 15px;
+    padding: 5px;
     border : 0;
     float: left;
     font-size:17px;
@@ -116,22 +117,51 @@ td {
     border : 0;
     margin: 0 0 0 0;
 }
+
+/* follow 모달 크기 조절 */
+.modal-dialog.follow-size {
+    width: 470px;
+    height: 50%;
+    margin: 0;
+    padding: 0;
+}
+.modal-content.follow-size {
+    height: auto;
+    min-height: 50%;
+}
+.modal.modal-center {
+	    text-align: center;
+}
+@media screen and (min-width: 768px) {
+    .modal.modal-center:before {
+        display: inline-block;
+        vertical-align: top;
+        content: " ";
+        height: 100%;
+    }
+}
+.modal-dialog.modal-center {
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script>
-	function updateBoardLike() {
-		location.href="updateBoardLike.do";
-	}
-
 	function deleteFollowing(user_id, following_user_id) {
 		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
 		//alert("팔로잉 삭제 성공");
+		var content = user_id+ "님께서 " + following_user_id+ "님을 팔로우 취소했습니다."
 		$.ajax({
 			url: "./deleteFollowing.do",
 			type: "GET",
 			data: {
 				user_id: user_id,
-				following_user_id: following_user_id
+				following_user_id: following_user_id,
+				notice_to : following_user_id,
+				notice_from : user_id,
+				content : content,
+				notice_type : "팔로잉 삭제"
 			},
 			dataType: "text",
 			success: function(data) {
@@ -145,12 +175,17 @@ td {
 	function deleteFollower(user_id, following_user_id) {
 		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
 		//alert("팔로워 삭제 성공");
+		var content= user_id+ "님께서 " + following_user_id+ "님의 팔로우를 취소했습니다."
 		$.ajax({
 			url: "./deleteFollower.do",
 			type: "GET",
 			data: {
 				user_id: user_id,
-				following_user_id: following_user_id 
+				following_user_id: following_user_id,
+				notice_to : following_user_id,
+				notice_from : user_id,
+				content : content,
+				notice_type : "팔로워 삭제"
 			},
 			dataType: "text",
 			success: function(data) {
@@ -166,6 +201,7 @@ td {
 		//location.href="insertFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id +
 		//"&user_img=" + user_img + "&following_user_img=" + following_user_img;
 		//alert("팔로잉 추가 성공");
+		var content= user_id+ "님께서 " + following_user_id+ "님을 팔로우 했습니다."
 		$.ajax({
 			url: "./insertFollowing.do",
 			type: "POST",
@@ -173,7 +209,11 @@ td {
 				user_id: user_id,
 				following_user_id: following_user_id,
 				user_img: user_img,
-				following_user_img: following_user_img
+				following_user_img: following_user_img,
+				notice_to : following_user_id,
+				notice_from : user_id,
+				content : content,
+				notice_type : "팔로잉 추가"
 			},
 			dataType: "text",
 			success: function(data) {
@@ -185,61 +225,33 @@ td {
 			}
 		});
 	}
-	function updateBoardLike(board_num, user_id) {
+	function updateBoardLike(board_num, user_id, index) {
 		//location.href="updateBoardLike.do?user_id=" + user_id;
-		//alert("좋아요 성공")
+		alert("좋아요 성공");
+		var content= user_id+ "님께서" +board_num+ "번 게시물에 좋아요를 입력했습니다.";
 		$.ajax({
 			url: "./updateBoardLike.do",
 			type: "GET",
 			data: {
+				user_id: user_id,
 				board_num: board_num,
-				user_id: user_id
+				notice_to : board_num,
+				notice_from : user_id,
+				content : content,
+				notice_type : "좋아요 입력"
 			},
 			dataType: "text",
 			success: function(data) {
-				alert(data);
 				/* location.href="./mypage.do"; */
-				$("#updateBoardLike_modal").empty();
-				$("#updateBoardLike_modal").append(data);
-			},
-			error: function(jqXHR, exception) {
-		        if (jqXHR.status === 0) {
-		            alert('Not connect.\n Verify Network.');
-		        }
-		        else if (jqXHR.status == 400) {
-		            alert('Server understood the request, but request content was invalid. [400]');
-		        }
-		        else if (jqXHR.status == 401) {
-		            alert('Unauthorized access. [401]');
-		        }
-		        else if (jqXHR.status == 403) {
-		            alert('Forbidden resource can not be accessed. [403]');
-		        }
-		        else if (jqXHR.status == 404) {
-		            alert('Requested page not found. [404]');
-		        }
-		        else if (jqXHR.status == 500) {
-		            alert('Internal server error. [500]');
-		        }
-		        else if (jqXHR.status == 503) {
-		            alert('Service unavailable. [503]');
-		        }
-		        else if (exception === 'parsererror') {
-		            alert('Requested JSON parse failed. [Failed]');
-		        }
-		        else if (exception === 'timeout') {
-		            alert('Time out error. [Timeout]');
-		        }
-		        else if (exception === 'abort') {
-		            alert('Ajax request aborted. [Aborted]');
-		        }
-		        else {
-		            alert('Uncaught Error.n' + jqXHR.responseText);
-		        }
-		        
-		    }
+				//alert("success");
+				if (data == 0) {
+					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) - 1;
+				} else {
+					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) + 1;				
+				}
+			}
 		});
-	}	
+	}
 </script>
 </head>
 <body style="background-color: #F6F6F6; ">
@@ -255,38 +267,37 @@ td {
 			<div class="col-sm-1"></div>
 			<div class="col-sm-3 text-center" style="border-radius: 10px;">
 				<div>
-					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="65" width="65"
-						alt="Avatar"> <br>
+					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="80" width="80"
+						alt="Avatar" style="margin-left:7px;"> <br>
 					<h3 class="text-primary">
 						<strong><%=memberVO.getUser_id()%></strong>
 					</h3>
-					<h5><strong><%=memberVO.getUser_email()%></strong></h5>
-					<br>
+					<strong style="font-size:17px;"><%=memberVO.getUser_email()%></strong>
+					
 					<!-- 게시글, 팔로워, 팔로잉 -->
-					<div class="row text-center" style="font-size: 14px;">
-                    	<div class="col-sm-2"></div>
-						<div class="col-sm-3">
-							<p data-target="#follower"><strong class="bg-danger">게시글</strong>
+					<div class="row text-center">
+                    	
+						<div class="col-sm-4">
+							<p data-target="#follower"><strong class="bg-danger" style="font-size:14px;">게시글</strong>
                             <br>
-                            <%=myBoardList.size()%>
+                            <div style="font-size:15px;"><%=myBoardList.size()%></div>
                             </p>
 						</div>
-						<div class="col-sm-3">
-
+						<div class="col-sm-4">
 							<p style="cursor: pointer" data-toggle="modal" data-target="#following">
-							<strong class="bg-danger">팔로잉</strong>
+							<strong class="bg-danger" style="font-size:14px;">팔로잉</strong>
                             <br>
-                            <div id="followingSize"><%=followingList.size()%></div>
+                            <div id="followingSize" style="font-size:15px;"><%=followingList.size()%></div>
                             </p>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
-							<strong class="bg-danger">팔로워</strong>
+							<strong class="bg-danger" style="font-size:14px;">팔로워</strong>
                             <br>
-                            <div id="followerSize"><%=followerList.size()%></div>
+                            <div id="followerSize" style="font-size:15px;"><%=followerList.size()%></div>
                             </p>
 						</div>
-                        <div class="col-sm-1"></div>
+                        
 					</div>
 					<br>
 				<!-- 팔로잉 Modal -->
@@ -309,6 +320,7 @@ td {
 												<li class="li fol">
 											        <img src="<%=following.getFollowing_user_img()%>" class="img-circle" height="40"
 													width="40">&nbsp;<a href="#"><strong><%=following.getFollowing_user_id()%></strong></a>
+
 													&nbsp;
 													<button type="button" class="btn btn-danger btn-sm"
 													onclick="deleteFollowing('<%=following.getUser_id()%>', '<%=following.getFollowing_user_id()%>')"
@@ -340,7 +352,7 @@ td {
 								<div class="btn-group-vertical">
 									<form>
 										<ul class="ul fol" id="follower_modal">
-											<%for(int i= 0; i<followerList.size(); i++) {
+											<%for(int i= 0; i< followerList.size(); i++) {
 												MemberFollowVO follower= followerList.get(i);
 											%>
 												<li class="li fol">
@@ -365,38 +377,73 @@ td {
 				</div>
 			</div>
 			<!-- 팔로워 추천 -->
-			<div style="margin-top: 20%; margin-right:20px;">
-				<h3 style="margin-bottom:10px;">
-					팔로워 추천 :  <p onclick="">새로고침</p>
-				</h3>
-				<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
+			<div style="margin-top: 20%; margin-left:15px; font-size:18px;">
+				<p style="margin-bottom:10px;">
+					<strong>팔로워 추천   &nbsp;<a href="#" style="cursor:pointer" class="moreRecommends" id="refresh">새로고침</a></strong>
+				</p>
+				<div id="recommend_area" class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
+				<!-- reloadRecommend.jsp에서 불러옴?? -->
 					<form>	
-					<ul class="ul fol2" id="insertFollowing_modal">
-						<%for(int y=0; y<3; y++) {
-							MemberFollowVO recommend= recommendList.get(y);
-						%>
-							<li class="li fol2"><img src="<%=recommend.getUser_img()%>" class="img-circle" height="40"
-								width="40">&nbsp; <a href="#">
-								<strong><%=recommend.getUser_id()%></strong></a>
-								&emsp;
-								<button type="button" class="btn btn-danger btn"
-								onclick="insertFollowing('<%=memberVO.getUser_id()%>', 
-								'<%=recommend.getUser_id()%>',
-								'<%=memberVO.getUser_img()%>', '<%=recommend.getUser_img()%>')"
-								style="border-radius: 10px;">
-								<strong style="font-size:15px;">팔로우</strong>
-								</button>&nbsp;
-							</li>
-						<%
-						//System.out.println("u=" + recommend.getUser_id());
-						//System.out.println("f=" + member.getUser_id());
-						//System.out.println("u-i=" + recommend.getUser_img());
-						//System.out.println("f-i=" + member.getUser_img());
-						} %>
+						<ul class="ul fol2">
+							<%for(int y= 0; y< recommendList.size(); y++) {
+								MemberFollowVO recommend= recommendList.get(y);
+								
+								if(y%3==0) {
+							%>
+									<div class="recommends">
+							<%
+								}
+							%>
+								<li class="li fol2">
+									<img src="<%=recommend.getFollowing_user_img()%>" class="img-circle" height="40"
+									width="40">&nbsp; <a href="#">
+									<strong><%=recommend.getFollowing_user_id()%></strong></a>
+									&emsp;
+									<button type="button" class="btn btn-danger btn"
+									onclick="insertFollowing('<%=memberVO.getUser_id()%>', 
+									'<%=recommend.getFollowing_user_id()%>',
+									'<%=memberVO.getUser_img()%>', '<%=recommend.getFollowing_user_img()%>')"
+									style="border-radius: 10px;">
+									<strong style="font-size:15px;">팔로우</strong>
+									</button>&nbsp;
+								</li>
+								
+							<%
+								if(y%3==2 || y == (recommendList.size() -1) ) {
+							%>
+									</div>
+							<%
+								}
+							} // recommendList for 
+							%>
 						</ul>
 					</form>
 				</div>
 			</div>
+			<script>
+				$(document).ready(function() {
+					var div = document.getElementsByClassName("recommends");
+					for (var int = 0; int < div.length; int++) {
+						if(int == 0) {
+							div[int].style.display = "block";
+						} else {
+							div[int].style.display = "none";
+						}
+					}
+					var currentLocation = 0;
+					$("#refresh").click(function() {
+						currentLocation += 1;
+						if(currentLocation == div.length) {
+							div[div.length-1].style.display = "none";
+							div[0].style.display = "block";
+							currentLocation = 0;
+						} else {
+							div[currentLocation-1].style.display = "none";
+							div[currentLocation].style.display = "block";
+						}
+					});
+				});
+			</script>
 			<br>
 		</div>
 		<!-- middle side -->
@@ -404,8 +451,8 @@ td {
 			<div class="row text-center" style="border-radius: 10px;">
 				<!-- 본문 글 시작 -->
 				<%
-					for(int i=0; i<myBoardList.size(); i++) {
-						BoardVO board= myBoardList.get(i);
+					for(int i=0; i<allBoardList.size(); i++) {
+						BoardVO board= allBoardList.get(i);
 				%>
 				<div class="well content_color">
 					<div class="row">
@@ -434,8 +481,8 @@ td {
 								<td><span class="glyphicon glyphicon-heart"
 									style="padding-bottom: 14px;"></span></td>
 								<td>
-									<p style="padding-bottom: 3px;" id="updateBoardLike_modal">
-										<em><%=board.getBoard_like()%></em>
+									<p style="padding-bottom: 3px;">
+										<em class="boardLike"><%=board.getBoard_like()%></em>
 									</p>
 								</td>
 							</tr>
@@ -455,13 +502,13 @@ td {
 								<li class="li fol3">
 									<span style="cursor: pointer" 
 									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment">
+									data-toggle="collapse" data-target="#comment<%=board.getBoard_num()%>">
 									</span>&emsp;
 								</li>
 								<li class="li fol3">
 									<span style="cursor: pointer"  
 										class="glyphicon glyphicon-heart icon-size"
-										onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=board.getUser_id()%>')">
+										onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">
 									</span> &emsp;
 								</li>
 								<li class="li fol3">
@@ -474,9 +521,29 @@ td {
 						</div>
 					</div> 
 				<!-- 댓글 comment -->
+					<div id="comment<%=board.getBoard_num()%>" class="collapse">
+						<ul class="list-group" style="text-align: left;">
+						<%
+							List<BoardReplyVO> replyList = board.getBoardReplyList(); 
+							for(int j = 0; j < replyList.size(); j++) {
+								BoardReplyVO reply= replyList.get(j);
+						%>
+							<li class="list-group-item">
+								<img src="<%=reply.getUser_img()%>"
+								class="img-circle" height="30" width="30">&nbsp; <a
+								href="#"><strong><%=reply.getUser_id()%></strong></a> &emsp;
+								<strong><%=reply.getRep_content()%></strong>
+							</li>
+						<%
+						} // for replyList
+						%>
+						</ul>
+					</div>
 				<!-- 본문 글 끝 -->
 				</div>
-				<%} %>
+				<%
+				} // for followingBoardList
+				%>
 			</div>
 		</div>
 	</div>

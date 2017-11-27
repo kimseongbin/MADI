@@ -2,6 +2,8 @@ package com.spring.madi;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
+
 
 public interface BoardMapper {
 
@@ -19,8 +21,17 @@ public interface BoardMapper {
 	ArrayList<BoardVO> getBoards(String user_id);
 	//(진산) 자신의 게시글 개수 구하기
 	int getBoardCount(String user_id);
-	//(진산) 팔로잉한 사람들의 게시글 목록 구하기...String[]로 하면 배열
-	ArrayList<BoardVO> getFollowingBoards(String[] following_user_id);
-	//(진산) 좋아요 하나 추가
-	void updateBoardLike(int board_num, String user_id);
+	//(진산)자신 +  팔로잉한 사람들의 게시글 목록 구하기...String[]로 하면 배열
+	ArrayList<BoardVO> getAllBoards(String user_id);
+
+	//(진산) 좋아요 눌렀었는지 체크
+	UserLikeBoVO getUserLike(BoardVO boardVO);
+	//(진산)좋아요 user_like_bo에 user_id, board_num 추가
+	void insertUserLike(BoardVO boardVO);
+	//(진산) 좋아요 board에다 like 숫자 1 추가
+	void likePlusOne(BoardVO boardVO);
+	//(진산) 좋아요 중복이라 user_like_bo에서 지우기
+	void deleteUserLike(BoardVO boardVO);
+	//(진산) 좋아요 중복이라 board에서 like 숫자 1 빼기
+	void likeMinusOne(BoardVO boardVO);
 }

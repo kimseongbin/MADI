@@ -133,9 +133,8 @@ public class FrontController {
 	public ModelAndView myPage(HttpServletRequest request)
 	{	
 		//String user_id = (String)session.getAttribute("user_id");
-		String user_id = "madi";
+		String user_id = "user2";
 		//session.setAttribute("madi", user_id);
-		//String[] following_user_id= null;
 		ModelAndView result= new ModelAndView();
 		//내 알림 메시지 읽어오기
 		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
@@ -152,6 +151,7 @@ public class FrontController {
 		//자기 자신에 대한 member정보
 		MemberVO memberVO= memberDAOService.getMember(user_id);
 		result.addObject("memberVO", memberVO);
+		
 		// 팔로워 리스트
 		List<MemberFollowVO> followerList = memberDAOService.getFollower(user_id);
 		result.addObject("followerList", followerList);
@@ -160,29 +160,34 @@ public class FrontController {
 		result.addObject("followingList", followingList);
 		//팔로워 추천 리스트
 		List<MemberFollowVO> recommendList= memberDAOService.getRecommendFollower(user_id);
+		System.out.println("recommendList.size()=" + recommendList.size());
 		result.addObject("recommendList", recommendList);
+		
+		//모든 게시글 위해서 불러옴 
+		List<BoardVO> allBoardList = boardDAOService.getAllBoards(user_id);
 		
 		// 가운데 게시글 리스트
 		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
-		// List<BoardVO> followingBoardList=
-		// boardDAOService.getFollowingBoards(following_user_id);
 		result.addObject("myBoardList", myBoardList);
-		// result.addObject("followingBoardList", followingBoardList);
+		result.addObject("allBoardList", allBoardList);
 		result.setViewName("mypage");
-
 		return result;
 	}
 
 	// (진산)팔로잉 한 명 삭제
 	@RequestMapping("/deleteFollowing.do")
-	public ModelAndView deleteFollowing(MemberFollowVO memberFollow, HttpServletRequest request) {
+	public ModelAndView deleteFollowing(MemberFollowVO memberFollow, HttpServletRequest request, NotificationVO notificaitonVO) {
 		String user_id= memberFollow.getUser_id();
 		String following_user_id = request.getParameter("following_user_id");
-		System.out.println("u=" + user_id);
-		System.out.println("f=" + following_user_id);
+//		System.out.println("u=" + user_id);
+//		System.out.println("f=" + following_user_id);
 		ModelAndView result= new ModelAndView();	
 		memberDAOService.deleteFollowing(user_id, following_user_id);
 		System.out.println("팔로잉 삭제 성공");
+		
+		
+		System.out.println(notificaitonVO.getNotice_to());
+		notificationDAOService.sendNoticeById(notificaitonVO);
 		
 		List<MemberFollowVO> followingList= memberDAOService.getFollowing(user_id);
 		result.addObject("followingList", followingList);
@@ -192,14 +197,17 @@ public class FrontController {
 
 	// (진산)팔로워 한 명 삭제
 	@RequestMapping("/deleteFollower.do")
-	public ModelAndView deleteFollower(MemberFollowVO memberFollow, HttpServletRequest request) {
+	public ModelAndView deleteFollower(MemberFollowVO memberFollow, HttpServletRequest request, NotificationVO notificaitonVO) {
 		String user_id= memberFollow.getUser_id();
 		String following_user_id = request.getParameter("following_user_id");
-		System.out.println("u=" + user_id);
-		System.out.println("f=" + following_user_id);
+//		System.out.println("u=" + user_id);
+//		System.out.println("f=" + following_user_id);
 		ModelAndView result= new ModelAndView();	
 		memberDAOService.deleteFollower(user_id, following_user_id);
+		
 		System.out.println("팔로워 삭제 성공");
+		notificationDAOService.sendNoticeById(notificaitonVO);
+		
 		List<MemberFollowVO> followerList= memberDAOService.getFollower(following_user_id);
 		System.out.println("followerList size is "+followerList.size());
 		result.addObject("followerList", followerList);
@@ -209,20 +217,23 @@ public class FrontController {
 
 	// (진산) 팔로잉 한 명 추가
 	@RequestMapping("/insertFollowing.do")
-	public ModelAndView insertFollowing(MemberFollowVO memberFollow, HttpServletRequest request) {
+	public ModelAndView insertFollowing(MemberFollowVO memberFollow, HttpServletRequest request, NotificationVO notificaitonVO) {
 		String user_id= memberFollow.getUser_id();
 		String following_user_id = request.getParameter("following_user_id");
 		String user_img= memberFollow.getUser_img();
 		String following_user_img= memberFollow.getFollowing_user_img();
-		System.out.println("u=" + user_id);
-		System.out.println("f=" + following_user_id);
-		System.out.println("u-i=" + user_img);
-		System.out.println("f-i=" + following_user_img);
+//		System.out.println("u=" + user_id);
+//		System.out.println("f=" + following_user_id);
+//		System.out.println("u-i=" + user_img);
+//		System.out.println("f-i=" + following_user_img);
 		ModelAndView result= new ModelAndView();
 		memberDAOService.insertFollowing(user_id, following_user_id, user_img, following_user_img);
 		
 		MemberVO member= memberDAOService.getMember(user_id);
 		System.out.println("추가 성공");
+
+		notificationDAOService.sendNoticeById(notificaitonVO);
+		
 		List<MemberFollowVO> recommendList= memberDAOService.getRecommendFollower(user_id);
 		System.out.println("recommendList.size()=" + recommendList.size());
 		result.addObject("recommendList", recommendList);
@@ -231,26 +242,38 @@ public class FrontController {
 		return result;
 	}
 
-	// (진산) 좋아요 클릭시 한 개 추가
+	// (진산) 좋아요 클릭시 한 개 추가...@ResponseBody를 써서 json오브젝트만 리턴하게 된다
 	@RequestMapping("/updateBoardLike.do")
-	public ModelAndView updateBoardLike(BoardVO board) {
-		String user_id= board.getUser_id();
-		int board_num= board.getBoard_num();
+	public ModelAndView updateBoardLike(BoardVO boardVO, NotificationVO notificaitonVO) {
 		//String[] following_user_id= null;
 		ModelAndView result= new ModelAndView();
-		System.out.println("u=" + user_id);
-		System.out.println("n=" + board_num);
-		boardDAOService.updateBoardLike(board_num, user_id);
-		System.out.println("u=" + user_id);
-		System.out.println("n=" + board_num);
-		System.out.println("좋아요 성공");
-		List<BoardVO> boardList= boardDAOService.getBoards(user_id);
-		//List<BoardVO> followingBoardList= boardDAOService.getFollowingBoards(following_user_id);
-		//result.addObject("followingBoardList ", followingBoardList);
-		result.addObject("boardList", boardList);
-		result.setViewName("updateBoardLike_modal");
+		String user_id= boardVO.getUser_id();
+		int board_num= boardVO.getBoard_num();
+		System.out.println("나오자나" + boardVO.getUser_id());
+		UserLikeBoVO res= boardDAOService.getUserLike(boardVO);
+		System.out.println(user_id);
+		System.out.println(board_num);
+		if (res == null) {
+			boardDAOService.insertUserLike(boardVO);
+			boardDAOService.likePlusOne(boardVO);
+			System.out.println("좋아요 성공");
+			System.out.println(notificaitonVO.getNotice_to());
+			notificationDAOService.sendNoticeById(notificaitonVO);
+			result.addObject("result", 1);
+		} else {
+			boardDAOService.deleteUserLike(boardVO);
+			boardDAOService.likeMinusOne(boardVO);
+			System.out.println("좋아요가 중복입니다. 삭제합니다");
+			System.out.println(notificaitonVO.getNotice_to());
+			notificationDAOService.sendNoticeById(notificaitonVO);
+			result.addObject("result", 0);
+		}		
+
+		result.setViewName("boardLike");
 		return result;
+
 	}
+	
 
 	// 성빈 : 레시피 조회하는 페이지(recipe.jsp)의 모델
 	@RequestMapping("/recipe.do")

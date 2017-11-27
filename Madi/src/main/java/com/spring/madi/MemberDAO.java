@@ -13,12 +13,15 @@ public interface MemberDAO {
 	ArrayList<MemberFollowVO> getFollowing(String user_id);
 	//(진산)팔로워 추천 리스트
 	ArrayList<MemberFollowVO> getRecommendFollower(String user_id);
+	//(진산) 추천 리스트 새로고침
+	ArrayList<MemberFollowVO> getReloadRecommend();
 	//(진산)팔로잉 한 명 삭제
 	void deleteFollowing(String following_user_id, String user_id);
 	//(진산)팔로워 한 명 삭제
 	void deleteFollower(String user_id, String following_user_id);
 	//(진산)팔로잉 한 명 추가
 	void insertFollowing(String user_id, String following_user_id, String user_img, String following_user_img);
+
 	//성빈 : 로그인 체크를 위한 password 조회 메소드
 	public MemberVO getPasswordByUserId(MemberVO memberVO);
 	// 성빈 : 회원가입 메소드 (입력된 회원정보를 member 테이블에 insert한다)

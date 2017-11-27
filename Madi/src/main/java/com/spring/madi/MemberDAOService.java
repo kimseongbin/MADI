@@ -1,6 +1,7 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,13 @@ public class MemberDAOService implements MemberDAO {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
 		recommendList= memberMapper.getRecommendFollower(user_id);
 		return recommendList;
+	}
+	//(진산) 추천리스트 새로고침
+	@Override
+	public ArrayList<MemberFollowVO> getReloadRecommend() {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		ArrayList<MemberFollowVO> memberFollowVO= memberMapper.getReloadRecommend();
+		return memberFollowVO;
 	}
 	//(진산)팔로잉 한 명 삭제
 	@Override
@@ -117,4 +125,5 @@ public class MemberDAOService implements MemberDAO {
 		MemberVO memberVO = memberMapper.getUserInfoById(user_id);
 		return memberVO;
 	}
+
 }
