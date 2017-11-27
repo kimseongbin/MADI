@@ -227,7 +227,7 @@ td {
 	}
 	function updateBoardLike(board_num, user_id, index) {
 		//location.href="updateBoardLike.do?user_id=" + user_id;
-		alert("좋아요 성공");
+		
 		var content= user_id+ "님께서" +board_num+ "번 게시물에 좋아요를 입력했습니다.";
 		$.ajax({
 			url: "./updateBoardLike.do",
@@ -240,13 +240,15 @@ td {
 				content : content,
 				notice_type : "좋아요 입력"
 			},
-			dataType: "text",
 			success: function(data) {
 				/* location.href="./mypage.do"; */
 				//alert("success");
+				alert(data);
 				if (data == 0) {
+					alert("좋아요 실패");
 					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) - 1;
 				} else {
+					alert("좋아요 성공");
 					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) + 1;				
 				}
 			}

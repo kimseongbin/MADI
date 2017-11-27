@@ -261,9 +261,10 @@ public class FrontController {
 
 	// (진산) 좋아요 클릭시 한 개 추가...@ResponseBody를 써서 json오브젝트만 리턴하게 된다
 	@RequestMapping("/updateBoardLike.do")
-	public ModelAndView updateBoardLike(BoardVO boardVO, NotificationVO notificaitonVO) {
+	@ResponseBody
+	public int updateBoardLike(BoardVO boardVO, NotificationVO notificaitonVO) {
 		//String[] following_user_id= null;
-		ModelAndView result= new ModelAndView();
+		//ModelAndView result= new ModelAndView();
 		String user_id= boardVO.getUser_id();
 		int board_num= boardVO.getBoard_num();
 		System.out.println("나오자나" + boardVO.getUser_id());
@@ -276,19 +277,15 @@ public class FrontController {
 			System.out.println("좋아요 성공");
 			System.out.println(notificaitonVO.getNotice_to());
 			notificationDAOService.sendNoticeById(notificaitonVO);
-			result.addObject("result", 1);
+			return 1;			
 		} else {
 			boardDAOService.deleteUserLike(boardVO);
 			boardDAOService.likeMinusOne(boardVO);
 			System.out.println("좋아요가 중복입니다. 삭제합니다");
 			System.out.println(notificaitonVO.getNotice_to());
 			notificationDAOService.sendNoticeById(notificaitonVO);
-			result.addObject("result", 0);
+			return 0;
 		}		
-
-		result.setViewName("boardLike");
-		return result;
-
 	}
 	
 
