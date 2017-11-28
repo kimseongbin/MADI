@@ -4,29 +4,33 @@
 <%@page import="com.spring.madi.MessageVO"%>
 <%@page import="com.spring.madi.NotificationVO"%>
 <%@page import="com.spring.madi.MemberVO"%>
-<%
-//로그인한 아이디
-String user_id = (String)session.getAttribute("user_id");
-//마이페이지에 로그인 한 자기 자신. 
-MemberVO memberVO= (MemberVO)request.getAttribute("memberVO");
+<% 
+	// Header에 들어갈 기본 정보 불러오기
+	MemberVO memberVO= (MemberVO)request.getAttribute("memberVO");
+	// 메시지 리시트 받아오기 
+	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
+	// 알림 리스트 받아오기
+	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
+	// 내 재료 목록 받아오기
+	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
+	
+	// myPage에서 사용할 기본 정보 
+	// 내 팔로워 리스트 
+	List<MemberFollowVO> followerList= (ArrayList<MemberFollowVO>)request.getAttribute("followerList");
+	// 내가 팔로잉 리스트
+	List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttribute("followingList");
+	// 팔로잉 추천 리스트
+	List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
+	// 나의 게시판 목록
+	List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
+	// 
+	List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
 
-List<MemberFollowVO> followerList= (ArrayList<MemberFollowVO>)request.getAttribute("followerList");
-
-List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttribute("followingList");
-
-List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
-
-List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
-List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
-
-// 메시지 리시트 받아오기 
-ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
-// 알림 리스트 받아오기
-ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
-//INCLUDE JSP 문서와 객체 공유
-request.setAttribute("memberVO", memberVO);
-request.setAttribute("notificationList", notificationList);
-request.setAttribute("messageList", messageList);
+	//INCLUDE JSP 문서와 객체 공유
+	request.setAttribute("memberVO", memberVO);
+	request.setAttribute("notificationList", notificationList);
+	request.setAttribute("messageList", messageList);
+	request.setAttribute("myIrdntList", myIrdntList);
 
 %>
 <!DOCTYPE>
@@ -34,7 +38,7 @@ request.setAttribute("messageList", messageList);
 <head style="position: relative; z-index: 1; height: 260px;  margin:0 auto;">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MADI MAIN PAGE</title>
+<title>마디 - 재료로  요리하다</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script

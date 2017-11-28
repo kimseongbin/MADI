@@ -16,10 +16,12 @@
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("messageList", messageList);
 %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <title>마디 - 재료로 요리하다</title>
+<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -30,11 +32,15 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <style>
+.carousel-inner {
+	width: 100%; /* Set width to 100% */
+	min-height: 500px;
+	max-height: 500px;
+}
 .carousel-inner img {
 	width: 100%; /* Set width to 100% */
-	min-height: 470px;
+	overflow: hidden;
 }
-
 /* Hide the carousel text when the screen is less than 600 pixels wide */
 @media ( max-width : 600px) {
 	.carousel-caption {
@@ -117,7 +123,7 @@
 	}
 </script>
 </head>
-<body>
+<body style="background-color: #FCFAF5">
 	<!-- HEADER -->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
@@ -131,92 +137,100 @@
 					<ol class="carousel-indicators">
 						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 						<li data-target="#myCarousel" data-slide-to="1"></li>
+						<li data-target="#myCarousel" data-slide-to="2"></li>
 					</ol>
 
 					<!-- Wrapper for slides -->
 					<div class="carousel-inner" role="listbox">
 						<div class="item active">
-							<img src="https://placehold.it/800x400?text=IMAGE" alt="Image">
-							<div class="carousel-caption">
+							<img src="./resources/image/amy-treasure-69666.jpg" alt="Image">
+<!-- 							<div class="carousel-caption">
 								<h3>Sell $</h3>
 								<p>Money Money.</p>
-							</div>
+							</div> -->
 						</div>
 
 						<div class="item">
-							<img src="https://placehold.it/800x400?text=Another Image Maybe"
+							<img src="./resources/image/berry.jpg"
 								alt="Image">
-							<div class="carousel-caption">
+<!-- 							<div class="carousel-caption">
 								<h3>More Sell $</h3>
 								<p>Lorem ipsum...</p>
-							</div>
+							</div> -->
+						</div>						
+						<div class="item">
+							<img src="./resources/image/carissa-gan-76304.jpg"
+								alt="Image">
+<!-- 							<div class="carousel-caption">
+								<h3>More Sell $</h3>
+								<p>Lorem ipsum...</p>
+							</div> -->
 						</div>
 					</div>
 
 					<!-- Left and right controls -->
-					<a class="left carousel-control" href="#myCarousel" role="button"
-						data-slide="prev"> <span
-						class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> 
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 						<span class="sr-only">Previous</span>
-					</a> <a class="right carousel-control" href="#myCarousel" role="button"
-						data-slide="next"> <span
-						class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					</a> 
+					<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> 
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 						<span class="sr-only">Next</span>
 					</a>
 				</div>
 			</div>
-			<div class="col-sm-4">
-				<div class="panel" style="padding-left: 10px;">
-					<h3>레시피 검색</h3>
-					<p class="text-muted">재료 별 레시피 검색하기, 주로 쓰일 재료에 따라 레시피를 검색해주세요.
+			<div class="col-sm-4 panel panel-default" style="padding-bottom: 15px;">
+				<div style="padding-left: 10px;">
+					<h3 class="madi_subtitle">레시피 검색</h3>
+					<p class="text-muted madi_content">재료 별 레시피 검색하기, 주로 쓰일 재료에 따라 레시피를 검색해주세요.
 					<p>
 				</div>
 				<hr />
 				<form id="search_form" name="search_form">
-					<div class="form-group">
+					<div class="form-group madi_content">
 						<label for="main">주재료</label> <input type="text"
 							class="form-control" id="main" placeholder="/베이컨/계란/밀가루/브로콜리"
 							name="main" />
 					</div>
-					<div class="form-group">
+					<div class="form-group madi_content">
 						<label for="sub">부재료</label> <input type="text"
 							class="form-control" id="sub" placeholder="/베이컨/계란/밀가루/양파"
 							name="sub" />
 					</div>
-					<div class="form-group">
+					<div class="form-group madi_content">
 						<label for="source">양념</label> <input type="text"
 							class="form-control" id="source" placeholder="/소금/올리브유/후추가루"
 							name="source" />
 					</div>
 				</form>
 				<hr />
-				<button class="btn btn-default btn-block"
+				<button class="btn btn-default btn-block madi_content"
 					onclick="searchRecipesByIngredients();">레시피 검색</button>
-				<button class="btn btn-default btn-block"
+				<button class="btn btn-default btn-block madi_content"
 					onclick="searchRecipesByMybox();">내 냉장고로 검색</button>
 			</div>
 		</div>
-		<hr>
 	</div>
 
 	<div class="container text-center">
-		<h3>마디가 추천하는 당신의 레시피</h3>
-		<br /> <span class="glyphicon glyphicon-refresh moreOfIrdnt"
-			style="font-size: 35px; cursor: pointer;"></span> <br />
+		<h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc">Madi</font>가<br/>추천하는 당신의 <font class="madi_cc">Recipe</font></h3>
+		<br /> 
+		<span class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer;"></span> 
+		<br />
 		<hr />
 		<div class="row" id="search_Result_Area">
 			<br/><br/>
-			<h1>재료를 입력해 레시피를 조회해주세요.</h1>
+			<h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1>
 			<br/><br/><br/>
 		</div>
 	</div>
 	<div class="container">
 		<div class="container-fluid text-center">
 			<div class="container-fluid">
-				<h3>레시피 목록</h3>
+				<h3 class="madi_content">레시피 목록</h3>
 			</div>
 			<br>
-			<div class="row" style="padding: 0;">
+			<div class="row madi_content" style="padding: 0;">
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="밥" class="btn btn-default btn-block" value="3010001"
@@ -320,22 +334,27 @@
 		<br>
 		<div class="container text-center">
 			<div class="row">
-				<div class="col-xs-3 col-sm-3 panel panel-default"
-					style="padding: 0;">결과</div>
-				<div id="category_selected"
-					class="col-xs-9 col-sm-9 panel panel-default text-left"
-					style="padding-left: 20px;">
-					<form id="category_selected_form" name="category_selected_form">
-
-					</form>
-				</div>
+				<table class="madi_content">
+					<tr height="56px">
+						<th width="98px">
+							<!-- <div class="col-xs-3 col-sm-3 panel panel-default madi_content" style="padding: 0; margin-top: 5px;"> -->
+								결과
+							<!-- </div> -->
+						</th>
+						<td>
+						<!-- 	<div id="category_selected" class="col-xs-9 col-sm-9 panel panel-default text-left madi_content" style="padding-left: 20px;"> -->
+								<form id="category_selected_form" name="category_selected_form" class="madi_content"></form>
+							<!-- </div> -->
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>
 	<div class="container text-center">
-		<div class="row" id="category_List_Area">
+		<div class="row madi_content" id="category_List_Area">
 			<br/><br/>
-			<h1>카테고리를 선택해 레시피를 조회해주세요.</h1>
+			<h1 class="madi_content">카테고리를 선택해 레시피를 조회해주세요.</h1>
 			<br/><br/>
 		</div>
 	</div>

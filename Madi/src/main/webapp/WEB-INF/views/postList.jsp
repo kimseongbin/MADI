@@ -449,7 +449,7 @@
 						    <input id="upload_recipe" class="file-upload__input" type="file" name="stepImg">
 						</div>
 		       			<textarea name="cooking_desc" id="cooking_desc" class="form-control" style="margin-bottom: 5px;" placeholder="입력"></textarea>
-		       			<input type="text" name="step_tip" id="step_tip" class="form-control" style="margin-bottom: 5px;" placeholder="TIP★ 입력">
+		       			<input type="text" name="step_tip" id="step_tip" class="form-control" style="margin-bottom: 5px;" placeholder="TIP★ 입력" />
 		        	</div>
 		        </div>
 		        

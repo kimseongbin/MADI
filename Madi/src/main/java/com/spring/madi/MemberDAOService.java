@@ -112,11 +112,10 @@ public class MemberDAOService implements MemberDAO {
 	public ArrayList<MemberBoxVO> getMyIrdntByUserId(String user_id) {
 		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
 		ArrayList<MemberBoxVO> myIrdntList = memberMapper.getMyIrdntByUserId(user_id);
-		if(myIrdntList.size()==0 || myIrdntList == null) {
-			return null;
-		} else {
-			return myIrdntList;
+		if(myIrdntList.size()==0) {
+			System.out.println("SYSTEM  :  MemberDAOService, getMyIrdntByUserId; 읽어온 내 재료 목록의 개수가 0입니다.");
 		}
+		return myIrdntList;
 	}
 	
 	//(진산) 냉장고에 재료가 있는지 알아보기
@@ -145,5 +144,4 @@ public class MemberDAOService implements MemberDAO {
 		MemberVO memberVO = memberMapper.getUserInfoById(user_id);
 		return memberVO;
 	}
-
 }

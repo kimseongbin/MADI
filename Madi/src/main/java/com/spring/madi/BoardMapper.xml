@@ -35,12 +35,15 @@
 
 	<!-- 댓글에 입력하면 DB에 저장 -->
 	<insert id="writeBoard" parameterType="BoardReplyVO">
-		insert into board_reply(board_num, user_id, rep_content) values (#{board_num}, #{user_id}, #{rep_content})	
+		INSERT INTO BOARD_REPLY (BOARD_NUM, USER_ID, REP_CONTENT, USER_IMG) 
+		VALUES (#{board_num}, #{user_id}, #{rep_content}, #{user_img})	
 	</insert>
 	<!-- DB저장 내용 뽑아서 뿌려줌 -->
 	<select id="getBoard" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardReplyVO">
-		Select * from board_reply order by rep_date
-	
+		SELECT USER_ID, USER_IMG, REP_CONTENT, REP_DATE
+		FROM BOARD_REPLY
+		WHERE BOARD_NUM = #{board_num}
+		ORDER BY REP_DATE DESC
 	</select>
 	<!-- 성빈 : recipe_id와 연결된 Board 정보 조회 -->
 	<select id="getBoardByRecipeId" resultMap="BoardResultMap" parameterType="com.spring.madi.RecipeVO">
@@ -50,7 +53,7 @@
 	</select>
 	<!-- 성빈 : board_num과 연결된 Reply 리스트 조회 -->
 	<select id="getReplyByBoardNum" resultMap="BoardReplyResultMap" parameterType="com.spring.madi.BoardVO">
-		SELECT USER_ID, USER_IMG, REP_CONTENT 
+		SELECT USER_ID, USER_IMG, REP_CONTENT , REP_DATE
 		FROM BOARD_REPLY
 		WHERE BOARD_NUM = #{board_num}
 		ORDER BY REP_DATE DESC
@@ -62,12 +65,12 @@
 		where c.board_num = d.board_num 
 		and recipe_id=466 order by rep_date
 		</select>
-	<insert id="insertBoard" parameterType="BoardVO">
-		<selectKey resultType="int" keyProperty="board_num" order="BEFORE">
-			SELECT NVL(MAX(board_num), 0) + 1 FROM board
+	<insert id="insertBoard" parameterType="com.spring.madi.RecipeVO">
+		<selectKey resultType="int" keyProperty="recipe_id" order="BEFORE">
+			SELECT MAX(RECIPE_ID) FROM RECIPE_INFO
 		</selectKey>
-		INSERT INTO board (board_num, user_id, board_title, board_summry, board_img, board_recipe_id, board_like, board_time)
-		VALUES (#{board_num}, 'madi', #{board_title}, #{board_summry}, #{board_img}, #{board_recipe_id}, 0, SYSDATE)
+		INSERT INTO BOARD (BOARD_NUM, USER_ID, BOARD_TITLE, BOARD_SUMMRY, BOARD_IMG, BOARD_RECIPE_ID, BOARD_LIKE, BOARD_TIME)
+		VALUES (#{recipe_id}, #{user_id, jdbcType=VARCHAR}, #{recipe_title}, #{recipe_desc}, #{img_url}, #{recipe_id}, 0, SYSDATE)
 	</insert>
 
 	
@@ -124,4 +127,35 @@
 	<update id="likeMinusOne" parameterType="com.spring.madi.BoardVO">
 		UPDATE board SET board_like= board_like - 1 WHERE user_id= #{user_id, javaType=String} and board_num= #{board_num}
 	</update>
+	
+	<!-- (성빈) 좋아요 한 게시판인지 체크 -->
+	<select id="doesAlreadyLike" parameterType="com.spring.madi.UserLikeBoVO" resultMap="UserLikeBoResultMap">
+		SELECT *
+		FROM USER_LIKE_BO
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND BOARD_NUM = #{board_num}
+	</select>
+	<!-- (성빈) 게시판의 좋아요 카운트 증가-->
+	<update id="updateBoardLikePlus" parameterType="com.spring.madi.UserLikeBoVO">
+		UPDATE BOARD
+		SET BOARD_LIKE = BOARD_LIKE + 1
+		WHERE BOARD_NUM = #{board_num}
+	</update>
+	<!-- (성빈) 게시판의 좋아요 카운트 증가-->
+	<update id="updateBoardLikeMinus" parameterType="com.spring.madi.UserLikeBoVO">
+		UPDATE BOARD
+		SET BOARD_LIKE = BOARD_LIKE - 1
+		WHERE BOARD_NUM = #{board_num}
+	</update>
+	<insert id="insertUserLikeBo" parameterType="com.spring.madi.UserLikeBoVO">
+		INSERT INTO USER_LIKE_BO(USER_ID, BOARD_NUM)
+		VALUES(#{user_id, jdbcType=VARCHAR}, #{board_num})
+	</insert>
+	<delete id="deleteUserLikeBo" parameterType="com.spring.madi.UserLikeBoVO">
+		DELETE FROM USER_LIKE_BO
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND BOARD_NUM = #{board_num}
+	</delete>
+	<delete id="deleteReply" parameterType="com.spring.madi.BoardReplyVO">
+		DELETE FROM BOARD_REPLY
+		WHERE USER_ID = #{user_id} AND REP_DATE = #{rep_date}
+	</delete>
 </mapper>

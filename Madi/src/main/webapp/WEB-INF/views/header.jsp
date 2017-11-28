@@ -18,9 +18,42 @@
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
-	
+	// 내 재료 목록 받아오기
+	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 %>
   <style>  	
+  	/*font 설정*/
+  	@import url('https://fonts.googleapis.com/css?family=Pacifico');
+	@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');	
+	@import url('http://fonts.googleapis.com/earlyaccess/hanna.css');
+	@import url('http://fonts.googleapis.com/earlyaccess/jejugothic.css');
+	
+	.madi_title {
+		font-family: 'Pacifico', cursive;
+		font-size: 55px;
+	}
+	
+	.madi_logo {
+		font-family: 'Pacifico', cursive;
+		font-size: 37px;
+		color: #f5f5f5;
+	}
+	
+	.madi_subtitle {
+		font-family: 'jejugothic';
+		font-size: 48px;
+		font-weight: bold;
+	}
+	
+	.madi_content {
+		font-family: 'jejugothic';
+	}
+	
+	.madi_cc {
+		font-family: 'Pacifico', cursive;
+		font-size: 40px;
+	}
+	    
 	footer {
 	    background-color: #DE4F4F;
 	    color: white;
@@ -134,9 +167,7 @@
 	    text-align: center;
 	    font-size: 30px;
 	}
-	.header.modal-header, .modal-body {
-	    padding: 20px 50px;
-	}
+	
 	/* 냉장고 재료들 리스트 정렬 */
 	.ul.hori {
 	    list-style:none;
@@ -153,6 +184,7 @@
 	    width:70px;
 	    height:80px;
 	}
+
   </style>
 <!-- 헤더 시작 -->
  <nav class="navbar navbar-default head header" data-spy="affix" data-offset-top="197">
@@ -163,30 +195,28 @@
                 <span class="icon-bar" style="background-color:white;"></span>
                 <span class="icon-bar" style="background-color:white;"></span>
             </button>
-            <a class="navbar-brand" href="#">MADI</a>
+            <a class="navbar-brand" href="#"><font class="madi_logo">Madi</font></a>
         </div>
         <!--검색 창 -->
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar" style="margin-left:25%;">
-                <form class="navbar-form navbar-right" role="search">
+        <div class="collapse navbar-collapse" id="myNavbar" align="center">
+            <ul class="nav navbar-nav navbar" style="text-align: center;">
+                <form class="navbar-form navbar-right" role="search" style="margin-left: auto; margin-right: auto;">
                     <div class="form-group input-group">
                         <input type="text" class="form-control" placeholder="Search.." size="80%"> 
-                        	<span class="input-group-btn">
-                            <button class="btn btn-default" type="button" style="padding-bottom:2px; margin-top:1px;">
-                                <span class="glyphicon glyphicon-search header"></span>
-                            </button>
+	                        	<span class="input-group-btn">
+	                            <button class="btn btn-default" type="button" style="padding-bottom:2px; margin-top:1px;s">
+	                                <span class="glyphicon glyphicon-search header"></span>
+	                            </button>
                         	</span>
                     </div>
                 </form>
             </ul>
               <!--오른쪽 아이콘 -->
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" style="vertical-align: middle;">
                 <!--home 아이콘 -->
                 <li>
-                	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;">
+                	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;" onclick="recipeDo();">
                     	<span class="glyphicon glyphicon-home color header"></span>
-
-
                     </button>
                 </li>
                 <!-- profile 아이콘 -->
@@ -255,8 +285,8 @@
                     </div>
                 </li>
                 <!--소셜 아이콘 -->
-                <li>
-                    <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
+                <li onclick="postListDo();">
+                    <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;" >
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>
@@ -3077,7 +3107,6 @@
 					</div>
 					<!-- 오른쪽 내 재료들 저장칸 -->
 					<div class="col-sm-3">
-
 					</div>
 				</div>
 			</div>
@@ -3094,14 +3123,14 @@
 <!-- div fade 끝. 냉장고 모달 끝 -->
 <!-- 메시지 및 알림 모달 -->
 <!-- Modal bar -->
-<div class="modal modal-center fade" id="myModal" tableindex="-1"
+<div class="modal modal-center fade" id="myModal" tableindex="-1" style="margin-top:100px;border-radius: 8px;" 
 	role="dialog" aria-labelledby="modallabel">
 	<div class="modal-dialog modal-size modal-center" role="document">
-		<div class="modal-content modal-size">
+		<div class="modal-content modal-size" style="width: 400px; border-radius: 8px;">
 			<!-- 알림, 메시지 탭 -->
-			<div class="modal-header header">
+			<div class="modal-header header" style="border-top-left-radius: 8px; border-top-right-radius: 8px; padding-bottom: 0px;">
 				<button type="button" class="close" data-dismiss="modal" class="btn header">&times;</button>
-				<ul class="nav nav-tabs">
+				<ul class="nav nav-tabs" style="font-size: 14px;border-bottom: 0px;">
 					<li class="active"><a data-toggle="tab" href="#home">알림 <span
 							class="badge" id="no"><%=notificationList.size() %></span>
 					</a></li>
@@ -3117,7 +3146,7 @@
 							<div class="row">
 								<div class="col-sm-2">
 									<img src="./resources/profile/bird.jpg" class="img-circle"
-										height="40" width="40" alt="Avatar">
+										height="40" width="40" alt="Avatar" style="margin-bottom: 5px;">
 								</div>
 								
 								<div class="col-sm-6">
@@ -3139,7 +3168,9 @@
 								</div>
 								
 								<div class="col-sm-6">
-									<h5 class="text-primary header" style="magin-bottom:5px;"><strong>&nbsp;이글이글</strong></h5>
+									<h5 class="text-primary header" style="magin-bottom:5px;">
+										<strong>&nbsp;이글이글</strong>
+									</h5>
 								</div>
 							</div>
 							<!-- 메시지 내용들 -->
@@ -3150,9 +3181,11 @@
 					</div>
 				</div>
 			</div>
+<!-- //없는게 더 깔끔한 느낌			
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default header" data-dismiss="modal">Close</button>
-			</div>
+			</div> 
+-->
 		</div>
 	</div>
 </div>

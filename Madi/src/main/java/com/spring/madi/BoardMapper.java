@@ -10,11 +10,11 @@ public interface BoardMapper {
 	//인욱
 	void writeBoard(BoardReplyVO boardReplyVO);
 	//인욱
-	ArrayList<BoardReplyVO> getBoard();
+	ArrayList<BoardReplyVO> getBoard(BoardReplyVO boardReplyVO);
 	//인욱
 	ArrayList<BoardReplyVO> contentBoard();
 
-	public void insertBoard(BoardVO boardVO);
+	public void insertBoard(RecipeVO recipeVO);
 	public ArrayList<BoardVO> boardList();
 
 	//(진산) 자신의 게시글 목록 구하기
@@ -38,4 +38,17 @@ public interface BoardMapper {
 	void deleteUserLike(BoardVO boardVO);
 	//(진산) 좋아요 중복이라 board에서 like 숫자 1 빼기
 	void likeMinusOne(BoardVO boardVO);
+	// (성빈)이미 좋아요를 누른 게시판인지 구하는 메소드
+	UserLikeBoVO doesAlreadyLike(UserLikeBoVO userLikeBoVO);
+	// (성빈)좋아요 카운트 증가
+	void updateBoardLikePlus(UserLikeBoVO userLikeBoVO);
+	// (성빈)좋아요 카운트 감소
+	void updateBoardLikeMinus(UserLikeBoVO userLikeBoVO);
+	// (성빈) 좋아하는 게시판 추가
+	void insertUserLikeBo(UserLikeBoVO userLikeBovO);
+	// (성빈) 종아하는 게시판 삭제
+	void deleteUserLikeBo(UserLikeBoVO userLikeBoVO);
+	// (성빈) 게시판 댓글 삭제
+	void deleteReply(BoardReplyVO boardReplyVO);
+	
 }
