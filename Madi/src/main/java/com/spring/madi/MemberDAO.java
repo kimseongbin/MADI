@@ -30,5 +30,4 @@ public interface MemberDAO {
 	public ArrayList<MemberBoxVO> getMyIrdntByUserId(String user_id);
 	// 성빈 : 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐)
 	public MemberVO getUserInfoById(String user_id);
-
 }

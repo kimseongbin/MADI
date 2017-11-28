@@ -1,3 +1,4 @@
+<%@page import="com.spring.madi.MemberBoxVO"%>
 <%@page import="com.spring.madi.MemberVO"%>
 <%@page import="com.spring.madi.NotificationVO"%>
 <%@page import="com.spring.madi.MessageVO"%>
@@ -15,7 +16,8 @@
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
-	
+	// 내 재료 목록 받아오기
+	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 %>
   <style>  	
 	footer {
@@ -164,7 +166,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <!--home 아이콘 -->
                 <li>
-                	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;">
+                	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;" onclick="recipeDo();">
                     	<span class="glyphicon glyphicon-home color header"></span>
 
 
@@ -221,7 +223,7 @@
                 </li>
                 <!--소셜 아이콘 -->
                 <li>
-                    <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
+                    <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;" onclick="postListDo();">
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>

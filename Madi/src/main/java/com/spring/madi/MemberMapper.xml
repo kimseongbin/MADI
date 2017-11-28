@@ -97,10 +97,10 @@
 	</insert>
 	
 	<!-- 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 쿼리 -->
-	<select id="getMyIrdntByUserId" resultMap="MemberBoxResultMap">
+	<select id="getMyIrdntByUserId" resultMap="MemberBoxResultMap" parameterType="String">
 		SELECT *
 		FROM MEMBER_BOX
-		WHERE USER_ID = ${user_id}
+		WHERE USER_ID = #{user_id, javaType=String}
 	</select>
 	
 	<!-- 성빈: 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->

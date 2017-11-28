@@ -112,11 +112,10 @@ public class MemberDAOService implements MemberDAO {
 	public ArrayList<MemberBoxVO> getMyIrdntByUserId(String user_id) {
 		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
 		ArrayList<MemberBoxVO> myIrdntList = memberMapper.getMyIrdntByUserId(user_id);
-		if(myIrdntList.size()==0 || myIrdntList == null) {
-			return null;
-		} else {
-			return myIrdntList;
+		if(myIrdntList.size()==0) {
+			System.out.println("SYSTEM  :  MemberDAOService, getMyIrdntByUserId; 읽어온 내 재료 목록의 개수가 0입니다.");
 		}
+		return myIrdntList;
 	}
 	
 	@Override // 성빈 : 회원 기본 정보 조회 메소드
@@ -125,5 +124,4 @@ public class MemberDAOService implements MemberDAO {
 		MemberVO memberVO = memberMapper.getUserInfoById(user_id);
 		return memberVO;
 	}
-
 }

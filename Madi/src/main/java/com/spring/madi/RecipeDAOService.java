@@ -112,9 +112,10 @@ public class RecipeDAOService implements RecipeDAO {
 		public String[] getImgURLByImgFiles(MultipartFile[] mf) {
 					
 			String[] URLs = null;
+			System.out.println("SYSTEM  :  레시피 입력, RecipeDAOServcie, getImgURLByImgFiles, 전달받은 이미지 파일의 개수 " + mf.length);
 			// 입력받은 파일의 개수가 만큼 URLs 배열 생성 이때 입력되지 않은 파일이 있는 경우에는 해당 url에 null이 입력된다.
 			URLs = new String[mf.length];
-			System.out.println("mfs length is " + mf.length);
+			System.out.println("SYSTEM  :  레시피 입력, RecipeDAOServcie, getImgURLByImgFiles, 전달받은 이미지 파일의 개수만큼 이미지 URLs 배열을 생성합니다. " + URLs.length);
 			// 저장팔 로컬 디렉토리 경로
 			String uploadPath = "c:\\upload\\";
 			// mf 배열을 루프문을 돌려 각각을 저장하고 각각의 파일 경로를 URLs에 입력하기 위한 루프문
@@ -123,7 +124,7 @@ public class RecipeDAOService implements RecipeDAO {
 				// 다만, 파일 경로를 기억하는 URLs에는 null값을 주어 recipeDetail에서 해당 파일의 이미지를 로드할 이미지 태그를 생성할 때
 				// 파일 유무 체크를 위해 null 값을 준다.
 				if(mf[i].getSize() == 0) {
-					URLs[i] = null;
+					URLs[i] = "null";
 					continue; // 파일이 없을 경우 다음 파일의 작업을 시작한다.
 				}
 				// mf마다의 파일 확장자 구하기
@@ -134,7 +135,7 @@ public class RecipeDAOService implements RecipeDAO {
 				// 파일 저장하기
 				try {
 					mf[i].transferTo(new File(uploadPath + storedFileName));
-					URLs[i] = "/madi/upload/" + storedFileName; // 이미지 태그에서 불러올 파일 경로
+					URLs[i] = "madi/upload/" + storedFileName; // 이미지 태그에서 불러올 파일 경로
 				} catch (Exception e) {
 					System.out.println("SYSTEM  :  레시피 과정 이미지 저장 오류 발생, RecipeDAOService; getImgURLByImgFiles; index "+i);
 					e.printStackTrace();
@@ -209,8 +210,12 @@ public class RecipeDAOService implements RecipeDAO {
 				RecipeProcessVO recipeProcessVO = new RecipeProcessVO();
 				recipeProcessVO.setCooking_no(cooking_no[i]);
 				recipeProcessVO.setCooking_desc(cooking_desc[i]);
+				if(step_tip[i].length() == 0) {
+					recipeProcessVO.setStep_tip("null");
+				} else {
+					recipeProcessVO.setStep_tip(step_tip[i].toString());
+				}
 				recipeProcessVO.setStep_img_url(step_img_url[i]);
-				recipeProcessVO.setStep_tip(step_tip[i]);
 				recipeProcessList.add(recipeProcessVO);
 			}
 			return recipeProcessList;

@@ -8,6 +8,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +123,14 @@ public class FrontController {
 		}
 	}
 
+	// 성빈 : 로그아웃 모델
+	// 로그아웃 시 session에 저장한 모든 객체들을 드롭한다.
+	// 드롭 메소드는 invalidate을 사용
+	@RequestMapping("/logout.do")
+	public String logoutMadi(HttpSession session) {
+		session.invalidate();
+		return"redirect:/";
+	}
 	// 성빈 : 회원가입 모델
 	// DB에 Insert한 뒤 초기화면으로 돌아간다.
 	@RequestMapping("/join.do")
@@ -144,47 +153,49 @@ public class FrontController {
 		}
 		return "redirect:/";
 	}
-
 	// (진산)mypage.do 작업
 	@RequestMapping("/mypage.do")
-	public ModelAndView myPage(HttpServletRequest request)
+	public ModelAndView myPage(HttpServletRequest request, HttpSession session)
 	{	
-		//String user_id = (String)session.getAttribute("user_id");
-		String user_id = "user2";
-		//session.setAttribute("madi", user_id);
+		// ModelAndView 객체 생성
 		ModelAndView result= new ModelAndView();
-		//내 알림 메시지 읽어오기
+		// Session으로부터 사용자 아이디 읽어오기
+		String user_id = (String)session.getAttribute("user_id");
+		if(user_id == null) {
+			System.out.println("SYSTEM  :  Controller, myPage.do; 세션 아이디 삭제 또는 비정상 접근에 의한 로그아웃 또는 접근 불가");
+			result.setViewName("redirect:/");
+			return result;
+		}
+		// Header에 들어가야 할 기본 데이터 읽어오기
+		// 내 알림 메시지 읽어오기
 		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
-		if(notificationList == null) {
-			notificationList = new ArrayList<NotificationVO>();
-		}
-		result.addObject("notificationList", notificationList);
-		// 내 메시지 읽어오기
+		// 내 개인 메시지 읽어오기
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
-		if(messageList == null) {
-			messageList = new ArrayList<MessageVO>();
-		}
-		result.addObject("messageList", messageList);
-		//자기 자신에 대한 member정보
+		// 내 개인정보 읽어오기
 		MemberVO memberVO= memberDAOService.getMember(user_id);
-		result.addObject("memberVO", memberVO);
+		// 내 냉장고 재료 목록 불러오기
+		ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(user_id);
 		
+		// Mypage에서 쓰일 기본 정보 읽어오기
 		// 팔로워 리스트
 		List<MemberFollowVO> followerList = memberDAOService.getFollower(user_id);
-		result.addObject("followerList", followerList);
 		// 팔로잉 리스트
 		List<MemberFollowVO> followingList = memberDAOService.getFollowing(user_id);
-		result.addObject("followingList", followingList);
 		//팔로워 추천 리스트
 		List<MemberFollowVO> recommendList= memberDAOService.getRecommendFollower(user_id);
-		System.out.println("recommendList.size()=" + recommendList.size());
-		result.addObject("recommendList", recommendList);
-		
 		//모든 게시글 위해서 불러옴 
 		List<BoardVO> allBoardList = boardDAOService.getAllBoards(user_id);
-		
 		// 가운데 게시글 리스트
 		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
+
+		// Object 추가
+		result.addObject("notificationList", notificationList);
+		result.addObject("messageList", messageList);
+		result.addObject("memberVO", memberVO);
+		result.addObject("myIrdntList", myIrdntList);
+		result.addObject("followerList", followerList);
+		result.addObject("followingList", followingList);
+		result.addObject("recommendList", recommendList);
 		result.addObject("myBoardList", myBoardList);
 		result.addObject("allBoardList", allBoardList);
 		result.setViewName("mypage");
@@ -257,7 +268,7 @@ public class FrontController {
 		result.addObject("member", member);
 		result.setViewName("insertFollowing_modal");
 		return result;
-	}
+	} 
 
 	// (진산) 좋아요 클릭시 한 개 추가...@ResponseBody를 써서 json오브젝트만 리턴하게 된다
 	@RequestMapping("/updateBoardLike.do")
@@ -350,24 +361,27 @@ public class FrontController {
 	}
 
 	@RequestMapping("/writeBoard.do")
-	public ModelAndView writeBoard(BoardReplyVO boardReplyVO, HttpServletRequest request) {
+	public ModelAndView writeBoard(BoardReplyVO boardReplyVO, HttpServletResponse response, HttpServletRequest request) {
+		ModelAndView rs = new ModelAndView();
 		// System.out.println(request.getParameter("rep_content"));
 		// System.out.println(request.getParameter("user_id"));
 		// System.out.println(request.getParameter("board_num"));
 		// System.out.println(boardReplyVO.getBoard_num());
 		// System.out.println(boardReplyVO.getRep_content());
 		// System.out.println(boardReplyVO.getUser_id());
-
+		int board_num = boardReplyVO.getBoard_num();
+		if(board_num == 0) {
+			System.out.println("SYSTEM  :  댓글 입력 에러 발생, Controller; writeBoard; board_num을 전달받지 못했습니다. " + boardReplyVO.getBoard_num());
+			return null;
+		}
 		// 인욱
 		// 받은 값을 DB에 저장해줌
 		boardDAOService.writeBoard(boardReplyVO);
-		System.out.println("check3");
 		// 모델엔뷰 이용해서 DB저장값을 뿌려줌
-		ModelAndView rs = new ModelAndView();
-		List<BoardReplyVO> replyList = boardDAOService.getBoard();
+		List<BoardReplyVO> replyList = boardDAOService.getBoard(boardReplyVO);
 		rs.addObject("replyList", replyList);
 		// 넘겨줄 페이지 이름 기술
-		rs.setViewName("recipeDetail1");
+		rs.setViewName("replyList");
 		return rs;
 
 	}
@@ -377,7 +391,13 @@ public class FrontController {
 	// recipeVO에 입력한 뒤 recipeVO를 DB에 저장한다.
 	@RequestMapping("/recipeInsert.do")
 	public String recipeInsert(RecipeVO recipeVO, HttpSession session, @RequestParam("titleImg") MultipartFile titleImg, @RequestParam("stepImg") MultipartFile[] stepImg) throws Exception {
-
+		
+		System.out.println("SYSTEM  :  레시피 입력 시작, 입력 받은 과정 목록의 개수는 총 " + recipeVO.getCooking_desc().length);
+		System.out.println("SYSTEM  :  레시피 입력 시작, 입력 받은 파일 객체의 개수는 총 " + stepImg.length);
+		if( recipeVO.getCooking_desc().length != stepImg.length ) {
+			System.out.println("SYSTEM  :  레시피 입력 실패, 입력 받은 과정 목록의 개수와 stepImg 파일 객체의 개수가 같지 않습니다.");
+			return null;
+		}
 		ModelAndView mav = new ModelAndView();
 		// (성빈) 작성자의 id 값 읽어오기
 		String user_id = (String) session.getAttribute("user_id");
@@ -498,6 +518,8 @@ public class FrontController {
 
 		// mav.addObject("fileName", mf.getOriginalFilename());
 		mav.setViewName("redirect:/postList.do");*/
+		boardDAOService.insertBoard(recipeVO);
+		
 		
 		return "redirect:/postList.do";
 
@@ -548,13 +570,13 @@ public class FrontController {
 		ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(user_id);
 		ArrayList<RecipeVO> recipeList = null;
 		if (myIrdntList.size() == 0) {
+			response.setCharacterEncoding("utf-8");
+			response.setContentType("text/html; charset=UTF-8");
 			try {
-				response.setCharacterEncoding("utf-8");
-				response.setContentType("text/html");
 				PrintWriter writer = response.getWriter();
-				writer.write("<script>");
-				writer.write("alert('현재 입력되어 있는 재료가 존재하지 않습니다.');");
-				writer.write("<script>");
+				writer.write("<script>");;
+				writer.write("alert('현재 내 냉장고가 비어있습니다.');");
+				writer.write("</script>");
 				return null;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -612,4 +634,47 @@ public class FrontController {
 		return "message";
 	}
 
+	// 성빈 : recipeDetail에서 게시판 좋아요 눌렀을 때 처리 하는 메소드
+	@RequestMapping("/likeBoard.do")
+	@ResponseBody
+	public int likeBoard(UserLikeBoVO userLikeBoVO, String writer) {
+		// 좋아요 누른 적 있는지 없는지 판단
+		UserLikeBoVO vo = boardDAOService.doesAlreadyLike(userLikeBoVO);
+		
+		if(vo == null) {
+			System.out.println("SYSTEM  :  UserLieBo Select 결과 데이터가 존해자 읺아 null이 리턴되었습니다");
+			// 좋아요 추가
+			boardDAOService.updateBoardLikePlus(userLikeBoVO);
+			// 좋아요 알림 메시지 전송
+			NotificationVO notificationVO = new NotificationVO();
+			notificationVO.setNotice_to(writer);
+			notificationVO.setNotice_from(userLikeBoVO.getUser_id());
+			String content = userLikeBoVO.getUser_id()+"님이 회원님의 게시물을 좋아합니다.";
+			String notice_type = "좋아요 추가";
+			notificationVO.setContent(content);
+			notificationVO.setNotice_type(notice_type);
+			notificationDAOService.sendNoticeById(notificationVO);
+			// 좋아요 테이블에 추가
+			boardDAOService.insertUserLikeBo(userLikeBoVO);
+			return 1;
+		} else {
+			// 좋아요 감소
+			boardDAOService.updateBoardLikeMinus(userLikeBoVO);
+			// 좋아요 테이블 삭제
+			boardDAOService.deleteUserLikeBo(userLikeBoVO);
+			return 0;
+		}
+	}
+	@RequestMapping("/deleteReply")
+	@ResponseBody
+	public int deleteReply(BoardReplyVO boardReplyVO, HttpSession session) {
+		String user_id = (String) session.getAttribute("user_id");
+		if(user_id.equals(boardReplyVO.getUser_id())) {
+			boardDAOService.deleteReply(boardReplyVO);
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
 }

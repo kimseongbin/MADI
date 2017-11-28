@@ -15,8 +15,7 @@
 <%
 	// 모델로부터 Header에 전달할 객체 받기
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
-	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request
-			.getAttribute("notificationList");
+	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 
 	// Header에 해당 객체 전달
@@ -348,6 +347,7 @@ footer {
 </style>
 </head>
 <body style="background-color: #F6F6F6">
+	<%=boardVO.getBoard_num() %>
 	<!-- Header 시작-->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
@@ -355,312 +355,298 @@ footer {
 	<!-- Header 끝-->
 	<!-- 성빈 수정 -->
 	<div class="container-fluid">
+		<!-- body wrapper 끝 -->
 		<div class="row content">
 			<!-- 좌측 Sidenav -->
 			<div class="col-sm-3 sidenav">
-				<div class="panel panel-default" style="padding-left: 5px; padding-right:5px; padding-bottom:10px;">
-					<h4><small><%=memberVO.getUser_id() %>님의 레시피</small></h4>
-					<img src="<%=memberVO.getUser_img()%>" class="img-rounded" width="100%;">
-					<br/><br/>
+				<div class="panel panel-default text-center"
+					style="padding-left: 5px; padding-right: 5px; padding-bottom: 10px;">
+					<h3>
+						<%=memberVO.getUser_id()%>님의 레시피
+					</h3>
+					<img src="<%=memberVO.getUser_img()%>" class="img-rounded"
+						width="80%;"> <br /> <br />
+					<p>
+					<h4><%=memberVO.getUser_name()%></h4>
+					</p>
+					<p>
+					<h4><%=memberVO.getUser_email()%></h4>
+					</p>
+					<!-- 하이차트 시작 -->
+					<div class="container-fluid"
+						style="padding-left: 5%; padding-right: 5%;">
+						<div id="칼로리" style="float: left; width: 50%; height: 170px;"></div>
+						<div id="탄수화물" style="float: left; width: 50%; height: 170px;"></div>
+						<div id="단백질" style="float: left; width: 50%; height: 170px;"></div>
+						<div id="지방" style="float: left; width: 50%; height: 170px;"></div>
+					</div>
+					<!-- 하이차트 끝 -->
 					<!-- 재료 목록 시작-->
-					<ul class="nav nav-pills nav-stacked">
-						<li>
-							<span>재료명</span>
-							<span>재료용량</span>
-						</li>
-<%
-					for(int i = 0; i < recipeIrdnt.size(); i++) {
-						RecipeIrdntVO recipeIrdntVO = recipeIrdnt.get(i);
-%>
-						<li>
-							<span><%=recipeIrdntVO.getIrdnt_name() %></span>
-							<span><%=recipeIrdntVO.getIrdnt_cpcty() %></span>
-						</li>
-<%
-					}
-%>
-					</ul>
-					<!-- 재료 목록 시작 끝-->
-					<!--  -->
-					<div class=""></div>
-					<br>
-				</div>
-				<div></div>
-			</div>
-			<!-- 좌측 Sidenav 끝-->
-			<div class="col-sm-9">
-				<h4>
-					<small>RECENT POSTS</small>
-				</h4>
-				<hr>
-				<h2>I Love Food</h2>
-				<h5>
-					<span class="glyphicon glyphicon-time"></span> Post by Jane Dane,
-					Sep 27, 2015.
-				</h5>
-				<h5>
-					<span class="label label-danger">Food</span> <span
-						class="label label-primary">Ipsum</span>
-				</h5>
-				<br>
-				<p>Food is my passion. Lorem ipsum dolor sit amet, consectetur
-					adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-					exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum consectetur
-					adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-					exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat.</p>
-				<br>
-				<br>
-
-				<h4>
-					<small>RECENT POSTS</small>
-				</h4>
-				<hr>
-				<h2>Officially Blogging</h2>
-				<h5>
-					<span class="glyphicon glyphicon-time"></span> Post by John Doe,
-					Sep 24, 2015.
-				</h5>
-				<h5>
-					<span class="label label-success">Lorem</span>
-				</h5>
-				<br>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-					do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-					enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat
-					cupidatat non proident, sunt in culpa qui officia deserunt mollit
-					anim id est laborum consectetur adipiscing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-					minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat.</p>
-				<hr>
-
-				<h4>Leave a Comment:</h4>
-				<form role="form">
-					<div class="form-group">
-						<textarea class="form-control" rows="3" required></textarea>
-					</div>
-					<button type="submit" class="btn btn-success">Submit</button>
-				</form>
-				<br>
-				<br>
-
-				<p>
-					<span class="badge">2</span> Comments:
-				</p>
-				<br>
-
-				<div class="row">
-					<div class="col-sm-2 text-center">
-						<img src="bandmember.jpg" class="img-circle" height="65"
-							width="65" alt="Avatar">
-					</div>
-					<div class="col-sm-10">
-						<h4>
-							Anja <small>Sep 29, 2015, 9:12 PM</small>
-						</h4>
-						<p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum
-							dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua.</p>
-						<br>
-					</div>
-					<div class="col-sm-2 text-center">
-						<img src="bird.jpg" class="img-circle" height="65" width="65"
-							alt="Avatar">
-					</div>
-					<div class="col-sm-10">
-						<h4>
-							John Row <small>Sep 25, 2015, 8:25 PM</small>
-						</h4>
-						<p>I am so happy for you man! Finally. I am looking forward to
-							read about your trendy life. Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-							labore et dolore magna aliqua.</p>
-						<br>
-						<p>
-							<span class="badge">1</span> Comment:
-						</p>
-						<br>
-						<div class="row">
-							<div class="col-sm-2 text-center">
-								<img src="bird.jpg" class="img-circle" height="65" width="65"
-									alt="Avatar">
-							</div>
-							<div class="col-xs-10">
-								<h4>
-									Nested Bro <small>Sep 25, 2015, 8:28 PM</small>
-								</h4>
-								<p>Me too! WOW!</p>
-								<br>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- 인욱이형 부분 -->
-	<%-- <div class="container" style="background-color: #fcf8e3">
-		<div class=" container col-xs-0 col-md-3"></div>
-		<div class=" container col-xs-12 col-md-6">
-			<h1 align="center"><%=recipeVO.getRecipe_title()%></h1>
-
-
-			<img src="<%=recipeVO.getImg_url()%>" class="img-rounded thumbnail"
-				alt="Cinque Terre" width="100%" height="100%"
-				style="max-height: 500px"> &nbsp;
-			<p><%=recipeVO.getRecipe_desc()%></p>
-
-			<h2 align="center">영양정보</h2>
-			<div id="칼로리" style="float: left; width: 135px; height: 135px;"></div>
-			<div id="탄수화물" style="float: left; width: 135px; height: 135px;"></div>
-			<div id="단백질" style="float: left; width: 135px; height: 135px;"></div>
-			<div id="지방" style="float: left; width: 135px; height: 135px;"></div>
-
-		</div>
-
-
-
-		<div class=" container col-xs-0 col-md-3"></div>
-
-
-
-
-
-		<div class="row">
-
-			<div class="col-xs-12 col-md-6 text-center" style="height: 400px">
-				<h2>재료</h2>
-				<img src="./resources/image/orange.jpg"
-					class="img-rounded thumbnail" align="middle" alt="cinque terre"
-					width="400px" height="200px">
-			</div>
-			<div class="col-xs-12 col-md-4">
-				<h2>재료리스트</h2>
-				<table class="table table-bordered ">
-					
-						<tr>
-							<th>재료명</th>
-							<th>재료용량</th>
-						</tr>
-					
-					<%
-						for (int i = 0; i < recipeIrdnt.size(); i++) {
-							RecipeIrdntVO x = recipeIrdnt.get(i);
-					%>
-
-					<tbody>
-						<tr>
-							<td><%=x.getIrdnt_name()%></td>
-							<td><%=x.getIrdnt_cpcty()%></td>
-						</tr>
-					</tbody>	
+					<table class="table table-borderd">
+						<thead>
+							<tr>
+								<td>재료명</td>
+								<td>재료용량</td>
+							</tr>
+						</thead>
+						<%
+							for (int j = 0; j < recipeIrdnt.size(); j++) {
+								RecipeIrdntVO recipeIrdntVO = recipeIrdnt.get(j);
+						%>
+						<tbody>
+							<tr>
+								<td><%=recipeIrdntVO.getIrdnt_name()%></td>
+								<td><%=recipeIrdntVO.getIrdnt_cpcty()%></td>
+							</tr>
+						</tbody>
 						<%
 							}
 						%>
-					
-				</table>
+					</table>
+					<!-- 재료 목록 끝-->
+					<br>
+				</div>
 			</div>
-		</div>
-		<hr>
-		<div class="row">
-			<div class="col-xs-0 col-md-2"></div>
-			<div class="col-xs-12 col-md-8">
-				<h1 align="center">만드는법</h1>
-				<%
-						for (int i = 0; i < recipeProcess.size(); i++) {
-							RecipeProcessVO x = recipeProcess.get(i);
-						if(x.getStep_img_url().equals("null")){
-									
-						}else{
-				%>
-				
-				<img src="<%=x.getStep_img_url() %>"
-					class="img-rounded"
-					style="width: 70%; height: 70%; margin: 0 auto;">
-				<%}
-				
-						if(x.getStep_tip().equals("null")) { 
-				
-						}else{
-				%>
-				<h5>TIP : <%=x.getStep_tip() %></h5>
-				<%
-						}
-				%>	
-
-				<p><%=x.getCooking_no() %> : <%=x.getCooking_desc() %></p>
+			<!-- 좌측 Sidenav 끝-->
+			<!-- 우측 메인 시작 -->
+			<div class="col-sm-9 panel panel-default">
+				<div class="text-muted" style="position: absolute; left: 10px;">
+					<h4>
+						<small>RECIPE ID : <%=recipe.getRecipe_id()%></small>
+					</h4>
+				</div>
 				<hr>
-				<%
-						}
-						
-				%>
-				
-			<div class="col-xs-0 col-md-2"></div>	
-
-				<h1>한줄 댓글</h1>
-				<form method="get" id="reply">
-					<div class="container-fluid input-group"
-						style="padding-right: 0; padding-left: 0">
-						<textarea id="rep_content" name="rep_content" class="form-control"
-							placeholder="한줄 댓글을 남겨주세요." style="width: 100%" rows="4"></textarea>
-						<span class="input-group-addon"> <input
-							class="btn btn-default" type="button" value="댓글쓰기"
-							onclick="reply_save()" style="width: 100px">
-						</span> <input type="text" name="user_id" id="user_id"> <input
-							type="text" name="board_num" id="board_num">
-					</div>
-				</form>
+				<div class="text-center">
+				<h2><%=recipe.getRecipe_title()%></h2>
+				<!-- recipe 작성자, 작성시각 -->
+				<h5>
+					<span class="glyphicon glyphicon-time"></span> Post by
+					<%=memberVO.getUser_name()%>,
+					<%=recipe.getTime()%>
+				</h5>
+				<!-- recipe 타입 -->
+				<h5>
+					<span class="label label-danger"><%=recipe.getNation_name()%></span>
+					<span class="label label-primary"><%=recipe.getTy_name() %></span>
+					<button type="button" class="btn btn-default btn-sm" onclick="likeBoard('<%=memberVO.getUser_id()%>','<%=boardVO.getBoard_num()%>','<%=recipe.getUser_id()%>');">
+                	<span class="glyphicon glyphicon-thumbs-up"></span> Like
+              		</button>
+              		<span id="likeCnt"><%=boardVO.getBoard_like() %></span>
+				</h5>
+				<script>
+					function likeBoard(user_id, board_num, writer) {
+						$.ajax({
+							url: "./likeBoard.do",
+							type: "POST",
+							data: {
+								user_id: user_id,
+								board_num: board_num,
+								writer: writer
+							},
+							success: function(data) {
+								if(data == 1) {
+									document.getElementById("likeCnt").innerHTML = Number(document.getElementById("likeCnt").innerHTML) + 1;
+								} else {
+									document.getElementById("likeCnt").innerHTML = Number(document.getElementById("likeCnt").innerHTML) - 1;
+								}
+							}
+						});
+					}
+				</script>     
+				<br>
+				<!-- recipe 간단 설명 -->
+				<p>
+					<%=recipe.getRecipe_desc()%>
+				</p>
+				<br>
+				<!-- recipe 타이틀 이미지 -->
+				<img src="<%=recipe.getImg_url()%>" class="img-rounded" width="40%" />
+				<h5>
+					<small><%=recipe.getRecipe_title()%></small>
+				</h5>
 				<hr>
-				<%for(int i=0; i<boardReplyVO.size(); i++) {
-					BoardReplyVO reply1 = boardReplyVO.get(i);
-					
-				%>	
-				<form id="replyreply">
-				<div class="container-fluid input-group"
-					style="padding-right: 0; padding-left: 0; margin: 0">
-					
-					<div class="col-xs-2 col-md-2 thumbnail"
-						style="padding-right: 0; padding-left: 0;">
-						<img class="img-circle" src="<%=reply1.getUser_id() %>"
-							
-							style="width: 100%;">
+				<!-- recipe 과정 시작 -->
+				<h2><%=recipe.getRecipe_title()%>
+					만드는 법
+				</h2>
+				<br/>
+				<div>
+					<div id="openPro" style="cursor: pointer;" onclick="openPro(this);">
+						<h5><b><span class="glyphicon glyphicon-menu-down"></span>&nbsp;과정 펼치기</b></h5>
 					</div>
-					<div class="col-xs-10 col-md-10">
-						
-						<input type="hidden" value="<%=reply1.getBoard_num() %>"> 
-						<p>
-						
-						<%=reply1.getRep_content() %>
-						
-						
-						
-						</p>
-						
+					<div id="closePro" style="cursor: pointer; display:none;" onclick="closePro(this);">
+						<h5><b><span class="glyphicon glyphicon-menu-down"></span>&nbsp;과정 접기</b></h5>
 					</div>
 				</div>
-				<%
+				<script>
+					function openPro(element) {
+						element.style.display = "none";
+						document.getElementById("closePro").style.display = "block";
+						document.getElementById("Pro").style.display = "block";
+
+					}
+					function closePro(element) {
+						element.style.display = "none";
+						document.getElementById("openPro").style.display = "block";
+						document.getElementById("Pro").style.display = "none";
+
+					}
+				</script>
+				<br/>
+				<!-- recipe 과정 시작 -->
+				<div id="Pro" class="row container-fluid" style="display:none;">
+<%
+				for(int i = 0; i < recipeProcess.size(); i++) {		
+					try {
+						RecipeProcessVO recipeProcessVO = recipeProcess.get(i); 
+						
+					if(!(recipeProcessVO.getStep_img_url().equals("null"))) {
+%>					
+					<div class="well col-sm-12">
+						<div class="col-sm-6">		
+								<img src="<%=recipeProcessVO.getStep_img_url() %>" class="img-rounded" height="auto" width="100%"/>
+						</div>
+						<div class="col-sm-6">
+								<p>과정 <%=recipeProcessVO.getCooking_no() %></p>
+								<p>
+									<%=recipeProcessVO.getCooking_desc() %>
+								</p>
+<%
+						if(!(recipeProcessVO.getStep_tip().equals("null"))) {					
+%>
+								<br/><br/><small><small>과정 팁 : <%=recipeProcessVO.getStep_tip() %></small></small>
+<%
+						}
+%>
+						</div>
+					</div>
+<%
+					} else {
+%>
+					<div class="col-sm-12 well">
+						<div class="col-sm-12">
+							<p>과정 <%=recipeProcessVO.getCooking_no() %></p>
+							<p>
+								<%=recipeProcessVO.getCooking_desc() %>
+							</p>
+<%
+					if(!(recipeProcessVO.getStep_tip().equals("null"))) {
+%>
+						<small>과정 팁 : <%=recipeProcessVO.getStep_tip() %></small>
+<%
+					}
+%>
+						</div>
+					</div>
+<%		
+					}
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
 				}
-				%>
+%>
+				</div>
+				</div>
+				<!-- recipe 과정 끝 -->
+				<!-- 댓글 리스트 시작 -->
+				<h4>댓글 남기기:</h4>
+				<form role="form" id="reply">
+					<div class="form-group">
+						<textarea name="rep_content" class="form-control" rows="3" required style="resize:none;"></textarea>
+						<input type="hidden" name="board_num" value="<%=boardVO.getBoard_num() %>" />
+						<input type="hidden" name="user_id" value="<%=memberVO.getUser_id() %>" />
+						<input type="hidden" name="user_img" value="<%=memberVO.getUser_img() %>" />
+					</div>
 				</form>
+				<button class="btn btn-success" id="replySubmitBtn">댓글 달기</button>
+				<script>
+					$(document).ready(function() {
+						$("#replySubmitBtn").click(function() {
+							var param = $("#reply").serialize();
+							alert(param);
+							$.ajax({
+								url: "./writeBoard.do",
+								type: "POST",
+								data: param,
+								contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+								dataType: "text",
+								success: function(data) {
+									alert(data);
+									$("#replyList").empty();
+									$("#replyList").append(data);
+									document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) + 1;
+								}
+							});
+						});
+					});
+				</script>
+				<br> <br>
 
-
-
-
-
-
+				<p>
+					<span class="badge" id="comments"><%=replyList.size() %></span> Comments:
+				</p>
+				<br>
+				<!-- 댓글 리스트 시작 -->
+				<div class="row" id="replyList">
+<%
+				for(int k = 0; k < replyList.size(); k++) {
+					BoardReplyVO boardReplyVO = replyList.get(k);
+%>					
+					<div class="reply">
+						<div class="col-sm-2 text-center">
+							<img src="<%=boardReplyVO.getUser_img() %>" class="img-circle" height="65"
+								width="65" alt="<%=boardReplyVO.getUser_id()%>">
+						</div>
+						<div class="col-sm-9">
+							<h4>
+								<%=boardReplyVO.getUser_id() %> <small><%=boardReplyVO.getRep_date() %></small>
+							</h4>
+							<p><%=boardReplyVO.getRep_content() %></p>
+							<br>
+						</div>
+						<div class="col-sm-1">
+							<button class="btn btn-default" style='border:none; outline:none;'>
+								<span class='glyphicon glyphicon-remove'></span>
+								<input type="hidden" name="rep_date" value="<%=boardReplyVO.getRep_date()%>"/>
+								<input type="hidden" name="user_id" value="<%=boardReplyVO.getUser_id()%>"/>
+							</button>
+						</div>
+					</div>
+<%
+				}
+%>
+				</div>
 			</div>
-
-
+			<!-- 우측 메인 끝 -->
 		</div>
-
-	</div>
- --%>
+		<!-- body wrapper 끝 -->
+	</div>	
+	<script>
+		$(document).ready(function() {
+			$(".reply").find("button").click(function() {
+				var rep_date = $(this).find("input[name='rep_date']").val();
+				var user_id = $(this).find("input[name='user_id']").val();
+				$.ajax({
+					url: "./deleteReply.do",
+					type: "POST",
+					data: {
+						rep_date: rep_date,
+						user_id: user_id
+					},
+					success: function(data) {
+						if(data==1) {
+							$(this).parents("div[class='reply']").remove();
+							document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) - 1;							
+						} else {
+							alert("회원님이 직접 작성하신 댓글만 삭제 가능합니다.");
+						}
+					}
+				});
+				
+				
+			});
+		});
+	</script>
 	<!-- 마지막 footer -->
 	<footer class="container-fluid text-center">
 	<p>MADI</p>

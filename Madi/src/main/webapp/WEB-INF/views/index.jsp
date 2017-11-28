@@ -37,7 +37,7 @@
     .panel-default input:nth-child(4) {
     	margin-bottom: 15px;
     }
-    #join {
+    #login {
     	display: none;
     }
    @media screen and (max-width:650px) {
