@@ -609,7 +609,7 @@ public class FrontController {
 				
 	}
 	//카카오톡 로그아웃 (리다이렉트 -> 메인페이지)
-	@RequestMapping("/logout.do")
+	@RequestMapping("/kakaologout.do")
 	public String logout(HttpSession session){
 		session.invalidate();
 		
