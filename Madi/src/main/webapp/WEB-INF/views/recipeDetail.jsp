@@ -309,6 +309,25 @@
 			}
 		});
 	};
+	$(document).ready(function() {
+		$("#replySubmitBtn").click(function() {
+			var param = $("#reply").serialize();
+			alert(param);
+			$.ajax({
+				url: "./writeBoard.do",
+				type: "POST",
+				data: param,
+				contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+				dataType: "text",
+				success: function(data) {
+					alert(data);
+					$("#replyList").empty();
+					$("#replyList").append(data);
+					document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) + 1;
+				}
+			});
+		});
+	});
 </script>
 
 <!-- 하이차트 끝 -->
@@ -559,27 +578,6 @@ footer {
 					</div>
 				</form>
 				<button class="btn btn-success" id="replySubmitBtn">댓글 달기</button>
-				<script>
-					$(document).ready(function() {
-						$("#replySubmitBtn").click(function() {
-							var param = $("#reply").serialize();
-							alert(param);
-							$.ajax({
-								url: "./writeBoard.do",
-								type: "POST",
-								data: param,
-								contentType : 'application/x-www-form-urlencoded; charset=utf-8',
-								dataType: "text",
-								success: function(data) {
-									alert(data);
-									$("#replyList").empty();
-									$("#replyList").append(data);
-									document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) + 1;
-								}
-							});
-						});
-					});
-				</script>
 				<br> <br>
 
 				<p>
@@ -605,10 +603,10 @@ footer {
 							<br>
 						</div>
 						<div class="col-sm-1">
-							<button class="btn btn-default" style='border:none; outline:none;'>
+							<button onclick="deletereply('<%=k %>', '<%=boardReplyVO.getRep_date()%>', '<%=boardReplyVO.getUser_id()%>')" class="btn btn-default" style='border:none; outline:none;'>
 								<span class='glyphicon glyphicon-remove'></span>
-								<input type="hidden" name="rep_date" value="<%=boardReplyVO.getRep_date()%>"/>
-								<input type="hidden" name="user_id" value="<%=boardReplyVO.getUser_id()%>"/>
+								<%-- <input type="hidden" name="rep_date" value="<%=boardReplyVO.getRep_date()%>"/>
+								<input type="hidden" name="user_id" value="<%=boardReplyVO.getUser_id()%>"/> --%>
 							</button>
 						</div>
 					</div>
@@ -620,38 +618,35 @@ footer {
 			<!-- 우측 메인 끝 -->
 		</div>
 		<!-- body wrapper 끝 -->
+		<script>
+		function deletereply(index, rep_date, user_id) {
+			/* var rep_date = $(this).find("input[name='rep_date']").val();
+			var user_id = $(this).find("input[name='user_id']").val(); */
+			/* var parent = element.parents("div[class='reply']"); */
+			alert(user_id);
+			$.ajax({
+				url: "./deleteReply.do",
+				type: "POST",
+				data: {
+					rep_date: rep_date,
+					user_id: user_id
+				},
+				success: function(data) {
+					if(data==1) {
+						//parent.remove();
+						document.getElementsByClassName("reply")[index].remove();
+						document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) - 1;							
+					} else {
+						alert("회원님이 직접 작성하신 댓글만 삭제 가능합니다.");
+					}
+				}
+			});
+		}
+		</script>
 	</div>	
 	<!-- 마지막 footer -->
 	<footer class="container-fluid text-center">
 	<p>MADI</p>
 	</footer>
-	<script>
-		$(document).ready(function() {
-			$(".reply").find("button").click(function() {
-				alert("x");
-				var rep_date = $(this).find("input[name='rep_date']").val();
-				alert(rep_date);
-				var user_id = $(this).find("input[name='user_id']").val();
-				var parent = $(this).parents("div[class='reply']");
-
-				$.ajax({
-					url: "./deleteReply.do",
-					type: "POST",
-					data: {
-						rep_date: rep_date,
-						user_id: user_id
-					},
-					success: function(data) {
-						if(data==1) {
-							parent.remove();
-							document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) - 1;							
-						} else {
-							alert("회원님이 직접 작성하신 댓글만 삭제 가능합니다.");
-						}
-					}
-				});
-			});
-		});
-	</script>
 </body>
 </html>

@@ -3226,11 +3226,46 @@
 			}
 		});
 	}
-	// 재료 저장/삭제
+	function updateNotification(value) {
+		var listSize = <%=notificationList.size()%>;
+		var id = "n"+value;
+		var li = document.getElementById(id);
+		li.style.display = "none";
+		$.ajax({
+			url: "./updateNotification.do",
+			type: "POST",
+			data: {
+				notice_id : value
+			},
+			success: function() {
+				alert(listSize);
+				document.getElementById("no").innerHTML = listSize - 1;
+			}
+		});
+	}
+	function updateMessage(value) {
+		var listSize = <%=messageList.size()%>;
+		alert(listSize);
+		var id = "m"+value;
+		var li = document.getElementById(id);
+		li.style.display="none";
+		$.ajax({
+			url: "./updateMessage.do",
+			type: "POST",
+			data: {
+				message_id: value
+			},
+			success: function(status) {
+				document.getElementById("me").innerHTML = listSize - 1;
+			}
+		});
+	}
+	//버튼 클릭시 나타나고 사라지고
 	$(document).ready(function() {
+		// 재료 저장/삭제
 		$("#IrdntList").find("li").click(function() {
 			//var src = $(this).find("img").attr("src");
-			var user_id = "<%=memberVO.getUser_id()%>";
+			var user_id = <%=memberVO.getUser_id()%>;
 			var my_irdnt = $(this).find("input").val();
 			$.ajax({
 				url: "./insertMemberBox.do",
@@ -3241,22 +3276,17 @@
 					//src : src
 				},
 				success: function(data) {
-					if (data == 1) {
+					if(data == 1) {
 						alert("재료 저장 성공");
-						document
-					} else (data == 0) {
+					} else {
 						alert("재료 삭제 성공");
-						
 					}
 				},
 				error: function() {
-					alert("ㅇㅇ");
+					alert();
 				}
 			});
 		});
-	});
-	//버튼 클릭시 나타나고 사라지고
-	$(document).ready(function() {
 		var myirdnt= document.getElementsByClassName("irdntlist")
 		for(var y=0; y< myirdnt.length; y++) {
 			if(y == 0) {
@@ -3265,7 +3295,6 @@
 				myirdnt[y].style.display="none";
 			}
 		}
-		
 		$("updateIrdnt").click(function() {
 			myirdnt[y].style.display="none";
 			if(currentLocation == irdntList.length) {

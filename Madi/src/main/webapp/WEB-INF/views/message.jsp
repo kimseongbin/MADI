@@ -27,23 +27,3 @@
 		}
 	}
 %>
-<script>
-	function updateMessage(value) {
-		var listSize = <%=messageList.size()%>;
-		alert(listSize);
-		var id = "m"+value;
-		var li = document.getElementById(id);
-		li.style.display="none";
-		$.ajax({
-			url: "./updateMessage.do",
-			type: "POST",
-			data: {
-				message_id: value
-			},
-			success: function(status) {
-				document.getElementById("me").innerHTML = listSize - 1;
-			}
-		});
-	}
-
-</script>

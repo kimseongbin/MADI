@@ -8,8 +8,8 @@
 	List<BoardReplyVO> replyList = (ArrayList<BoardReplyVO>) request.getAttribute("replyList");
 %>
 <%
-	for (int i = 0; i < replyList.size(); i++) {
-		BoardReplyVO boardReplyVO = replyList.get(i);
+	for (int k = 0; k < replyList.size(); k++) {
+		BoardReplyVO boardReplyVO = replyList.get(k);
 %>
 		<div class="reply">
 			<div class="col-sm-2 text-center">
@@ -26,7 +26,7 @@
 				<br>
 			</div>
 			<div class="col-sm-1">
-				<button class="btn btn-default" style='border:none; outline:none;'>
+				<button onclick="deletereply('<%=k %>', '<%=boardReplyVO.getRep_date()%>', '<%=boardReplyVO.getUser_id()%>')" class="btn btn-default" style='border:none; outline:none;'>
 					<span class='glyphicon glyphicon-remove'></span>
 					<input type="hidden" name="rep_date" value="<%=boardReplyVO.getRep_date()%>"/>
 					<input type="hidden" name="user_id" value="<%=boardReplyVO.getUser_id()%>"/>

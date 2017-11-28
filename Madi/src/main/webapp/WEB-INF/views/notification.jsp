@@ -28,23 +28,3 @@
 		}
 	}
 %>
-
-<script>
-	function updateNotification(value) {
-		var listSize = <%=notificationList.size()%>;
-		var id = "n"+value;
-		var li = document.getElementById(id);
-		li.style.display = "none";
-		$.ajax({
-			url: "./updateNotification.do",
-			type: "POST",
-			data: {
-				notice_id : value
-			},
-			success: function() {
-				alert(listSize);
-				document.getElementById("no").innerHTML = listSize - 1;
-			}
-		});
-	}
-</script>
