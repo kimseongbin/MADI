@@ -1,33 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.*,com.spring.madi.*"%>
-<%
-//로그인한 아이디
+<%@page import="com.spring.madi.MessageVO"%>
+<%@page import="com.spring.madi.NotificationVO"%>
+<%@page import="com.spring.madi.MemberVO"%>
+<% 
+	// Header에 들어갈 기본 정보 불러오기
+	MemberVO memberVO= (MemberVO)request.getAttribute("memberVO");
+	// 메시지 리시트 받아오기 
+	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
+	// 알림 리스트 받아오기
+	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
+	// 내 재료 목록 받아오기
+	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
+	
+	// myPage에서 사용할 기본 정보 
+	// 내 팔로워 리스트 
+	List<MemberFollowVO> followerList= (ArrayList<MemberFollowVO>)request.getAttribute("followerList");
+	// 내가 팔로잉 리스트
+	List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttribute("followingList");
+	// 팔로잉 추천 리스트
+	List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
+	// 나의 게시판 목록
+	List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
+	// 
+	List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
 
-String user_id = (String)session.getAttribute("user_id");
-//본문 왼쪽 프로필에서 사용함
-MemberVO member= (MemberVO)request.getAttribute("member");
-//콘솔에 확인용
-System.out.println("member=" + user_id);
-
-List<MemberFollowVO> followerList= (ArrayList<MemberFollowVO>)request.getAttribute("followerList");
-
-List<MemberFollowVO> followingList= (ArrayList<MemberFollowVO>)request.getAttribute("followingList");
-
-List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
-
-List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
-
-List<BoardReplyVO> boardReplyList= (ArrayList<BoardReplyVO>)request.getAttribute("boardReplyList");
+	//INCLUDE JSP 문서와 객체 공유
+	request.setAttribute("memberVO", memberVO);
+	request.setAttribute("notificationList", notificationList);
+	request.setAttribute("messageList", messageList);
+	request.setAttribute("myIrdntList", myIrdntList);
 
 %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE>
 <html>
-<head>
+<head style="position: relative; z-index: 1; height: 260px;  margin:0 auto;">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=divice-width, initial-scale=1">
-<title>MADI MAIN PAGE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마디 - 재료로  요리하다</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
@@ -35,74 +46,6 @@ List<BoardReplyVO> boardReplyList= (ArrayList<BoardReplyVO>)request.getAttribute
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
-footer {
-	background-color: #DE4F4F;
-	color: white;
-	padding: 15px;
-}
-/* ICON Design */
-.glyphicon {
-	font-size: 18px;
-}
-
-.glyphicon.top {
-	color: #000000;
-}
-
-.glyphicon.icon-size {
-	font-size: 23px;
-}
-/* 헤더버튼 주변색 */
-.btn.form {
-	background-color: #DE4F4F;
-}
-/*헤더 색*/
-.navbar.head {
-	background-color: #DE4F4F;
-}
-/* 움직이는 헤더 */
-.affix {
-	top: 0;
-	width: 100%;
-	z-index: 9999 !important;
-}
-
-.affix+.container-fluid {
-	padding-top: 70px;
-}
-
-/* Modal 크기 조절 */
-.modal-dialog.modal-size {
-	width: 300px;
-	height: 600px;
-	margin: 0;
-	padding: 0;
-}
-
-.modal-content.modal-size {
-	height: auto;
-	min-height: 60%;
-}
-
-.modal.modal-center {
-	text-align: center;
-}
-/* 모달 창이 모바일일 경우 바꿔주는 설정 */
-@media screen and (min-width: 320px) {
-	.modal.modal-center:before {
-		display: inline-block;
-		vertical-align: middle;
-		content: " ";
-		height: 100%;
-	}
-}
-.modal-dialog.modal-center {
-	display: inline-block;
-	text-align: left;
-	vertical-align: middle;
-}
-/* 헤더 디자인 끝 */
-
 .glyphicon.glyphicon-comment {
 	color: #4C4C4C;
 }
@@ -117,6 +60,9 @@ footer {
 
 .glyphicon.glyphicon-share-alt {
 	color: #487BE1;
+}
+.glyphicon.icon-size {
+	font-size: 25px;
 }
 /*table 디자인*/
 table {
@@ -153,375 +99,214 @@ td {
 
 .li.fol {
     margin: 0 0 0 0;
-    padding: 15px;
+    padding: 5px;
     border : 0;
     float: left;
     font-size:17px;
 }
-</style>
-<script>
-	function updateBoardLike(){
-		location.href="updateBoardLike.do";
-	}
+/* 팔로우 추천 정렬 */
+.ul.fol2 {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.li.fol2 {
+    padding: 4px;
+    font-size:17px;
+}
+/* 본문 아이콘 정렬 */
+.li.fol3 {
+    padding: 2px;
+    float: left;
+    border : 0;
+    margin: 0 0 0 0;
+}
 
-	function deleteFollowing(following_user_id, user_id) {
-		location.href="deleteFollowing.do?following_user_id=" + following_user_id + "&user_id=" + user_id;
-		alert("success");
+/* follow 모달 크기 조절 */
+.modal-dialog.follow-size {
+    width: 470px;
+    height: 50%;
+    margin: 0;
+    padding: 0;
+}
+.modal-content.follow-size {
+    height: auto;
+    min-height: 50%;
+}
+.modal.modal-center {
+	    text-align: center;
+}
+@media screen and (min-width: 768px) {
+    .modal.modal-center:before {
+        display: inline-block;
+        vertical-align: top;
+        content: " ";
+        height: 100%;
+    }
+}
+.modal-dialog.modal-center {
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script>
+	function deleteFollowing(user_id, following_user_id) {
+		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
+		//alert("팔로잉 삭제 성공");
+		var content = user_id+ "님께서 " + following_user_id+ "님을 팔로우 취소했습니다."
+		$.ajax({
+			url: "./deleteFollowing.do",
+			type: "GET",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id,
+				notice_to : following_user_id,
+				notice_from : user_id,
+				content : content,
+				notice_type : "팔로잉 삭제"
+			},
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				$("#following_modal").empty();
+				$("#following_modal").append(data);
+				followingMinus();
+			}
+		});
 	}
 	function deleteFollower(user_id, following_user_id) {
-		location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
-		alert("success");
+		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
+		//alert("팔로워 삭제 성공");
+		var content= user_id+ "님께서 " + following_user_id+ "님의 팔로우를 취소했습니다."
+		$.ajax({
+			url: "./deleteFollower.do",
+			type: "GET",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id,
+				notice_to : following_user_id,
+				notice_from : user_id,
+				content : content,
+				notice_type : "팔로워 삭제"
+			},
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				/* location.href="./mypage.do"; */
+				$("#follower_modal").empty();
+				$("#follower_modal").append(data);
+				followerMinus();
+			}
+		});
 	}	
-	function insertFollowing(user_id, following_user_id) {
-		location.href="insertFollowing.do";
+	function insertFollowing(user_id, following_user_id, user_img, following_user_img) {
+		//location.href="insertFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id +
+		//"&user_img=" + user_img + "&following_user_img=" + following_user_img;
+		//alert("팔로잉 추가 성공");
+		var content= user_id+ "님께서 " + following_user_id+ "님을 팔로우 했습니다."
+		$.ajax({
+			url: "./insertFollowing.do",
+			type: "POST",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id,
+				user_img: user_img,
+				following_user_img: following_user_img,
+				notice_to : following_user_id,
+				notice_from : user_id,
+				content : content,
+				notice_type : "팔로잉 추가"
+			},
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				location.href="./mypage.do";
+				//location.href="./mypage.do";
+				//$("#insertFollowing_modal").empty();
+				//$("#insertFollowing_modal").append(data);
+			}
+		});
+	}
+	function updateBoardLike(board_num, user_id, index) {
+		//location.href="updateBoardLike.do?user_id=" + user_id;
+		
+		var content= user_id+ "님께서" +board_num+ "번 게시물에 좋아요를 입력했습니다.";
+		$.ajax({
+			url: "./updateBoardLike.do",
+			type: "GET",
+			data: {
+				user_id: user_id,
+				board_num: board_num,
+				notice_to : board_num,
+				notice_from : user_id,
+				content : content,
+				notice_type : "좋아요 입력"
+			},
+			success: function(data) {
+				/* location.href="./mypage.do"; */
+				//alert("success");
+				alert(data);
+				if (data == 0) {
+					alert("좋아요 실패");
+					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) - 1;
+				} else {
+					alert("좋아요 성공");
+					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) + 1;				
+				}
+			}
+		});
 	}
 </script>
 </head>
-<body style="background-color: #F6F6F6;">
+<body style="background-color: #FFFFFF;">
 	<!-- 헤더 시작 -->
-	<nav class="navbar navbar-default head" data-spy="affix" data-offset-top="197">
-	<div class="container-fluid">
-		<div class="navbar-header" style="padding-right: 30%;">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#myNavbar">
-				<span class="icon-bar"></span><span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">MADI</a>
-		</div>
-		<!--검색 창 -->
-		<div class="collapse navbar-collapse" id="myNavbar">
-			<ul class="nav navbar-nav navbar">
-				<form class="navbar-form navbar-right" role="search">
-					<div class="form-group input-group">
-						<input type="text" class="form-control" placeholder="Search.."
-							size="80%"> <span class="input-group-btn">
-							<button class="btn btn-default" type="button">
-								<span class="glyphicon glyphicon-search"></span>
-							</button>
-						</span>
-					</div>
-				</form>
-			</ul>
-			<!--오른쪽 아이콘 -->
-			<ul class="nav navbar-nav navbar-right">
-				<!--home 아이콘 -->
-				<li><button type="button" class="btn form"
-						style="padding-top: 15px;">
-						<span class="glyphicon glyphicon-home color"></span>
-					</button>
-				</li>
-				<!-- 냉장고 아이콘 -->
-				<li>
-					<div style="padding-top: 9px;">
-						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#fridge">
-							<img src="./resources/food_icon/fridge.png" style="width:20px; height:20px;">
-						</button>
-						<!-- 냉장고 모달바 -->
-						<div class="modal fade" id="fridge" tableindex="-1" role="dialog" 
-						aria-labelledy="modallabel">
-							<div class="modal-dialog modal-lg" role="document">
-						    	<!-- content 시작 -->
-						        <div class="modal-content">
-						        <!-- 탭 -->
-						        	<div class="modal-header" style="background-color:#DE4F4F;">
-						          		<button type="button" class="close" data-dismiss="modal">&times;</button>	
-						            	<h3 style="color:#FFFFFF; text-align:center;">
-						            	<img src="./resources/food_icon/fridge_white.png" style="width:35px; height:35px;">
-						            	<strong>냉장고 재료들</strong></h3>	
-						            </div>
-						            <div class="modal-body" style="text-align:center;">
-						            	<div class="row">
-						            <!-- 왼쪽 카테고리 -->
-						            		<div class="col-sm-2">
-						            			<ul class="nav nav-stacked">
-						            				<li class="active">
-						            					<a data-toggle="tab" href="#menu1">
-						            						<strong>주재료</strong>
-						            					</a>
-						            				</li>
-						            				<li>
-						            					<a data-toggle="tab" href="#menu2">
-						            						<strong>부재료</strong>
-						            					</a>
-						            				</li>
-						            				<li>
-						            					<a data-toggle="tab" href="#menu3">
-						            						<strong>양념/소스</strong>
-						            					</a>
-						            				</li>
-						            			</ul>
-						            		</div>
-						            <!--  가운데 리스트 나열 -->
-						            		<div class="col-sm-8" style="background-color:#FFD8D8; text-align:center;">
-						            			<div class="tab-content">
-						            <!-- 메뉴1 주재료 -->
-						            				<div id="menu1" class="tab-pane fade in active">
-												        <ul class="ul hori">
-												        	<li class="li hori">
-				                                                <a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
-				                                                </a>
-												        	</li>
-												        	<li class="li hori">
-				                                                <a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
-				                                                </a>
-												        	</li>
-												         </ul>
-						            				</div>
-						           <!-- 메뉴2 부재료-->
-						            				<div id="menu2" class="tab-pane fade">
-												        <ul class="ul hori">
-												        	<li class="li hori">
-				                                                <a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
-				                                                </a>
-												        	</li>
-												        	<li class="li hori">
-				                                                <a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
-				                                                </a>
-												        	</li>
-												         </ul>
-						            				</div>
-						            <!-- 메뉴3 양념/조미료 -->
-							            			<div id="menu3" class="tab-pane fade">
-												        <ul class="ul hori">
-												        	<li class="li hori">
-				                                                <a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
-				                                                </a>
-												        	</li>
-												        	<li class="li hori">
-				                                                <a href="#" class="text-muted">
-				                                                	<img src="./resources/food_icon/bean.png"
-				                                                      style="width: 35px; height: 35px;"><br><strong>녹두</strong>
-				                                                </a>
-												        	</li>
-												         </ul>
-							            			</div>
-							       <!-- 재료 입력 끝 -->
-						            			</div>
-						            		</div>
-						       		<!-- 오른쪽 내가 가진 재료들? -->
-						            		<div class="col-sm-2">
-						            		</div>
-						            	</div>
-						            </div>
-						        <!-- 내용 끝 -->
-						            <div class="modal-footer">
-						            	<button type="button" class="btn btn-default" 
-						                data-dismiss="modal">Close</button>
-						            </div>
-						        </div>
-						      <!-- 모달 content 끝 -->  
-						   </div>
-						</div>
-					</div>	
-				</li>
-				<!-- profile 아이콘(누르면 mypage로 넘어간다) -->
-				<li>
-					<div class="dropdown" style="padding-top: 9px; padding-left: 2px;">
-						<button class="btn dropdown-toggle form" type="button"
-							data-toggle="dropdown">
-							<span class="glyphicon glyphicon-user color"></span>
-						</button>
-						<ul class="dropdown-menu" style="text-align: center; background-color:#F6F6F6;">
-							<li><img src="<%=member.getUser_img()%>" class="img-circle" height="70"
-								width="70" alt="Avatar"></li>
-							<li>
-								<h4>
-									<p class="text-primary"><%=member.getUser_id()%></p>
-								</h4>
-							</li>
-							<li><a href="#">회원수정</a></li>
-							<li><a href="#">로그아웃</a></li>
-						</ul>
-					</div>
-				</li>
-				<!--알림 아이콘 -->
-				<li>
-						<div style="padding-top: 9px; padding-left: 3px;">
-						<button type="button" class="btn form" data-toggle="modal"
-							data-target="#myModal">
-							<span class="glyphicon glyphicon-align-justify color" style="padding-right:7px;"></span>
-						</button>
-						<!-- Modal bar -->
-						<div class="modal modal-center fade" id="myModal" tableindex="-1"
-							role="dialog" aria-labelledby="modallabel">
-							<div class="modal-dialog modal-size modal-center" role="document">
-								<div class="modal-content modal-size">
-									<!-- 알림, 메시지 탭 -->
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<ul class="nav nav-tabs">
-											<li class="active"><a data-toggle="tab" href="#home">알림
-													<span class="badge">New</span>
-											</a></li>
-											<li><a data-toggle="tab" href="#message">메시지 <span
-													class="badge">New</span></a></li>
-										</ul>
-									</div>
-									<!-- Modal bar 내용들 -->
-									<div class="modal-body">
-										<div class="tab-content">
-											<div id="home" class="tab-pane fade in active">
-												<ul class="list-group">
-													<div class="row">
-														<div class="col-sm-2" style="padding-bottom: 5px;">
-															<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-																width="40" alt="Avatar">
-														</div>
-														<div class="col-sm-6">
-															<h4 class="text-primary" style="">이글이글</h4>
-														</div>
-													</div>
-													<!-- 알림 내용들 -->
-													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
-													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
-													<li class="list-group-item"><img src="./resources/profile/bird.jpg"
-														class="img-circle" height="20" width="20" alt="Avatar">
-														<a>AAA</a><em> 님이 ~~~ 게시물을 공유했습니다.</em></li>
-												</ul>
-											</div>
-											<div id="message" class="tab-pane fade">
-												<ul class="list-group">
-													<div class="row">
-														<div class="col-sm-2" style="padding-bottom: 5px;">
-															<img src="./resources/profile/bird.jpg" class="img-circle" height="40"
-																width="40" alt="Avatar">
-														</div>
-														<div class="col-sm-6">
-															<h4 class="text-primary" style="">이글이글</h4>
-														</div>
-													</div>
-													<!-- 메시지 내용들 -->
-													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>AAA</a> <strong>: "지금
-															뭐하는지"</strong></li>
-													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>AAA</a> <strong>: "지금
-															뭐하는지"</strong></li>
-													<li class="list-group-item"><strong>From </strong> <img
-														src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20"
-														alt="Avatar"> <a>AAA</a> <strong>: "지금
-															뭐하는지"</strong></li>
-												</ul>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</li>
-				<!--소셜(post로 넘어간다) 아이콘 -->
-				<li>
-					<button type="button" class="btn form" style="padding-top: 15px; padding-right:13px;">
-						<span class="glyphicon glyphicon-globe color"></span>
-					</button>
-				</li>
-			</ul>
-		</div>
+	<div class="header">
+		<jsp:include page="header.jsp"></jsp:include>
 	</div>
-	</nav>
 	<!-- 헤더 끝 -->
 	<!-- 내용 시작 -->
-	<div class="container">
-		<!--left side -->
+	<div class="container">		
 		<div class="row">
+		<!--left side -->
+			<div class="col-sm-1"></div>
 			<div class="col-sm-3 text-center" style="border-radius: 10px;">
 				<div>
-					<img src="<%=member.getUser_img()%>" class="img-circle" height="65" width="65"
-						alt="Avatar"> <br>
-					<h4>
-						<p class="text-primary" style="font-size: 20px;">
-							<strong><%=member.getUser_id()%></strong>
-						</p>
-					</h4>
-					<h5><strong><%=member.getUser_email()%></strong></h5>
-					<br>
+					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="80" width="80"
+						alt="Avatar" style="margin-left:7px;"> <br>
+					<h3 class="text-primary">
+						<strong><%=memberVO.getUser_id()%></strong>
+					</h3>
+					<strong style="font-size:17px;"><%=memberVO.getUser_email()%></strong>
+					
 					<!-- 게시글, 팔로워, 팔로잉 -->
-					<div class="row text-center" style="font-size: 14px;">
-                    	<div class="col-sm-2"></div>
-						<div class="col-sm-3">
-							<p data-target="#follower"><strong class="bg-danger">게시글</strong>
+					<div class="row text-center">
+                    	
+						<div class="col-sm-4">
+							<p data-target="#follower"><strong class="bg-danger" style="font-size:14px;">게시글</strong>
                             <br>
-                            <%=myBoardList.size()%>
+                            <div style="font-size:15px;"><%=myBoardList.size()%></div>
                             </p>
 						</div>
-						<div class="col-sm-3">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
-							<strong class="bg-danger">팔로워</strong>
-                            <br>
-                            <%=followerList.size()%>
-                            </p>
-						</div>
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							<p style="cursor: pointer" data-toggle="modal" data-target="#following">
-							<strong class="bg-danger">팔로잉</strong>
+							<strong class="bg-danger" style="font-size:14px;">팔로잉</strong>
                             <br>
-                            <%=followingList.size()%>
+                            <div id="followingSize" style="font-size:15px;"><%=followingList.size()%></div>
                             </p>
 						</div>
-                        <div class="col-sm-1"></div>
+						<div class="col-sm-4">
+							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
+							<strong class="bg-danger" style="font-size:14px;">팔로워</strong>
+                            <br>
+                            <div id="followerSize" style="font-size:15px;"><%=followerList.size()%></div>
+                            </p>
+						</div>
+                        
 					</div>
 					<br>
-				<br>
-					<!-- 팔로워 모달 -->
-				<div class="modal fade" id="follower" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header" style="background-color: #DE4F4F;">
-								<h3 class="modal-title">
-									<strong style="color:#FFFFFF;">Follower 목록</strong>
-								</h3>
-							</div>
-							<!-- 팔로워 Content -->
-							<div class="modal-body">
-								<div class="btn-group-vertical">
-									<form>
-										<ul class="ul fol">
-										<%for(int i= 0; i<followerList.size(); i++) {
-											MemberFollowVO follower= followerList.get(i);
-										%>
-											<li class="li fol">
-										        <img src="<%=follower.getUser_img()%>" class="img-circle" height="40"
-												width="40">&nbsp;<a href="#"><strong><%=follower.getUser_id()%></strong></a>
-												&nbsp;
-												<button type="button" class="btn btn-danger btn-sm"
-												onclick="deleteFollower('<%=follower.getUser_id()%>', '<%=follower.getFollowing_user_id()%>')"
-												style="border-radius: 20px;"><strong>삭제</strong></button>
-										    </li>
-									   <%} %>
-									    </ul>
-								   </form>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			<!-- 팔로잉 Modal -->
+				<!-- 팔로잉 Modal -->
 				<div class="modal fade" id="following" role="dialog">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -530,17 +315,18 @@ td {
 									<strong style="color:#FFFFFF;">Following 목록</strong>
 								</h3>
 							</div>
-							<!-- 팔로잉 Content -->
+							<!-- 팔로잉 삭제 목록 Content -->
 							<div class="modal-body">
 								<div class="btn-group-vertical">
 									<form>
-										<ul class="ul fol">
+										<ul class="ul fol" id="following_modal">
 											<%for(int j= 0; j<followingList.size(); j++) {
 												MemberFollowVO following= followingList.get(j);
 											%>
 												<li class="li fol">
-											        <img src="<%=following.getUser_img()%>" class="img-circle" height="40"
-													width="40">&nbsp;<a href="#"><strong><%=following.getUser_id()%></strong></a>
+											        <img src="<%=following.getFollowing_user_img()%>" class="img-circle" height="40"
+													width="40">&nbsp;<a href="#"><strong><%=following.getFollowing_user_id()%></strong></a>
+
 													&nbsp;
 													<button type="button" class="btn btn-danger btn-sm"
 													onclick="deleteFollowing('<%=following.getUser_id()%>', '<%=following.getFollowing_user_id()%>')"
@@ -558,67 +344,151 @@ td {
 						</div>
 					</div>
 				</div>
-			</div>
-			<!-- 팔로워 추천 -->
-			<div style="margin-top: 20%; margin-right:20px;">
-				<h4 style="margin-bottom:10px; margin-left:30px;">
-					<strong>팔로워 추천 : </strong><a href="#">새로고침</a>
-				</h4>
-				<div class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
-					<ul>
-					<%for(int z=0; z<3; z++) {
-						MemberFollowVO recommend= recommendList.get(z);
-					%>
-						<p><img src="<%=recommend.getUser_img()%>" class="img-circle" height="30"
-							width="30">&nbsp; <a href="#"><strong><%=recommend.getUser_id()%></strong></a>
-							&emsp;
-							<button type="button" class="btn btn-danger btn"
-							style="border-radius: 10px;">
-							<strong>팔로우</strong>
-							</button>&nbsp;
-						</p>
-					<%} %>
-					</ul>
+				<!-- 팔로워 모달 -->
+				<div class="modal fade" id="follower" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #DE4F4F;">
+								<h3 class="modal-title">
+									<strong style="color:#FFFFFF;">Follower 목록</strong>
+								</h3>
+							</div>
+							<!-- 팔로워 삭제 목록 Content -->
+							<div class="modal-body">
+								<div class="btn-group-vertical">
+									<form>
+										<ul class="ul fol" id="follower_modal">
+											<%for(int i= 0; i< followerList.size(); i++) {
+												MemberFollowVO follower= followerList.get(i);
+											%>
+												<li class="li fol">
+											        <img src="<%=follower.getUser_img()%>" class="img-circle" height="40"
+													width="40">&nbsp;<a href="#"><strong><%=follower.getUser_id()%></strong></a>
+													&nbsp;
+													<button type="button" class="btn btn-danger btn-sm"
+													onclick="deleteFollower('<%=follower.getUser_id()%>', '<%=follower.getFollowing_user_id()%>')"
+													style="border-radius: 20px;"><strong>삭제</strong></button>
+											    </li>
+										   <%} %>
+									    </ul>
+								   </form>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+			<!-- 팔로워 추천 -->
+			<div style="margin-top: 20%; margin-left:15px; font-size:18px;">
+				<p style="margin-bottom:10px;">
+					<strong>팔로워 추천   &nbsp;<a href="#" style="cursor:pointer" class="moreRecommends" id="refresh">새로고침</a></strong>
+				</p>
+				<div id="recommend_area" class="btn-group-vertical" style="font-size: 17px; background-color: #FFFFFF">
+				<!-- reloadRecommend.jsp에서 불러옴?? -->
+					<form>	
+						<ul class="ul fol2">
+							<%for(int y= 0; y< recommendList.size(); y++) {
+								MemberFollowVO recommend= recommendList.get(y);
+								
+								if(y%3==0) {
+							%>
+									<div class="recommends">
+							<%
+								}
+							%>
+								<li class="li fol2">
+									<img src="<%=recommend.getFollowing_user_img()%>" class="img-circle" height="40"
+									width="40">&nbsp; <a href="#">
+									<strong><%=recommend.getFollowing_user_id()%></strong></a>
+									&emsp;
+									<button type="button" class="btn btn-danger btn"
+									onclick="insertFollowing('<%=memberVO.getUser_id()%>', 
+									'<%=recommend.getFollowing_user_id()%>',
+									'<%=memberVO.getUser_img()%>', '<%=recommend.getFollowing_user_img()%>')"
+									style="border-radius: 10px;">
+									<strong style="font-size:15px;">팔로우</strong>
+									</button>&nbsp;
+								</li>
+								
+							<%
+								if(y%3==2 || y == (recommendList.size() -1) ) {
+							%>
+									</div>
+							<%
+								}
+							} // recommendList for 
+							%>
+						</ul>
+					</form>
+				</div>
+			</div>
+			<script>
+				$(document).ready(function() {
+					var div = document.getElementsByClassName("recommends");
+					for (var int = 0; int < div.length; int++) {
+						if(int == 0) {
+							div[int].style.display = "block";
+						} else {
+							div[int].style.display = "none";
+						}
+					}
+					var currentLocation = 0;
+					$("#refresh").click(function() {
+						currentLocation += 1;
+						if(currentLocation == div.length) {
+							div[div.length-1].style.display = "none";
+							div[0].style.display = "block";
+							currentLocation = 0;
+						} else {
+							div[currentLocation-1].style.display = "none";
+							div[currentLocation].style.display = "block";
+						}
+					});
+				});
+			</script>
+			<br>
 		</div>
 		<!-- middle side -->
-		<div class="col-sm-7">
+		<div class="col-sm-6">
 			<div class="row text-center" style="border-radius: 10px;">
 				<!-- 본문 글 시작 -->
 				<%
-					for(int i=0; i<myBoardList.size(); i++) {
-						BoardVO board= myBoardList.get(i);
+					for(int i=0; i<allBoardList.size(); i++) {
+						BoardVO board= allBoardList.get(i);
 				%>
 				<div class="well content_color">
 					<div class="row">
-						<div class="col-sm-3" style="font-size: 16px; text-align: left;">
+						<div class="col-sm-4" style="font-size: 16px; text-align: left;">
 						<!-- profile -->
-							<img src="<%=board.getUser_img()%>" class="img-circle" height="35" width="35">&nbsp;<a
+							<img src="<%=board.getUser_img()%>" class="img-circle" height="40" width="40">&nbsp;<a
 								href="#"><strong><%=board.getUser_id()%></strong></a>
 						</div>
 						<!-- title -->
-						<div class="col-sm-9" style="text-align: left;">
-							<h4>
-								<strong><%=board.getBoard_title()%></strong>
-							</h4>
+						<div class="col-sm-8" style="text-align: left;">
+							<p>
+								<strong style="font-size:25px;"><%=board.getBoard_title()%></strong>
+							</p>
 						</div>
 					</div>
 					<!-- image and date, like-->
-					<img src="<%=board.getBoard_img()%>" style="width:30%; height:30%;" class="img-squere"><br>
+					<img src="<%=board.getBoard_img()%>" style="width:40%; height:40%;" class="img-squere"><br>
 					<div class="row">
 						<table style="border-spacing: 20px; font-size: 17px;">
 							<tr>
 								<td>
 									<p>
-										<strong><%=board.getBoard_time()%></strong>
+										<%=board.getBoard_time()%>
 									</p>
 								</td>
 								<td><span class="glyphicon glyphicon-heart"
 									style="padding-bottom: 14px;"></span></td>
 								<td>
 									<p style="padding-bottom: 3px;">
-										<em><%=board.getBoard_like()%></em>
+										<em class="boardLike"><%=board.getBoard_like()%></em>
 									</p>
 								</td>
 							</tr>
@@ -633,19 +503,57 @@ td {
 					<!-- Icon -->
 					<div class="row">
 						<div class="pull-right">
-							<span style="cursor: pointer" class="glyphicon glyphicon-comment icon-size"
-								data-toggle="collapse" data-target="#comment"></span>&emsp;
-							<span class="glyphicon glyphicon-heart icon-size"></span> &emsp; 
-							<span class="glyphicon glyphicon-share-alt icon-size"></span>&emsp; 
+							<form>
+							<ul class="ul fol2" id="updateBoardLike_modal">
+								<li class="li fol3">
+									<span style="cursor: pointer" 
+									class="glyphicon glyphicon-comment icon-size"
+									data-toggle="collapse" data-target="#comment<%=board.getBoard_num()%>">
+									</span>&emsp;
+								</li>
+								<li class="li fol3">
+									<span style="cursor: pointer"  
+										class="glyphicon glyphicon-heart icon-size"
+										onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">
+									</span> &emsp;
+								</li>
+								<li class="li fol3">
+									<span style="cursor: pointer" 
+									 class="glyphicon glyphicon-share-alt icon-size">
+									</span>&emsp; 
+								</li>
+							</ul>
+							</form>
 						</div>
 					</div> 
 				<!-- 댓글 comment -->
-				<%} %>
+					<div id="comment<%=board.getBoard_num()%>" class="collapse">
+						<ul class="list-group" style="text-align: left;">
+						<%
+							List<BoardReplyVO> replyList = board.getBoardReplyList(); 
+							for(int j = 0; j < replyList.size(); j++) {
+								BoardReplyVO reply= replyList.get(j);
+						%>
+							<li class="list-group-item">
+								<img src="<%=reply.getUser_img()%>"
+								class="img-circle" height="30" width="30">&nbsp; <a
+								href="#"><strong><%=reply.getUser_id()%></strong></a> &emsp;
+								<strong><%=reply.getRep_content()%></strong>
+							</li>
+						<%
+						} // for replyList
+						%>
+						</ul>
+					</div>
 				<!-- 본문 글 끝 -->
 				</div>
+				<%
+				} // for followingBoardList
+				%>
 			</div>
 		</div>
 	</div>
+</div>
 	<footer class="container-fluid text-center">
 	<p>MADI</p>
 	</footer>

@@ -1,5 +1,6 @@
 package com.spring.madi;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -16,6 +17,14 @@ public class RecipeVO {
 	private String img_url;
 	private String detail_url;
 	private String user_id;
+	private Timestamp time;
+	
+	public Timestamp getTime() {
+		return time;
+	}
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 	//recipe_irdnt
 	private List<RecipeIrdntVO> recipeIrdnt; // MyBatis collection property DB에서 재료목록을 담기위한 필드
 	private String[] irdnt_name; // form으로부터 String Array를 받기 위한 변수 Mapper에서 Mapping 하지 않는다 input Form에서 submit 값들을 읽기 위한 필드

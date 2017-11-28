@@ -8,7 +8,11 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="user_pw" column="USER_PW" />
 		<result property="user_name" column="USER_NAME" />
+
 		<result property="user_gender" column="USER_GENDER"/>
+
+		<result property="user_gender" column="USER_GENDER" />
+
 		<result property="user_email" column="USER_EMAIL" />
 		<result property="user_img" column="USER_IMG" />
 	</resultMap>
@@ -16,8 +20,10 @@
 	<resultMap type="MemberFollowVO" id="MemberFollowResultMap">
 		<result property="user_id" column="USER_ID" />
 		<result property="following_user_id" column="FOLLOWING_USER_ID" />
-		<!-- (진산)팔로워, 팔로잉 프로필이미지를  위해 임시로 생성 -->
+		<!-- (진산)팔로워, 팔로잉 프로필이미지를  위해  생성 -->
 		<result property="user_img" column="USER_IMG" />
+		<!-- (진산)팔로워, 팔로잉 프로필이미지를  위해  생성 -->
+		<result property="following_user_img" column="FOLLOWING_USER_IMG" />
 	</resultMap>
 	
 	<resultMap type="MemberBoxVO" id="MemberBoxResultMap">
@@ -29,26 +35,41 @@
 	<select id="getMember" resultMap="MemberResultMap">
 		SELECT * FROM member WHERE user_id= #{user_id, javaType=String}
 	</select>
-	<!-- (진산) 팔로워 구하기 ..following_user_id는 내 아이디를 입력함-->
-	<select id="getFollower" resultMap="MemberFollowResultMap">
-		SELECT * FROM member WHERE user_id in (SELECT user_id FROM member_follow WHERE following_user_id= #{user_id, javaType=String})
+	<!-- (진산) 임시 MemberFollow에서 following_user_id 불러오기 -->
+	<!--
+	<select id="getFollowing_user_id" resultMap="MemberFollowResultMap">
+		SELECT following_user_id FROM member_follow WHERE user_id= #{user_id, javaType=String}
 	</select>
+	-->
+	<!-- (진산) 팔로워 구하기 ..following_user_id는 내 아이디를 입력함-->
+	 <select id="getFollower" resultMap="MemberFollowResultMap">
+		SELECT a.user_id, a.user_img, b.following_user_id, b.following_user_img FROM member a, 
+		(SELECT user_id, following_user_id, user_img, following_user_img 
+		FROM member_follow WHERE following_user_id = #{user_id, javaType=String}) b
+		WHERE a.user_id = b.user_id
+	</select>
+	
 	<!-- (진산) 팔로잉 구하기 -->
 	<select id="getFollowing" resultMap="MemberFollowResultMap">
-		SELECT * FROM member WHERE user_id in 
-		(SELECT following_user_id FROM member_follow WHERE user_id= #{user_id, javaType=String})
+		SELECT a.user_id, a.user_img, b.following_user_id, b.following_user_img FROM member a, 
+		(SELECT user_id, following_user_id, user_img, following_user_img 
+		FROM member_follow WHERE user_id = #{user_id, javaType=String}) b
+		WHERE a.user_id = b.user_id
 	</select>
 	<!-- (진산) 팔로워 추천 목록 불러오기 -->
 	<select id="getRecommendFollower" resultMap="MemberFollowResultMap">
-		SELECT * FROM member WHERE user_id in
-		(SELECT following_user_id FROM (SELECT following_user_id, count(user_id) as follower_count
-		FROM member_follow GROUP BY following_user_id ORDER BY follower_count))
-		
+		SELECT following_user_id, following_user_img, count(user_id) 
+		FROM member_follow
+		WHERE following_user_id NOT IN (SELECT following_user_id
+										FROM member_follow
+										WHERE user_id = #{user_id, javaType=String})  
+		GROUP BY following_user_id, following_user_img 
+		ORDER BY count(user_id) desc
 	</select>
 	<!-- (진산) 팔로잉 한 명 지우기 -->
 	<delete id="deleteFollowing" parameterType="com.spring.madi.MemberFollowVO">
 		DELETE FROM member_follow 
-		WHERE following_user_id= #{following_user_id, javaType=String} and user_id= #{user_id, javaType=String}
+		WHERE user_id= #{user_id, javaType=String} and following_user_id= #{following_user_id, javaType=String}
 	</delete>
 	<!-- (진산) 팔로워 한 명 지우기 -->
 	<delete id="deleteFollower" parameterType="com.spring.madi.MemberFollowVO">
@@ -58,12 +79,67 @@
 	<!-- (진산) 팔로잉 한 명 추가 -->
 	<insert id="insertFollowing" parameterType="com.spring.madi.MemberFollowVO">
 		INSERT INTO member_follow 
-		VALUES (#{user_id, javaType=String}, #{following_user_id, javaType=String})
+		VALUES (#{user_id, javaType=String}, #{following_user_id, javaType=String}, 
+		#{user_img, javaType=String}, #{following_user_img, javaType=String})
 	</insert>
 	
+
 	
 	<!-- (인욱) 카카오 아이디 DB에서 조회후 불러옴 -->
 	<select id ="checkMember" resultMap="MemberResultMap" parameterType="com.spring.madi.MemberVO">
 		select * from member where user_id = #{user_id, jdbcType=VARCHAR}
 	</select>
+
+	<!-- 성빈 : 로그인 체크를 위한 user_pw 조회 쿼리-->
+	<select id="getPasswordByUserId" resultMap="MemberResultMap"  parameterType="com.spring.madi.MemberVO">
+		SELECT USER_PW
+		FROM MEMBER
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 성빈 : 회원가입을 위한 회원정보 삽입 쿼리 -->
+	<insert id="setMember" parameterType="com.spring.madi.MemberVO">
+		INSERT INTO MEMBER(USER_ID, USER_PW, USER_NAME, USER_GENDER, USER_EMAIL, USER_IMG)
+		VALUES (#{user_id}, #{user_pw}, #{user_name}, #{user_gender}, #{user_email}, #{user_img})
+	</insert>
+	
+	<!-- 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 쿼리 -->
+	<select id="getMyIrdntByUserId" resultMap="MemberBoxResultMap">
+		SELECT *
+		FROM MEMBER_BOX
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
+	</select>
+	<!-- (진산) 재료가 이미 있는 재료인지 확인하기 -->
+	<select id="getCheckIrdnt" resultMap="MemberBoxResultMap">
+		SELECT *
+		FROM MEMBER_BOX
+		WHERE USER_ID = #{user_id} AND my_irdnt= #{my_irdnt}
+	</select>
+	<!-- (진산) 냉장고 재료를 입력하기 -->
+	<insert id="insertIrdnt" parameterType="com.spring.madi.MemberBoxVO">
+		INSERT INTO member_box VALUES (#{user_id}, #{my_irdnt})
+	</insert>
+	<delete id="deleteIrdnt" parameterType="com.spring.madi.MemberBoxVO">
+		DELETE FROM member_box
+		WHERE user_id= #{user_id} and my_irdnt= #{my_irdnt}
+	</delete>
+	<!-- 성빈: 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
+	<!-- 전달 파라미터 String user_id -->
+	<select id="getUserInfoById" resultMap="MemberResultMap">
+		SELECT USER_ID, USER_IMG, USER_EMAIL, USER_NAME
+		FROM MEMBER
+		WHERE USER_ID = #{user_id}
+	</select>
+	<!-- 성빈: 회원 기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
+	<!-- 전달 파라미터 String[] user_id -->
+	<select id="getUserInfoByIds" resultMap="MemberResultMap">
+		SELECT USER_ID, USR_IMG, USER_EMAIL, USER_NAME
+		FROM MEMBER
+		WHERE USER_ID IN
+			<foreach item="USER_ID" collection="array" open="(" separator="," close=")">
+					#{user_id}
+			</foreach>
+	</select>
+
+
 </mapper>

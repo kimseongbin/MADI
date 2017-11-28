@@ -19,7 +19,5 @@ public class MemberBoxVO {
 	public void setMy_irdnt(String my_irdnt) {
 		this.my_irdnt = my_irdnt;
 	}
-	
-	
 
 }

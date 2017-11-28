@@ -3,11 +3,56 @@
 <!-- 마찬가지로 이 안에다가 작성하셔야 합니다 -->
 <mapper namespace="com.spring.madi.MessageMapper">
 	<resultMap type="MessageVO" id="MessageResultMap">
+		<result property="message_id" column="MESSAGE_ID" />
 		<result property="user_id" column="USER_ID" />
 		<result property="content" column="CONTENT" />
 		<result property="time" column="TIME" />
 		<result property="sender_id" column="SENDER_ID" />
 		<result property="check_msg" column="CHECK_MSG" />
 	</resultMap>
-
+	
+	<!-- 성빈 : 내게 온 메시지 조회 -->
+	<!-- 전달 파라미터 String user_id, USER_ID는 받는사람입니다.-->
+	<!-- session 객체로부터 user_id를 읽어올 와 이 메서드의 파라미터 넘겨준다 -->
+	<select id="getMyMessageById" resultMap="MessageResultMap" parameterType="String">
+		SELECT *
+		FROM MESSAGE
+		WHERE USER_ID = #{user_id} AND CHECK_MSG = 0 
+		ORDER BY TIME DESC
+	</select>
+	<!-- 성빈 : 읽은 메시지 업데이트 -->
+	<!-- 해당 메시지를 읽은 경우 다음 번 페이지 로딩 시 메시지를 다시 읽어오지 않도록 CHECK_MSG의 값을 1로 변경하는 쿼리 -->
+	<!-- 전달 파라미터가 MessageVO messageVO인 경우-->
+	<!-- <update id="removeMessageByMessageId" parameterType="com.spring.madi.MessageVO">
+		UPDATE MESSAGE
+		SET CHECK_MSG = 1
+		WHERE MESSAGE_ID = #{message_id}
+		ORDER BY TIME DESC;
+	</update> -->
+	<!-- 성빈 : 읽은 메시지 업데이트 -->
+	<!-- 해당 메시지를 읽은 경우 다음 번 페이지 로딩 시 메시지를 다시 읽어오지 않도록 CHECK_MSG의 값을 1로 변경하는 쿼리 -->
+	<!-- 전달 파라미터가 String message_id인 경우-->
+	<update id="removeMessageByMessageId" parameterType="String">
+		UPDATE MESSAGE
+		SET CHECK_MSG = 1
+		WHERE MESSAGE_ID = #{message_id}
+	</update>
+	<!-- 성빈 : 읽은 메시지 업데이트 -->
+	<!-- 해당 메시지를 읽은 경우 다음 번 페이지 로딩 시 메시지를 다시 읽어오지 않도록 CHECK_MSG의 값을 1로 변경하는 쿼리 -->
+	<!-- 전달 파라미터가 int message_id인 경우-->
+<!-- 	<update id="removeMessageByMessageId" parameterType="Integer">
+		UPDATE MESSAGE
+		SET CHECK_MSG = 1
+		WHERE MESSAGE_ID = #{message_id}
+		ORDER BY TIME DESC;
+	</update> -->
+	<!-- 성빈 : 특정인에게 메시지 보내기 -->
+	<!-- User_id가 특정인 -->
+	<!-- Sender_id가 메시지를 보내는 "나" -->
+	<insert id="sendMessageToId" parameterType="com.spring.madi.MessageVO"> 
+		INSERT INTO MESSAGE(MESSAGE_ID, USER_ID, CONTENT, SENDER_ID)
+		VALUES (SEQ_OF_MESSAGE.NEXTVAL, #{user_id}, #{content}, #{sender_id})
+	</insert>
+	
+	
 </mapper>

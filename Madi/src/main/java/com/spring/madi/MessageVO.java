@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageVO {
 	
+	private int message_id;
 	private String user_id;
 	private String content;
 	private Timestamp time;
@@ -41,6 +42,12 @@ public class MessageVO {
 	}
 	public void setCheck_msg(int check_msg) {
 		this.check_msg = check_msg;
+	}
+	public int getMessage_id() {
+		return message_id;
+	}
+	public void setMessage_id(int message_id) {
+		this.message_id = message_id;
 	}
 	
 	
