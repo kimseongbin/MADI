@@ -3,6 +3,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<script type="text/javascript">
+$(".img-responsive").hover(function(){
+	$(this).css("opacity", 0.5);
+	var text = $(this).attr('value');
+	
+	
+	
+}, function(){
+	$(this).css("opacity", 1);
+});
+</script>
 <%
 	ArrayList<RecipeVO> recipeList = (ArrayList<RecipeVO>)request.getAttribute("recipeList");
 %>
@@ -28,8 +39,12 @@
 %>
 				<div class="col-sm-3 col-lg-3s">
 				   <div class="thumbnail">
+				   	  <div class="recipe_item_title">
 				   	  <!-- 이미지 링크 recipe_id값 전달 클릭 시 recipe_detail화면으로-->
-				      <a href="./recipeDetail.do?recipe_id=<%=recipeVO.getRecipe_id()%>"><img src="<%=recipeVO.getImg_url() %>" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image"></a>
+				      <a href="./recipeDetail.do?recipe_id=<%=recipeVO.getRecipe_id()%>">
+				      	<img src="<%=recipeVO.getImg_url() %>" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image" value=<%=recipeVO.getRecipe_title() %>>
+				      </a>
+				      </div>
 				      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0; height:180px; overflow:hidden;">
 				      	<!-- user_id 링크 -->
 				      	<img src="./resources/profile/bird.jpg" class="img-circle" height="61" width="61" alt="Avatar">
@@ -41,17 +56,23 @@
 				       <div class="container-fluid" style="padding:0;">
 				        	<div class="col-xs-4 col-sm-4 text-muted" style="padding-left:0; padding-right:0;">
 				            	<button class="btn" style="background:white; border:none; outline:none;">
-				                	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; <%=recipeVO.getCooking_time() %>
+				            		<img src="./resources/image/Timer_96px.png" width="20px">
+				                	<!-- <span class="glyphicon glyphicon-home" style="font-size:10px;"></span> -->
+				                	<%=recipeVO.getCooking_time() %>
 				                </button>
 				            </div>
 				            <div class="col-xs-4 col-sm-4 text-muted" style="padding-left:0; padding-right:0;">
 				            	<button class="btn" style="background:white; border:none; outline:none;">
-				                	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 좋아요
+				            		<img src="./resources/image/Heart_96px.png" width="20px">
+				                	<!-- <span class="glyphicon glyphicon-home" style="font-size:10px;"></span> -->
+				                	좋아요
 				                </button>
 				            </div>
 				            <div class="col-xs-4 col-sm-4 text-muted" style="padding-left:0; padding-right:0;">
 				            	<button class="btn" style="background:white; border:none; outline:none;">
-				                	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 공유
+				            		<img src="./resources/image/Share_96px.png" width="20px">
+				                	<!-- <span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; --> 
+				                	공유
 				                </button>
 				            </div>
 				        </div>
@@ -67,7 +88,10 @@
 <%
 		} // for
 %>
-		<button class="btn btn-default btn-block moreOfCategory">더보기</button>
+		<button class="btn btn-default btn-block moreOfCategory">
+			<img src="./resources/image/Expand Arrow_96px.png" width="30px;">
+			더보기
+		</button>
 <%
 	} // else
 %>
