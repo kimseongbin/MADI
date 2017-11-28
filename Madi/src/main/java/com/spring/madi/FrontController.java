@@ -42,10 +42,6 @@ public class FrontController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FrontController.class);
 
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		return "index";
@@ -286,6 +282,59 @@ public class FrontController {
 			notificationDAOService.sendNoticeById(notificaitonVO);
 			return 0;
 		}		
+	}
+	
+	// 맴버 한 명의 냉장고 불러오기..
+	@RequestMapping("/getMemberBox.do")
+	public void getMyIrdntByUserId(MemberBoxVO memberBoxVO, HttpServletRequest request) {
+		String user_id= request.getParameter("user_id");
+		ModelAndView result= new ModelAndView();
+		ArrayList<MemberBoxVO> myMemberBox= memberDAOService.getMyIrdntByUserId(user_id);
+		
+		System.out.println(user_id + " : 읽어오기 성공");
+		//System.out.println("재료 " + MemberBoxVO.getMy_irdnt());
+		result.addObject("myMemberBox", myMemberBox);
+		//result.setViewName("냉장고?");
+	}
+	
+	//(진산) 냉장고 재료버튼 클릭하기...재료 누르면 경고창으로 추가했다 / 이미 있으면 삭제했다
+	@RequestMapping("/insertMemberBox.do")
+	@ResponseBody
+	public ModelAndView insertMemberBox(MemberBoxVO memberBoxVO, HttpServletResponse response, HttpServletRequest request) {
+		String user_id= request.getParameter("user_id");
+		String my_irdnt= request.getParameter("my_irdnt");
+		System.out.println("user_id- " + user_id);
+		System.out.println("irdnt- " + my_irdnt);
+		//String src = request.getParameter("src");
+		MemberBoxVO res= memberDAOService.getCheckIrdnt(memberBoxVO);
+		ModelAndView result= new ModelAndView();
+		if (res == null) {
+			memberDAOService.insertIrdnt(memberBoxVO);
+			System.out.println("재료 저장 성공");
+			System.out.println("user_id = " + user_id);
+			System.out.println("irdnt = " + my_irdnt);
+			ArrayList<MemberBoxVO> myList= memberDAOService.getMyIrdntByUserId(user_id);
+			result.addObject("myList", myList);
+		} else {
+			response.setContentType("text/html; charset=UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			try {
+				//(printwriter는 예외 때문에 항상 try/catch문 필요)
+				PrintWriter writer = response.getWriter();
+				writer.write("<script>");
+				writer.write("alert('재료가 중복 입력되어 " + my_irdnt + " 삭제합니다')");
+				writer.write("</script>");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			memberDAOService.deleteIrdnt(memberBoxVO);
+			System.out.println("재료 중복. 삭제합니다");
+			System.out.println("user_id = " + user_id);
+			System.out.println("irdnt = " + my_irdnt);	
+			ArrayList<MemberBoxVO> myList= memberDAOService.getMyIrdntByUserId(user_id);
+			result.addObject("myList", myList);
+		}
+		return result;
 	}
 	
 

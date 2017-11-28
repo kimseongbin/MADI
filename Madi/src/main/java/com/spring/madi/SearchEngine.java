@@ -187,20 +187,37 @@ public class SearchEngine {
 		return recipeList;
 		
 	}
-	/*public static void main(String[] args) {
-		
-		SearchEngine se = new SearchEngine();
-		String main = "/계란/양파";
-		String sub = "/당근/돼지";
-		String source = "/후추/소금";
-		ArrayList<RecipeVO> recipeList = se.getRecipesBySearch(se.searchRecipesByIngredients(main, sub, source));
-		for (RecipeVO recipeVO : recipeList) {
-			System.out.println(recipeVO.getRecipe_id());
-			System.out.println(recipeVO.getRecipe_title());
-			System.out.println(recipeVO.getUser_id());
-			System.out.println(recipeVO.getNation_name());
-			System.out.println(recipeVO.getTy_name());
-		}
-		
-	}*/
+	
+	public static void main(String[] args) {
+		String sql = "";
+        String sql2 = "";
+        System.out.println("asdf");
+        Connection conn = JDBCUtil.getConnection();
+        try {
+            sql = "SELECT RECIPE_ID, RECIPE_TITLE, RECIPE_DESC, IMG_URL, USER_ID, TIME FROM RECIPE_INFO";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            System.out.println(rs.getRow());
+            sql2 = "INSERT INTO BOARD(USER_ID, USER_IMG, BOARD_NUM, BOARD_TITLE, BOARD_SUMMRY, BOARD_IMG, BOARD_RECIPE_ID, BOARD_TIME, BOARD_LIKE) "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql2);
+            int i = 0;
+            while(rs.next()) {
+                pstmt.setString(1, rs.getString("USER_ID"));
+                pstmt.setString(2, "./resources/profile/bird.jpg");
+                pstmt.setInt(3, rs.getInt("RECIPE_ID"));
+                pstmt.setString(4, rs.getString("RECIPE_TITLE"));
+                pstmt.setString(5, rs.getString("RECIPE_DESC"));
+                pstmt.setString(6, rs.getString("IMG_URL"));
+                pstmt.setInt(7, rs.getInt("RECIPE_ID"));
+                pstmt.setDate(8, rs.getDate("TIME"));
+                pstmt.setInt(9, 0);
+                System.out.println(i);
+                pstmt.executeUpdate();
+                i++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
 }

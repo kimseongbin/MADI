@@ -119,6 +119,26 @@ public class MemberDAOService implements MemberDAO {
 		}
 	}
 	
+	//(진산) 냉장고에 재료가 있는지 알아보기
+	@Override
+	public MemberBoxVO getCheckIrdnt(MemberBoxVO memberBoxVO) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		MemberBoxVO irdntList= memberMapper.getCheckIrdnt(memberBoxVO);
+		return irdntList;
+	}
+	//(진산) 냉장고에 재료 입력하기
+	@Override
+	public void insertIrdnt(MemberBoxVO memberBoxVO) {
+		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
+		memberMapper.insertIrdnt(memberBoxVO);
+	}
+	//(진산) 냉장고 재료 중복이라 삭제하기
+	@Override
+	public void deleteIrdnt(MemberBoxVO memberBoxVO) {
+		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
+		memberMapper.deleteIrdnt(memberBoxVO);
+	}
+	
 	@Override // 성빈 : 회원 기본 정보 조회 메소드
 	public MemberVO getUserInfoById(String user_id) {
 		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
