@@ -213,19 +213,9 @@
               <!--오른쪽 아이콘 -->
             <ul class="nav navbar-nav navbar-right" style="vertical-align: middle;">
                 <!--home 아이콘 -->
-<<<<<<< HEAD
                 <li>
                 	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;" onclick="recipeDo();">
-=======
-                <li>
-                	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;">
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
                     	<span class="glyphicon glyphicon-home color header"></span>
-<<<<<<< HEAD
-=======
-
-
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
                     </button>
                 </li>
                 <!-- profile 아이콘 -->
@@ -294,13 +284,8 @@
                     </div>
                 </li>
                 <!--소셜 아이콘 -->
-<<<<<<< HEAD
                 <li onclick="postListDo();">
                     <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
-=======
-                <li>
-                    <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>
