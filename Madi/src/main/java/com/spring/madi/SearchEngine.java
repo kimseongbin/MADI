@@ -158,7 +158,7 @@ public class SearchEngine {
 
 		return recipeList;		
 	}
-	// 성빈 : 검색한 레시피 목록으로부터 레시피에 대한 기본 정보를 검색하여 List형태로 리턴하는 메소드
+	// 성빈 : 검색한 레시피 목록으로부터 레시피에 대한 기 본 정보를 검색하여 List형태로 리턴하는 메소드
 	public ArrayList<RecipeVO> getRecipeListByMybox(ArrayList<RecipeVO> recipeList) {
 		
 		String sql = "select * from recipe_info a, nation b, recipe_type c where a.nation_code = b.nation_code and a.ty_code = c.ty_code and recipe_id = ?";
@@ -189,39 +189,5 @@ public class SearchEngine {
 	}
 	// 성빈 : 상단  Header 검색창 기능 구현을 위한 메소드
 	// 검색 기능이 작동하는 순서 1) 빈칸에 의한 단어 구분 2) 영문, 한문, 숫자, 특수문자에 의한  	
-
-	public static void main(String[] args) {
-		
-		String sql = "";
-		String sql2 = "";
-		System.out.println("asdf");
-		Connection conn = JDBCUtil.getConnection();
-		try {
-			sql = "SELECT RECIPE_ID, RECIPE_TITLE, RECIPE_DESC, IMG_URL, USER_ID, TIME FROM RECIPE_INFO";
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			System.out.println(rs.getRow());
-			sql2 = "INSERT INTO BOARD(USER_ID, USER_IMG, BOARD_NUM, BOARD_TITLE, BOARD_SUMMRY, BOARD_IMG, BOARD_RECIPE_ID, BOARD_TIME, BOARD_LIKE) "
-					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			PreparedStatement pstmt = conn.prepareStatement(sql2);
-			int i = 0;
-			while(rs.next()) {
-				pstmt.setString(1, rs.getString("USER_ID"));
-				pstmt.setString(2, "./resources/profile/bird.jpg");
-				pstmt.setInt(3, rs.getInt("RECIPE_ID"));
-				pstmt.setString(4, rs.getString("RECIPE_TITLE"));
-				pstmt.setString(5, rs.getString("RECIPE_DESC"));
-				pstmt.setString(6, rs.getString("IMG_URL"));
-				pstmt.setInt(7, rs.getInt("RECIPE_ID"));
-				pstmt.setDate(8, rs.getDate("TIME"));
-				pstmt.setInt(9, 0);
-				System.out.println(i);
-				pstmt.executeUpdate();
-				i++;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 		
 }
