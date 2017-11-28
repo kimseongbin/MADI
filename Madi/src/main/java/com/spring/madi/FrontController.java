@@ -768,6 +768,7 @@ public class FrontController {
 		}
 	}
 	
+
 	
 	
 	@RequestMapping("/test1.do")
@@ -775,4 +776,12 @@ public class FrontController {
 	{
 		return "test1";
 	}
+
+	@RequestMapping("/snsJoin.do")
+	public String snsJoin() {
+		
+		return "sns_join";
+		
+	}
+
 }

@@ -3226,6 +3226,7 @@
 			}
 		});
 	}
+	
 	// 재료 저장/삭제
 	$(document).ready(function() {
 		$("#IrdntList").find("li").click(function() {
@@ -3243,8 +3244,7 @@
 				success: function(data) {
 					if (data == 1) {
 						alert("재료 저장 성공");
-						document
-					} else (data == 0) {
+					} else {
 						alert("재료 삭제 성공");
 						
 					}
