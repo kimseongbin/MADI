@@ -20,4 +20,8 @@ public interface MemberDAO {
 	void deleteFollower(String user_id, String following_user_id);
 	//(진산)팔로잉 한 명 추가
 	void insertFollowing(MemberFollowVO memberFollow);
+	
+	//(인욱) 카카오 아이디 DB에서 불러옴
+		
+	public MemberVO checkMember(MemberVO memberVO);
 }

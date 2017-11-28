@@ -2,6 +2,8 @@ package com.spring.madi;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import com.spring.madi.MemberFollowVO;
 import com.spring.madi.MemberVO;
 
@@ -21,5 +23,9 @@ public interface MemberMapper {
 	//(진산) 팔로잉 한 명 추가
 	void insertFollowing(MemberFollowVO memberFollow);
 	
-
+	//(인욱) 카카오아이디 db에서 불러옴
+	public MemberVO checkMember(MemberVO memberVO);
+	
+	//(인욱) 카카오 로그아웃
+	public String logout(HttpSession session);
 }

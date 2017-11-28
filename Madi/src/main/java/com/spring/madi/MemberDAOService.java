@@ -65,4 +65,14 @@ public class MemberDAOService implements MemberDAO {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
 		memberMapper.insertFollowing(memberFollow);
 	}
+	
+	//(인욱)카카오 아이디 db에서 확인 후 ->값을 가져옴 
+	@Override
+	public MemberVO checkMember(MemberVO memberVO){
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		System.out.println();
+		MemberVO x = memberMapper.checkMember(memberVO);
+		
+		return x;
+	}
 }

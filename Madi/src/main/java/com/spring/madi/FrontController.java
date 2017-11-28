@@ -3,9 +3,12 @@ package com.spring.madi;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.junit.runner.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -228,6 +232,50 @@ public class FrontController {
 				
 	}
 
+	@RequestMapping("/test.do")
+	public String test()
+	{
+		
+		return "test";
+	}
+	
+	@RequestMapping("/checkMember.do")
+	public ModelAndView checkMember(MemberVO memberVO)
+	{	
+		
+		ModelAndView mav = new ModelAndView();
+		
+		//로그인 정보가 들어오면 이메일 확인 후 x에 저장
+		MemberVO x = memberDAOService.checkMember(memberVO);
+		
+		//db에서 확인한 id 값이 null이면 간단회원가입 페이지로, null이 아니면 로그인 성공 (recipe 페이지로)
+		
+		if(x == null){
+			mav.addObject("index", x);
+			mav.setViewName("index");
+			return mav;
+			
+		}else{
+			mav.addObject("recipe", x);
+			mav.setViewName("recipe");
+			return mav;
+		}
+				
+	}
+	//카카오톡 로그아웃 (리다이렉트 -> 메인페이지)
+	@RequestMapping("/logout.do")
+	public String logout(HttpSession session){
+		session.invalidate();
+		
+		return "redirect:/test.do";
+	}
 	
 	
+	
+	
+	@RequestMapping("/test1.do")
+	public String test1()
+	{
+		return "test1";
+	}
 }

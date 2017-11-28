@@ -8,6 +8,7 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="user_pw" column="USER_PW" />
 		<result property="user_name" column="USER_NAME" />
+		<result property="user_gender" column="USER_GENDER"/>
 		<result property="user_email" column="USER_EMAIL" />
 		<result property="user_img" column="USER_IMG" />
 	</resultMap>
@@ -23,11 +24,7 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="my_irdnt" column="MY_IRDNT" />
 	</resultMap>
-
 	
-	<insert id="writeBoard"></insert>
-
-
 	<!-- (진산) 로그인한 아이디 자신에 대한 member정보 -->
 	<select id="getMember" resultMap="MemberResultMap">
 		SELECT * FROM member WHERE user_id= #{user_id, javaType=String}
@@ -63,5 +60,10 @@
 		INSERT INTO member_follow 
 		VALUES (#{user_id, javaType=String}, #{following_user_id, javaType=String})
 	</insert>
-
+	
+	
+	<!-- (인욱) 카카오 아이디 DB에서 조회후 불러옴 -->
+	<select id ="checkMember" resultMap="MemberResultMap" parameterType="com.spring.madi.MemberVO">
+		select * from member where user_id = #{user_id, jdbcType=VARCHAR}
+	</select>
 </mapper>
