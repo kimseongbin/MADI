@@ -1,3 +1,4 @@
+<%@page import="com.spring.madi.MemberBoxVO"%>
 <%@page import="com.spring.madi.MemberVO"%>
 <%@page import="com.spring.madi.NotificationVO"%>
 <%@page import="com.spring.madi.MessageVO"%>
@@ -11,6 +12,8 @@
 <%
 	//내 정보 받아오기
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
+	//냉장고 정보 받아오기
+	ArrayList<MemberBoxVO> myMemberBox= (ArrayList<MemberBoxVO>) request.getAttribute("myMemberBox");
 	//메시지 리시트 받아오기 
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
@@ -163,11 +166,6 @@
 	    text-align: center;
 	    font-size: 30px;
 	}
-
-	/* 	
-	.header.modal-header, .modal-body {
-	    padding: 20px 50px;
-	} */
 	
 	/* 냉장고 재료들 리스트 정렬 */
 	.ul.hori {
@@ -185,6 +183,7 @@
 	    width:70px;
 	    height:80px;
 	}
+
   </style>
 <!-- 헤더 시작 -->
  <nav class="navbar navbar-default head header" data-spy="affix" data-offset-top="197">
@@ -214,9 +213,19 @@
               <!--오른쪽 아이콘 -->
             <ul class="nav navbar-nav navbar-right" style="vertical-align: middle;">
                 <!--home 아이콘 -->
+<<<<<<< HEAD
                 <li>
                 	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;" onclick="recipeDo();">
+=======
+                <li>
+                	<button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px;">
+>>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
                     	<span class="glyphicon glyphicon-home color header"></span>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
                     </button>
                 </li>
                 <!-- profile 아이콘 -->
@@ -248,7 +257,8 @@
                 <li>
                     <div style="padding-top: 9px; padding-left: 5px;">
                         <button type="button" class="btn form header" data-toggle="modal" data-target="#fridge">
-                            <img src="./resources/food_icon/fridge_white.png" style="width:20px; height:20px;" onmouseover="hover(this);" onmouseout="unhover(this);"/>
+                            <img src="./resources/food_icon/fridge_white.png" style="width:20px; height:20px;" onmouseover="hover(this);" onmouseout="unhover(this);"
+                            onclick="getMemberBox('<%=memberVO.getUser_id()%>')">
                         </button>
                     </div>
                 </li>
@@ -259,6 +269,21 @@
                 function unhover(element) {
                     element.setAttribute('src', './resources/food_icon/fridge_white.png');
                 }
+            	//내 냉장고 불러오기
+            	function getMemberBox(user_id) {
+            		
+            		$.ajax({
+            			url: "./getMemberBox.do",
+            			type: "GET",
+            			data: {
+            				user_id: user_id
+            			},
+            			dataType: "text",
+            			success: function(data) {
+            				alert(data);
+            			}
+            		});
+            	}
                 </script>              	
                 <!--알림 아이콘 -->
                 <li onclick="getNotification();">
@@ -269,8 +294,13 @@
                     </div>
                 </li>
                 <!--소셜 아이콘 -->
+<<<<<<< HEAD
                 <li onclick="postListDo();">
                     <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
+=======
+                <li>
+                    <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
+>>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>
@@ -280,7 +310,7 @@
 </nav>
 <!-- 냉장고 모달바 내용들 -->
 <div class="modal fade" id="fridge" tableindex="-1" role="dialog"
-	aria-labelledy="modallabel" style="height:500px;">
+	aria-labelledy="modallabel" style="height:530px;">
 	<div class="modal-dialog modal-lg" role="document">
 		<!-- content 시작 -->
 		<div class="modal-content">
@@ -295,7 +325,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<!-- 왼쪽 카테고리 -->
-					<div class="col-sm-3" style="overflow-y:scroll; height:260px;">
+					<div class="col-sm-2" style="overflow-y:scroll; height:272px;">
 						<!-- 종류들 나열 -->
 						<ul class="nav nav-stacked">
 							<li class="active"><a data-toggle="tab" href="#menu1"> <strong>빵류</strong>
@@ -329,8 +359,9 @@
 					</div>
 					<!--  가운데 리스트 나열 -->
 					<div class="col-sm-7"
-						style="background-color: #FFEAEA; text-align: center;">
-						<div class="tab-content" style="overflow-y:scroll; height:260px;">
+						style="background-color: #FFEAEA; text-align: center; padding-right:0;">
+						<form id="IrdntList">
+						<div class="tab-content" style="overflow-y:scroll; height:272px;">
 							<!-- 메뉴1 빵류 -->
 							<div id="menu1" class="tab-pane fade in active">
 								<ul class="ul hori">
@@ -3086,9 +3117,11 @@
 							</div>
 							<!-- 재료 나열 끝 -->
 						</div>
+						</form>
 					</div>
-					<!-- 오른쪽 빈공간 -->
-					<div class="col-sm-1"></div>
+					<!-- 오른쪽 내 재료들 저장칸 -->
+					<div class="col-sm-3">
+					</div>
 				</div>
 			</div>
 			<!-- 내용 끝 -->
@@ -3175,7 +3208,7 @@
 		location.href = "./recipe.do";
 	}
 	function postListDo() {
-		location.href = "./postList.do"
+		location.href = "./postList.do";
 	}
 	function getMessage() {
 		var user_id = "<%=memberVO.getUser_id()%>";
@@ -3207,4 +3240,53 @@
 			}
 		});
 	}
+	// 재료 저장/삭제
+	$(document).ready(function() {
+		$("#IrdntList").find("li").click(function() {
+			//var src = $(this).find("img").attr("src");
+			var user_id = "<%=memberVO.getUser_id()%>";
+			var my_irdnt = $(this).find("input").val();
+			$.ajax({
+				url: "./insertMemberBox.do",
+				type: "POST",
+				data: {
+					user_id : user_id,
+					my_irdnt : my_irdnt,
+					//src : src
+				},
+				success: function(data) {
+					if (data == 1) {
+						alert("재료 저장 성공");
+						document
+					} else (data == 0) {
+						alert("재료 삭제 성공");
+						
+					}
+				},
+				error: function() {
+					alert("ㅇㅇ");
+				}
+			});
+		});
+	});
+	//버튼 클릭시 나타나고 사라지고
+	$(document).ready(function() {
+		var myirdnt= document.getElementsByClassName("irdntlist")
+		for(var y=0; y< myirdnt.length; y++) {
+			if(y == 0) {
+				myirdnt[y].style.display="block";
+			} else {
+				myirdnt[y].style.display="none";
+			}
+		}
+		
+		$("updateIrdnt").click(function() {
+			myirdnt[y].style.display="none";
+			if(currentLocation == irdntList.length) {
+				myirdnt[y].style.display="block";
+			} else {
+				myirdnt[y].style.display="block";
+			}
+		});
+	});
 </script>

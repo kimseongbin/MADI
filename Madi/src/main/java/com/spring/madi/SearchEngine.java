@@ -187,8 +187,8 @@ public class SearchEngine {
 		return recipeList;
 		
 	}
+
 	public static void main(String[] args) {
-		
 		String sql = "";
         String sql2 = "";
         System.out.println("asdf");
@@ -219,6 +219,5 @@ public class SearchEngine {
         } catch (Exception e) {
             e.printStackTrace();
         }
-		
 	}
 }

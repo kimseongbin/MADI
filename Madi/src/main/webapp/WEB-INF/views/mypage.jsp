@@ -256,7 +256,7 @@ td {
 	}
 </script>
 </head>
-<body style="background-color: #F6F6F6; ">
+<body style="background-color: #FFFFFF;">
 	<!-- 헤더 시작 -->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
@@ -383,7 +383,7 @@ td {
 				<p style="margin-bottom:10px;">
 					<strong>팔로워 추천   &nbsp;<a href="#" style="cursor:pointer" class="moreRecommends" id="refresh">새로고침</a></strong>
 				</p>
-				<div id="recommend_area" class="btn-group-vertical" style="font-size: 17px; background-color: #F6F6F6">
+				<div id="recommend_area" class="btn-group-vertical" style="font-size: 17px; background-color: #FFFFFF">
 				<!-- reloadRecommend.jsp에서 불러옴?? -->
 					<form>	
 						<ul class="ul fol2">
