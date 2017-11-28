@@ -621,11 +621,19 @@ footer {
 		</div>
 		<!-- body wrapper 끝 -->
 	</div>	
+	<!-- 마지막 footer -->
+	<footer class="container-fluid text-center">
+	<p>MADI</p>
+	</footer>
 	<script>
 		$(document).ready(function() {
 			$(".reply").find("button").click(function() {
+				alert("x");
 				var rep_date = $(this).find("input[name='rep_date']").val();
+				alert(rep_date);
 				var user_id = $(this).find("input[name='user_id']").val();
+				var parent = $(this).parents("div[class='reply']");
+
 				$.ajax({
 					url: "./deleteReply.do",
 					type: "POST",
@@ -635,21 +643,15 @@ footer {
 					},
 					success: function(data) {
 						if(data==1) {
-							$(this).parents("div[class='reply']").remove();
+							parent.remove();
 							document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) - 1;							
 						} else {
 							alert("회원님이 직접 작성하신 댓글만 삭제 가능합니다.");
 						}
 					}
 				});
-				
-				
 			});
 		});
 	</script>
-	<!-- 마지막 footer -->
-	<footer class="container-fluid text-center">
-	<p>MADI</p>
-	</footer>
 </body>
 </html>
