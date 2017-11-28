@@ -187,13 +187,8 @@ public class SearchEngine {
 		return recipeList;
 		
 	}
-	
 	// 성빈 : 상단  Header 검색창 기능 구현을 위한 메소드
-	// 검색 기능이 작동하는 순서 1) 빈칸에 의한 단어 구분 2) 영문, 한문, 숫자, 특수문자에 의한  
-	
-	
-	
-	
+	// 검색 기능이 작동하는 순서 1) 빈칸에 의한 단어 구분 2) 영문, 한문, 숫자, 특수문자에 의한  	
 
 	public static void main(String[] args) {
 		
@@ -227,6 +222,6 @@ public class SearchEngine {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
+		
 }

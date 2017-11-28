@@ -29,8 +29,16 @@ public interface MemberMapper {
 	MemberVO getPasswordByUserId(MemberVO memberVO);
 	// 성빈 : 회원가입 메소드 (입력된 회원정보를 member 테이블에 insert한다)
 	void setMember(MemberVO memberVO);
+	
 	// 성빈 :Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 메소드
 	ArrayList<MemberBoxVO> getMyIrdntByUserId(String user_id);
+	//(진산) 냉장고에 있는 재료인지 확인하기
+	MemberBoxVO getCheckIrdnt(MemberBoxVO memberBoxVO);
+	//(진산) 자신의 냉장고 박스에 재료 입력하기
+	void insertIrdnt(MemberBoxVO memberBoxVO);
+	//(진산) 냉장고 재료가 중복이라 삭제하기
+	void deleteIrdnt(MemberBoxVO memberBoxVO);
+	
 	// 성빈 : 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐)
 	MemberVO getUserInfoById(String user_id);
 	// 성빈 : 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐)

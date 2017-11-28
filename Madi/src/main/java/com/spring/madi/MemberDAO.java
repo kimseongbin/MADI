@@ -28,6 +28,13 @@ public interface MemberDAO {
 	public void setMember(MemberVO memberVO);
 	// 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 메소드
 	public ArrayList<MemberBoxVO> getMyIrdntByUserId(String user_id);
+	//(진산) 재료가 중복인지 확인하기
+	public MemberBoxVO getCheckIrdnt(MemberBoxVO memberBoxVO);
+	//(진산) 냉장고에 재료 입력하기
+	public void insertIrdnt(MemberBoxVO memberBoxVO);
+	//(진산) 냉장고 재료가 중복이라 삭제하기
+	public void deleteIrdnt(MemberBoxVO memberBoxVO);
+
 	// 성빈 : 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐)
 	public MemberVO getUserInfoById(String user_id);
 }

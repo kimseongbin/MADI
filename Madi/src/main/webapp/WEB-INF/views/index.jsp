@@ -3,15 +3,38 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<title>Bootstrap Example</title>
+	<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Pacifico');
+		@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');	
+	    .madi_title { 
+	    	font-family: 'Pacifico', cursive;
+	    	font-size: 55px; 
+	    }
+	    
+	    .madi_logo {
+	   		font-family: 'Pacifico', cursive;
+	    	font-size: 37px; 
+	    }
+	    
+	    .madi_content {
+	    	font-family: 'Nanum Gothic', sans-serif;
+	    }
+	    
+	    
+	</style>	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <style>
+	body {
+		overflow: hidden;
+	}
 	.vertical-center {
   		min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
   		min-height: 100vh; /* These two lines are counted as one :-)       */
@@ -19,8 +42,19 @@
   		display: flex;
   		align-items: center;
 	}
-	.container {
-    	background:;
+	.container-fluid {
+		background-image: url("./resources/image/wallpaper.jpg");
+		background-size: cover;
+    }
+    
+    #color-overlay {
+    	position: absolute;
+    	top: 0;
+    	left: 0;
+    	width: 100vw;
+    	height: 100vh;
+    	background-color: black;
+    	opacity: 0.3;
     }
     .panel-default {
     	border: 1px solid #fafafa;
@@ -46,9 +80,11 @@
     }
     #login {
     	width: 440px;
+    	margin-top: 100px;
     }
     #join {
     	width: 440px;
+    	margin-top: 35px;
     }
    }
 </style>
@@ -106,21 +142,20 @@
 	   
    }
 </script> 
-<body>
-<div></div>
-<div class="container-fluid row vertical-center" style="background:#aaa;">
-	<div class="container panel panel-default col-sm-8" id="indexImg">
-		<img src="https://static.pexels.com/photos/349609/pexels-photo-349609.jpeg" style="width:100%; height:680px;" />
-	</div>
-	<div class="container col-sm-3" style ="background:#aaa;">
+<body> <!-- background="./resources/image/wallpaper.jpg;"  -->
+<div class="container-fluid row vertical-center">
+	<div id="color-overlay"></div>
+	<div class="container col-sm-3">
 		<div id="login">
-		<div class = "panel panel-default text-center" style="width:100%;">
-  			<h2 style="margin-top:0;">Madi</h2>
-  			<p class = "text-muted"><b>지금 마디를 시작하세요.</b></p>
+		<div class = "panel panel-default text-center" style="width:100%; border-radius: 8px;">
+  			<h2 class="madi_title">Madi</h2>
+  			<p class = "text-muted"><b class="madi_content">지금 마디를 시작하세요.</b></p>
   			<hr/>
-    		<button class="btn btn-default btn-block" style="background-color:yellow; border:none;"><font color="#703800">카카오로 로그인하기</font></button>
-  			<button class="btn btn-success btn-block">네이버로 로그인하기</button>
-  			<button class="btn btn-danger btn-block">Google+로 로그인하기</button>
+    		<button class="btn btn-primary btn-block" style="background-color:yellow; border:none;">
+    			<font class="madi_content" color="#703800">카카오로 로그인하기</font>
+    		</button>
+  			<button class="btn btn-success btn-block madi_content">네이버로 로그인하기</button>
+  			<button class="btn btn-danger btn-block madi_content">Google+로 로그인하기</button>
   			<hr/>
   			<form action="./login.do" method="post">
     			<div class="form-group ">
@@ -128,23 +163,25 @@
 	      			<input type="password" class="form-control" id="login_user_pw" placeholder="비밀번호" name="user_pw">
     			</div>
     			<hr/>
-      			<button type="submit" class="btn btn-primary btn-block">로그인</button>
+      			<button type="submit" class="btn btn-primary btn-block madi_content">로그인</button>
       			<br/>
-      			<p><a href="#">비밀번호를 잊으셨나요?</a></p>
+      			<p class="madi_content"><a href="#">비밀번호를 잊으셨나요?</a></p>
   			</form>
 		</div>
-		<div class = "panel panel-default text-center">
-			<span>계정이 없으신가요?</span>&nbsp;<a href="javascript:dpJoin();">가입하기</a>
+		<div class="panel panel-default text-center" style="border-radius: 8px;">
+			<span class="madi_content madi_content">계정이 없으신가요?</span>&nbsp;<a class="madi_content" href="javascript:dpJoin();">가입하기</a>
 		</div>
 	</div>
 	<div id = "join">
-		<div class = "panel panel-default text-center">
-  			<h2 style="margin-top:0;">Madi</h2>
-  			<p class="text-muted"><b>레시피를 검색하고 요리를 공유하려면<br/>가입하세요.</b></p>
+		<div class = "panel panel-default text-center" style="border-radius: 8px;">
+  			<h2 class="madi_title" style="margin-top:0;">Madi</h2>
+  			<p class="text-muted madi_content"><b>레시피를 검색하고 요리를 공유하려면<br/>가입하세요.</b></p>
   			<hr/>
-  			<button class="btn btn-default btn-block" style="background-color:yellow; border:none;"><font color="#7080300">카카오로 로그인하기</font></button>
-  			<button class="btn btn-success btn-block">네이버로 로그인하기</button>
-  			<button class="btn btn-danger btn-block">Google+로 로그인하기</button>
+  			<button class="btn btn-default btn-block madi_content" style="background-color:yellow; border:none;">
+  				<font color="#7080300">카카오로 로그인하기</font>
+  			</button>
+  			<button class="btn btn-success btn-block madi_content">네이버로 로그인하기</button>
+  			<button class="btn btn-danger btn-block madi_content">Google+로 로그인하기</button>
   			<hr/>
   			<form action="./join.do" method="post" onsubmit="return joinFormCheck();">
     			<div class="form-group">
@@ -165,8 +202,8 @@
       			<button type="submit" class="btn btn-primary btn-block">회원가입</button>
   			</form>
 		</div>
-		<div class = "panel panel-default text-center">
-			<span>계정이 있으신가요?</span>&nbsp;<a href="javascript:dpLogin();">로그인</a>
+		<div class = "panel panel-default text-center madi_content" style="border-radius: 8px;">
+			<span>계정이 있으신가요?</span>&nbsp;<a class="madi_content" href="javascript:dpLogin();">로그인</a>
 		</div>
 	</div>
 </div>

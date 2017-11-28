@@ -102,7 +102,20 @@
 		FROM MEMBER_BOX
 		WHERE USER_ID = #{user_id, javaType=String}
 	</select>
-	
+	<!-- (진산) 재료가 이미 있는 재료인지 확인하기 -->
+	<select id="getCheckIrdnt" resultMap="MemberBoxResultMap">
+		SELECT *
+		FROM MEMBER_BOX
+		WHERE USER_ID = #{user_id} AND my_irdnt= #{my_irdnt}
+	</select>
+	<!-- (진산) 냉장고 재료를 입력하기 -->
+	<insert id="insertIrdnt" parameterType="com.spring.madi.MemberBoxVO">
+		INSERT INTO member_box VALUES (#{user_id}, #{my_irdnt})
+	</insert>
+	<delete id="deleteIrdnt" parameterType="com.spring.madi.MemberBoxVO">
+		DELETE FROM member_box
+		WHERE user_id= #{user_id} and my_irdnt= #{my_irdnt}
+	</delete>
 	<!-- 성빈: 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
 	<!-- 전달 파라미터 String user_id -->
 	<select id="getUserInfoById" resultMap="MemberResultMap">
