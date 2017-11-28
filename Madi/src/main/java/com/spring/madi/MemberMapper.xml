@@ -87,7 +87,7 @@
 	<select id="getPasswordByUserId" resultMap="MemberResultMap"  parameterType="com.spring.madi.MemberVO">
 		SELECT USER_PW
 		FROM MEMBER
-		WHERE USER_ID = #{user_id}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
 	</select>
 	
 	<!-- 성빈 : 회원가입을 위한 회원정보 삽입 쿼리 -->
@@ -97,10 +97,10 @@
 	</insert>
 	
 	<!-- 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 쿼리 -->
-	<select id="getMyIrdntByUserId" resultMap="MemberBoxResultMap" parameterType="String">
+	<select id="getMyIrdntByUserId" resultMap="MemberBoxResultMap">
 		SELECT *
 		FROM MEMBER_BOX
-		WHERE USER_ID = #{user_id, javaType=String}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
 	</select>
 	<!-- (진산) 재료가 이미 있는 재료인지 확인하기 -->
 	<select id="getCheckIrdnt" resultMap="MemberBoxResultMap">

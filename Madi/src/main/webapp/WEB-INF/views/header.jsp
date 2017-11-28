@@ -286,7 +286,7 @@
                 </li>
                 <!--소셜 아이콘 -->
                 <li onclick="postListDo();">
-                    <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;">
+                    <button type="button" class="btn form header" style="padding-top: 10px; margin-top:10px; margin-left:1px;" >
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>
