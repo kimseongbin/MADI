@@ -13,7 +13,8 @@
 	//내 정보 받아오기
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	//냉장고 정보 받아오기
-	ArrayList<MemberBoxVO> myMemberBox= (ArrayList<MemberBoxVO>) request.getAttribute("myMemberBox");
+	ArrayList<MemberBoxVO> myMemberBoxList= (ArrayList<MemberBoxVO>) request.getAttribute("myMemberBox");
+
 	//메시지 리시트 받아오기 
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
@@ -248,8 +249,7 @@
                 <li>
                     <div style="padding-top: 9px; padding-left: 5px;">
                         <button type="button" class="btn form header" data-toggle="modal" data-target="#fridge">
-                            <img src="./resources/food_icon/fridge_white.png" style="width:20px; height:20px;" onmouseover="hover(this);" onmouseout="unhover(this);"
-                            onclick="getMemberBox('<%=memberVO.getUser_id()%>')">
+                            <img src="./resources/food_icon/fridge_white.png" style="width:20px; height:20px;" onmouseover="hover(this);" onmouseout="unhover(this);">
                         </button>
                     </div>
                 </li>
@@ -260,21 +260,6 @@
                 function unhover(element) {
                     element.setAttribute('src', './resources/food_icon/fridge_white.png');
                 }
-            	//내 냉장고 불러오기
-            	function getMemberBox(user_id) {
-            		
-            		$.ajax({
-            			url: "./getMemberBox.do",
-            			type: "GET",
-            			data: {
-            				user_id: user_id
-            			},
-            			dataType: "text",
-            			success: function(data) {
-            				alert(data);
-            			}
-            		});
-            	}
                 </script>              	
                 <!--알림 아이콘 -->
                 <li onclick="getNotification();">
@@ -3107,6 +3092,15 @@
 					</div>
 					<!-- 오른쪽 내 재료들 저장칸 -->
 					<div class="col-sm-3">
+						<div class="row">
+						<ul class="ul hori">
+						</ul>
+						</div>
+						<div class="row">
+							<form>
+								<p class="bg-danger" style="font-color:#FFFFFF; width=200px;"><strong>SUBMIT</strong></p>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -3226,9 +3220,11 @@
 			}
 		});
 	}
+	//내 냉장고 불러오기
 	
 	// 재료 저장/삭제
 	$(document).ready(function() {
+		
 		$("#IrdntList").find("li").click(function() {
 			//var src = $(this).find("img").attr("src");
 			var user_id = "<%=memberVO.getUser_id()%>";
@@ -3244,9 +3240,12 @@
 				success: function(data) {
 					if (data == 1) {
 						alert("재료 저장 성공");
+        				$("#irdnt_modal").empty();
+        				$("#irdnt_modal").append(data);
 					} else {
 						alert("재료 삭제 성공");
-						
+        				$("#irdnt_modal").empty();
+        				$("#irdnt_modal").append(data);
 					}
 				},
 				error: function() {
@@ -3257,7 +3256,7 @@
 	});
 	//버튼 클릭시 나타나고 사라지고
 	$(document).ready(function() {
-		var myirdnt= document.getElementsByClassName("irdntlist")
+		var myirdnt= document.getElementsById("myMemberBoxList")
 		for(var y=0; y< myirdnt.length; y++) {
 			if(y == 0) {
 				myirdnt[y].style.display="block";
@@ -3265,13 +3264,14 @@
 				myirdnt[y].style.display="none";
 			}
 		}
-		
+		var currentLocation= 0;
 		$("updateIrdnt").click(function() {
-			myirdnt[y].style.display="none";
+			currentLocation += 1;
 			if(currentLocation == irdntList.length) {
-				myirdnt[y].style.display="block";
+				myirdnt[myirdnt.length-1].style.dsplay= "none";
+				myirdnt[0].style.display="block";
 			} else {
-				myirdnt[y].style.display="block";
+				myirdnt[0].style.display="block";
 			}
 		});
 	});
