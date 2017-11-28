@@ -8,22 +8,15 @@
 	List<MemberBoxVO> memberBoxList =(ArrayList<MemberBoxVO>)request.getAttribute("memberBoxVO");
 %>
 <%
-	for (int i= 0; i< memberBoxList.size(); i++) {
-		MemberBoxVO memberBoxVO= memberBoxList.get(i);
+	for (int t= 0; t< memberBoxList.size(); t++) {
+		MemberBoxVO myIrdnt= memberBoxList.get(t);
 %>
-		<%
-		if(memberBoxVO == null) { 
-		%>
-			<!-- 빈칸 -->
-		<%} else {%>
 			<li class="li hori">
-				<a href="#" class="text-muted">
-				<img src="<%=request.getParameter("src")%>">
-				<input type="hidden" value="<%=memberBoxVO.getMy_irdnt()%>">
-					<strong><%=memberBoxVO.getMy_irdnt()%></strong>
-				</a>
+				<button type="button" class="btn btn-danger-sm updateIrdnt">
+					<%=myIrdnt.getMy_irdnt()%>
+				</button>
 			</li>
 <%
-		}
+
 	}
 %>

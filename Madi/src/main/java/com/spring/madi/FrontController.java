@@ -297,15 +297,18 @@ public class FrontController {
 	
 	// 맴버 한 명의 냉장고 불러오기..
 	@RequestMapping("/getMemberBox.do")
-	public void getMyIrdntByUserId(MemberBoxVO memberBoxVO, HttpServletRequest request) {
+	public ModelAndView getMyIrdntByUserId(MemberBoxVO memberBoxVO, HttpServletRequest request) {
 		String user_id= request.getParameter("user_id");
+		System.out.println("con user_id " + user_id);
 		ModelAndView result= new ModelAndView();
-		ArrayList<MemberBoxVO> myMemberBox= memberDAOService.getMyIrdntByUserId(user_id);
+		ArrayList<MemberBoxVO> myMemberBoxList= memberDAOService.getMyIrdntByUserId(user_id);
 		
 		System.out.println(user_id + " : 읽어오기 성공");
+		System.out.println("size = " + myMemberBoxList.size());
 		//System.out.println("재료 " + MemberBoxVO.getMy_irdnt());
-		result.addObject("myMemberBox", myMemberBox);
-		//result.setViewName("냉장고?");
+		result.addObject("myMemberBox", myMemberBoxList);
+		result.setViewName("header");
+		return result;
 	}
 	
 	//(진산) 냉장고 재료버튼 클릭하기...재료 누르면 경고창으로 추가했다 / 이미 있으면 삭제했다
@@ -324,8 +327,8 @@ public class FrontController {
 			System.out.println("재료 저장 성공");
 			System.out.println("user_id = " + user_id);
 			System.out.println("irdnt = " + my_irdnt);
-			ArrayList<MemberBoxVO> myList= memberDAOService.getMyIrdntByUserId(user_id);
-			result.addObject("myList", myList);
+			ArrayList<MemberBoxVO> myMemberBoxList= memberDAOService.getMyIrdntByUserId(user_id);
+			result.addObject("myMemberBoxList", myMemberBoxList);
 		} else {
 			response.setContentType("text/html; charset=UTF-8");
 			response.setCharacterEncoding("UTF-8");
@@ -342,8 +345,8 @@ public class FrontController {
 			System.out.println("재료 중복. 삭제합니다");
 			System.out.println("user_id = " + user_id);
 			System.out.println("irdnt = " + my_irdnt);	
-			ArrayList<MemberBoxVO> myList= memberDAOService.getMyIrdntByUserId(user_id);
-			result.addObject("myList", myList);
+			ArrayList<MemberBoxVO> myMemberBoxList= memberDAOService.getMyIrdntByUserId(user_id);
+			result.addObject("myMemberBoxList", myMemberBoxList);
 		}
 		return result;
 	}
@@ -724,6 +727,13 @@ public class FrontController {
 		} else {
 			return 0;
 		}
+	}
+	
+	@RequestMapping("/snsJoin.do")
+	public String snsJoin() {
+		
+		return "sns_join";
+		
 	}
 	
 }
