@@ -726,4 +726,11 @@ public class FrontController {
 		}
 	}
 	
+	@RequestMapping("/snsJoin.do")
+	public String snsJoin() {
+		
+		return "sns_join";
+		
+	}
+	
 }
