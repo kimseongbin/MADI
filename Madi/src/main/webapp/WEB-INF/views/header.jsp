@@ -3220,14 +3220,47 @@
 			}
 		});
 	}
+	function updateNotification(notice_id) {
+		var id = "n"+notice_id;
+		var li = document.getElementById(id);
+		li.style.display = "none";
+		$.ajax({
+			url: "./updateNotification.do",
+			type: "POST",
+			data: {
+				notice_id : notice_id
+			},
+			success: function() {
+				document.getElementById("no").innerHTML = Number(document.getElementById("no").innerHTML) - 1;
+			}
+		});
+	}
+	function updateMessage(value) {
+		var listSize = <%=messageList.size()%>;
+		alert(listSize);
+		var id = "m"+value;
+		var li = document.getElementById(id);
+		li.style.display="none";
+		$.ajax({
+			url: "./updateMessage.do",
+			type: "POST",
+			data: {
+				message_id: value
+			},
+			success: function(status) {
+				document.getElementById("me").innerHTML = listSize - 1;
+			}
+		});
+	}
+	//버튼 클릭시 나타나고 사라지고
 	//내 냉장고 불러오기
 	
 	// 재료 저장/삭제
 	$(document).ready(function() {
-		
+		// 재료 저장/삭제
 		$("#IrdntList").find("li").click(function() {
 			//var src = $(this).find("img").attr("src");
-			var user_id = "<%=memberVO.getUser_id()%>";
+			var user_id = <%=memberVO.getUser_id()%>;
 			var my_irdnt = $(this).find("input").val();
 			$.ajax({
 				url: "./insertMemberBox.do",
@@ -3238,7 +3271,7 @@
 					//src : src
 				},
 				success: function(data) {
-					if (data == 1) {
+					if(data == 1) {
 						alert("재료 저장 성공");
         				$("#irdnt_modal").empty();
         				$("#irdnt_modal").append(data);
@@ -3249,10 +3282,11 @@
 					}
 				},
 				error: function() {
-					alert("ㅇㅇ");
+					alert();
 				}
 			});
 		});
+		var myirdnt= document.getElementsByClassName("irdntlist")
 	});
 	//버튼 클릭시 나타나고 사라지고
 	$(document).ready(function() {

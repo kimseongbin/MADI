@@ -63,14 +63,26 @@ public class NotificationDAOService implements NotificationDAO{
 	// ex>> input type="hidden" name="notice_content" value="000이 좋아요를 눌렀습니다" (좋아요 버튼인 경우)
 	// ex>> input type="hidden" name="notice_tpye" value="팔로우" (팔로우 버튼인 경우)
 	@Override // 성빈 : 알림 메시지를 발생시키는 메소드
-	public void sendNoticeById(NotificationVO notificaitonVO) {
+	public void sendNoticeById(NotificationVO notificationVO) {
 		NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
 		try {
-			notificationMapper.sendNoticeById(notificaitonVO);
+			notificationMapper.sendNoticeById(notificationVO);
 		} catch (Exception e) {
-			System.out.println("알림 메시지 전송에 실패했습니다");
+			System.out.println("SYSTEM  :  NoticationDAOServcie, sendNoticeById, 알림 메시지 전송에 실패했습니다, 알림 내용 : " + notificationVO.getContent());
 			e.printStackTrace();
 		}
+	}
+	// 성빈 : notice_id로 알림 메시지 읽어이고
+	@Override
+	public NotificationVO getMyNoticeByNoticeId(String notice_id) {
+		NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+		NotificationVO notificationVO = null;
+		try {
+			notificationVO = notificationMapper.getMyNoticeByNoticeId(notice_id);
+		} catch (Exception e) {
+			System.out.println("SYSTEM  :  NotificationDAOService, getMyNoticeByNoticeId, notice id로 알림 메시지 읽어오기 실패");
+		}
+		return notificationVO;
 	}
 	
 	
