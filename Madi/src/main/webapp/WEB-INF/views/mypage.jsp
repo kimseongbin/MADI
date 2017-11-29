@@ -23,9 +23,10 @@
 	List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
 	// 나의 게시판 목록
 	List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
-	// 
+	// 팔로워 + 나 자신의 글 목록 불러옴
 	List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
 
+	
 	//INCLUDE JSP 문서와 객체 공유
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
@@ -99,7 +100,7 @@ td {
 
 .li.fol {
     margin: 0 0 0 0;
-    padding: 5px;
+    padding: 19px;
     border : 0;
     float: left;
     font-size:17px;
@@ -247,7 +248,6 @@ td {
 			success: function(data) {
 				/* location.href="./mypage.do"; */
 				//alert("success");
-				alert(data);
 				if (data == 0) {
 					alert("좋아요 실패");
 					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) - 1;
@@ -275,37 +275,74 @@ td {
 				<div>
 					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="80" width="80"
 						alt="Avatar" style="margin-left:7px;"> <br>
-					<h3 class="text-primary">
+					<h3 class="text-primary" style="padding-left:10px; margin-top:10px;">
 						<strong><%=memberVO.getUser_id()%></strong>
 					</h3>
-					<strong style="font-size:17px;"><%=memberVO.getUser_email()%></strong>
+					<strong style="font-size:17px; padding-left:20px;"><%=memberVO.getUser_email()%></strong>
 					
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center">
-                    	
-						<div class="col-sm-4">
-							<p data-target="#follower"><strong class="bg-danger" style="font-size:14px;">게시글</strong>
-                            <br>
-                            <div style="font-size:15px;"><%=myBoardList.size()%></div>
+                    	<div class="col-sm-2"></div>
+						<div class="col-sm-3">
+							<p data-target="#myboards" data-toggle="modal" style="cursor: pointer; margin-bottom: 0px;">
+							<strong class="bg-danger" style="font-size:14px;">게시글</strong>
+                            <br></p>
+                            <div style="font-size:15px;">
+                            <p style="cursor: pointer;" data-toggle="modal" data-target="#myboards">
+                            <%=myBoardList.size()%>
                             </p>
+                            </div>
 						</div>
-						<div class="col-sm-4">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#following">
+						<div class="col-sm-3">
+							<p style="cursor: pointer; margin-bottom: 0px;" data-toggle="modal" data-target="#following">
 							<strong class="bg-danger" style="font-size:14px;">팔로잉</strong>
-                            <br>
-                            <div id="followingSize" style="font-size:15px;"><%=followingList.size()%></div>
+                            <br></p>
+                            <div id="followingSize" style="font-size:15px;">
+                            <p style="cursor: pointer;" data-toggle="modal" data-target="#follower">
+                            <%=followingList.size()%>
                             </p>
+                            </div>
 						</div>
-						<div class="col-sm-4">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
+						<div class="col-sm-3">
+							<p style="cursor: pointer; margin-bottom: 0px;" data-toggle="modal" data-target="#follower">
 							<strong class="bg-danger" style="font-size:14px;">팔로워</strong>
-                            <br>
-                            <div id="followerSize" style="font-size:15px;"><%=followerList.size()%></div>
+                            <br></p>
+                            <div id="followerSize" style="font-size:15px;">
+                            <p style="cursor: pointer;" data-toggle="modal" data-target="#follower">
+                            	<%=followerList.size()%>
                             </p>
+                            </div>
+                            
 						</div>
                         
 					</div>
 					<br>
+				<!-- 내 게시글 -->
+				<div class="modal fade" id="myboards" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #DE4F4F;">
+								<h3 class="modal-title">
+								<strong style="color:#FFFFFF;">게시글 목록</strong>
+								</h3>
+							</div>
+							<div class="modal-body">
+							
+								<%
+									for(int i=0; i<allBoardList.size(); i++) {
+									BoardVO board= allBoardList.get(i);
+								%>
+								
+										
+								<%	} %>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+								data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
 				<!-- 팔로잉 Modal -->
 				<div class="modal fade" id="following" role="dialog">
 					<div class="modal-dialog">
@@ -319,7 +356,7 @@ td {
 							<div class="modal-body">
 								<div class="btn-group-vertical">
 									<form>
-										<ul class="ul fol" id="following_modal">
+										<ul class="ul fol" id="following_modal" style="text-align:center;">
 											<%for(int j= 0; j<followingList.size(); j++) {
 												MemberFollowVO following= followingList.get(j);
 											%>
@@ -357,7 +394,7 @@ td {
 							<div class="modal-body">
 								<div class="btn-group-vertical">
 									<form>
-										<ul class="ul fol" id="follower_modal">
+										<ul class="ul fol" id="follower_modal" style="text-align:center;">
 											<%for(int i= 0; i< followerList.size(); i++) {
 												MemberFollowVO follower= followerList.get(i);
 											%>
@@ -548,7 +585,7 @@ td {
 				<!-- 본문 글 끝 -->
 				</div>
 				<%
-				} // for followingBoardList
+				} // for allBoardList
 				%>
 			</div>
 		</div>

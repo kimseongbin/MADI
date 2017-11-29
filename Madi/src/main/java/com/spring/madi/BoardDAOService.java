@@ -87,6 +87,12 @@ public class BoardDAOService implements BoardDAO {
 		boardList= boardMapper.getBoards(user_id);
 		return boardList;
 	}
+	// (진산) 연월일만 구하기
+//	public String getTime(String user_id) {
+//		BoardMapper boardMapper= sqlSession.getMapper(BoardMapper.class);
+//		String time= boardMapper.getTime(user_id);
+//		return time;
+//	}
 	//(진산)자신 + 팔로잉한 사람들의 게시글 목록 구하기
 	@Override
 	public ArrayList<BoardVO> getAllBoards(String user_id) {

@@ -21,6 +21,8 @@ public interface BoardMapper {
 	ArrayList<BoardVO> getBoards(String user_id);
 	//(진산) 자신의 게시글 개수 구하기
 	int getBoardCount(String user_id);
+	//(진산) 연월일 구하기
+	//String getTime(String user_id);
 	// (성빈) : recipeId와 연결된 Board 데이터 조회 메소드
 	BoardVO getBoardByRecipeId(RecipeVO recipeVO);
 	// (성빈) : board_num과 연결된 BOARD REPLY 데이터 조회 메소드

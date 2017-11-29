@@ -247,7 +247,7 @@
                 </li>
                  <!-- 냉장고 아이콘 -->
                 <li>
-                    <div style="padding-top: 9px; padding-left: 5px;">
+                    <div style="padding-top: 9px; padding-left: 5px; border-top-width: 0px;">
                         <button type="button" class="btn form header" data-toggle="modal" data-target="#fridge">
                             <img src="./resources/food_icon/fridge_white.png" style="width:20px; height:20px;" onmouseover="hover(this);" onmouseout="unhover(this);">
                         </button>
@@ -3143,8 +3143,8 @@
 										height="40" width="40" alt="Avatar" style="margin-bottom: 5px;">
 								</div>
 								
-								<div class="col-sm-6">
-									<h4 class="text-primary" style=""><%=memberVO.getUser_id() %></h4>
+								<div class="col-sm-6" style="padding-left: 0px;">
+									<h4 class="text-primary"><%=memberVO.getUser_id() %></h4>
 								</div>
 							</div>
 							<!-- 알림 내용들 -->
@@ -3161,10 +3161,10 @@
 										height="40" width="40" alt="Avatar">
 								</div>
 								
-								<div class="col-sm-6">
-									<h5 class="text-primary header" style="magin-bottom:5px;">
-										<strong>&nbsp;이글이글</strong>
-									</h5>
+								<div class="col-sm-6" style="padding-left: 0px;">
+									<h4 class="text-primary">
+										<%=memberVO.getUser_id()%>
+									</h4>
 								</div>
 							</div>
 							<!-- 메시지 내용들 -->
@@ -3256,7 +3256,7 @@
 	});
 	//버튼 클릭시 나타나고 사라지고
 	$(document).ready(function() {
-		var myirdnt= document.getElementsById("myMemberBoxList")
+		var myirdnt= document.getElementsByClassName("myMemberBoxList")
 		for(var y=0; y< myirdnt.length; y++) {
 			if(y == 0) {
 				myirdnt[y].style.display="block";

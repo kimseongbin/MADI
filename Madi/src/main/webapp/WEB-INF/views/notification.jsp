@@ -18,7 +18,7 @@
 			NotificationVO notificationVO = notificationList.get(i);
 		
 %>
-			<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>" style="margin-top: 100px;">
+			<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>" style="margin-top: 10px;">
 				<strong>From </strong> 
 				<img src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20" alt="Avatar"> 
 				<a><%=notificationVO.getNotice_from() %></a> <strong><%=notificationVO.getContent() %></strong>
