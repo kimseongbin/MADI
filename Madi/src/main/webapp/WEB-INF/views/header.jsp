@@ -3220,20 +3220,18 @@
 			}
 		});
 	}
-	function updateNotification(value) {
-		var listSize = <%=notificationList.size()%>;
-		var id = "n"+value;
+	function updateNotification(notice_id) {
+		var id = "n"+notice_id;
 		var li = document.getElementById(id);
 		li.style.display = "none";
 		$.ajax({
 			url: "./updateNotification.do",
 			type: "POST",
 			data: {
-				notice_id : value
+				notice_id : notice_id
 			},
 			success: function() {
-				alert(listSize);
-				document.getElementById("no").innerHTML = listSize - 1;
+				document.getElementById("no").innerHTML = Number(document.getElementById("no").innerHTML) - 1;
 			}
 		});
 	}
@@ -3292,7 +3290,7 @@
 	});
 	//버튼 클릭시 나타나고 사라지고
 	$(document).ready(function() {
-		var myirdnt= document.getElementsById("myMemberBoxList")
+		var myirdnt= document.getElementById("myMemberBoxList")
 		for(var y=0; y< myirdnt.length; y++) {
 			if(y == 0) {
 				myirdnt[y].style.display="block";

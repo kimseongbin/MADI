@@ -25,6 +25,7 @@
 
 	// recipe 정보 및 recipe 분해
 	RecipeVO recipe = (RecipeVO) request.getAttribute("recipe");
+	MemberVO recipeOwner = (MemberVO) request.getAttribute("recipeOwner");
 	ArrayList<RecipeIrdntVO> recipeIrdnt = (ArrayList<RecipeIrdntVO>) recipe.getRecipeIrdnt();
 	ArrayList<RecipeProcessVO> recipeProcess = (ArrayList<RecipeProcessVO>) recipe.getRecipeProcess();
 
@@ -381,15 +382,15 @@ footer {
 				<div class="panel panel-default text-center"
 					style="padding-left: 5px; padding-right: 5px; padding-bottom: 10px;">
 					<h3>
-						<%=memberVO.getUser_id()%>님의 레시피
+						<%=recipeOwner.getUser_id()%>님의 레시피
 					</h3>
 					<img src="<%=memberVO.getUser_img()%>" class="img-rounded"
 						width="80%;"> <br /> <br />
 					<p>
-					<h4><%=memberVO.getUser_name()%></h4>
+					<h4><%=recipeOwner.getUser_name()%></h4>
 					</p>
 					<p>
-					<h4><%=memberVO.getUser_email()%></h4>
+					<h4><%=recipeOwner.getUser_email()%></h4>
 					</p>
 					<!-- 하이차트 시작 -->
 					<div class="container-fluid"
@@ -440,7 +441,7 @@ footer {
 				<!-- recipe 작성자, 작성시각 -->
 				<h5>
 					<span class="glyphicon glyphicon-time"></span> Post by
-					<%=memberVO.getUser_name()%>,
+					<%=recipeOwner.getUser_name()%>,
 					<%=recipe.getTime()%>
 				</h5>
 				<!-- recipe 타입 -->

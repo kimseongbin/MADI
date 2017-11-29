@@ -396,6 +396,8 @@ public class FrontController {
 		
 		// recipe_id로 recipe 정보 조회
 		RecipeVO recipe = recipeDAOService.getRecipeById(recipeVO);
+		// recipe에 있는 user_id로 작성자의 memberVO정보 조회
+		MemberVO recipeOwner = memberDAOService.getUserInfoById(recipe.getUser_id());
 		// (성빈), contentBoard수정 : recipeVO에 저장된 recipe_id를 이용해 해당 Board 데이터를 BoardVO 객체에 담아 리턴하는 메소드
 		BoardVO boardVO = boardDAOService.getBoardByRecipeId(recipeVO);
 		// (성빈), 추가 : BoardVO의 board_num과 연결된 댓글 리스트를 리턴하는 메소드
@@ -406,6 +408,7 @@ public class FrontController {
 		model.addAttribute("notificationList", notificationList);
 		model.addAttribute("messageList", messageList);
 		model.addAttribute("recipe", recipe);
+		model.addAttribute("recipeOwner", recipeOwner);
 		model.addAttribute("boardVO", boardVO);
 		model.addAttribute("replyList", replyList);
 
@@ -664,11 +667,35 @@ public class FrontController {
 	// 화면 상에서는 해당 엘리먼트의 display 값을 none으로 주어 사라지는 효과를 주면 됩니다.
 	@RequestMapping(value = "/updateNotification.do")
 	@ResponseBody
-	public void updateNotification(String notice_id) {
-
-		notificationDAOService.removeNoticeByNoticeId(notice_id);
-		return;
-
+	public void updateNotification(String notice_id, String followAdmit) {
+		// notice_id로 notice_type을 식별
+		NotificationVO notificationVO = notificationDAOService.getMyNoticeByNoticeId(notice_id);
+		// 팔로우 신청의 경우 팔로우 신청에 대한 처리를 해주어야 함.
+		if(notificationVO.getNotice_type().equals("팔로우 신청")) {
+			if(followAdmit.equals("수락")) {
+				// 팔로우 받아주기 (member_follow테이블에  user_id에는 신청한 사람, following_user_id에는 나)
+				String user_id = notificationVO.getNotice_from();
+				String following_user_id = notificationVO.getNotice_to();
+				String user_img = memberDAOService.getUserInfoById(user_id).getUser_img();
+				String following_user_img = memberDAOService.getUserInfoById(following_user_id).getUser_img();
+				// 팔로우 추가
+				memberDAOService.insertFollowing(user_id, following_user_id, user_img, following_user_img);
+				// 해당 알림 메시지 업데이트 
+				notificationDAOService.removeNoticeByNoticeId(notice_id);
+			} else {
+				// 팔로우 거절할 경우 팔로우 거부 되었다고 알림 메시지 보내기
+				NotificationVO rejectNotice = new NotificationVO();
+				rejectNotice.setNotice_to(notificationVO.getNotice_from());
+				rejectNotice.setNotice_from(notificationVO.getNotice_to());
+				rejectNotice.setContent(notificationVO.getNotice_to()+"님께서 회원님의 팔로우 신청을 거부하셨습니다");
+				rejectNotice.setNotice_type("팔로우 거부");
+				// 해당 알림메시지 보내기
+				notificationDAOService.sendNoticeById(notificationVO);
+			}
+			// 팔로우 신청이 아닌 다른 알림인 경우 좋아요, 댓글 알림인 경우 알림만 업데이트
+		} else {
+			notificationDAOService.removeNoticeByNoticeId(notice_id);
+		}
 	}
 
 	@RequestMapping(value = "/notification.do")
@@ -694,8 +721,9 @@ public class FrontController {
 		UserLikeBoVO vo = boardDAOService.doesAlreadyLike(userLikeBoVO);
 		
 		if(vo == null) {
-			System.out.println("SYSTEM  :  UserLieBo Select 결과 데이터가 존해자 읺아 null이 리턴되었습니다");
-			// 좋아요 추가
+			System.out.println("SYSTEM  :  UserLikeBo Select 결과 데이터가 존재하지 읺아 UserLikeVO가 null이 리턴되었습니다.");
+			System.out.println("SYSTEM  :  UserLikeBo 에 데이터를 추가합니다. user_id : " + userLikeBoVO.getUser_id() + "board_num : " + userLikeBoVO.getBoard_num());
+			// Board 테이블에 좋아요 카운트 증가
 			boardDAOService.updateBoardLikePlus(userLikeBoVO);
 			// 좋아요 알림 메시지 전송
 			NotificationVO notificationVO = new NotificationVO();
@@ -706,6 +734,7 @@ public class FrontController {
 			notificationVO.setContent(content);
 			notificationVO.setNotice_type(notice_type);
 			notificationDAOService.sendNoticeById(notificationVO);
+			System.out.println("SYSTEM  :  "+writer+"에게 좋아요 알림 메시지를 보냈습니다"+"  FROM  :  " + userLikeBoVO.getUser_id());
 			// 좋아요 테이블에 추가
 			boardDAOService.insertUserLikeBo(userLikeBoVO);
 			return 1;
