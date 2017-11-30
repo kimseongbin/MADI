@@ -25,8 +25,8 @@
 	List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
 	// 팔로워 + 나 자신의 글 목록 불러옴
 	List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
-
-	
+	// 모달창의 사진 클릭시 레시피로 이동함 
+	List<RecipeVO> postList = (ArrayList<RecipeVO>)request.getAttribute("postList");
 	//INCLUDE JSP 문서와 객체 공유
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
@@ -63,7 +63,7 @@
 	color: #487BE1;
 }
 .glyphicon.icon-size {
-	font-size: 25px;
+	font-size: 17px;
 }
 /*table 디자인*/
 table {
@@ -122,7 +122,22 @@ td {
     border : 0;
     margin: 0 0 0 0;
 }
-
+/* 내 사진 목록 */
+.ul.hori2 {
+	 list-style:none;
+	 margin:0;
+	 padding:10px;
+}
+	
+.li.hori2 {
+	margin: 5 5 5 5;
+	padding: 14px;
+	border : 10px;
+	float: left;
+	font-size:12px;
+	width:70px;
+	height:80px;
+	}
 /* follow 모달 크기 조절 */
 .modal-dialog.follow-size {
     width: 470px;
@@ -258,6 +273,60 @@ td {
 			}
 		});
 	}
+	//게시글 누르면 자기 게시글만 보이게함
+	function myBoard(user_id) {
+		$.ajax({
+			url: "./myBoard.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				alert("성공");
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert("실패");
+			}
+		});
+	}
+	//내 사진 보기
+	function myPhoto(user_id) {
+		$.ajax({
+			url: "./myPhoto.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				alert("성공");
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert("실패");
+			}
+		});
+	}
+	//타임라인 보기
+	function allBoard(user_id) {
+		$.ajax({
+			url: "./allBoard.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				alert("성공");
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert("실패");
+			}
+		})
+	}
 </script>
 </head>
 <body style="background-color: #FFFFFF;">
@@ -266,29 +335,36 @@ td {
 		<jsp:include page="header.jsp"></jsp:include>
 	</div>
 	<!-- 헤더 끝 -->
-	<!-- 내용 시작 -->
-	<div class="container">		
+	<!-- 내용 시작 -->	
+	<div class="container">
+		<div class="row" style="position:relative; ">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10 pull-left">
+				<img src="./resources/profile/racoon.jpg" style="position:relative; width:100%; height:250px;">
+			</div>
+		</div>		
 		<div class="row">
 		<!--left side -->
 			<div class="col-sm-1"></div>
-			<div class="col-sm-3 text-center" style="border-radius: 10px;">
+			<div class="col-sm-3 text-center" style="border-radius: 10px; position:relative;bottom:70px;">
 				<div>
-					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="80" width="80"
-						alt="Avatar" style="margin-left:7px;"> <br>
-					<h3 class="text-primary" style="padding-left:10px; margin-top:10px;">
+					
+					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="120" width="120"
+						alt="Avatar">					
+					<h3 class="text-primary" style=" margin-top:10px;">
 						<strong><%=memberVO.getUser_id()%></strong>
 					</h3>
-					<strong style="font-size:17px; padding-left:20px;"><%=memberVO.getUser_email()%></strong>
+					<strong style="font-size:17px; padding-left:10px;"><%=memberVO.getUser_email()%></strong>
 					
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center">
                     	<div class="col-sm-2"></div>
 						<div class="col-sm-3">
-							<p data-target="#myboards" data-toggle="modal" style="cursor: pointer; margin-bottom: 0px;">
+							<p style="cursor: pointer; margin-bottom: 0px;">
 							<strong class="bg-danger" style="font-size:14px;">게시글</strong>
                             <br></p>
                             <div style="font-size:15px;">
-                            <p style="cursor: pointer;" data-toggle="modal" data-target="#myboards">
+                            <p style="cursor: pointer;">
                             <%=myBoardList.size()%>
                             </p>
                             </div>
@@ -313,36 +389,8 @@ td {
                             </p>
                             </div>
                             
-						</div>
-                        
+						</div>            
 					</div>
-					<br>
-				<!-- 내 게시글 -->
-				<div class="modal fade" id="myboards" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header" style="background-color: #DE4F4F;">
-								<h3 class="modal-title">
-								<strong style="color:#FFFFFF;">게시글 목록</strong>
-								</h3>
-							</div>
-							<div class="modal-body">
-							
-								<%
-									for(int i=0; i<allBoardList.size(); i++) {
-									BoardVO board= allBoardList.get(i);
-								%>
-								
-										
-								<%	} %>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-								data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</div>
-				</div>
 				<!-- 팔로잉 Modal -->
 				<div class="modal fade" id="following" role="dialog">
 					<div class="modal-dialog">
@@ -491,13 +539,25 @@ td {
 		</div>
 		<!-- middle side -->
 		<div class="col-sm-6">
-			<div class="row text-center" style="border-radius: 10px;">
+			<div class="row">
+				<div class="col-sm-7 btn-group" style="padding-left:0px;">
+					<button type="button" class="btn btn-default"
+						onclick="allBoard('<%=memberVO.getUser_id()%>')">타임라인</button>
+				    <button type="button" class="btn btn-default"
+				    	onclick="myBoard('<%=memberVO.getUser_id()%>')">게시글</button>
+				    <button type="button" class="btn btn-default" style="cursor: pointer; margin-bottom: 0px;"
+				    	onclick="myPhoto('<%=memberVO.getUser_id()%>')">사진</button>
+				    <button type="button" class="btn btn-default" style="cursor: pointer; margin-bottom: 0px;"
+				    	onclick="">정보</button>
+				</div>
+			</div>
+			<div class="row text-center" id="myBoard" style="border-radius: 10px;">
 				<!-- 본문 글 시작 -->
 				<%
 					for(int i=0; i<allBoardList.size(); i++) {
 						BoardVO board= allBoardList.get(i);
 				%>
-				<div class="well content_color">
+				<div class="well content_color" style="padding-bottom:0px;">
 					<div class="row">
 						<div class="col-sm-4" style="font-size: 16px; text-align: left;">
 						<!-- profile -->
@@ -539,28 +599,22 @@ td {
 					<br>
 					<!-- Icon -->
 					<div class="row">
-						<div class="pull-right">
-							<form>
-							<ul class="ul fol2" id="updateBoardLike_modal">
-								<li class="li fol3">
-									<span style="cursor: pointer" 
-									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment<%=board.getBoard_num()%>">
-									</span>&emsp;
-								</li>
-								<li class="li fol3">
-									<span style="cursor: pointer"  
-										class="glyphicon glyphicon-heart icon-size"
-										onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">
-									</span> &emsp;
-								</li>
-								<li class="li fol3">
-									<span style="cursor: pointer" 
-									 class="glyphicon glyphicon-share-alt icon-size">
-									</span>&emsp; 
-								</li>
-							</ul>
-							</form>
+						<div class="pull-left">
+							<table>
+								<tr>
+							    	<td style="padding:5px;"><span style="cursor: pointer;" class="glyphicon glyphicon-comment icon-size"
+							        	data-toggle="collapse" data-target="#comment<%=board.getBoard_num()%>"></span>
+							            </td>
+							        <td style="margin-top:30px; cursor: pointer;"data-toggle="collapse" data-target="#comment<%=board.getBoard_num()%>">댓글보기</td>
+							        <td style="padding:5px;"><span style="cursor: pointer" class="glyphicon glyphicon-heart icon-size"
+							        	onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')"></span>
+							            </td>
+							        <td style="margin-top:30px; cursor: pointer;" onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">좋아요</td>
+							        <td style="padding:5px;"><span style="cursor: pointer" class="glyphicon glyphicon-share-alt icon-size"></span>
+							        </td>
+							        <td style="margin-top:30px; cursor: pointer;">공유하기</td>
+							   	</tr>
+							</table>
 						</div>
 					</div> 
 				<!-- 댓글 comment -->
@@ -594,5 +648,6 @@ td {
 	<footer class="container-fluid text-center">
 	<p>MADI</p>
 	</footer>
+	
 </body>
 </html>

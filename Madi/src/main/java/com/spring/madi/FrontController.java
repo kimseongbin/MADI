@@ -200,7 +200,48 @@ public class FrontController {
 		result.setViewName("mypage");
 		return result;
 	}
-
+	//(진산) 타임라인 팔로잉+본인 글 보기
+	@RequestMapping("/allBoard.do")
+	public ModelAndView getAllBoard(BoardVO boardVO, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		MemberVO memberVO = memberDAOService.getUserInfoById(user_id);
+		ModelAndView result= new ModelAndView();
+		//모든 게시글 위해서 불러옴 
+		List<BoardVO> allBoardList = boardDAOService.getAllBoards(user_id);
+		System.out.println("user" + user_id);
+		System.out.println("size " + allBoardList.size());
+		result.addObject("allBoardList", allBoardList);
+		result.addObject("memberVO", memberVO);
+		result.setViewName("allBoard");
+		return result;
+	}
+	//(진산) 내 게시글만 보기
+	@RequestMapping("/myBoard.do")
+	public ModelAndView getMyBoard(BoardVO boardVO, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		MemberVO memberVO = memberDAOService.getUserInfoById(user_id);
+		ModelAndView result= new ModelAndView();
+		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
+		System.out.println("user" + user_id);
+		System.out.println("size " + myBoardList.size());
+		result.addObject("myBoardList", myBoardList);
+		result.addObject("memberVO", memberVO);
+		result.setViewName("myBoard");
+		return result;
+	}
+	//(진산) 내 사진들 보기
+	@RequestMapping("/myPhoto.do")
+	public ModelAndView getMyPhoto(BoardVO boardVO, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		ModelAndView result= new ModelAndView();
+		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
+		System.out.println("user" + user_id);
+		System.out.println("size " + myBoardList.size());
+		result.addObject("myBoardList", myBoardList);
+		result.setViewName("myPhoto");
+		return result;
+	}
+	
 	// (진산)팔로잉 한 명 삭제
 	@RequestMapping("/deleteFollowing.do")
 	public ModelAndView deleteFollowing(MemberFollowVO memberFollow, HttpServletRequest request, NotificationVO notificaitonVO) {

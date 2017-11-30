@@ -205,8 +205,8 @@
                     <div class="form-group input-group">
                         <input type="text" class="form-control" placeholder="Search.." size="80%"> 
 	                        	<span class="input-group-btn">
-	                            <button class="btn btn-default" type="button" style="padding-bottom:2px; margin-top:1px;s">
-	                                <span class="glyphicon glyphicon-search header"></span>
+	                            <button class="btn btn-default" type="button" style="padding-bottom:2px;margin-top:1px;s;bottom: 1px;">
+	                                <span class="glyphicon glyphicon-search header" style="font-size:24px;"></span>
 	                            </button>
                         	</span>
                     </div>
