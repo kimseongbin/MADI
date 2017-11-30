@@ -1,7 +1,6 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;

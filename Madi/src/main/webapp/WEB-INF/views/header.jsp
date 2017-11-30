@@ -3215,18 +3215,10 @@
 										height="40" width="40" alt="Avatar">
 								</div>
 								
-<<<<<<< HEAD
 								<div class="col-sm-6">
 									<h5 class="text-primary header" style="magin-bottom:5px;">
 										<strong>&nbsp;<%=memberVO.getUser_id() %></strong>
 									</h5>
-=======
-								<div class="col-sm-6" style="padding-left: 0px;">
-									<h4 class="text-primary">
-										<%=memberVO.getUser_id()%>
-									</h4>
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
-								</div>
 							</div>
 							<!-- 메시지 내용들 -->
 							<div id="messageList">
@@ -3236,11 +3228,6 @@
 					</div>
 				</div>
 			</div>
-<!-- //없는게 더 깔끔한 느낌			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default header" data-dismiss="modal">Close</button>
-			</div> 
--->
 		</div>
 	</div>
 </div>
