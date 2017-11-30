@@ -79,11 +79,11 @@ public class MemberDAOService implements MemberDAO {
 	@Override
 	public void insertFollowing(String user_id, String following_user_id, String user_img, String following_user_img) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		System.out.println("d-u=" + user_id);
-		System.out.println("d-f=" + following_user_id);
-		System.out.println("d-u-i=" + user_img);
-		System.out.println("d-f-i=" + following_user_img);
-		memberMapper.insertFollowing(user_id, following_user_id, user_img, following_user_img);
+		try {
+			memberMapper.insertFollowing(user_id, following_user_id, user_img, following_user_img);
+		} catch (Exception e) {
+			System.out.println("SYSTEM  :  MemberDAOService, insertFollowing; 팔로잉 추가 실패 요청한 사람 : " + user_id);
+		}
 	}
 	@Override // 성빈 : 로그인 체크를 위한 password 조회 메소드
 	public MemberVO getPasswordByUserId(MemberVO memberVO) {
@@ -135,7 +135,13 @@ public class MemberDAOService implements MemberDAO {
 	@Override
 	public void deleteIrdnt(MemberBoxVO memberBoxVO) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		memberMapper.deleteIrdnt(memberBoxVO);
+		try {
+			memberMapper.deleteIrdnt(memberBoxVO);
+		} catch (Exception e) {
+			System.out.println("SYSTEM  :  MemberDAOServcie, delteIrdnt; 내 냉장고 재료 삭제 오류 발생 user_id : " + memberBoxVO.getUser_id() + " my_irdnt : " + memberBoxVO.getMy_irdnt());
+			e.printStackTrace();
+		}
+		
 	}
 	
 	@Override // 성빈 : 회원 기본 정보 조회 메소드
@@ -144,4 +150,23 @@ public class MemberDAOService implements MemberDAO {
 		MemberVO memberVO = memberMapper.getUserInfoById(user_id);
 		return memberVO;
 	}
+	@Override
+	public void setFollowing(MemberFollowVO memberFollowVO) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		try {
+			memberMapper.setFollowing(memberFollowVO);
+		} catch (Exception e) {
+			System.out.println("SYSTEM  :  MeberDAOService, setFollowing; 팔로잉 추가 실패");
+			e.printStackTrace();
+		}
+		
+	}
+	// 팔로우 한 적 있는 체크
+	@Override
+	public MemberFollowVO checkFollowing(MemberFollowVO memberFollowVO) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		MemberFollowVO checkFollow = memberMapper.checkFollowing(memberFollowVO);
+		return checkFollow;
+	}
+	
 }

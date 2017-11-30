@@ -50,5 +50,7 @@ public interface BoardDAO {
 	void deleteUserLikeBo(UserLikeBoVO userLikeBoVO);
 	// (성빈) 내 댓글 삭제
 	void deleteReply(BoardReplyVO boardReplyVO);
+	// (성빈) 유저가 좋아하는 게시글 목록 불러오기
+	ArrayList<UserLikeBoVO> getUserLikeBoardList(String user_id);
 
 }

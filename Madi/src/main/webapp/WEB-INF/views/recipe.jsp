@@ -1,3 +1,4 @@
+<%@page import="com.spring.madi.MemberBoxVO"%>
 <%@page import="com.spring.madi.NotificationVO"%>
 <%@page import="com.spring.madi.MemberVO"%>
 <%@page import="com.spring.madi.MessageVO"%>
@@ -11,10 +12,13 @@
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 	// 내 기본 정보 받아오기
 	MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
+	// 내 냉장고 목록 불러오기
+	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 	//INCLUDE JSP 문서와 객체 공유
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("messageList", messageList);
+	request.setAttribute("myIrdntList", myIrdntList);
 %>
 
 <!DOCTYPE html>
@@ -49,18 +53,35 @@
 }
 </style>
 <script>
+	function likeBoard(element, user_id, board_num, writer) {
+		$.ajax({
+			url: "./likeBoard.do",
+			type: "POST",
+			data: {
+				user_id: user_id,
+				board_num: board_num,
+				writer: writer
+			},
+			success: function(data) {
+				if(data == 1) {
+					document.getElementById("no").innerHTML = Number(document.getElementById("no").innerHTML) + 1;
+					$(element).find("img").attr("src","./resources/image/Heart_Outline_96px.png");
+				} else {
+					$(element).find("img").attr("src","./resources/image/Heart_96px.png");
+				}
+			}
+		});
+	}
 	function addCategory(element) {
 		var category_selected_form = document
 				.getElementById("category_selected_form");
 		if (element.style.background == "white") {
 			element.style.background = "";
-			element.style.color ="white";
 			document.getElementById(element.textContent).remove();
 			getRecipeByTy_Code();
 
 		} else {
 			element.style.background = "white";
-			element.style.color ="black";
 			category_selected_form.innerHTML += "<button id='"
 					+ element.textContent
 					+ "' class='btn btn-default' style='border:none; outline:none;' onclick='removeCategory(this);'>"
@@ -80,14 +101,12 @@
 	}
 	function getRecipeByTy_Code() {
 		var param = $('#category_selected_form').serialize();
-		alert(param);
 		$.ajax({
 			url : "./recipe.do?sb=ty_code",
 			type : "POST",
 			data : param,
 			dataType : "text",
 			success : function(data) {
-				alert(data);
 				$("#category_List_Area").empty();
 				$("#category_List_Area").append(data);
 			},
@@ -120,6 +139,40 @@
 				$("#search_Result_Area").append(data);
 			}
 		});
+	}
+	function refresh() {
+		var myBoxList = document.getElementsByClassName("myBoxList");
+		var IrdntResult = document.getElementsByClassName("IrdntResult");
+		
+		if(myBoxList.length != 0) {
+			for (var i = 0; i < myBoxList.length; i++) {
+				if(myBoxList[i].style.display=="block") {
+					if(i == myBoxList.length - 1) {
+						myBoxList[i].style.display="none";
+						myBoxList[0].style.display="block";
+						break;
+					} else {
+						myBoxList[i].style.display="none";
+						myBoxList[i+1].style.display="block";
+						break;	
+					}
+				}
+			}
+		} else if(IrdntResult.length != 0){
+			for (var i = 0; i < IrdntResult.length; i++) {
+				if(IrdntResult[i].style.display=="block") {
+					if(i == IrdntResult.length - 1) {
+						IrdntResult[i].style.display="none";
+						IrdntResult[0].style.display="block";
+						break;
+					} else {
+						IrdntResult[i].style.display="none";
+						IrdntResult[i+1].style.display="block";	
+						break;
+					}
+				}
+			}	
+		}
 	}
 </script>
 </head>
@@ -215,7 +268,7 @@
 	<div class="container text-center">
 		<h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc">Madi</font>가<br/>추천하는 당신의 <font class="madi_cc">Recipe</font></h3>
 		<br /> 
-		<span class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer;"></span> 
+		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer;"></span> 
 		<br />
 		<hr />
 		<div class="row" id="search_Result_Area">

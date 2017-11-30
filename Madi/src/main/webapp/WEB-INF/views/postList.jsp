@@ -12,10 +12,12 @@
 	List<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	List<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
+	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 	//Include 한 Header 파일과 객체 공유
 	request.setAttribute("messageList", messageList);
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("memberVO", memberVO);
+	request.setAttribute("myIrdntList", myIrdntList);
 	//RecipeList<시간 순>으로 받아오기
 	List<RecipeVO> postList = (ArrayList<RecipeVO>)request.getAttribute("postList");
 	

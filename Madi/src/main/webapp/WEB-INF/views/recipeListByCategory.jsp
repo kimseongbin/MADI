@@ -15,6 +15,7 @@ $(".img-responsive").hover(function(){
 });
 </script>
 <%
+	String user_id = (String) session.getAttribute("user_id");
 	ArrayList<RecipeVO> recipeList = (ArrayList<RecipeVO>)request.getAttribute("recipeList");
 %>
 <%
@@ -62,7 +63,7 @@ $(".img-responsive").hover(function(){
 				                </button>
 				            </div>
 				            <div class="col-xs-4 col-sm-4 text-muted" style="padding-left:0; padding-right:0;">
-				            	<button class="btn" style="background:white; border:none; outline:none;">
+				            	<button class="btn" style="background:white; border:none; outline:none;" onclick="likeBoard(this, '<%=user_id%>','<%=recipeVO.getRecipe_id()%>','<%=recipeVO.getUser_id()%>');">
 				            		<img src="./resources/image/Heart_96px.png" width="20px">
 				                	<!-- <span class="glyphicon glyphicon-home" style="font-size:10px;"></span> -->
 				                	좋아요
@@ -95,23 +96,23 @@ $(".img-responsive").hover(function(){
 <%
 	} // else
 %>
-	<script>
-	$(document).ready(function() {
-		var category = document.getElementsByClassName("category");
-		for(var i = 0; i < category.length; i++) {
-			if(i==0) {
-				category[i].style.display="block";
-			} else {
-				category[i].style.display="none";
-			}
+<script>
+$(document).ready(function() {
+	alert("카테고리 검색");
+	var category = document.getElementsByClassName("category");
+	for(var i = 0; i < category.length; i++) {
+		if(i==0) {
+			category[i].style.display="block";
+		} else {
+			category[i].style.display="none";
 		}
-		
-		var currentCategory = 0;
-		$(".moreOfCategory").click(function() {
-			currentCategory += 1;
-			category[currentCategory].style.display="block";
-			category[currentCategory].focus();	
-		});
+	}
+	
+	var currentCategory = 0;
+	$(".moreOfCategory").click(function() {
+		currentCategory += 1;
+		category[currentCategory].style.display="block";
+		category[currentCategory].focus();	
 	});
-		
-	</script>
+});
+</script>

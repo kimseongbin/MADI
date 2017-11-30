@@ -16,15 +16,47 @@
 	} else {
 		for(int i = 0; i < notificationList.size(); i++) {
 			NotificationVO notificationVO = notificationList.get(i);
-		
-%>
-			<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>" style="margin-top: 100px;">
-				<strong>From </strong> 
-				<img src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20" alt="Avatar"> 
-				<a><%=notificationVO.getNotice_from() %></a> <strong><%=notificationVO.getContent() %></strong>
-				<button class="btn" onclick="updateNotification('<%=notificationVO.getNotice_id()%>');"><span class="glyphicon glyphicon-remove"></span></button>
-			</li>
+			
+			if(notificationVO.getNotice_type().equals("팔로우 신청")) {
+			
+%>				<!-- 팔로우 신청 시 알림 메시지 -->
+				<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>" style="margin-top: 100px;">
+					<strong>From</strong> &nbsp;
+					<%=notificationVO.getNotice_from() %>&nbsp;:&nbsp;
+					<br/> 
+					<strong><%=notificationVO.getContent() %><br/>받으시겠습니까?</strong>
+					<button class="btn" style="border-radius: 10px;" onclick="updateNotification('<%=notificationVO.getNotice_id()%>', '수락');">
+						 수락
+					</button>
+					<button class="btn"  style="border-radius: 10px;" onclick="updateNotification('<%=notificationVO.getNotice_id()%>', '거절');">
+						거절
+					</button>
+				</li>
 <%
-		}
-	}
+			} else if(notificationVO.getNotice_type().equals("좋아요 추가")) {
+%>
+				<!-- 좋아요 추가 시 알림 메시지 -->		
+				<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>" style="margin-top: 100px;">
+					<strong>From</strong>&nbsp;  
+					<%=notificationVO.getNotice_from() %>&nbsp;:&nbsp;
+					<br/>
+					<strong><%=notificationVO.getContent() %></strong>
+					<button class="btn" onclick="updateNotification('<%=notificationVO.getNotice_id()%>', '거절');"><span class="glyphicon glyphicon-remove"></span></button>
+				</li>
+<%
+			} else {
+%>				<!-- 댓글 추가 시 알림 메시지 -->		
+				<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>" style="margin-top: 100px;">
+					<strong>From</strong> &nbsp; 
+					<%=notificationVO.getNotice_from() %>&nbsp;:&nbsp;
+					<br/>
+					<a href="./recipeDetail.do?recipe_id=<%=notificationVO.getNotice_type()%>">
+						<strong><%=notificationVO.getContent() %></strong>
+						</a>
+					<button class="btn" onclick="updateNotification('<%=notificationVO.getNotice_id()%>', '거절');"><span class="glyphicon glyphicon-remove"></span></button>
+				</li>
+<%
+			} // else 
+		} // for
+	} // else
 %>

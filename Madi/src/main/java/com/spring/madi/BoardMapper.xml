@@ -158,4 +158,9 @@
 		DELETE FROM BOARD_REPLY
 		WHERE USER_ID = #{user_id} AND REP_DATE = #{rep_date}
 	</delete>
+	<select id="getUserLikeBoardList" resultMap="UserLikeBoResultMap">
+		SELECT BOARD_NUM
+		FROM USER_LIKE_BO
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
+	</select>
 </mapper>

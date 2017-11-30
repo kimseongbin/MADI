@@ -212,7 +212,13 @@ public class BoardDAOService implements BoardDAO {
 			e.printStackTrace();
 		}
 		
-	};
-
+	}
+	// 유저가 좋아하는 게시판 목록 불러오기
+	@Override
+	public ArrayList<UserLikeBoVO> getUserLikeBoardList(String user_id) {
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		ArrayList<UserLikeBoVO> userLikeBoardList = boardMapper.getUserLikeBoardList(user_id);
+		return userLikeBoardList;
+	}
 }
 

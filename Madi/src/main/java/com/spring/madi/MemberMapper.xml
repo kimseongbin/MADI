@@ -110,11 +110,11 @@
 	</select>
 	<!-- (진산) 냉장고 재료를 입력하기 -->
 	<insert id="insertIrdnt" parameterType="com.spring.madi.MemberBoxVO">
-		INSERT INTO member_box VALUES (#{user_id}, #{my_irdnt})
+		INSERT INTO member_box VALUES (#{user_id, jdbcType=VARCHAR}, #{my_irdnt, jdbcType=VARCHAR})
 	</insert>
 	<delete id="deleteIrdnt" parameterType="com.spring.madi.MemberBoxVO">
-		DELETE FROM member_box
-		WHERE user_id= #{user_id} and my_irdnt= #{my_irdnt}
+		DELETE FROM MEMBER_BOX
+		WHERE USER_ID = #{user_id} AND MY_IRDNT = #{my_irdnt}
 	</delete>
 	<!-- 성빈: 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
 	<!-- 전달 파라미터 String user_id -->
@@ -130,8 +130,19 @@
 		FROM MEMBER
 		WHERE USER_ID IN
 			<foreach item="USER_ID" collection="array" open="(" separator="," close=")">
-					#{user_id}
+					#{user_id, jdbcType=VARCHAR}
 			</foreach>
+	</select>
+	<!-- 성빈 : MemberFollow 테이블에 팔로잉 추가 -->
+	<insert id="setFollowing" parameterType="com.spring.madi.MemberFollowVO">
+		INSERT INTO MEMBER_FOLLOW (USER_ID, FOLLOWING_USER_ID, USER_IMG, FOLLOWING_USER_IMG) 
+		VALUES (#{user_id, jdbcType=VARCHAR},#{following_user_id, jdbcType=VARCHAR},#{user_img, jdbcType=VARCHAR},#{following_user_img, jdbcType=VARCHAR})
+	</insert>
+	<!-- 성빈 : 팔로우 신청 시 이미 신청한 이력이 있는지를 체크 -->
+	<select id="checkFollowing" resultMap="MemberFollowResultMap" parameterType="com.spring.madi.MemberFollowVO">
+		SELECT *
+		FROM MEMBER_FOLLOW
+		WHERE USER_ID = #{user_id} AND FOLLOWING_USER_ID = #{following_user_id}
 	</select>
 
 </mapper>

@@ -43,6 +43,10 @@ public interface MemberMapper {
 	MemberVO getUserInfoById(String user_id);
 	// 성빈 : 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐)
 	ArrayList<MemberVO> getUserInfoById(String[] user_id);
+	// 성빈 : following 추가
+	void setFollowing(MemberFollowVO memberFollowVO);
+	// 성빈 : following 체크
+	MemberFollowVO checkFollowing(MemberFollowVO memberFollowVO);
 	
 
 }
