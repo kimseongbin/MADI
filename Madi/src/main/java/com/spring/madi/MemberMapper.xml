@@ -58,11 +58,11 @@
 	</select>
 	<!-- (진산) 팔로워 추천 목록 불러오기 -->
 	<select id="getRecommendFollower" resultMap="MemberFollowResultMap">
-		SELECT following_user_id, following_user_img, count(user_id) 
+        SELECT following_user_id, following_user_img, count(user_id) 
 		FROM member_follow
-		WHERE following_user_id NOT IN (SELECT following_user_id
-										FROM member_follow
-										WHERE user_id = #{user_id, javaType=String})  
+		WHERE (following_user_id NOT IN
+        (SELECT following_user_id FROM member_follow WHERE user_id = #{user_id, javaType=String}))
+        and (following_user_id != #{user_id, javaType=String})
 		GROUP BY following_user_id, following_user_img 
 		ORDER BY count(user_id) desc
 	</select>

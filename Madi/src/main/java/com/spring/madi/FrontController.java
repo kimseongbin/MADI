@@ -172,6 +172,7 @@ public class FrontController {
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
 		// 내 개인정보 읽어오기
 		MemberVO memberVO= memberDAOService.getMember(user_id);
+
 		// 내 냉장고 재료 목록 불러오기
 		ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(user_id);
 		
@@ -184,9 +185,10 @@ public class FrontController {
 		List<MemberFollowVO> recommendList= memberDAOService.getRecommendFollower(user_id);
 		//모든 게시글 위해서 불러옴 
 		List<BoardVO> allBoardList = boardDAOService.getAllBoards(user_id);
-		// 가운데 게시글 리스트
+		// 내 게시글 리스트..카운트에도 쓴다
 		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
-
+		// 내 게시글의 시간 구하기(연월일)
+		//String time= boardDAOService.getTime(user_id);
 		// Object 추가
 		result.addObject("notificationList", notificationList);
 		result.addObject("messageList", messageList);
@@ -197,10 +199,52 @@ public class FrontController {
 		result.addObject("recommendList", recommendList);
 		result.addObject("myBoardList", myBoardList);
 		result.addObject("allBoardList", allBoardList);
+		
 		result.setViewName("mypage");
 		return result;
 	}
-
+	//(진산) 타임라인 팔로잉+본인 글 보기
+	@RequestMapping("/allBoard.do")
+	public ModelAndView getAllBoard(BoardVO boardVO, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		MemberVO memberVO = memberDAOService.getUserInfoById(user_id);
+		ModelAndView result= new ModelAndView();
+		//모든 게시글 위해서 불러옴 
+		List<BoardVO> allBoardList = boardDAOService.getAllBoards(user_id);
+		System.out.println("user" + user_id);
+		System.out.println("size " + allBoardList.size());
+		result.addObject("allBoardList", allBoardList);
+		result.addObject("memberVO", memberVO);
+		result.setViewName("allBoard");
+		return result;
+	}
+	//(진산) 내 게시글만 보기
+	@RequestMapping("/myBoard.do")
+	public ModelAndView getMyBoard(BoardVO boardVO, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		MemberVO memberVO = memberDAOService.getUserInfoById(user_id);
+		ModelAndView result= new ModelAndView();
+		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
+		System.out.println("user" + user_id);
+		System.out.println("size " + myBoardList.size());
+		result.addObject("myBoardList", myBoardList);
+		result.addObject("memberVO", memberVO);
+		result.setViewName("myBoard");
+		return result;
+	}
+	//(진산) 내 사진들 보기
+	@RequestMapping("/myPhoto.do")
+	public ModelAndView getMyPhoto(BoardVO boardVO, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		ModelAndView result= new ModelAndView();
+		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
+		System.out.println("user" + user_id);
+		System.out.println("size " + myBoardList.size());
+		result.addObject("myBoardList", myBoardList);
+		result.setViewName("myPhoto");
+		return result;
+	}
+	
 	// (진산)팔로잉 한 명 삭제
 	@RequestMapping("/deleteFollowing.do")
 	public ModelAndView deleteFollowing(MemberFollowVO memberFollow, HttpServletRequest request, NotificationVO notificaitonVO) {

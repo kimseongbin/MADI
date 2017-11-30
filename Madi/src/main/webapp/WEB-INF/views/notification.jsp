@@ -15,10 +15,8 @@
 <%		
 	} else {
 		for(int i = 0; i < notificationList.size(); i++) {
-			NotificationVO notificationVO = notificationList.get(i);
-			
-			if(notificationVO.getNotice_type().equals("팔로우 신청")) {
-			
+			NotificationVO notificationVO = notificationList.get(i);	
+			if(notificationVO.getNotice_type().equals("팔로우 신청")) {			
 %>				<!-- 팔로우 신청 시 알림 메시지 -->
 				<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>" style="margin-top: 100px;">
 					<strong>From</strong> &nbsp;

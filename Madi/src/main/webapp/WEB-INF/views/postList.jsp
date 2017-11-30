@@ -311,7 +311,7 @@
 				    
 		    <!-- Modal content-->
 		    <div class="modal-content">
-		    	<div class="modal-header">
+		    	<div class="modal-header header">
 		    		<button type="button" class="close" data-dismiss="modal">x</button>
 		    		<recipe style="font-size:20px;font-weight:bold"><span class="glyphicon glyphicon-cutlery"></span> 레시피 등록</recipe>
 		    	</div>

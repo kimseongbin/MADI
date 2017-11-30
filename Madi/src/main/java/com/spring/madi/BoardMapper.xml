@@ -94,6 +94,11 @@
 		WHERE a.user_id = b_user_id and a.user_id = c.user_id and user_id= #{user_id, javaType=String} -->
 		SELECT * FROM board WHERE user_id= #{user_id, javaType=String}
 	</select>
+	<!-- (진산) 임시..연월일만 구하기 -->
+	<select id="getTime" resultMap="BoardResultMap">
+		SELECT TO_CHAR(board_time, 'YYYY.MM.DD')
+		FROM board WHERE user_id= #{user_id, javaType=String}
+	</select>
 	<!-- (성빈) 댓글 구하기 -->
 	<select id="getReplyListByBoardNum" resultType="com.spring.madi.BoardReplyVO">
 		select * from board_reply where board_num= #{board_num} ORDER BY REP_DATE DESC

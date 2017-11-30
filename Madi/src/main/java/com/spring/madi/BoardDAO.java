@@ -20,6 +20,8 @@ public interface BoardDAO {
 
 	//(진산) 자신의 게시물 불러오기
 	ArrayList<BoardVO> getBoards(String user_id);
+	//(진산) 연월일 구하기
+	//String getTime(String user_id);
 	// (성빈) : recipeId와 연결된 Board 데이터 조회 메소드
 	BoardVO getBoardByRecipeId(RecipeVO recipeVO);
 	// (성빈) : board_num과 연결된 BOARD REPLY 데이터 조회 메소드
