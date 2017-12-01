@@ -327,6 +327,24 @@ td {
 			}
 		})
 	}
+	// 내 정보 보기
+	function myInfo(user_id) {
+		$.ajax({
+			url: "./myInfo.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert('실패');
+			}
+		});
+	}
+	
 </script>
 </head>
 <body style="background-color: #FFFFFF;">
@@ -548,7 +566,7 @@ td {
 				    <button type="button" class="btn btn-default" style="cursor: pointer; margin-bottom: 0px;"
 				    	onclick="myPhoto('<%=memberVO.getUser_id()%>')">사진</button>
 				    <button type="button" class="btn btn-default" style="cursor: pointer; margin-bottom: 0px;"
-				    	onclick="">정보</button>
+				    	onclick="myInfo('<%=memberVO.getUser_id()%>')">정보</button>
 				</div>
 			</div>
 			<div class="row text-center" id="myBoard" style="border-radius: 10px;">

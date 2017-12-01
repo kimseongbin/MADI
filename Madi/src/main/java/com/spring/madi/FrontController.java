@@ -2,13 +2,14 @@ package com.spring.madi;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -841,6 +841,28 @@ public class FrontController {
 		
 		return "sns_join";
 		
+	}
+	
+	//(예진) 내 정보 보기
+	@RequestMapping("/myInfo.do")
+	public ModelAndView getMyInfo(BoardVO boardVO, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		ModelAndView result= new ModelAndView();
+		MemberVO vo = memberDAOService.getMember(user_id);
+		System.out.println("user" + user_id);
+		result.addObject("user", vo);
+		result.setViewName("myInfo");
+		return result;
+	}
+	
+	// 회원 정보 수정
+	@RequestMapping("/updateInfo.do")
+	public String updateInfo(MemberVO memberVO, HttpSession session) {		
+		memberVO.setUser_id((String)session.getAttribute("user_id"));
+
+		memberDAOService.updateInfo(memberVO);	
+		
+		return "redirect:/mypage.do";
 	}
 	
 }

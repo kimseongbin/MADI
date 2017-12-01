@@ -1,7 +1,6 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,8 @@ public class MemberDAOService implements MemberDAO {
 
 	@Autowired
 	private SqlSession sqlSession;
+	
+	private static final String namespace = "com.spring.madi.MemberMapper";
 	//(진산)로그인한 자신의 id 불러오기
 	@Override
 	public MemberVO getMember(String user_id) {
@@ -169,4 +170,9 @@ public class MemberDAOService implements MemberDAO {
 		return checkFollow;
 	}
 	
+	// 회원 정보수정
+	@Override 
+	public int updateInfo(MemberVO memberVO) {
+		return sqlSession.update(namespace + ".updateInfo", memberVO);
+	}
 }

@@ -42,6 +42,11 @@
 		font-size: 48px;
 		font-weight: bold;
 	}
+	.madi_subtitle2 {
+		font-family: 'jejugothic';
+		font-size: 20px;
+		font-weight: bold;
+	}
 	
 	.madi_content {
 		font-family: 'jejugothic';

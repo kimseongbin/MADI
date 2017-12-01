@@ -1,6 +1,7 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -47,6 +48,9 @@ public interface MemberMapper {
 	void setFollowing(MemberFollowVO memberFollowVO);
 	// 성빈 : following 체크
 	MemberFollowVO checkFollowing(MemberFollowVO memberFollowVO);
+	
+	// 회원 정보 수정
+	int updateInfo(Map<String, Object> map);
 	
 
 }

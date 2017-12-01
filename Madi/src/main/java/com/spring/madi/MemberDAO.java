@@ -1,6 +1,7 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface MemberDAO {
 	//(진산) 로그인한 아이디 자신에 대한 member정보
@@ -41,4 +42,7 @@ public interface MemberDAO {
 	public void setFollowing(MemberFollowVO memberFollowVO);
 	// 성빈 : follwing 체크
 	public MemberFollowVO checkFollowing(MemberFollowVO memberFollowVO);
+	
+	// 회원 정보수정
+	public int updateInfo(MemberVO memberVO);
 }
