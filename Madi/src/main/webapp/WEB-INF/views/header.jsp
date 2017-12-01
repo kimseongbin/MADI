@@ -3216,7 +3216,6 @@
 										<strong>&nbsp;<%=memberVO.getUser_id() %></strong>
 									</h5>
 								</div>
-							</div>
 							<!-- 메시지 내용들 -->
 							<div id="messageList">
 								<!-- ajax, 메시지 리스트 로드 영역 -->
@@ -3225,11 +3224,6 @@
 					</div>
 				</div>
 			</div>
-<!-- //없는게 더 깔끔한 느낌			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default header" data-dismiss="modal">Close</button>
-			</div> 
--->
 		</div>
 	</div>
 </div>
