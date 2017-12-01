@@ -36,8 +36,17 @@
 	<!-- WebSocket에 사용할 핸들러 객체 맵핑 -->
 	<websocket:handlers>
 		<websocket:mapping path="/broadcasting" handler="socketHandler"/>
+			<!-- <websocket:handshake-interceptors>
+				<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
+			</websocket:handshake-interceptors> -->
 	</websocket:handlers>
 	
+	<!-- WebSocket EchoHandler Bena Register -->
+	<beans:bean id="echoHandler" class="com.spring.madi.EchoHandler"></beans:bean>
+	<!-- EchoHandler & EndPoirnt Mapping -->
+	<websocket:handlers>
+		<websocket:mapping handler="echoHandler" path="/chatting"/>
+	</websocket:handlers>
 	
 	
 	<!-- 멀티파트 관련 빈 설정 -->

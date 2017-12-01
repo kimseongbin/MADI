@@ -860,11 +860,15 @@ public class FrontController {
 		return "sns_join";
 
 	}
-//	
-//	(진산) 임시..웹소켓 기능
-//	@RequestMapping("/chat.do")
-//	public String chat() {
-//		return "chat";
-//	}
-//	
+	
+	//(진산) 임시..웹소켓 기능
+	@RequestMapping("/chat.do")
+	public ModelAndView chat(ModelAndView mv) {
+		System.out.println("웹 소켓 테스트 시작");
+		mv.setViewName("myChat");;
+		
+		
+		return mv;
+	}
+	
 }
