@@ -1,6 +1,7 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface MemberDAO {
 	//(진산) 로그인한 아이디 자신에 대한 member정보
@@ -12,13 +13,7 @@ public interface MemberDAO {
 	//(진산)팔로잉 수 카운트
 	ArrayList<MemberVO> getFollowing(String user_id);
 	//(진산)팔로워 추천 리스트
-	ArrayList<MemberVO> getRecommendFollower(MemberFollowVO memberFollowVO);
-	// (성빈) 팔로워 추천 팔로워 수 많은 순
-	ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
-	// (성빈) 팔로워 추천 레시피 작성 많은 순
-	ArrayList<MemberVO> getRecommendByRecipeCnt();
-	// (성빈) 좋아요 수 많은 순
-	ArrayList<MemberVO> getRecommendByLikeCnt();
+	ArrayList<MemberVO> getRecommendFollower(String user_id);
 	//(진산) 추천 리스트 새로고침
 	ArrayList<MemberFollowVO> getReloadRecommend();
 	//(진산)팔로잉 한 명 삭제
@@ -47,4 +42,11 @@ public interface MemberDAO {
 	public void setFollowing(MemberFollowVO memberFollowVO);
 	// 성빈 : follwing 체크
 	public int checkFollowing(MemberFollowVO memberFollowVO);
+	
+	// 예진: 회원 정보수정
+	public int updateInfo(MemberVO memberVO);
+	
+	public ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
+	public ArrayList<MemberVO> getRecommendByRecipeCnt();
+	public ArrayList<MemberVO> getRecommendByLikeCnt();
 }

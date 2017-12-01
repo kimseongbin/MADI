@@ -174,5 +174,12 @@
 		FROM MEMBER_FOLLOW
 		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND FOLLOWING_USER_ID = #{following_user_id, jdbcType=VARCHAR}
 	</select>
+	
+	<!-- 예진: 회원 정보 수정 -->
+	<update id="updateInfo" parameterType="hashmap">
+		UPDATE MEMBER 
+		SET USER_EMAIL=#{user_email}, USER_PW=#{user_pw}
+		WHERE USER_ID=#{user_id}
+	</update>
 
 </mapper>

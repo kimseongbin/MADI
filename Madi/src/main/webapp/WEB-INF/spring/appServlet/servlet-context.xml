@@ -3,15 +3,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
- 
+
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<!-- (성빈) 외부경로 resources mapping-->
@@ -20,12 +23,21 @@
 	<!-- (성빈) 전부 C 밑에 upload라는 폴더가 있을꺼임. 없으면 하나 만들어 두삼.-->
 	<!-- (성빈) 이미지 파일은 이 위치에 저장되고 이 위치로부터 파일을 불러옵니다.-->
 	<resources mapping="madi/upload/**" location="file:///c:/upload/" />
- 
+
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
+	
+	<!-- WebSocket에 사용할 핸들러 객체 생성 -->
+	<beans:bean id="socketHandler" class="com.spring.madi.SocketHandler"/>
+	
+	<!-- WebSocket에 사용할 핸들러 객체 맵핑 -->
+	<websocket:handlers>
+		<websocket:mapping path="/broadcasting" handler="socketHandler"/>
+	</websocket:handlers>
+	
 	
 	
 	<!-- 멀티파트 관련 빈 설정 -->
@@ -35,6 +47,5 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.spring.madi" />
-	
-	
+
 </beans:beans>
