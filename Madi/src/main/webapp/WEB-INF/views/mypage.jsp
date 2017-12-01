@@ -351,32 +351,18 @@ td {
 			<div class="col-sm-3 text-center"
 				style="border-radius: 10px; position: relative; bottom: 70px;">
 				<div>
-<<<<<<< HEAD
-					
-					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="120" width="120"
-						alt="Avatar">					
-					<h3 class="text-primary" style=" margin-top:10px; margin-left:5px;">
-=======
-
 					<img src="<%=memberVO.getUser_img()%>" class="img-circle"
 						height="120" width="120" alt="Avatar">
 					<h3 class="text-primary" style="margin-top: 10px;">
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
 						<strong><%=memberVO.getUser_id()%></strong>
 					</h3>
-<<<<<<< HEAD
-					<strong style="font-size:17px; padding-left:10px; margin-left:5px;"><%=memberVO.getUser_email()%></strong>
-					
-=======
 					<strong style="font-size: 17px; padding-left: 10px;"><%=memberVO.getUser_email()%></strong>
 
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center">
 						<div class="col-sm-2"></div>
 						<div class="col-sm-3">
 							<p style="cursor: pointer; margin-bottom: 0px;">
-<<<<<<< HEAD
 							<strong class="bg-danger" style="font-size:14px;">게시글</strong>
                             <br></p>
                             <div style="font-size:15px;">
@@ -406,53 +392,6 @@ td {
                             </div>
                             
 						</div>            
-					</div>
-				<!-- 팔로잉 Modal -->
-				<div class="modal fade" id="following" role="dialog">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header" style="background-color: #DE4F4F;">
-								<h3 class="modal-title">
-									<strong style="color:#FFFFFF;">Following 목록</strong>
-								</h3>
-=======
-								<strong class="bg-danger" style="font-size: 14px;">게시글</strong>
-								<br>
-							</p>
-							<div style="font-size: 15px;">
-								<p style="cursor: pointer;">
-									<%=myBoardList.size()%>
-								</p>
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<p style="cursor: pointer; margin-bottom: 0px;"
-								data-toggle="modal" data-target="#following">
-								<strong class="bg-danger" style="font-size: 14px;">팔로잉</strong>
-								<br>
-							</p>
-							<div style="font-size: 15px;">
-								<p style="cursor: pointer;" data-toggle="modal"
-									data-target="#follower" id="followingSize">
-									<%=followingList.size()%>
-								</p>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<p style="cursor: pointer; margin-bottom: 0px;"
-								data-toggle="modal" data-target="#follower">
-								<strong class="bg-danger" style="font-size: 14px;">팔로워</strong>
-								<br>
-							</p>
-							<div style="font-size: 15px;">
-								<p style="cursor: pointer;" data-toggle="modal"
-									data-target="#follower" id="followerSize">
-									<%=followerList.size()%>
-								</p>
-							</div>
-
-						</div>
 					</div>
 					<!-- 팔로잉 Modal -->
 					<div class="modal fade" id="following" role="dialog">
