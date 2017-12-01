@@ -17,7 +17,7 @@
 </head>
 <body>
 <a id="kakao-login-btn"></a>
-<form id="kakao-profile" ></form>
+
 <input type="button" onclick ="logout()" value="로그아웃">
 
 

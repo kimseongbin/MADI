@@ -15,6 +15,7 @@
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("messageList", messageList);
+	
 %>
 
 <!DOCTYPE html>
@@ -49,6 +50,7 @@
 }
 </style>
 <script>
+	
 	function addCategory(element) {
 		var category_selected_form = document
 				.getElementById("category_selected_form");

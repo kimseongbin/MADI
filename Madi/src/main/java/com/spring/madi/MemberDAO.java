@@ -25,7 +25,10 @@ public interface MemberDAO {
 	
 	//(인욱) 카카오 아이디 DB에서 불러옴
 	public MemberVO checkMember(MemberVO memberVO);
-	
+	//(인욱) 카카오 로그인시 간편회원가입(insert 메소드)
+	public void set_Member(MemberVO memberVO);
+	//(인욱) 카카오 중복이메일 체크
+	public int checkEmail(MemberVO memberVO);
 	//(진산)팔로잉 한 명 추가
 	void insertFollowing(String user_id, String following_user_id, String user_img, String following_user_img);
 

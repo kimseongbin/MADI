@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
+import org.json.HTTP;
 import org.junit.runner.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,6 +153,71 @@ public class FrontController {
 		}
 		return "redirect:/";
 	}
+	// 카카오톡 처음 로그인
+	@RequestMapping("/sns_join.do")
+	public String snsJoin(MemberVO memberVO,  Model model, HttpSession session, HttpServletResponse response ) {
+		
+		//ModelAndView model = new ModelAndView(); 
+		System.out.println(memberVO.getUser_id());
+		
+		//이메일 중복체크 확인입니다.
+		int x = memberDAOService.checkEmail(memberVO);
+		System.out.println("x : " + x);
+		if (x != 0) {
+			response.setCharacterEncoding("utf-8");
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter writer;
+			try {
+				writer = response.getWriter();
+				writer.println("<script>");
+				writer.println("alert('중복된 이메일입니다. 다른 계정을 확인해 보세요.');");
+				writer.println("</script>");
+				
+				model.addAttribute("x", x);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return "sns_join";
+		} else{
+		
+		System.out.println(memberVO.getUser_id());
+		//디비에 저장
+		memberDAOService.set_Member(memberVO);
+		
+		
+		//아이디로 DB에서 select 합니다
+		MemberVO userInfo = memberDAOService.getUserInfoById(memberVO.getUser_id());
+		// Header에 들어가야 할 기본 데이터 읽어오기
+		// 내 알림 메시지 읽어오기
+		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(userInfo.getUser_id());
+		// 내 개인 메시지 읽어오기
+		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(userInfo.getUser_id());
+		// 내 개인정보 읽어오기
+		MemberVO memVO= memberDAOService.getMember(userInfo.getUser_id());
+		// 내 냉장고 재료 목록 불러오기
+		ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(userInfo.getUser_id());
+		
+		
+		//헤더정보 모델에 저장
+		model.addAttribute("messageList", messageList);
+		model.addAttribute("notificationList", notificationList);
+		model.addAttribute("MemberVO", memVO);
+				
+		//아이디정보 세션 저장
+		//세션으로 저장해서 전달해 주기 session.getAttribute 로 값 받을수 있어요
+		session.setAttribute("user_id", userInfo.getUser_id());
+		session.setAttribute("user_email", userInfo.getUser_email());
+		session.setAttribute("user_name", userInfo.getUser_name());
+		session.setAttribute("user_img", userInfo.getUser_img());
+		
+		
+		}
+		return "recipe";
+		
+	}
+	
 	// (진산)mypage.do 작업
 	@RequestMapping("/mypage.do")
 	public ModelAndView myPage(HttpServletRequest request, HttpSession session)
@@ -584,30 +650,80 @@ public class FrontController {
 		
 		return "test";
 	}
-	
+	//카카오 로그인정보 체크 (이미 있는 이메일 인지 없는 이메일 인지)
 	@RequestMapping("/checkMember.do")
 	public ModelAndView checkMember(MemberVO memberVO)
 	{	
 		
-		ModelAndView mav = new ModelAndView();
+		ModelAndView model = new ModelAndView();
 		
+		
+		//System.out.println(memberVO.getUser_id());
+		//System.out.println(memberVO.getUser_name());
+		//System.out.println(memberVO.getUser_img());
+		
+		//카카오 아이디, 이미지 저장
+		String kakao_id = memberVO.getUser_id();
+		String kakao_img = memberVO.getUser_img();
+		
+		// 여기 x 는 간편로그인 창에서 이메일중복체크시 x 값을 다시 받기떄문에 임시로 넘겨준 x에요.
+		int x = 0;		
 		//로그인 정보가 들어오면 이메일 확인 후 x에 저장
-		MemberVO x = memberDAOService.checkMember(memberVO);
+		MemberVO xx = memberDAOService.getUserInfoById(memberVO.getUser_id());
+		//MemberVO x = memberDAOService.checkMember(memberVO);
 		
-		//db에서 확인한 id 값이 null이면 간단회원가입 페이지로, null이 아니면 로그인 성공 (recipe 페이지로)
+		//db에서 확인한 id 값이 null이면 간단회원가입 페이지로, 
+		//null이 아니면  카카오 아이디,이메일 가지고 (recipe 페이지로)
 		
-		if(x == null){
-			mav.addObject("index", x);
-			mav.setViewName("index");
-			return mav;
+		if(xx == null){
+			//mav.addObject("sns_join", x);
+			model.addObject("kakao_id", kakao_id);
+			model.addObject("kakao_img", kakao_img);
+			model.addObject("x",x);
+			model.setViewName("sns_join");
+			return model;
 			
 		}else{
-			mav.addObject("recipe", x);
-			mav.setViewName("recipe");
-			return mav;
+			// Header에 들어가야 할 기본 데이터 읽어오기
+			// 내 알림 메시지 읽어오기
+			ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(xx.getUser_id());
+			// 내 개인 메시지 읽어오기
+			ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(xx.getUser_id());
+			// 내 개인정보 읽어오기
+			MemberVO memVO= memberDAOService.getMember(xx.getUser_id());
+			// 내 냉장고 재료 목록 불러오기
+			ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(xx.getUser_id());
+			
+			//헤더정보 모델에 저장
+			model.addObject("messageList", messageList);
+			model.addObject("notificationList", notificationList);
+			model.addObject("MemberVO", memVO);
+			//카카오 아이디, 이메일만 저장
+						
+			model.setViewName("recipe");	
+			//아이디정보 세션 저장
+			//세션으로 저장해서 전달해 주기 session.getAttribute 로 값 받을수 있어요
+			/*session.setAttribute("user_id", userInfo.getUser_id());
+			session.setAttribute("user_email", userInfo.getUser_email());
+			session.setAttribute("user_name", userInfo.getUser_name());
+			session.setAttribute("user_img", userInfo.getUser_img());*/
+			
+			
+			return model;
 		}
 				
 	}
+	/*@RequestMapping("/snsJoin.do")
+	public String snsJoin() {
+		
+		
+		
+		return "recipe";
+		
+	}*/
+	
+	
+	
 	//카카오톡 로그아웃 (리다이렉트 -> 메인페이지)
 	@RequestMapping("/kakaologout.do")
 	public String logout(HttpSession session){
@@ -771,17 +887,19 @@ public class FrontController {
 
 	
 	
-	@RequestMapping("/test1.do")
-	public String test1()
+	@RequestMapping("/sendMessage.do")
+	public String sendMessage(MessageVO messageVO)
 	{
-		return "test1";
+		messageDAOService.sendMessageToId(messageVO);
+		
+		System.out.println(messageVO.getUser_id());
+		System.out.println(messageVO.getContent());
+		System.out.println(messageVO.getSender_id());
+		
+		
+		return "redirect:/recipe.do";
 	}
 
-	@RequestMapping("/snsJoin.do")
-	public String snsJoin() {
-		
-		return "sns_join";
-		
-	}
+	
 
 }

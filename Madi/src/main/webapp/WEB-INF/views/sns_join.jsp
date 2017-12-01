@@ -1,9 +1,10 @@
+<%@page import="com.spring.madi.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-	<title>Bootstrap Example</title>
+	<title>이 페이지는 카카오로그인 성공시 간편회원가입창 입니다.</title>
 	<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
 	<style>
 		@import url('https://fonts.googleapis.com/css?family=Pacifico');
@@ -31,13 +32,21 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
+	
+	<!-- 카카오로그인 정보를 받아옵니다 (카카오 아이디, 이름, 프로필 사진, 유저 이메일) -->
+	<% String user_id = (String)request.getAttribute("kakao_id");	%>
+	<% String user_img = (String)request.getAttribute("kakao_img");	%>
+	
+	<% int x  = (Integer)(request.getAttribute("x")); %>
+
+
 <style>
 	body {
 		overflow: hidden;
 	}
 	.vertical-center {
   		min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  		min-height: 100vh; /* These two lines are counted as one :-)       */
+  		min-height: 100vh; /* These two lines are counted as one :s-)       */
 
   		display: flex;
   		align-items: center;
@@ -90,6 +99,7 @@
    }
 </style>
 <script>
+	/*
 	function dpLogin() {
     	var lo = document.getElementById("login");
         var jo = document.getElementById("join");
@@ -97,6 +107,7 @@
         jo.style.display = "none";
       
     }
+	
     function dpJoin() {
     	var lo = document.getElementById("login");
         var jo = document.getElementById("join");
@@ -133,6 +144,7 @@
 		 }
 		 return true;
     }
+    
    function joinFormCheck() {
 		var name = $("#join_user_name").val();
 		var email = $("#join_user_emial").val();
@@ -141,7 +153,54 @@
 			return true;
 		}
 	   
+   } */
+    function joinFormCheck() {
+		var name = $("#join_user_name").val();
+		var email = $("#join_user_email").val();
+		var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+		
+		//메일체크
+		if(exptext.test(email)==false ){
+			
+			//이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우			
+			alert("이 메일형식이 올바르지 않습니다.");
+			
+			return false;
+		}
+		if(name.length < 2) {
+			alert('이름은 2글자 이상 입력해주세요');
+			return false;
+		}
+		//남녀체크
+		//if($("#join_user_gender").is(":checked")==true){
+		if($('input:radio[name=user_gender]').is(':checked')==true){
+				
+		}else{
+			alert("성별을 체크해 주세요");
+			return false;
+		}
+				
+		if(name.length >= 2 && email != null) {
+			return true;
+		}
+	//onsubmit 에서 꼭 리턴을 줘야하네요?
+		
+	    
    }
+	//이메일 중복체크로 count 값 x 를 받아옵니다
+	var x = <%= x %>	
+	if(x != 0 ){
+	alert("중복된 이메일 입니다. 다른계정을 확인해 보세요");
+	//첫 화면으로 보냅니다..
+	location.href="./";
+	//location.href="redirect:/checkMember.do?user_name="+memberVO.getUser_name()+"&user_img="+memberVO.getUser_img()+"&user_email="+memberVO.getUser_email()+"&user_id="+memberVO.getUser_id();
+	}
+	
+
+   
+   
+   
+   
 </script> 
 <body> <!-- background="./resources/image/wallpaper.jpg;"  -->
 <div class="container-fluid row vertical-center">
@@ -150,12 +209,14 @@
 	<div id = "join">
 		<div class = "panel panel-default text-center" style="border-radius: 8px;">
   			<h2 class="madi_title" style="margin-top:0;">Madi</h2>
-  			<p class="text-muted madi_content"><b>레시피를 검색하고 요리를 공유하려면<br/>가입하세요.</b></p>
+  			<p class="text-muted madi_content"><b>간편 회원가입<br/>레시피를 검색하고 요리를 공유하려면<br/>가입하세요.</b></p>
   			<hr/>
- 			<form action="./join.do" method="post" onsubmit="return joinFormCheck();">
+ 			<form action="./sns_join.do" method="post" onsubmit="return joinFormCheck();">
+ 				<input type="hidden" name= "user_id" value="<%= user_id %>">
+ 				<input type="hidden" name="user_img" value="<%= user_img %>">
     			<div class="form-group">
-      				<input type="text" class="form-control" id="join_user_id" placeholder="아이디" name="user_id" maxlength="20" />
-      				<input type="text" class="form-control" id="join_user_name" placeholder="이름" name="user_name" />
+      				<input type="email" class="form-control" id="join_user_email" placeholder="이메일을 입력해주세요" name="user_email" />
+      				<input type="text" class="form-control" id="join_user_name" placeholder="이름을 입력해주세요" name="user_name" />
                     <div class="btn-group" data-toggle="buttons" style="width:inherit;">
   						<label class="btn btn-default" style="width:184px; outline:none;">
     						<input type="radio" name="user_gender" id="join_user_gender" autocomplete="off" value="0">남
@@ -169,9 +230,11 @@
       			<button type="submit" class="btn btn-primary btn-block">회원가입</button>
   			</form>
 		</div>
+		<!--  
 		<div class = "panel panel-default text-center madi_content" style="border-radius: 8px;">
 			<span>계정이 있으신가요?</span>&nbsp;<a class="madi_content" href="javascript:dpLogin();">로그인</a>
 		</div>
+		-->
 	</div>
 </div>
 </div>
