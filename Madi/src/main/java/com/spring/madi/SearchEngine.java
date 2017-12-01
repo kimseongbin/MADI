@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 // 성빈 : 재료 별 레시피 검색을 위한 Class
 public class SearchEngine {
 	
@@ -189,7 +187,7 @@ public class SearchEngine {
 	}
 	// 성빈 : 상단  Header 검색창 기능 구현을 위한 메소드
 	// 검색 기능이 작동하는 순서 1) 빈칸에 의한 단어 구분 2) 영문, 한문, 숫자, 특수문자에 의한  	
-	
+	/*
 	public static void main(String[] args) {
 		String sql = "";
         String sql2 = "";
@@ -222,4 +220,5 @@ public class SearchEngine {
             e.printStackTrace();
         }
 	}
+	*/
 }

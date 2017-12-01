@@ -9,7 +9,7 @@
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>1.6</java-version>
-		<org.springframework-version>3.1.1.RELEASE</org.springframework-version>
+		<org.springframework-version>4.1.7.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
@@ -21,6 +21,13 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		<!-- WebSocket 기능 추가 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+
 		<!-- File Upload-->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -34,6 +41,7 @@
 		</dependency>
 		<!-- File Upload -->	
 
+		
 		<!-- Jackson JSON Mapper -->
 	    <dependency>
 	        <groupId>org.codehaus.jackson</groupId>
@@ -52,7 +60,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>3.1.1.RELEASE</version>
+			<version>4.1.7.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -81,9 +89,6 @@
 		    <version>20160810</version>
 		</dependency>
 
-
-
-		
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

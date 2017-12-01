@@ -3,9 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -27,6 +30,15 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- WebSocket에 사용할 핸들러 객체 생성 -->
+	<beans:bean id="socketHandler" class="com.spring.madi.SocketHandler"/>
+	
+	<!-- WebSocket에 사용할 핸들러 객체 맵핑 -->
+	<websocket:handlers>
+		<websocket:mapping path="/broadcasting" handler="socketHandler"/>
+	</websocket:handlers>
+	
+	
 	
 	<!-- 멀티파트 관련 빈 설정 -->
 	<!-- Multipart 지원 기능을 사용하려면 먼저 MultipartResolver를 스프링 설정 파일에 등록 -->
@@ -35,7 +47,5 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.spring.madi" />
-	
-	
-	
+
 </beans:beans>

@@ -329,7 +329,7 @@ td {
 	}
 </script>
 </head>
-<body style="background-color: #FFFFFF;">
+<body style="background-color:#F6F6F6;">
 	<!-- 헤더 시작 -->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
@@ -351,10 +351,10 @@ td {
 					
 					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="120" width="120"
 						alt="Avatar">					
-					<h3 class="text-primary" style=" margin-top:10px;">
+					<h3 class="text-primary" style=" margin-top:10px; margin-left:5px;">
 						<strong><%=memberVO.getUser_id()%></strong>
 					</h3>
-					<strong style="font-size:17px; padding-left:10px;"><%=memberVO.getUser_email()%></strong>
+					<strong style="font-size:17px; padding-left:10px; margin-left:5px;"><%=memberVO.getUser_email()%></strong>
 					
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center">
@@ -374,7 +374,7 @@ td {
 							<strong class="bg-danger" style="font-size:14px;">팔로잉</strong>
                             <br></p>
                             <div id="followingSize" style="font-size:15px;">
-                            <p style="cursor: pointer;" data-toggle="modal" data-target="#follower">
+                            <p style="cursor: pointer;" data-toggle="modal" data-target="#following">
                             <%=followingList.size()%>
                             </p>
                             </div>
@@ -468,7 +468,7 @@ td {
 				</div>
 			</div>
 			<!-- 팔로워 추천 -->
-			<div style="margin-top: 20%; margin-left:15px; font-size:18px;">
+			<div style="margin-top: 20%; margin-left:15px; font-size:18px; background-color:#FFFFFF;">
 				<p style="margin-bottom:10px;">
 					<strong>팔로워 추천   &nbsp;<a href="#" style="cursor:pointer" class="moreRecommends" id="refresh">새로고침</a></strong>
 				</p>

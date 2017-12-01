@@ -3179,10 +3179,10 @@
 			<div class="modal-header header" style="border-top-left-radius: 8px; border-top-right-radius: 8px; padding-bottom: 0px;">
 				<button type="button" class="close" data-dismiss="modal" class="btn header">&times;</button>
 				<ul class="nav nav-tabs" style="font-size: 14px;border-bottom: 0px;">
-					<li class="active"><a data-toggle="tab" href="#home">알림 <span
+					<li class="active" data-toggle="tab" data-target="#home"><a>알림 <span
 							class="badge" id="no"><%=notificationList.size() %></span>
 					</a></li>
-					<li onclick="getMessage();"><a data-toggle="tab" href="#message">메시지 <span
+					<li onclick="getMessage();" data-toggle="tab" data-target="#message"><a>메시지 <span
 							class="badge header" id="me"><%=messageList.size() %></span></a></li>
 				</ul>
 			</div>
@@ -3190,52 +3190,51 @@
 			<div class="modal-body header">
 				<div class="tab-content">
 					<div id="home" class="tab-pane fade in active">
-						<ul class="list-group">
-							<div class="row">
-								<div class="col-sm-2">
-									<img src="./resources/profile/bird.jpg" class="img-circle"
-										height="40" width="40" alt="Avatar" style="margin-bottom: 5px;">
-								</div>
-								
-								<div class="col-sm-6" style="padding-left: 0px;">
-									<h4 class="text-primary"><%=memberVO.getUser_id() %></h4>
-								</div>
+						<div class="row">
+							<div class="col-sm-2">
+								<img src="<%=memberVO.getUser_img()%>" class="img-circle"
+									height="40" width="40" alt="Avatar" style="margin-bottom: 5px;">
 							</div>
+							
+							<div class="col-sm-6" style="padding-left: 0px;">
+								<h4 class="text-primary"><%=memberVO.getUser_id() %></h4>
+							</div>
+						</div>
+						<ul class="list-group" id="notificationList">
 							<!-- 알림 내용들 -->
-							<div id="notificationList">
+							
 								<!-- 알림 내용들 -->
-							</div>
-						</ul>
-					</div>
-					<div id="message" class="tab-pane fade">
-						<ul class="list-group">
-							<div class="row">
-								<div class="col-sm-2" style="padding-bottom: 5px;">
-									<img src="./resources/profile/bird.jpg" class="img-circle"
-										height="40" width="40" alt="Avatar">
-								</div>
-								
-<<<<<<< HEAD
-								<div class="col-sm-6">
-									<h5 class="text-primary header" style="magin-bottom:5px;">
-										<strong>&nbsp;<%=memberVO.getUser_id() %></strong>
-									</h5>
-=======
-								<div class="col-sm-6" style="padding-left: 0px;">
-									<h4 class="text-primary">
-										<%=memberVO.getUser_id()%>
-									</h4>
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
-								</div>
-							</div>
-							<!-- 메시지 내용들 -->
-							<div id="messageList">
-								<!-- ajax, 메시지 리스트 로드 영역 -->
-							</div>
+							
 						</ul>
 					</div>
 				</div>
 			</div>
+			<!-- 알림 내용 끝  -->
+			<!-- 메시지 내용 시작  -->
+			<div class="modal-body header">
+				<div class="tab-content">
+					<div id="message" class="tab-pane fade">
+						<div class="row">
+							<div class="col-sm-2" style="padding-bottom: 5px;">
+								<img src="<%=memberVO.getUser_img()%>" class="img-circle"
+									height="40" width="40" alt="Avatar">
+							</div>	
+							<div class="col-sm-6">
+								<h5 class="text-primary header" style="magin-bottom:5px;">
+									<strong>&nbsp;<%=memberVO.getUser_id() %></strong>
+								</h5>
+							</div>
+						</div>
+						<ul class="list-group" id="messageList">
+							<!-- 메시지 내용들 -->
+							
+								<!-- ajax, 메시지 리스트 로드 영역 -->
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- 메시지 내용 끝 -->
 <!-- //없는게 더 깔끔한 느낌			
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default header" data-dismiss="modal">Close</button>

@@ -842,5 +842,11 @@ public class FrontController {
 		return "sns_join";
 		
 	}
-	
+//	
+//	(진산) 임시..웹소켓 기능
+//	@RequestMapping("/chat.do")
+//	public String chat() {
+//		return "chat";
+//	}
+//	
 }
