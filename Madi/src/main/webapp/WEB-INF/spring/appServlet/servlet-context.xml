@@ -11,7 +11,7 @@
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
-
+ 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	<!-- (성빈) 외부경로 resources mapping-->
@@ -20,7 +20,7 @@
 	<!-- (성빈) 전부 C 밑에 upload라는 폴더가 있을꺼임. 없으면 하나 만들어 두삼.-->
 	<!-- (성빈) 이미지 파일은 이 위치에 저장되고 이 위치로부터 파일을 불러옵니다.-->
 	<resources mapping="madi/upload/**" location="file:///c:/upload/" />
-
+ 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
@@ -35,7 +35,6 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.spring.madi" />
-	
 	
 	
 </beans:beans>

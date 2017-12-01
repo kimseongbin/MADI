@@ -22,7 +22,7 @@
 			
 			if(i % 4 == 0) {
 %>
-				<div class="myBoxList">
+				<div class="myBoxList w3-animate-right">
 <%
 			}
 %>

@@ -226,5 +226,10 @@ public class BoardDAOService implements BoardDAO {
 		ArrayList<UserLikeBoVO> userLikeBoardList = boardMapper.getUserLikeBoardList(user_id);
 		return userLikeBoardList;
 	}
+	@Override
+	public int getReplySizeByBoardNum(BoardReplyVO boardReplyVO) {
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		return boardMapper.getReplySizeByBoardNum(boardReplyVO);
+	}
 }
 

@@ -10,11 +10,17 @@ public interface MemberMapper {
 	//(진산) 임시 MemberFollow에서 following_user_id 불러오기
 	//MemberFollowVO getFollowing_user_id(String user_id);
 	//(진산) 팔로워 수 구하기
-	ArrayList<MemberFollowVO> getFollower(String user_id);
+	ArrayList<MemberVO> getFollower(String user_id);
 	//(진산) 팔로잉 수 구하기
-	ArrayList<MemberFollowVO> getFollowing(String user_id);
+	ArrayList<MemberVO> getFollowing(String user_id);
 	//(진산) 팔로워 추천 리스트
-	ArrayList<MemberFollowVO> getRecommendFollower(String user_id);
+	ArrayList<MemberVO> getRecommendFollower(MemberFollowVO memberFollowVO);
+	// (성빈) 팔로워 추천 팔로워 수 많은 순
+	ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
+	// (성빈) 팔로워 추천 레시피 작성 많은 순
+	ArrayList<MemberVO> getRecommendByRecipeCnt();
+	// (성빈) 좋아요 수 많은 순
+	ArrayList<MemberVO> getRecommendByLikeCnt();
 	//(진산) 추천 리스트 새로고침
 	ArrayList<MemberFollowVO> getReloadRecommend();
 	//(진산) 팔로잉 한 명 삭제
@@ -46,7 +52,7 @@ public interface MemberMapper {
 	// 성빈 : following 추가
 	void setFollowing(MemberFollowVO memberFollowVO);
 	// 성빈 : following 체크
-	MemberFollowVO checkFollowing(MemberFollowVO memberFollowVO);
+	int checkFollowing(MemberFollowVO memberFollowVO);
 	
 
 }

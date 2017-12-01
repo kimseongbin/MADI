@@ -34,7 +34,7 @@ $(".img-responsive").hover(function(){
 <%
 			if(i % 8 == 0) {
 %>
-				<div class="category">
+				<div class="category w3-animate-opacity">
 <%
 			}
 %>
@@ -111,8 +111,9 @@ $(document).ready(function() {
 	var currentCategory = 0;
 	$(".moreOfCategory").click(function() {
 		currentCategory += 1;
-		category[currentCategory].style.display="block";
-		category[currentCategory].focus();	
+		var pos = category[currentCategory];
+		pos.style.display="block";
 	});
+
 });
 </script>

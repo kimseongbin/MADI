@@ -84,6 +84,13 @@ public class NotificationDAOService implements NotificationDAO{
 		}
 		return notificationVO;
 	}
+
+	@Override
+	public int checkFollowRequest(MemberFollowVO memberFollowVO) {
+		NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+		return notificationMapper.checkFollowRequest(memberFollowVO);
+		
+	}
 	
 	
 }
