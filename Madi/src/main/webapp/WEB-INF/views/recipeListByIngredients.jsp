@@ -22,7 +22,7 @@
 			
 			if(i % 4 == 0) {
 %>
-				<div class="IrdntResult">
+				<div class="IrdntResult  w3-animate-right">
 <%
 			}
 %>

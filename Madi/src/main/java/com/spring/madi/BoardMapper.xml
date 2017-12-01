@@ -168,4 +168,9 @@
 		FROM USER_LIKE_BO
 		WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
 	</select>
+	<select id="getReplySizeByBoardNum" parameterType="com.spring.madi.BoardReplyVO" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD_REPLY
+		WHERE BOARD_NUM = #{board_num}
+	</select>
 </mapper>

@@ -31,24 +31,22 @@ public class MemberDAOService implements MemberDAO {
 //	}
 	//(진산)팔로워 목록 구하기
 	@Override
-	public ArrayList<MemberFollowVO> getFollower(String user_id) {
-		ArrayList<MemberFollowVO> followerList= new ArrayList<MemberFollowVO>();
+	public ArrayList<MemberVO> getFollower(String user_id) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		followerList= memberMapper.getFollower(user_id);
+		ArrayList<MemberVO> followerList= memberMapper.getFollower(user_id);
 		return followerList;
 	}
 	@Override
 	//(진산)팔로잉 목록 구하기
-	public ArrayList<MemberFollowVO> getFollowing(String user_id) {
-		ArrayList<MemberFollowVO> followingList= new ArrayList<MemberFollowVO>();
+	public ArrayList<MemberVO> getFollowing(String user_id) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		followingList= memberMapper.getFollowing(user_id);
+		ArrayList<MemberVO> followingList= memberMapper.getFollowing(user_id);
 		return followingList;
 	}
 	//(진산)팔로워 추천 리스트
 	@Override
-	public ArrayList<MemberFollowVO> getRecommendFollower(String user_id) {
-		ArrayList<MemberFollowVO> recommendList= new ArrayList<MemberFollowVO>();
+	public ArrayList<MemberVO> getRecommendFollower(String user_id) {
+		ArrayList<MemberVO> recommendList= new ArrayList<MemberVO>();
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
 		recommendList= memberMapper.getRecommendFollower(user_id);
 		return recommendList;
@@ -159,18 +157,33 @@ public class MemberDAOService implements MemberDAO {
 		} catch (Exception e) {
 			System.out.println("SYSTEM  :  MeberDAOService, setFollowing; 팔로잉 추가 실패");
 			e.printStackTrace();
-		}
+		} 
 		
 	}
 	// 팔로우 한 적 있는 체크
 	@Override
-	public MemberFollowVO checkFollowing(MemberFollowVO memberFollowVO) {
+	public int checkFollowing(MemberFollowVO memberFollowVO) {
 		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
-		MemberFollowVO checkFollow = memberMapper.checkFollowing(memberFollowVO);
-		return checkFollow;
+		return memberMapper.checkFollowing(memberFollowVO);
+		
+	}
+	@Override
+	public ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		return memberMapper.getRecommendByFollowerCnt(user_id);
+	}
+	@Override
+	public ArrayList<MemberVO> getRecommendByRecipeCnt() {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		return memberMapper.getRecommendByRecipeCnt();
+	}
+	@Override
+	public ArrayList<MemberVO> getRecommendByLikeCnt() {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		return memberMapper.getRecommendByLikeCnt();
 	}
 	
-	// 회원 정보수정
+	// 예진 회원 정보수정
 	@Override 
 	public int updateInfo(MemberVO memberVO) {
 		return sqlSession.update(namespace + ".updateInfo", memberVO);

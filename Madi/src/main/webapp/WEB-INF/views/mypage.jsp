@@ -74,14 +74,14 @@ td {
 	padding: 10px;
 }
 /*본문 배경색*/
-.well.content_color{
- 	background-color:#FFFFFF;
+.well.content_color {
+	background-color: #FFFFFF;
 }
 /* 냉장고 재료들 리스트 정렬 */
 .ul.hori {
-    list-style:none;
-    margin:0;
-    padding:0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .li.hori {

@@ -9,11 +9,11 @@ public interface MemberDAO {
 	//(진산) 임시--MemberFollow에서 팔로잉한 사람 불러오기
 	//MemberFollowVO getFollowing_user_id(String user_id);
 	//(진산)팔로워 수 카운트
-	ArrayList<MemberFollowVO> getFollower(String user_id);	
+	ArrayList<MemberVO> getFollower(String user_id);	
 	//(진산)팔로잉 수 카운트
-	ArrayList<MemberFollowVO> getFollowing(String user_id);
+	ArrayList<MemberVO> getFollowing(String user_id);
 	//(진산)팔로워 추천 리스트
-	ArrayList<MemberFollowVO> getRecommendFollower(String user_id);
+	ArrayList<MemberVO> getRecommendFollower(String user_id);
 	//(진산) 추천 리스트 새로고침
 	ArrayList<MemberFollowVO> getReloadRecommend();
 	//(진산)팔로잉 한 명 삭제
@@ -41,8 +41,12 @@ public interface MemberDAO {
 	// 성빈 : following 추가
 	public void setFollowing(MemberFollowVO memberFollowVO);
 	// 성빈 : follwing 체크
-	public MemberFollowVO checkFollowing(MemberFollowVO memberFollowVO);
+	public int checkFollowing(MemberFollowVO memberFollowVO);
 	
-	// 회원 정보수정
+	// 예진: 회원 정보수정
 	public int updateInfo(MemberVO memberVO);
+	
+	public ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
+	public ArrayList<MemberVO> getRecommendByRecipeCnt();
+	public ArrayList<MemberVO> getRecommendByLikeCnt();
 }

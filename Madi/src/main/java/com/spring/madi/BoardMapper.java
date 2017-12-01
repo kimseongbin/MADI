@@ -54,5 +54,6 @@ public interface BoardMapper {
 	void deleteReply(BoardReplyVO boardReplyVO);
 	// (성빈) 유저가 좋아하는 게시글 목록 불러오기
 	ArrayList<UserLikeBoVO> getUserLikeBoardList(String user_id);
+	int getReplySizeByBoardNum(BoardReplyVO boardReplyVO);
 	
 }

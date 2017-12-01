@@ -11,7 +11,7 @@
 	for (int k = 0; k < replyList.size(); k++) {
 		BoardReplyVO boardReplyVO = replyList.get(k);
 %>
-		<div class="reply">
+		<div class="reply w3-animate-bottom">
 			<div class="col-sm-2 text-center">
 				<img src="<%=boardReplyVO.getUser_img() %>" class="img-circle" height="65" width="65" alt="<%=boardReplyVO.getUser_id()%>">
 			</div>

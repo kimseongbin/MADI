@@ -26,4 +26,6 @@ public interface NotificationMapper {
 	void sendNoticeById(NotificationVO notificaitonVO);
 	// (성빈) : 알림 아디로 단일 알림 데이터 읽어오기
 	NotificationVO getMyNoticeByNoticeId(String notice_id);
+	
+	int checkFollowRequest(MemberFollowVO memberFollowVO);
 }

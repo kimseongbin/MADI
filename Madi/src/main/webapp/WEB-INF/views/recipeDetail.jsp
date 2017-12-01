@@ -44,6 +44,7 @@
 <title>마디 - 재료로 요리하다</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
@@ -56,6 +57,7 @@
 
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
+
 
 <script language="JavaScript">
 	$(document).ready(function() {
@@ -306,11 +308,59 @@
 					$("textarea[name='rep_content']").val("");
 					$("#replyList").append(data);
 					document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) + 1;
-					document.getElementById("no").innerHTML = Number(document.getElementById("no").innerHTML) + 1;
 				}
 			});
 		});
 	});
+	function deletereply(element, rep_date, user_id) {
+		var parent = element.parentNode;
+		var pParent = parent.parentNode;
+		var me = "<%=memberVO.getUser_id()%>";
+		var board_num = "<%=boardVO.getBoard_num()%>";
+		if(me != user_id) {
+			alert("회원님이 직접 작성하신 댓글만 삭제 가능합니다.");
+			return;
+		}
+		$.ajax({
+			url: "./deleteReply.do",
+			type: "POST",
+			data: {
+				rep_date: rep_date,
+				user_id: user_id,
+				board_num: board_num
+			},
+			success: function(data) {
+				pParent.remove();
+				document.getElementById("comments").innerHTML = data;							
+				
+			}
+		});
+	}
+	function followRequest(user_id, following_user_id, user_img, following_user_img) {
+		// 내가 날 팔로우할 순 없음
+		if(user_id == following_user_id) {
+			return;
+		}
+		$.ajax({
+			url: "./followRequest.do",
+			type: "POST",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id,
+				user_img: user_img,
+				following_user_img: following_user_img,
+			},
+			success: function(data) {
+				if(data == 0) {
+					alert("이미 팔로우 한 회원입니다.");
+				} else if(data == 1){
+					alert("현재 "+following_user_id+"님의 요청 수락을 기다리고 있습니다.");
+				} else if(data == 2){
+					alert(following_user_id+"님께 팔로우를 신청하셨습니다.");				
+				}
+			}
+		});
+	}
 </script>
 
 <!-- 하이차트 끝 -->
@@ -349,7 +399,6 @@ footer {
 </style>
 </head>
 <body style="background-color: #F6F6F6">
-	<%=boardVO.getBoard_num() %>
 	<!-- Header 시작-->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
@@ -378,30 +427,6 @@ footer {
 					<button type="button" class="btn btn-danger btn" onclick="followRequest('<%=memberVO.getUser_id()%>','<%=recipeOwner.getUser_id()%>', '<%=memberVO.getUser_img()%>','<%=recipeOwner.getUser_img()%>')" style="border-radius: 10px;">
 						<strong style="font-size:15px;">팔로우</strong>
 					</button>&nbsp;
-					<script>
-					function followRequest(user_id, following_user_id, user_img, following_user_img) {
-						// 내가 날 팔로우할 순 없음
-						if(user_id == following_user_id) {
-							return;
-						}
-						$.ajax({
-							url: "./followRequest.do",
-							type: "POST",
-							data: {
-								user_id: user_id,
-								following_user_id: following_user_id,
-								user_img: user_img,
-								following_user_img: following_user_img,
-							},
-							success: function() {
-								alert(following_user_id+"님께 팔로우를 신청하셨습니다.");
-							},
-							error: function() {
-								alert("이미 팔로우한 회원입니다.");
-							}
-						});
-					}
-					</script>
 					<!-- 팔로우 버튼 -->
 					<!-- 하이차트 시작 -->
 					<div class="container-fluid"
@@ -492,7 +517,7 @@ footer {
 				</p>
 				<br>
 				<!-- recipe 타이틀 이미지 -->
-				<img src="<%=recipe.getImg_url()%>" class="img-rounded" width="40%" />
+				<img src="<%=recipe.getImg_url()%>" class="img-rounded w3-animate-opacity" width="40%" />
 				<h5>
 					<small><%=recipe.getRecipe_title()%></small>
 				</h5>
@@ -526,7 +551,7 @@ footer {
 				</script>
 				<br/>
 				<!-- recipe 과정 시작 -->
-				<div id="Pro" class="row container-fluid" style="display:none;">
+				<div id="Pro" class="row container-fluid w3-animate-opacity" style="display:none;">
 <%
 				for(int i = 0; i < recipeProcess.size(); i++) {		
 					try {
@@ -536,7 +561,7 @@ footer {
 %>					
 					<div class="well col-sm-12">
 						<div class="col-sm-6">		
-								<img src="<%=recipeProcessVO.getStep_img_url() %>" class="img-rounded" height="auto" width="100%"/>
+								<img src="<%=recipeProcessVO.getStep_img_url() %>" class="img-rounded w3-animate-left" height="auto" width="100%"/>
 						</div>
 						<div class="col-sm-6">
 								<p>과정 <%=recipeProcessVO.getCooking_no() %></p>
@@ -599,12 +624,12 @@ footer {
 				</p>
 				<br>
 				<!-- 댓글 리스트 시작 -->
-				<div class="row" id="replyList">
+				<div class="row w3-animate-bottom" id="replyList">
 <%
 				for(int k = 0; k < replyList.size(); k++) {
 					BoardReplyVO boardReplyVO = replyList.get(k);
 %>					
-					<div class="reply">
+					<div class="reply w3-animate-bottom">
 						<div class="col-sm-2 text-center">
 							<img src="<%=boardReplyVO.getUser_img() %>" class="img-circle" height="65"
 								width="65" alt="<%=boardReplyVO.getUser_id()%>">
@@ -632,28 +657,6 @@ footer {
 			<!-- 우측 메인 끝 -->
 		</div>
 		<!-- body wrapper 끝 -->
-		<script>
-		function deletereply(element, rep_date, user_id) {
-			var parent = element.parentNode;
-			var pParent = parent.parentNode;
-			$.ajax({
-				url: "./deleteReply.do",
-				type: "POST",
-				data: {
-					rep_date: rep_date,
-					user_id: user_id
-				},
-				success: function(data) {
-					if(data==1) {
-						pParent.remove();
-						document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) - 1;							
-					} else {
-						alert("회원님이 직접 작성하신 댓글만 삭제 가능합니다.");
-					}
-				}
-			});
-		}
-		</script>
 	</div>	
 	<!-- 마지막 footer -->
 	<footer class="container-fluid text-center">
