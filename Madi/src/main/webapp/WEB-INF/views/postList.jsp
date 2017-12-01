@@ -126,7 +126,9 @@
 	    height: 100%;
 	    opacity: 10;
 	}
-
+	.xrs {
+	 background-image: url('./resources/image/10.gif');
+	}
   </style>
   
   <script type="text/javascript">
@@ -268,7 +270,7 @@
   	
   </head>
   
-  <body style="background-color: #F6F6F6">
+  <body style="background-color: #F6F6F6" class="xrs">
     <div class="header">
     	<jsp:include page="header.jsp"></jsp:include>
     </div>

@@ -187,6 +187,9 @@ td {
 	text-align: left;
 	vertical-align: top;
 }
+.xrs {
+	 background-image: url('./resources/image/10.gif');
+	}
 </style>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script>
@@ -330,7 +333,7 @@ td {
 	}
 </script>
 </head>
-<body style="background-color: #FFFFFF;">
+<body style="background-color: #FFFFFF;" class="xrs">
 	<!-- 헤더 시작 -->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
