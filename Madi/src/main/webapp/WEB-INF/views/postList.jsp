@@ -12,10 +12,12 @@
 	List<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	List<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
+	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 	//Include 한 Header 파일과 객체 공유
 	request.setAttribute("messageList", messageList);
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("memberVO", memberVO);
+	request.setAttribute("myIrdntList", myIrdntList);
 	//RecipeList<시간 순>으로 받아오기
 	List<RecipeVO> postList = (ArrayList<RecipeVO>)request.getAttribute("postList");
 	
@@ -124,7 +126,9 @@
 	    height: 100%;
 	    opacity: 10;
 	}
-
+	.xrs {
+	 background-image: url('./resources/image/10.gif');
+	}
   </style>
   
   <script type="text/javascript">
@@ -266,7 +270,7 @@
   	
   </head>
   
-  <body style="background-color: #F6F6F6">
+  <body style="background-color: #F6F6F6" class="xrs">
     <div class="header">
     	<jsp:include page="header.jsp"></jsp:include>
     </div>
@@ -309,7 +313,7 @@
 				    
 		    <!-- Modal content-->
 		    <div class="modal-content">
-		    	<div class="modal-header">
+		    	<div class="modal-header header">
 		    		<button type="button" class="close" data-dismiss="modal">x</button>
 		    		<recipe style="font-size:20px;font-weight:bold"><span class="glyphicon glyphicon-cutlery"></span> 레시피 등록</recipe>
 		    	</div>

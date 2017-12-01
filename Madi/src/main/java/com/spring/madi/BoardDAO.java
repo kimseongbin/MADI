@@ -20,6 +20,8 @@ public interface BoardDAO {
 
 	//(진산) 자신의 게시물 불러오기
 	ArrayList<BoardVO> getBoards(String user_id);
+	//(진산) 연월일 구하기
+	//String getTime(String user_id);
 	// (성빈) : recipeId와 연결된 Board 데이터 조회 메소드
 	BoardVO getBoardByRecipeId(RecipeVO recipeVO);
 	// (성빈) : board_num과 연결된 BOARD REPLY 데이터 조회 메소드
@@ -50,5 +52,7 @@ public interface BoardDAO {
 	void deleteUserLikeBo(UserLikeBoVO userLikeBoVO);
 	// (성빈) 내 댓글 삭제
 	void deleteReply(BoardReplyVO boardReplyVO);
-
+	// (성빈) 유저가 좋아하는 게시글 목록 불러오기
+	ArrayList<UserLikeBoVO> getUserLikeBoardList(String user_id);
+	int getReplySizeByBoardNum(BoardReplyVO boardReplyVO);
 }

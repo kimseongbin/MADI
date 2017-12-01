@@ -4,6 +4,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
+	String user_id = (String) session.getAttribute("user_id");
 	ArrayList<RecipeVO> recipeList = (ArrayList<RecipeVO>)request.getAttribute("recipeList");
 %>
 <%
@@ -21,36 +22,46 @@
 			
 			if(i % 4 == 0) {
 %>
-				<div class="category">
+				<div class="myBoxList w3-animate-right">
 <%
 			}
 %>
-			<div class="col-sm-3 col-lg-3">
+			<div class="col-sm-3 col-lg-3s">
 				   <div class="thumbnail">
-				   	  <h5><b><%=recipeVO.getRecipe_title() %></b></h5>
+				   	  <div class="recipe_item_title">
 				   	  <!-- 이미지 링크 recipe_id값 전달 클릭 시 recipe_detail화면으로-->
-				      <a href="./recipeDetail.do?recipe_id=<%=recipeVO.getRecipe_id()%>"><img src="<%=recipeVO.getImg_url() %>" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image"></a>
-				      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0; height:160px; overflow:hidden;">
+				      <a href="./recipeDetail.do?recipe_id=<%=recipeVO.getRecipe_id()%>">
+				      	<img src="<%=recipeVO.getImg_url() %>" class="img-responsive" style="width:100%; height:234px; z-index:1;" alt="Image" value=<%=recipeVO.getRecipe_title() %>>
+				      </a>
+				      </div>
+				      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0; height:180px; overflow:hidden;">
 				      	<!-- user_id 링크 -->
 				      	<img src="./resources/profile/bird.jpg" class="img-circle" height="61" width="61" alt="Avatar">
-				                                    <p><strong><%=recipeVO.getUser_id() %></strong></p>
+				        <p><strong><%=recipeVO.getUser_id() %></strong></p>
+				        <h5><b><%=recipeVO.getRecipe_title() %></b></h5>
 				        <span><%=recipeVO.getRecipe_desc() %></span>
 				      </div>
 
-				       <div class="container-fluid text-muted" style="padding:0;">
+				       <div class="container-fluid" style="padding:0;">
 				        	<div class="col-xs-4 col-sm-4 text-muted" style="padding-left:0; padding-right:0;">
 				            	<button class="btn" style="background:white; border:none; outline:none;">
-				                	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; <%=recipeVO.getCooking_time() %>
+				            		<img src="./resources/image/Timer_96px.png" width="20px">
+				                	<!-- <span class="glyphicon glyphicon-home" style="font-size:10px;"></span> -->
+				                	<%=recipeVO.getCooking_time() %>
+				                </button>
+				            </div>
+				            <div class="col-xs-4 col-sm-4 text-muted" style="padding-left:0; padding-right:0;">
+				            	<button class="btn" style="background:white; border:none; outline:none;" onclick="likeBoard(this, '<%=user_id%>','<%=recipeVO.getRecipe_id()%>','<%=recipeVO.getUser_id()%>');">
+				            		<img src="./resources/image/Heart_96px.png" width="20px">
+				                	<!-- <span class="glyphicon glyphicon-home" style="font-size:10px;"></span> -->
+				                	좋아요
 				                </button>
 				            </div>
 				            <div class="col-xs-4 col-sm-4 text-muted" style="padding-left:0; padding-right:0;">
 				            	<button class="btn" style="background:white; border:none; outline:none;">
-				                	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 좋아요
-				                </button>
-				            </div>
-				            <div class="col-xs-4 col-sm-4 text-muted" style="padding-left:0; padding-right:0;">
-				            	<button class="btn" style="background:white; border:none; outline:none;">
-				                	<span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; 공유
+				            		<img src="./resources/image/Share_96px.png" width="20px">
+				                	<!-- <span class="glyphicon glyphicon-home" style="font-size:10px;"></span>&nbsp; --> 
+				                	공유
 				                </button>
 				            </div>
 				        </div>
@@ -67,27 +78,26 @@
 %>
 
 	<script>
-	$(document).ready(function() {
-		var IrdntResult = document.getElementsByClassName("IrdntResult");
-		for(var i = 0; i < IrdntResult.length; i++) {
+		alert("냉장고 검색")
+		//$("#refresh").attr("class", "glyphicon glyphicon-refresh moreOfBoxResult")
+		var myBoxList = document.getElementsByClassName("myBoxList");
+		for(var i = 0; i < myBoxList.length; i++) {
 			if(i==0) {
-				IrdntResult[i].style.display="block";
+				myBoxList[i].style.display="block";
 			} else {
-				IrdntResult[i].style.display="none";
+				myBoxList[i].style.display="none";
 			}
 		}
 		
-		var currentLocation = 0;
-		$(".moreOfIrdnt").click(function() {
-			currentLocation += 1;
-			IrdntResult[currentLocation-1].style.display="none";
-			if(currentLocation==IrdntResult.length) {
-				IrdntResult[0].style.display="block";
-				currentLocation = 0;
+		/* var Location = 0;
+		$(".moreOfBoxResult").click(function() {
+			Location += 1;
+			myBoxList[Location-1].style.display="none";
+			if(Location==myBoxList.length) {
+				myBoxList[0].style.display="block";
+				Location = 0;
 			} else {
-				IrdntResult[currentLocation].style.display="block";
+				myBoxList[Location].style.display="block";
 			}
-		});
-	});
-		
+		});	 */	
 	</script>

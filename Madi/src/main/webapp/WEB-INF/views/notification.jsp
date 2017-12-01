@@ -3,9 +3,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- (진산)margin-top 지움 -->
 <%
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 %>
+
 <%
 	if(notificationList.size() == 0) {
 %>
@@ -15,36 +17,51 @@
 <%		
 	} else {
 		for(int i = 0; i < notificationList.size(); i++) {
-			NotificationVO notificationVO = notificationList.get(i);
-		
-%>
-			<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>" style="margin-top: 100px;">
-				<strong>From </strong> 
-				<img src="./resources/profile/bird.jpg" class="img-circle" height="20" width="20" alt="Avatar"> 
-				<a><%=notificationVO.getNotice_from() %></a> <strong><%=notificationVO.getContent() %></strong>
-				<button class="btn" onclick="updateNotification(<%=notificationVO.getNotice_id()%>);"><span class="glyphicon glyphicon-remove"></span></button>
-			</li>
+			NotificationVO notificationVO = notificationList.get(i);	
+			if(notificationVO.getNotice_type().equals("팔로우 신청")) {			
+%>				<!-- 팔로우 신청 시 알림 메시지 -->
+				<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>">
+					<strong>From</strong> &nbsp;
+					<%=notificationVO.getNotice_from() %>&nbsp;:&nbsp;
+					<br/> 
+					<strong><%=notificationVO.getContent() %><br/>받으시겠습니까?</strong>
+					<button class="btn" style="border-radius: 10px;" onclick="updateNotification('<%=notificationVO.getNotice_id()%>', '수락');">
+						 수락
+					</button>
+					<button class="btn"  style="border-radius: 10px;" onclick="updateNotification('<%=notificationVO.getNotice_id()%>', '거절');">
+						거절
+					</button>
+				</li>
 <%
-		}
-	}
+			} else if(notificationVO.getNotice_type().equals("좋아요 추가") || notificationVO.getNotice_type().equals("팔로우 거부") || notificationVO.getNotice_type().equals("팔로우 수락")) {
 %>
-
+				<!-- 좋아요 추가 시 알림 메시지 -->		
+				<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>">
+					<strong>From</strong>&nbsp;  
+					<%=notificationVO.getNotice_from() %>&nbsp;:&nbsp;
+					<br/>
+					<strong><%=notificationVO.getContent() %></strong>
+					<button class="btn" onclick="updateNotification('<%=notificationVO.getNotice_id()%>', '거절');"><span class="glyphicon glyphicon-remove"></span></button>
+				</li>
+<%
+			} else {
+%>				<!-- 댓글 추가 시 알림 메시지 -->		
+				<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>">
+					<strong>From</strong> &nbsp; 
+					<%=notificationVO.getNotice_from() %>&nbsp;:&nbsp;
+					<br/>
+					<a href="./recipeDetail.do?recipe_id=<%=notificationVO.getNotice_type()%>">
+						<strong><%=notificationVO.getContent() %></strong>
+						</a>
+					<button class="btn" onclick="updateNotification('<%=notificationVO.getNotice_id()%>', '거절');"><span class="glyphicon glyphicon-remove"></span></button>
+				</li>
+<%
+			} // else 
+		} // for
+	} // else
+%>
 <script>
-	function updateNotification(value) {
-		var listSize = <%=notificationList.size()%>;
-		var id = "n"+value;
-		var li = document.getElementById(id);
-		li.style.display = "none";
-		$.ajax({
-			url: "./updateNotification.do",
-			type: "POST",
-			data: {
-				notice_id : value
-			},
-			success: function() {
-				alert(listSize);
-				document.getElementById("no").innerHTML = listSize - 1;
-			}
-		});
-	}
+	$(document).ready(function() {
+		document.getElementById("no").innerHTML = "<%=notificationList.size()%>";
+	});
 </script>

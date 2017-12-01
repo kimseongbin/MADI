@@ -11,9 +11,6 @@ public class MemberFollowVO {
 	private String user_img;
 	private String following_user_img;
 	
-	public void setFollowing_user_id(String following_user_id) {
-		this.following_user_id = following_user_id;
-	}
 	public String getUser_id() {
 		return user_id;
 	}
@@ -23,7 +20,7 @@ public class MemberFollowVO {
 	public String getFollowing_user_id() {
 		return following_user_id;
 	}
-	public void setFollwing_user_id(String following_user_id) {
+	public void setFollowing_user_id(String following_user_id) {
 		this.following_user_id = following_user_id;
 	}
 	public String getUser_img() {
@@ -39,5 +36,5 @@ public class MemberFollowVO {
 		this.following_user_img = following_user_img;
 	}
 	
-	
+		
 }

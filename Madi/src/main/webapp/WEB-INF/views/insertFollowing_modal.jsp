@@ -29,6 +29,6 @@
 <%
 //System.out.println("m-u=" + recommend.getUser_id());
 //System.out.println("m-f=" + recommend.getFollowing_user_id());
-System.out.println("m-u-i=" + recommend.getUser_img());
+//System.out.println("m-u-i=" + recommend.getUser_img());
 //System.out.println("m-f-i=" + recommend.getFollowing_user_img());
 }	%>

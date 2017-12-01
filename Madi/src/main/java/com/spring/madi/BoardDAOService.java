@@ -1,7 +1,6 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
@@ -87,6 +86,12 @@ public class BoardDAOService implements BoardDAO {
 		boardList= boardMapper.getBoards(user_id);
 		return boardList;
 	}
+	// (진산) 연월일만 구하기
+//	public String getTime(String user_id) {
+//		BoardMapper boardMapper= sqlSession.getMapper(BoardMapper.class);
+//		String time= boardMapper.getTime(user_id);
+//		return time;
+//	}
 	//(진산)자신 + 팔로잉한 사람들의 게시글 목록 구하기
 	@Override
 	public ArrayList<BoardVO> getAllBoards(String user_id) {
@@ -212,7 +217,18 @@ public class BoardDAOService implements BoardDAO {
 			e.printStackTrace();
 		}
 		
-	};
-
+	}
+	// 유저가 좋아하는 게시판 목록 불러오기
+	@Override
+	public ArrayList<UserLikeBoVO> getUserLikeBoardList(String user_id) {
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		ArrayList<UserLikeBoVO> userLikeBoardList = boardMapper.getUserLikeBoardList(user_id);
+		return userLikeBoardList;
+	}
+	@Override
+	public int getReplySizeByBoardNum(BoardReplyVO boardReplyVO) {
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		return boardMapper.getReplySizeByBoardNum(boardReplyVO);
+	}
 }
 

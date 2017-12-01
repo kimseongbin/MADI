@@ -1,7 +1,6 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,8 @@ public class MemberDAOService implements MemberDAO {
 
 	@Autowired
 	private SqlSession sqlSession;
+	
+	private static final String namespace = "com.spring.madi.MemberMapper";
 	//(진산)로그인한 자신의 id 불러오기
 	@Override
 	public MemberVO getMember(String user_id) {
@@ -30,24 +31,22 @@ public class MemberDAOService implements MemberDAO {
 //	}
 	//(진산)팔로워 목록 구하기
 	@Override
-	public ArrayList<MemberFollowVO> getFollower(String user_id) {
-		ArrayList<MemberFollowVO> followerList= new ArrayList<MemberFollowVO>();
+	public ArrayList<MemberVO> getFollower(String user_id) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		followerList= memberMapper.getFollower(user_id);
+		ArrayList<MemberVO> followerList= memberMapper.getFollower(user_id);
 		return followerList;
 	}
 	@Override
 	//(진산)팔로잉 목록 구하기
-	public ArrayList<MemberFollowVO> getFollowing(String user_id) {
-		ArrayList<MemberFollowVO> followingList= new ArrayList<MemberFollowVO>();
+	public ArrayList<MemberVO> getFollowing(String user_id) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		followingList= memberMapper.getFollowing(user_id);
+		ArrayList<MemberVO> followingList= memberMapper.getFollowing(user_id);
 		return followingList;
 	}
 	//(진산)팔로워 추천 리스트
 	@Override
-	public ArrayList<MemberFollowVO> getRecommendFollower(String user_id) {
-		ArrayList<MemberFollowVO> recommendList= new ArrayList<MemberFollowVO>();
+	public ArrayList<MemberVO> getRecommendFollower(String user_id) {
+		ArrayList<MemberVO> recommendList= new ArrayList<MemberVO>();
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
 		recommendList= memberMapper.getRecommendFollower(user_id);
 		return recommendList;
@@ -79,11 +78,11 @@ public class MemberDAOService implements MemberDAO {
 	@Override
 	public void insertFollowing(String user_id, String following_user_id, String user_img, String following_user_img) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		System.out.println("d-u=" + user_id);
-		System.out.println("d-f=" + following_user_id);
-		System.out.println("d-u-i=" + user_img);
-		System.out.println("d-f-i=" + following_user_img);
-		memberMapper.insertFollowing(user_id, following_user_id, user_img, following_user_img);
+		try {
+			memberMapper.insertFollowing(user_id, following_user_id, user_img, following_user_img);
+		} catch (Exception e) {
+			System.out.println("SYSTEM  :  MemberDAOService, insertFollowing; 팔로잉 추가 실패 요청한 사람 : " + user_id);
+		}
 	}
 	@Override // 성빈 : 로그인 체크를 위한 password 조회 메소드
 	public MemberVO getPasswordByUserId(MemberVO memberVO) {
@@ -150,7 +149,13 @@ public class MemberDAOService implements MemberDAO {
 	@Override
 	public void deleteIrdnt(MemberBoxVO memberBoxVO) {
 		MemberMapper memberMapper= sqlSession.getMapper(MemberMapper.class);
-		memberMapper.deleteIrdnt(memberBoxVO);
+		try {
+			memberMapper.deleteIrdnt(memberBoxVO);
+		} catch (Exception e) {
+			System.out.println("SYSTEM  :  MemberDAOServcie, delteIrdnt; 내 냉장고 재료 삭제 오류 발생 user_id : " + memberBoxVO.getUser_id() + " my_irdnt : " + memberBoxVO.getMy_irdnt());
+			e.printStackTrace();
+		}
+		
 	}
 	
 	@Override // 성빈 : 회원 기본 정보 조회 메소드
@@ -159,6 +164,7 @@ public class MemberDAOService implements MemberDAO {
 		MemberVO memberVO = memberMapper.getUserInfoById(user_id);
 		return memberVO;
 	}
+
 	
 	//(인욱)카카오 아이디 db에서 확인 후 ->값을 가져옴 
 	@Override
@@ -168,5 +174,45 @@ public class MemberDAOService implements MemberDAO {
 		MemberVO x = memberMapper.checkMember(memberVO);
 		
 		return x;
+	}
+	@Override
+	public void setFollowing(MemberFollowVO memberFollowVO) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		try {
+			memberMapper.setFollowing(memberFollowVO);
+		} catch (Exception e) {
+			System.out.println("SYSTEM  :  MeberDAOService, setFollowing; 팔로잉 추가 실패");
+			e.printStackTrace();
+		} 
+		
+	}
+	// 팔로우 한 적 있는 체크
+	@Override
+	public int checkFollowing(MemberFollowVO memberFollowVO) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		return memberMapper.checkFollowing(memberFollowVO);
+		
+	}
+	@Override
+	public ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		return memberMapper.getRecommendByFollowerCnt(user_id);
+	}
+	@Override
+	public ArrayList<MemberVO> getRecommendByRecipeCnt() {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		return memberMapper.getRecommendByRecipeCnt();
+	}
+	@Override
+	public ArrayList<MemberVO> getRecommendByLikeCnt() {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		return memberMapper.getRecommendByLikeCnt();
+	}
+	
+	// 예진 회원 정보수정
+	@Override 
+	public int updateInfo(MemberVO memberVO) {
+		return sqlSession.update(namespace + ".updateInfo", memberVO);
+
 	}
 }

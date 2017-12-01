@@ -3,11 +3,16 @@ package com.spring.madi;
 import java.util.ArrayList;
 
 
+
 import javax.servlet.http.HttpSession;
 
 import com.spring.madi.MemberFollowVO;
 import com.spring.madi.MemberVO;
 
+
+
+
+import java.util.Map;
 
 
 import org.apache.ibatis.annotations.Param;
@@ -19,11 +24,17 @@ public interface MemberMapper {
 	//(진산) 임시 MemberFollow에서 following_user_id 불러오기
 	//MemberFollowVO getFollowing_user_id(String user_id);
 	//(진산) 팔로워 수 구하기
-	ArrayList<MemberFollowVO> getFollower(String user_id);
+	ArrayList<MemberVO> getFollower(String user_id);
 	//(진산) 팔로잉 수 구하기
-	ArrayList<MemberFollowVO> getFollowing(String user_id);
+	ArrayList<MemberVO> getFollowing(String user_id);
 	//(진산) 팔로워 추천 리스트
-	ArrayList<MemberFollowVO> getRecommendFollower(String user_id);
+	ArrayList<MemberVO> getRecommendFollower(String user_id);
+	// (성빈) 팔로워 추천 팔로워 수 많은 순
+	ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
+	// (성빈) 팔로워 추천 레시피 작성 많은 순
+	ArrayList<MemberVO> getRecommendByRecipeCnt();
+	// (성빈) 좋아요 수 많은 순
+	ArrayList<MemberVO> getRecommendByLikeCnt();
 	//(진산) 추천 리스트 새로고침
 	ArrayList<MemberFollowVO> getReloadRecommend();
 	//(진산) 팔로잉 한 명 삭제
@@ -56,6 +67,13 @@ public interface MemberMapper {
 	
 	// 성빈 : 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐)
 	ArrayList<MemberVO> getUserInfoById(String[] user_id);
+	// 성빈 : following 추가
+	void setFollowing(MemberFollowVO memberFollowVO);
+	// 성빈 : following 체크
+	int checkFollowing(MemberFollowVO memberFollowVO);
+	
+	// 예진: 회원 정보 수정
+	int updateInfo(Map<String, Object> map);
 	
 	//(인욱) 카카오아이디 db에서 불러옴
 	public MemberVO checkMember(MemberVO memberVO);

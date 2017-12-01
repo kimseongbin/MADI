@@ -23,9 +23,10 @@
 	List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
 	// 나의 게시판 목록
 	List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
-	// 
+	// 팔로워 + 나 자신의 글 목록 불러옴
 	List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
-
+	// 모달창의 사진 클릭시 레시피로 이동함 
+	List<RecipeVO> postList = (ArrayList<RecipeVO>)request.getAttribute("postList");
 	//INCLUDE JSP 문서와 객체 공유
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
@@ -62,7 +63,7 @@
 	color: #487BE1;
 }
 .glyphicon.icon-size {
-	font-size: 25px;
+	font-size: 17px;
 }
 /*table 디자인*/
 table {
@@ -73,14 +74,14 @@ td {
 	padding: 10px;
 }
 /*본문 배경색*/
-.well.content_color{
- 	background-color:#FFFFFF;
+.well.content_color {
+	background-color: #FFFFFF;
 }
 /* 냉장고 재료들 리스트 정렬 */
 .ul.hori {
-    list-style:none;
-    margin:0;
-    padding:0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 .li.hori {
@@ -99,7 +100,7 @@ td {
 
 .li.fol {
     margin: 0 0 0 0;
-    padding: 5px;
+    padding: 19px;
     border : 0;
     float: left;
     font-size:17px;
@@ -121,7 +122,22 @@ td {
     border : 0;
     margin: 0 0 0 0;
 }
-
+/* 내 사진 목록 */
+.ul.hori2 {
+	 list-style:none;
+	 margin:0;
+	 padding:10px;
+}
+	
+.li.hori2 {
+	margin: 5 5 5 5;
+	padding: 14px;
+	border : 10px;
+	float: left;
+	font-size:12px;
+	width:70px;
+	height:80px;
+	}
 /* follow 모달 크기 조절 */
 .modal-dialog.follow-size {
     width: 470px;
@@ -149,6 +165,9 @@ td {
     text-align: left;
     vertical-align: top;
 }
+.xrs {
+	 background-image: url('./resources/image/10.gif');
+	}
 </style>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script>
@@ -247,7 +266,6 @@ td {
 			success: function(data) {
 				/* location.href="./mypage.do"; */
 				//alert("success");
-				alert(data);
 				if (data == 0) {
 					alert("좋아요 실패");
 					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) - 1;
@@ -258,54 +276,142 @@ td {
 			}
 		});
 	}
+	//게시글 누르면 자기 게시글만 보이게함
+	function myBoard(user_id) {
+		$.ajax({
+			url: "./myBoard.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				alert("성공");
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert("실패");
+			}
+		});
+	}
+	//내 사진 보기
+	function myPhoto(user_id) {
+		$.ajax({
+			url: "./myPhoto.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				alert("성공");
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert("실패");
+			}
+		});
+	}
+	//타임라인 보기
+	function allBoard(user_id) {
+		$.ajax({
+			url: "./allBoard.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				alert("성공");
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert("실패");
+			}
+		})
+	}
+	// 내 정보 보기
+	function myInfo(user_id) {
+		$.ajax({
+			url: "./myInfo.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert('실패');
+			}
+		});
+	}
+	
 </script>
 </head>
-<body style="background-color: #FFFFFF;">
+<body style="background-color: #FFFFFF;" class="xrs">
 	<!-- 헤더 시작 -->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
 	</div>
 	<!-- 헤더 끝 -->
-	<!-- 내용 시작 -->
-	<div class="container">		
+	<!-- 내용 시작 -->	
+	<div class="container">
+		<div class="row" style="position:relative; ">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10 pull-left">
+				<img src="./resources/profile/racoon.jpg" style="position:relative; width:100%; height:250px;">
+			</div>
+		</div>		
 		<div class="row">
 		<!--left side -->
 			<div class="col-sm-1"></div>
-			<div class="col-sm-3 text-center" style="border-radius: 10px;">
+			<div class="col-sm-3 text-center" style="border-radius: 10px; position:relative;bottom:70px;">
 				<div>
-					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="80" width="80"
-						alt="Avatar" style="margin-left:7px;"> <br>
-					<h3 class="text-primary">
+					
+					<img src="<%=memberVO.getUser_img()%>" class="img-circle" height="120" width="120"
+						alt="Avatar">					
+					<h3 class="text-primary" style=" margin-top:10px;">
 						<strong><%=memberVO.getUser_id()%></strong>
 					</h3>
-					<strong style="font-size:17px;"><%=memberVO.getUser_email()%></strong>
+					<strong style="font-size:17px; padding-left:10px;"><%=memberVO.getUser_email()%></strong>
 					
 					<!-- 게시글, 팔로워, 팔로잉 -->
 					<div class="row text-center">
-                    	
-						<div class="col-sm-4">
-							<p data-target="#follower"><strong class="bg-danger" style="font-size:14px;">게시글</strong>
-                            <br>
-                            <div style="font-size:15px;"><%=myBoardList.size()%></div>
+                    	<div class="col-sm-2"></div>
+						<div class="col-sm-3">
+							<p style="cursor: pointer; margin-bottom: 0px;">
+							<strong class="bg-danger" style="font-size:14px;">게시글</strong>
+                            <br></p>
+                            <div style="font-size:15px;">
+                            <p style="cursor: pointer;">
+                            <%=myBoardList.size()%>
                             </p>
+                            </div>
 						</div>
-						<div class="col-sm-4">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#following">
+						<div class="col-sm-3">
+							<p style="cursor: pointer; margin-bottom: 0px;" data-toggle="modal" data-target="#following">
 							<strong class="bg-danger" style="font-size:14px;">팔로잉</strong>
-                            <br>
-                            <div id="followingSize" style="font-size:15px;"><%=followingList.size()%></div>
+                            <br></p>
+                            <div id="followingSize" style="font-size:15px;">
+                            <p style="cursor: pointer;" data-toggle="modal" data-target="#follower">
+                            <%=followingList.size()%>
                             </p>
+                            </div>
 						</div>
-						<div class="col-sm-4">
-							<p style="cursor: pointer" data-toggle="modal" data-target="#follower">
+						<div class="col-sm-3">
+							<p style="cursor: pointer; margin-bottom: 0px;" data-toggle="modal" data-target="#follower">
 							<strong class="bg-danger" style="font-size:14px;">팔로워</strong>
-                            <br>
-                            <div id="followerSize" style="font-size:15px;"><%=followerList.size()%></div>
+                            <br></p>
+                            <div id="followerSize" style="font-size:15px;">
+                            <p style="cursor: pointer;" data-toggle="modal" data-target="#follower">
+                            	<%=followerList.size()%>
                             </p>
-						</div>
-                        
+                            </div>
+                            
+						</div>            
 					</div>
-					<br>
 				<!-- 팔로잉 Modal -->
 				<div class="modal fade" id="following" role="dialog">
 					<div class="modal-dialog">
@@ -319,7 +425,7 @@ td {
 							<div class="modal-body">
 								<div class="btn-group-vertical">
 									<form>
-										<ul class="ul fol" id="following_modal">
+										<ul class="ul fol" id="following_modal" style="text-align:center;">
 											<%for(int j= 0; j<followingList.size(); j++) {
 												MemberFollowVO following= followingList.get(j);
 											%>
@@ -357,7 +463,7 @@ td {
 							<div class="modal-body">
 								<div class="btn-group-vertical">
 									<form>
-										<ul class="ul fol" id="follower_modal">
+										<ul class="ul fol" id="follower_modal" style="text-align:center;">
 											<%for(int i= 0; i< followerList.size(); i++) {
 												MemberFollowVO follower= followerList.get(i);
 											%>
@@ -454,13 +560,25 @@ td {
 		</div>
 		<!-- middle side -->
 		<div class="col-sm-6">
-			<div class="row text-center" style="border-radius: 10px;">
+			<div class="row">
+				<div class="col-sm-7 btn-group" style="padding-left:0px;">
+					<button type="button" class="btn btn-default"
+						onclick="allBoard('<%=memberVO.getUser_id()%>')">타임라인</button>
+				    <button type="button" class="btn btn-default"
+				    	onclick="myBoard('<%=memberVO.getUser_id()%>')">게시글</button>
+				    <button type="button" class="btn btn-default" style="cursor: pointer; margin-bottom: 0px;"
+				    	onclick="myPhoto('<%=memberVO.getUser_id()%>')">사진</button>
+				    <button type="button" class="btn btn-default" style="cursor: pointer; margin-bottom: 0px;"
+				    	onclick="myInfo('<%=memberVO.getUser_id()%>')">정보</button>
+				</div>
+			</div>
+			<div class="row text-center" id="myBoard" style="border-radius: 10px;">
 				<!-- 본문 글 시작 -->
 				<%
 					for(int i=0; i<allBoardList.size(); i++) {
 						BoardVO board= allBoardList.get(i);
 				%>
-				<div class="well content_color">
+				<div class="well content_color" style="padding-bottom:0px;">
 					<div class="row">
 						<div class="col-sm-4" style="font-size: 16px; text-align: left;">
 						<!-- profile -->
@@ -502,28 +620,22 @@ td {
 					<br>
 					<!-- Icon -->
 					<div class="row">
-						<div class="pull-right">
-							<form>
-							<ul class="ul fol2" id="updateBoardLike_modal">
-								<li class="li fol3">
-									<span style="cursor: pointer" 
-									class="glyphicon glyphicon-comment icon-size"
-									data-toggle="collapse" data-target="#comment<%=board.getBoard_num()%>">
-									</span>&emsp;
-								</li>
-								<li class="li fol3">
-									<span style="cursor: pointer"  
-										class="glyphicon glyphicon-heart icon-size"
-										onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">
-									</span> &emsp;
-								</li>
-								<li class="li fol3">
-									<span style="cursor: pointer" 
-									 class="glyphicon glyphicon-share-alt icon-size">
-									</span>&emsp; 
-								</li>
-							</ul>
-							</form>
+						<div class="pull-left">
+							<table>
+								<tr>
+							    	<td style="padding:5px;"><span style="cursor: pointer;" class="glyphicon glyphicon-comment icon-size"
+							        	data-toggle="collapse" data-target="#comment<%=board.getBoard_num()%>"></span>
+							            </td>
+							        <td style="margin-top:30px; cursor: pointer;"data-toggle="collapse" data-target="#comment<%=board.getBoard_num()%>">댓글보기</td>
+							        <td style="padding:5px;"><span style="cursor: pointer" class="glyphicon glyphicon-heart icon-size"
+							        	onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')"></span>
+							            </td>
+							        <td style="margin-top:30px; cursor: pointer;" onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">좋아요</td>
+							        <td style="padding:5px;"><span style="cursor: pointer" class="glyphicon glyphicon-share-alt icon-size"></span>
+							        </td>
+							        <td style="margin-top:30px; cursor: pointer;">공유하기</td>
+							   	</tr>
+							</table>
 						</div>
 					</div> 
 				<!-- 댓글 comment -->
@@ -548,7 +660,7 @@ td {
 				<!-- 본문 글 끝 -->
 				</div>
 				<%
-				} // for followingBoardList
+				} // for allBoardList
 				%>
 			</div>
 		</div>
@@ -557,5 +669,6 @@ td {
 	<footer class="container-fluid text-center">
 	<p>MADI</p>
 	</footer>
+	
 </body>
 </html>

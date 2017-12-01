@@ -1,3 +1,4 @@
+<%@page import="com.spring.madi.MemberBoxVO"%>
 <%@page import="com.spring.madi.BoardVO"%>
 <%@page import="com.spring.madi.MessageVO"%>
 <%@page import="com.spring.madi.NotificationVO"%>
@@ -17,14 +18,17 @@
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
+	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 
 	// Header에 해당 객체 전달
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("messageList", messageList);
-
+	request.setAttribute("myIrdntList", myIrdntList);
+	
 	// recipe 정보 및 recipe 분해
 	RecipeVO recipe = (RecipeVO) request.getAttribute("recipe");
+	MemberVO recipeOwner = (MemberVO) request.getAttribute("recipeOwner");
 	ArrayList<RecipeIrdntVO> recipeIrdnt = (ArrayList<RecipeIrdntVO>) recipe.getRecipeIrdnt();
 	ArrayList<RecipeProcessVO> recipeProcess = (ArrayList<RecipeProcessVO>) recipe.getRecipeProcess();
 
@@ -40,6 +44,7 @@
 <title>마디 - 재료로 요리하다</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
@@ -53,6 +58,7 @@
 
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
+
 
 <script language="JavaScript">
 	$(document).ready(function() {
@@ -284,32 +290,78 @@
 		json.plotOptions = plotOptions;
 		$('#지방').highcharts(json);
 	});
-
-	//ajax 댓글 비동기화 
-	function reply_save() {
-
-		// 아이디:reply form의 값을 serialize() ==전부다 긁어와서  x에 정렬하여 저장
-		var x = $("#reply").serialize();
+	$(document).ready(function() {
+		$("#replySubmitBtn").click(function() {
+			var rep_content = $("textarea[name='rep_content']").val();
+			if(rep_content == "") {
+				alert("내용을 입력해주세요.");
+				return;
+			}
+			var param = $("#reply").serialize();
+			$.ajax({
+				url: "./writeBoard.do",
+				type: "POST",
+				data: param,
+				contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+				dataType: "text",
+				success: function(data) {
+					$("#replyList").empty();
+					$("textarea[name='rep_content']").val("");
+					$("#replyList").append(data);
+					document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) + 1;
+				}
+			});
+		});
+	});
+	function deletereply(element, rep_date, user_id) {
+		var parent = element.parentNode;
+		var pParent = parent.parentNode;
+		var me = "<%=memberVO.getUser_id()%>";
+		var board_num = "<%=boardVO.getBoard_num()%>";
+		if(me != user_id) {
+			alert("회원님이 직접 작성하신 댓글만 삭제 가능합니다.");
+			return;
+		}
 		$.ajax({
-
-			data : x,
-			dataType : "text",
-			type : "GET",
-			contentType : "application/x-www-form-urlencoded; charset=UTF-8", //인코딩 타입 설정
-			async : false, //비동기 동기 여부(false: 동기), 
-			url : "./writeBoard.do", //맵핑 주소      맵핑주소에서는 -->recipeDetail1.jsp 로  보냄
-			success : function(data) {
-
-				//아이디 :reply의 데이터 다 지우고
-				$("#replyreply").empty();
-				//아이디:reply의 데이터 다시 추가
-				$("#replyreply").append(data);
+			url: "./deleteReply.do",
+			type: "POST",
+			data: {
+				rep_date: rep_date,
+				user_id: user_id,
+				board_num: board_num
 			},
-			error : function() {
-				alert('실패');
+			success: function(data) {
+				pParent.remove();
+				document.getElementById("comments").innerHTML = data;							
+				
 			}
 		});
-	};
+	}
+	function followRequest(user_id, following_user_id, user_img, following_user_img) {
+		// 내가 날 팔로우할 순 없음
+		if(user_id == following_user_id) {
+			return;
+		}
+		$.ajax({
+			url: "./followRequest.do",
+			type: "POST",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id,
+				user_img: user_img,
+				following_user_img: following_user_img,
+			},
+			success: function(data) {
+				if(data == 0) {
+					alert("이미 팔로우 한 회원입니다.");
+				} else if(data == 1){
+					alert("현재 "+following_user_id+"님의 요청 수락을 기다리고 있습니다.");
+				} else if(data == 2){
+					alert(following_user_id+"님께 팔로우를 신청하셨습니다.");				
+				}
+			}
+		});
+	}
 </script>
 
 <!-- 하이차트 끝 -->
@@ -344,11 +396,13 @@ footer {
 		height: auto;
 	}
 }
+.xrs {
+	 background-image: url('./resources/image/10.gif');
+}
 /* 본문 스타일 설정 */
 </style>
 </head>
-<body style="background-color: #F6F6F6">
-	<%=boardVO.getBoard_num() %>
+<body style="background-color: #F6F6F6" class="xrs">
 	<!-- Header 시작-->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
@@ -363,16 +417,21 @@ footer {
 				<div class="panel panel-default text-center"
 					style="padding-left: 5px; padding-right: 5px; padding-bottom: 10px;">
 					<h3>
-						<%=memberVO.getUser_id()%>님의 레시피
+						<%=recipeOwner.getUser_id()%>님의 레시피
 					</h3>
-					<img src="<%=memberVO.getUser_img()%>" class="img-rounded"
+					<img src="<%=recipeOwner.getUser_img()%>" class="img-rounded"
 						width="80%;"> <br /> <br />
 					<p>
-					<h4><%=memberVO.getUser_name()%></h4>
+					<h4><%=recipeOwner.getUser_name()%></h4>
 					</p>
 					<p>
-					<h4><%=memberVO.getUser_email()%></h4>
+					<h4><%=recipeOwner.getUser_email()%></h4>
 					</p>
+					<!-- 팔로우 버튼 -->
+					<button type="button" class="btn btn-danger btn" onclick="followRequest('<%=memberVO.getUser_id()%>','<%=recipeOwner.getUser_id()%>', '<%=memberVO.getUser_img()%>','<%=recipeOwner.getUser_img()%>')" style="border-radius: 10px;">
+						<strong style="font-size:15px;">팔로우</strong>
+					</button>&nbsp;
+					<!-- 팔로우 버튼 -->
 					<!-- 하이차트 시작 -->
 					<div class="container-fluid"
 						style="padding-left: 5%; padding-right: 5%;">
@@ -422,7 +481,7 @@ footer {
 				<!-- recipe 작성자, 작성시각 -->
 				<h5>
 					<span class="glyphicon glyphicon-time"></span> Post by
-					<%=memberVO.getUser_name()%>,
+					<%=recipeOwner.getUser_name()%>,
 					<%=recipe.getTime()%>
 				</h5>
 				<!-- recipe 타입 -->
@@ -446,6 +505,7 @@ footer {
 							},
 							success: function(data) {
 								if(data == 1) {
+									document.getElementById("no").innerHTML = Number(document.getElementById("no").innerHTML) + 1;
 									document.getElementById("likeCnt").innerHTML = Number(document.getElementById("likeCnt").innerHTML) + 1;
 								} else {
 									document.getElementById("likeCnt").innerHTML = Number(document.getElementById("likeCnt").innerHTML) - 1;
@@ -461,7 +521,7 @@ footer {
 				</p>
 				<br>
 				<!-- recipe 타이틀 이미지 -->
-				<img src="<%=recipe.getImg_url()%>" class="img-rounded" width="40%" />
+				<img src="<%=recipe.getImg_url()%>" class="img-rounded w3-animate-opacity" width="40%" />
 				<h5>
 					<small><%=recipe.getRecipe_title()%></small>
 				</h5>
@@ -495,7 +555,7 @@ footer {
 				</script>
 				<br/>
 				<!-- recipe 과정 시작 -->
-				<div id="Pro" class="row container-fluid" style="display:none;">
+				<div id="Pro" class="row container-fluid w3-animate-opacity" style="display:none;">
 <%
 				for(int i = 0; i < recipeProcess.size(); i++) {		
 					try {
@@ -505,7 +565,7 @@ footer {
 %>					
 					<div class="well col-sm-12">
 						<div class="col-sm-6">		
-								<img src="<%=recipeProcessVO.getStep_img_url() %>" class="img-rounded" height="auto" width="100%"/>
+								<img src="<%=recipeProcessVO.getStep_img_url() %>" class="img-rounded w3-animate-left" height="auto" width="100%"/>
 						</div>
 						<div class="col-sm-6">
 								<p>과정 <%=recipeProcessVO.getCooking_no() %></p>
@@ -557,30 +617,10 @@ footer {
 						<input type="hidden" name="board_num" value="<%=boardVO.getBoard_num() %>" />
 						<input type="hidden" name="user_id" value="<%=memberVO.getUser_id() %>" />
 						<input type="hidden" name="user_img" value="<%=memberVO.getUser_img() %>" />
+						<input type="hidden" name="writer" value="<%=recipeOwner.getUser_id()%>">
 					</div>
 				</form>
 				<button class="btn btn-success" id="replySubmitBtn">댓글 달기</button>
-				<script>
-					$(document).ready(function() {
-						$("#replySubmitBtn").click(function() {
-							var param = $("#reply").serialize();
-							alert(param);
-							$.ajax({
-								url: "./writeBoard.do",
-								type: "POST",
-								data: param,
-								contentType : 'application/x-www-form-urlencoded; charset=utf-8',
-								dataType: "text",
-								success: function(data) {
-									alert(data);
-									$("#replyList").empty();
-									$("#replyList").append(data);
-									document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) + 1;
-								}
-							});
-						});
-					});
-				</script>
 				<br> <br>
 
 				<p>
@@ -588,12 +628,12 @@ footer {
 				</p>
 				<br>
 				<!-- 댓글 리스트 시작 -->
-				<div class="row" id="replyList">
+				<div class="row w3-animate-bottom" id="replyList">
 <%
 				for(int k = 0; k < replyList.size(); k++) {
 					BoardReplyVO boardReplyVO = replyList.get(k);
 %>					
-					<div class="reply">
+					<div class="reply w3-animate-bottom">
 						<div class="col-sm-2 text-center">
 							<img src="<%=boardReplyVO.getUser_img() %>" class="img-circle" height="65"
 								width="65" alt="<%=boardReplyVO.getUser_id()%>">
@@ -606,10 +646,10 @@ footer {
 							<br>
 						</div>
 						<div class="col-sm-1">
-							<button class="btn btn-default" style='border:none; outline:none;'>
+							<button onclick="deletereply(this, '<%=boardReplyVO.getRep_date()%>', '<%=boardReplyVO.getUser_id()%>')" class="btn btn-default" style='border:none; outline:none;'>
 								<span class='glyphicon glyphicon-remove'></span>
-								<input type="hidden" name="rep_date" value="<%=boardReplyVO.getRep_date()%>"/>
-								<input type="hidden" name="user_id" value="<%=boardReplyVO.getUser_id()%>"/>
+								<%-- <input type="hidden" name="rep_date" value="<%=boardReplyVO.getRep_date()%>"/>
+								<input type="hidden" name="user_id" value="<%=boardReplyVO.getUser_id()%>"/> --%>
 							</button>
 						</div>
 					</div>
@@ -626,33 +666,5 @@ footer {
 	<footer class="container-fluid text-center">
 	<p>MADI</p>
 	</footer>
-	<script>
-		$(document).ready(function() {
-			$(".reply").find("button").click(function() {
-				alert("x");
-				var rep_date = $(this).find("input[name='rep_date']").val();
-				alert(rep_date);
-				var user_id = $(this).find("input[name='user_id']").val();
-				var parent = $(this).parents("div[class='reply']");
-
-				$.ajax({
-					url: "./deleteReply.do",
-					type: "POST",
-					data: {
-						rep_date: rep_date,
-						user_id: user_id
-					},
-					success: function(data) {
-						if(data==1) {
-							parent.remove();
-							document.getElementById("comments").innerHTML = Number(document.getElementById("comments").innerHTML) - 1;							
-						} else {
-							alert("회원님이 직접 작성하신 댓글만 삭제 가능합니다.");
-						}
-					}
-				});
-			});
-		});
-	</script>
 </body>
 </html>

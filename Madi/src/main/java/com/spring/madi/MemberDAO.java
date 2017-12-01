@@ -1,6 +1,7 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface MemberDAO {
 	//(진산) 로그인한 아이디 자신에 대한 member정보
@@ -8,11 +9,11 @@ public interface MemberDAO {
 	//(진산) 임시--MemberFollow에서 팔로잉한 사람 불러오기
 	//MemberFollowVO getFollowing_user_id(String user_id);
 	//(진산)팔로워 수 카운트
-	ArrayList<MemberFollowVO> getFollower(String user_id);	
+	ArrayList<MemberVO> getFollower(String user_id);	
 	//(진산)팔로잉 수 카운트
-	ArrayList<MemberFollowVO> getFollowing(String user_id);
+	ArrayList<MemberVO> getFollowing(String user_id);
 	//(진산)팔로워 추천 리스트
-	ArrayList<MemberFollowVO> getRecommendFollower(String user_id);
+	ArrayList<MemberVO> getRecommendFollower(String user_id);
 	//(진산) 추천 리스트 새로고침
 	ArrayList<MemberFollowVO> getReloadRecommend();
 	//(진산)팔로잉 한 명 삭제
@@ -46,6 +47,21 @@ public interface MemberDAO {
 	public void deleteIrdnt(MemberBoxVO memberBoxVO);
 
 	// 성빈 : 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐)
+
+	
+
+
 	public MemberVO getUserInfoById(String user_id);
+	// 성빈 : following 추가
+	public void setFollowing(MemberFollowVO memberFollowVO);
+	// 성빈 : follwing 체크
+	public int checkFollowing(MemberFollowVO memberFollowVO);
+	
+	// 예진: 회원 정보수정
+	public int updateInfo(MemberVO memberVO);
+	
+	public ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
+	public ArrayList<MemberVO> getRecommendByRecipeCnt();
+	public ArrayList<MemberVO> getRecommendByLikeCnt();
 
 }

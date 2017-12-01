@@ -220,4 +220,7 @@ public class RecipeDAOService implements RecipeDAO {
 			}
 			return recipeProcessList;
 		}
+		
+		// (성빈) 내가 좋아요 한 레시피에 좋아요 했다는 기록 남기기 위한 메서드
+		
 }

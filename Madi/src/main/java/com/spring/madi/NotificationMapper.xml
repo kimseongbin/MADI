@@ -17,8 +17,13 @@
 	<select id="getMyNoticeById" resultMap="NotificationResultMap">
 		SELECT *
 		FROM NOTIFICATION
-		WHERE NOTICE_TO = #{user_id} AND CHECK_NOT = 0
+		WHERE NOTICE_TO = #{user_id, jdbcType=VARCHAR} AND CHECK_NOT = 0
 		ORDER BY TIME DESC
+	</select>
+	<select id="getMyNoticeByNoticeId" resultMap="NotificationResultMap">
+		SELECT *
+		FROM NOTIFICATION
+		WHERE NOTICE_ID = #{notice_id, jdbcType=VARCHAR}
 	</select>
 	<!-- 성빈 : 읽어 온 메시지를 확인한 후 사용자가 알림 내용을 삭제한 경우 CHECK 값을 1로 만들 때 사용하는 UPDATE 쿼리 -->
 	<!-- 전달 파라미터 NotificationVO notificationVO 인 경우-->
@@ -32,7 +37,7 @@
 	<update id="removeNoticeByNoticeId" parameterType="String">
 		UPDATE NOTIFICATION
 		SET CHECK_NOT = 1
-		WHERE NOTICE_ID = #{notice_id}
+		WHERE NOTICE_ID = #{notice_id, jdbcType=VARCHAR}
 	</update>
 	<!-- 성빈 : 읽어 온 메시지를 확인한 후 사용자가 알림 내용을 삭제한 경우 CHECK 값을 1로 만들 때 사용하는 UPDATE 쿼리 -->
 	<!-- 전달 파라미터 int notice_id 인 경우-->
@@ -52,7 +57,12 @@
 	// ex>> input type="hidden" name="notice_tpye" value="팔로우" (팔로우 버튼인 경우) -->
 	<insert id="sendNoticeById" parameterType="com.spring.madi.NotificationVO">
 		INSERT INTO NOTIFICATION(NOTICE_ID, NOTICE_TO, NOTICE_FROM, CONTENT, NOTICE_TYPE)
-		VALUES(SEQ_OF_NOTICE.NEXTVAL, #{notice_to, javaType=String}, #{notice_from}, #{content}, #{notice_type})
+		VALUES(SEQ_OF_NOTICE.NEXTVAL, #{notice_to, jdbcType=VARCHAR}, #{notice_from, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR}, #{notice_type, jdbcType=VARCHAR})
 	</insert>
+	<select id="checkFollowRequest" resultType="int" parameterType="com.spring.madi.MemberFollowVO">
+		SELECT COUNT(*)
+		FROM NOTIFICATION
+		WHERE NOTICE_TO = #{following_user_id, jdbcType=VARCHAR} AND NOTICE_FROM = #{user_id, jdbcType=VARCHAR} AND NOTICE_TYPE = '팔로우 신청' AND CHECK_NOT = 0
+	</select>
 
 </mapper>

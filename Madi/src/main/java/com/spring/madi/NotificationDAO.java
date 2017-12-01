@@ -24,4 +24,8 @@ public interface NotificationDAO {
 	// ex>> input type="hidden" name="notice_content" value="000이 좋아요를 눌렀습니다" (좋아요 버튼인 경우)
 	// ex>> input type="hidden" name="notice_tpye" value="팔로우" (팔로우 버튼인 경우)*/
 	public void sendNoticeById(NotificationVO notificaitonVO);
+	// 성빈 : notice_id로 알림 메시지 읽어오기
+	NotificationVO getMyNoticeByNoticeId(String notice_id);
+	
+	int checkFollowRequest(MemberFollowVO memberFollowVO);
 }
