@@ -2,8 +2,10 @@ package com.spring.madi;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,11 +53,11 @@ public class FrontController {
 	// 게시물 보기 controller
 	@RequestMapping("/postList.do")
 	public ModelAndView postList(RecipeVO recipeVO, HttpSession session) {
-		//모델 & 뷰 연결 객체 생성
+		// 모델 & 뷰 연결 객체 생성
 		ModelAndView result = new ModelAndView();
 		// 레시피 리스트 조회
 		List<RecipeVO> postList = recipeDAOService.postList();
-		
+
 		// Header 기본 정보(알림/메시지/유저이미지) 정보 받아오기
 		String user_id = (String) session.getAttribute("user_id");
 		// 내 정보 받아오기
@@ -128,8 +130,9 @@ public class FrontController {
 	@RequestMapping("/logout.do")
 	public String logoutMadi(HttpSession session) {
 		session.invalidate();
-		return"redirect:/";
+		return "redirect:/";
 	}
+
 	// 성빈 : 회원가입 모델
 	// DB에 Insert한 뒤 초기화면으로 돌아간다.
 	@RequestMapping("/join.do")
@@ -152,43 +155,53 @@ public class FrontController {
 		}
 		return "redirect:/";
 	}
+
 	// (진산)mypage.do 작업
 	@RequestMapping("/mypage.do")
-	public ModelAndView myPage(HttpServletRequest request, HttpSession session)
-	{	
+	public ModelAndView myPage(HttpServletRequest request, HttpSession session) {
 		// ModelAndView 객체 생성
-		ModelAndView result= new ModelAndView();
+		ModelAndView result = new ModelAndView();
 		// Session으로부터 사용자 아이디 읽어오기
-		String user_id = (String)session.getAttribute("user_id");
-		if(user_id == null) {
+		String user_id = (String) session.getAttribute("user_id");
+		if (user_id == null) {
 			System.out.println("SYSTEM  :  Controller, myPage.do; 세션 아이디 삭제 또는 비정상 접근에 의한 로그아웃 또는 접근 불가");
 			result.setViewName("redirect:/");
 			return result;
 		}
+		MemberFollowVO memberFollowVO = new MemberFollowVO();
+		memberFollowVO.setUser_id(user_id);
+		memberFollowVO.setFollowing_user_id(user_id);
 		// Header에 들어가야 할 기본 데이터 읽어오기
 		// 내 알림 메시지 읽어오기
 		ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(user_id);
 		// 내 개인 메시지 읽어오기
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
 		// 내 개인정보 읽어오기
-		MemberVO memberVO= memberDAOService.getMember(user_id);
-
+		MemberVO memberVO = memberDAOService.getMember(user_id);
 		// 내 냉장고 재료 목록 불러오기
 		ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(user_id);
-		
+
 		// Mypage에서 쓰일 기본 정보 읽어오기
 		// 팔로워 리스트
-		List<MemberFollowVO> followerList = memberDAOService.getFollower(user_id);
+		List<MemberVO> followerList = memberDAOService.getFollower(user_id);
 		// 팔로잉 리스트
-		List<MemberFollowVO> followingList = memberDAOService.getFollowing(user_id);
-		//팔로워 추천 리스트
-		List<MemberFollowVO> recommendList= memberDAOService.getRecommendFollower(user_id);
-		//모든 게시글 위해서 불러옴 
+		List<MemberVO> followingList = memberDAOService.getFollowing(user_id);
+		// 팔로워 추천 리스트
+		List<MemberVO> followers = memberDAOService.getRecommendFollower(memberFollowVO);
+		List<MemberVO> followerCnt = memberDAOService.getRecommendByFollowerCnt(user_id);
+		List<MemberVO> likeCnt = memberDAOService.getRecommendByLikeCnt();
+		List<MemberVO> recipeCnt = memberDAOService.getRecommendByRecipeCnt();
+		Map<String, List<MemberVO>> recommendMap = new HashMap<String, List<MemberVO>>();
+		recommendMap.put("followers", followers);
+		recommendMap.put("followerCnt", followerCnt);
+		recommendMap.put("likeCnt", likeCnt);
+		recommendMap.put("recipeCnt", recipeCnt);
+		// 모든 게시글 위해서 불러옴
 		List<BoardVO> allBoardList = boardDAOService.getAllBoards(user_id);
 		// 내 게시글 리스트..카운트에도 쓴다
 		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
 		// 내 게시글의 시간 구하기(연월일)
-		//String time= boardDAOService.getTime(user_id);
+		// String time= boardDAOService.getTime(user_id);
 		// Object 추가
 		result.addObject("notificationList", notificationList);
 		result.addObject("messageList", messageList);
@@ -196,20 +209,21 @@ public class FrontController {
 		result.addObject("myIrdntList", myIrdntList);
 		result.addObject("followerList", followerList);
 		result.addObject("followingList", followingList);
-		result.addObject("recommendList", recommendList);
+		result.addObject("recommendMap", recommendMap);
 		result.addObject("myBoardList", myBoardList);
 		result.addObject("allBoardList", allBoardList);
-		
+
 		result.setViewName("mypage");
 		return result;
 	}
-	//(진산) 타임라인 팔로잉+본인 글 보기
+
+	// (진산) 타임라인 팔로잉+본인 글 보기
 	@RequestMapping("/allBoard.do")
 	public ModelAndView getAllBoard(BoardVO boardVO, HttpSession session) {
-		String user_id = (String)session.getAttribute("user_id");
+		String user_id = (String) session.getAttribute("user_id");
 		MemberVO memberVO = memberDAOService.getUserInfoById(user_id);
-		ModelAndView result= new ModelAndView();
-		//모든 게시글 위해서 불러옴 
+		ModelAndView result = new ModelAndView();
+		// 모든 게시글 위해서 불러옴
 		List<BoardVO> allBoardList = boardDAOService.getAllBoards(user_id);
 		System.out.println("user" + user_id);
 		System.out.println("size " + allBoardList.size());
@@ -218,12 +232,13 @@ public class FrontController {
 		result.setViewName("allBoard");
 		return result;
 	}
-	//(진산) 내 게시글만 보기
+
+	// (진산) 내 게시글만 보기
 	@RequestMapping("/myBoard.do")
 	public ModelAndView getMyBoard(BoardVO boardVO, HttpSession session) {
-		String user_id = (String)session.getAttribute("user_id");
+		String user_id = (String) session.getAttribute("user_id");
 		MemberVO memberVO = memberDAOService.getUserInfoById(user_id);
-		ModelAndView result= new ModelAndView();
+		ModelAndView result = new ModelAndView();
 		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
 		System.out.println("user" + user_id);
 		System.out.println("size " + myBoardList.size());
@@ -232,11 +247,12 @@ public class FrontController {
 		result.setViewName("myBoard");
 		return result;
 	}
-	//(진산) 내 사진들 보기
+
+	// (진산) 내 사진들 보기
 	@RequestMapping("/myPhoto.do")
 	public ModelAndView getMyPhoto(BoardVO boardVO, HttpSession session) {
-		String user_id = (String)session.getAttribute("user_id");
-		ModelAndView result= new ModelAndView();
+		String user_id = (String) session.getAttribute("user_id");
+		ModelAndView result = new ModelAndView();
 		List<BoardVO> myBoardList = boardDAOService.getBoards(user_id);
 		System.out.println("user" + user_id);
 		System.out.println("size " + myBoardList.size());
@@ -244,85 +260,87 @@ public class FrontController {
 		result.setViewName("myPhoto");
 		return result;
 	}
-	
+
 	// (진산)팔로잉 한 명 삭제
 	@RequestMapping("/deleteFollowing.do")
-	public ModelAndView deleteFollowing(MemberFollowVO memberFollow, HttpServletRequest request, NotificationVO notificaitonVO) {
-		String user_id= memberFollow.getUser_id();
-		String following_user_id = request.getParameter("following_user_id");
-//		System.out.println("u=" + user_id);
-//		System.out.println("f=" + following_user_id);
-		ModelAndView result= new ModelAndView();	
+	@ResponseBody
+	public int deleteFollowing(String user_id, String following_user_id) {
+
+		// 팔로잉 삭제
 		memberDAOService.deleteFollowing(user_id, following_user_id);
-		System.out.println("팔로잉 삭제 성공");
-		
-		
-		System.out.println(notificaitonVO.getNotice_to());
-		notificationDAOService.sendNoticeById(notificaitonVO);
-		
-		List<MemberFollowVO> followingList= memberDAOService.getFollowing(user_id);
-		result.addObject("followingList", followingList);
-		result.setViewName("following_modal");
-		return result;
+
+		// 팔로우 취소 알림 메시지 보내기
+		NotificationVO notificationVO = new NotificationVO();
+		notificationVO.setNotice_to(following_user_id);
+		notificationVO.setNotice_from(user_id);
+		notificationVO.setNotice_type("팔로우 거부");
+		notificationVO.setContent(user_id + "님께서 팔로우를 취소하셨습니다.");
+		notificationDAOService.sendNoticeById(notificationVO);
+
+		List<MemberVO> followingList = memberDAOService.getFollowing(user_id);
+
+		return followingList.size();
 	}
 
 	// (진산)팔로워 한 명 삭제
 	@RequestMapping("/deleteFollower.do")
-	public ModelAndView deleteFollower(MemberFollowVO memberFollow, HttpServletRequest request, NotificationVO notificaitonVO) {
-		String user_id= memberFollow.getUser_id();
-		String following_user_id = request.getParameter("following_user_id");
-//		System.out.println("u=" + user_id);
-//		System.out.println("f=" + following_user_id);
-		ModelAndView result= new ModelAndView();	
+	@ResponseBody
+	public int deleteFollower(String user_id, String following_user_id) {
+
+		// 팔로워 삭제
 		memberDAOService.deleteFollower(user_id, following_user_id);
-		
-		System.out.println("팔로워 삭제 성공");
-		notificationDAOService.sendNoticeById(notificaitonVO);
-		
-		List<MemberFollowVO> followerList= memberDAOService.getFollower(following_user_id);
-		System.out.println("followerList size is "+followerList.size());
-		result.addObject("followerList", followerList);
-		result.setViewName("follower_modal");
-		return result;
+
+		// 팔로워 취소 알림 메시지 보내기
+		NotificationVO notificationVO = new NotificationVO();
+		notificationVO.setNotice_to(user_id);
+		notificationVO.setNotice_from(following_user_id);
+		notificationVO.setNotice_type("팔로우 거부");
+		notificationVO.setContent(following_user_id + "님께서 회원님의 팔로우를 취소하셨습니다.");
+		notificationDAOService.sendNoticeById(notificationVO);
+
+		List<MemberVO> followerList = memberDAOService.getFollower(following_user_id);
+
+		return followerList.size();
 	}
 
 	// (진산) 팔로잉 한 명 추가
 	@RequestMapping("/insertFollowing.do")
-	public ModelAndView insertFollowing(MemberFollowVO memberFollow, HttpServletRequest request, NotificationVO notificaitonVO) {
-		String user_id= memberFollow.getUser_id();
+	public ModelAndView insertFollowing(MemberFollowVO memberFollow, HttpServletRequest request,
+			NotificationVO notificaitonVO) {
+		String user_id = memberFollow.getUser_id();
 		String following_user_id = request.getParameter("following_user_id");
-		String user_img= memberFollow.getUser_img();
-		String following_user_img= memberFollow.getFollowing_user_img();
-//		System.out.println("u=" + user_id);
-//		System.out.println("f=" + following_user_id);
-//		System.out.println("u-i=" + user_img);
-//		System.out.println("f-i=" + following_user_img);
-		ModelAndView result= new ModelAndView();
+		String user_img = memberFollow.getUser_img();
+		String following_user_img = memberFollow.getFollowing_user_img();
+		// System.out.println("u=" + user_id);
+		// System.out.println("f=" + following_user_id);
+		// System.out.println("u-i=" + user_img);
+		// System.out.println("f-i=" + following_user_img);
+		ModelAndView result = new ModelAndView();
 		memberDAOService.insertFollowing(user_id, following_user_id, user_img, following_user_img);
-		
-		MemberVO member= memberDAOService.getMember(user_id);
+
+		MemberVO member = memberDAOService.getMember(user_id);
 		System.out.println("추가 성공");
 
 		notificationDAOService.sendNoticeById(notificaitonVO);
-		
-		List<MemberFollowVO> recommendList= memberDAOService.getRecommendFollower(user_id);
-		System.out.println("recommendList.size()=" + recommendList.size());
-		result.addObject("recommendList", recommendList);
+
+		//List<MemberFollowVO> recommendList = memberDAOService.getRecommendFollower(user_id);
+		//System.out.println("recommendList.size()=" + recommendList.size());
+		//result.addObject("recommendList", recommendList);
 		result.addObject("member", member);
 		result.setViewName("insertFollowing_modal");
 		return result;
-	} 
+	}
 
 	// (진산) 좋아요 클릭시 한 개 추가...@ResponseBody를 써서 json오브젝트만 리턴하게 된다
 	@RequestMapping("/updateBoardLike.do")
 	@ResponseBody
 	public int updateBoardLike(BoardVO boardVO, NotificationVO notificaitonVO) {
-		//String[] following_user_id= null;
-		//ModelAndView result= new ModelAndView();
-		String user_id= boardVO.getUser_id();
-		int board_num= boardVO.getBoard_num();
+		// String[] following_user_id= null;
+		// ModelAndView result= new ModelAndView();
+		String user_id = boardVO.getUser_id();
+		int board_num = boardVO.getBoard_num();
 		System.out.println("나오자나" + boardVO.getUser_id());
-		UserLikeBoVO res= boardDAOService.getUserLike(boardVO);
+		UserLikeBoVO res = boardDAOService.getUserLike(boardVO);
 		System.out.println(user_id);
 		System.out.println(board_num);
 		if (res == null) {
@@ -331,7 +349,7 @@ public class FrontController {
 			System.out.println("좋아요 성공");
 			System.out.println(notificaitonVO.getNotice_to());
 			notificationDAOService.sendNoticeById(notificaitonVO);
-			return 1;			
+			return 1;
 		} else {
 			boardDAOService.deleteUserLike(boardVO);
 			boardDAOService.likeMinusOne(boardVO);
@@ -339,33 +357,34 @@ public class FrontController {
 			System.out.println(notificaitonVO.getNotice_to());
 			notificationDAOService.sendNoticeById(notificaitonVO);
 			return 0;
-		}		
+		}
 	}
-	
+
 	// 진산 & 성빈 : 맴버 한 명의 냉장고 불러오기..
 	@RequestMapping("/getMemberBox.do")
 	public String getMyIrdntByUserId(MemberBoxVO memberBoxVO, HttpSession session, Model model) {
 		String user_id = (String) session.getAttribute("user_id");
-		ArrayList<MemberBoxVO> myIrdntList= memberDAOService.getMyIrdntByUserId(user_id);
+		ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(user_id);
 		model.addAttribute("myIrdntList", myIrdntList);
 		return "myBox";
 	}
-	
-	//(진산) 냉장고 추가 재료 정하기
+
+	// (진산) 냉장고 추가 재료 정하기
 	@RequestMapping("/insertMemberBox.do")
 	@ResponseBody
 	public void insertMemberBox(String[] my_irdnt, HttpSession session) {
-		
+
 		int length = my_irdnt.length;
 		String user_id = (String) session.getAttribute("user_id");
 		for (int i = 0; i < length; i++) {
 			MemberBoxVO memberBoxVO = new MemberBoxVO();
 			memberBoxVO.setMy_irdnt(my_irdnt[i]);
 			memberBoxVO.setUser_id(user_id);
-			memberDAOService.insertIrdnt(memberBoxVO);	
+			memberDAOService.insertIrdnt(memberBoxVO);
 		}
-		
+
 	}
+
 	// (성빈) 내 냉장고 재료 삭제
 	@RequestMapping("/deleteMemberBox.do")
 	@ResponseBody
@@ -376,7 +395,6 @@ public class FrontController {
 		memberBoxVO.setMy_irdnt(my_irdnt);
 		memberDAOService.deleteIrdnt(memberBoxVO);
 	}
-	
 
 	// 성빈 : 레시피 조회하는 페이지(recipe.jsp)의 모델
 	@RequestMapping("/recipe.do")
@@ -387,7 +405,7 @@ public class FrontController {
 		if (user_id == null) {
 			System.out.println("로그인에 실패하셨습니다.");
 			session.invalidate();
-			return "redirect:/";	
+			return "redirect:/";
 		}
 		// Header 기본 정보(알림/메시지/유저이미지) 정보 받아오기
 		// 내 정보 받아오기
@@ -406,14 +424,13 @@ public class FrontController {
 
 		return "recipe";
 	}
-	
-	
+
 	@RequestMapping("/recipeDetail.do")
 	public String recipeDetail(HttpSession session, RecipeVO recipeVO, Model model) {
 		// (성빈) : 로그인 체크
 		// session에 로그인 아이디 없을 경우 초기화면으로 이동
 		String user_id = (String) session.getAttribute("user_id");
-		if(user_id == null) {
+		if (user_id == null) {
 			return "redirect:/";
 		}
 		// Header에 전해줄 사용자 개인정보
@@ -424,16 +441,17 @@ public class FrontController {
 		ArrayList<MessageVO> messageList = messageDAOService.getMyMessageById(user_id);
 		// Header 내 냉장고 재료 받아오기
 		ArrayList<MemberBoxVO> myIrdntList = memberDAOService.getMyIrdntByUserId(user_id);
-		
+
 		// recipe_id로 recipe 정보 조회
 		RecipeVO recipe = recipeDAOService.getRecipeById(recipeVO);
 		// recipe에 있는 user_id로 작성자의 memberVO정보 조회
 		MemberVO recipeOwner = memberDAOService.getUserInfoById(recipe.getUser_id());
-		// (성빈), contentBoard수정 : recipeVO에 저장된 recipe_id를 이용해 해당 Board 데이터를 BoardVO 객체에 담아 리턴하는 메소드
+		// (성빈), contentBoard수정 : recipeVO에 저장된 recipe_id를 이용해 해당 Board 데이터를
+		// BoardVO 객체에 담아 리턴하는 메소드
 		BoardVO boardVO = boardDAOService.getBoardByRecipeId(recipeVO);
 		// (성빈), 추가 : BoardVO의 board_num과 연결된 댓글 리스트를 리턴하는 메소드
 		ArrayList<BoardReplyVO> replyList = boardDAOService.getReplyByBoardNum(boardVO);
-		
+
 		// RecipeDetail.jsp에 객체 전달
 		model.addAttribute("memberVO", memberVO);
 		model.addAttribute("notificationList", notificationList);
@@ -446,25 +464,28 @@ public class FrontController {
 
 		return "recipeDetail";
 	}
-	
+
 	// 성빈 : recipeDetail 화면에서 댓글 쓸 경우 댓글 추가 및 댓글 알림 메시지 보내기
-	
+
 	@RequestMapping("/writeBoard.do")
 	public ModelAndView writeBoard(BoardReplyVO boardReplyVO, String writer) {
-		
+
 		ModelAndView rs = new ModelAndView();
 		int board_num = boardReplyVO.getBoard_num();
-		if(board_num == 0) {
-			System.out.println("SYSTEM  :  댓글 입력 에러 발생, Controller; writeBoard; board_num을 전달받지 못했습니다. " + boardReplyVO.getBoard_num());
+		if (board_num == 0) {
+			System.out.println("SYSTEM  :  댓글 입력 에러 발생, Controller; writeBoard; board_num을 전달받지 못했습니다. "
+					+ boardReplyVO.getBoard_num());
 			return null;
 		}
-		// 게시글 작성자에게 댓글 알림 메시지 보내기
-		NotificationVO notificationVO = new NotificationVO();
-		notificationVO.setNotice_to(writer);	
-		notificationVO.setNotice_from(boardReplyVO.getUser_id());
-		notificationVO.setContent(boardReplyVO.getUser_id()+"님게서 회원님의 게시글에 댓글을 남기셨습니다.");
-		notificationVO.setNotice_type(Integer.toString(board_num));
-		notificationDAOService.sendNoticeById(notificationVO);
+		// 게시글 작성자에게 댓글 알림 메시지 보내기 (내 게시물이 아닌 경우에만)
+		if(!(writer.equals(boardReplyVO.getUser_id()))) {
+			NotificationVO notificationVO = new NotificationVO();
+			notificationVO.setNotice_to(writer);
+			notificationVO.setNotice_from(boardReplyVO.getUser_id());
+			notificationVO.setContent(boardReplyVO.getUser_id() + "님께서 회원님의 게시글에 댓글을 남기셨습니다.");
+			notificationVO.setNotice_type(Integer.toString(board_num));
+			notificationDAOService.sendNoticeById(notificationVO);
+		}
 		// 인욱
 		// 받은 값을 DB에 저장해줌
 		boardDAOService.writeBoard(boardReplyVO);
@@ -476,16 +497,18 @@ public class FrontController {
 		return rs;
 
 	}
+
 	// 주석 쓸 때 자기 이름 꼭 써요
 	// (성빈) 레시피 저장 모델
-	// MF로 파일 객체를 읽어 파일을 로컬 디렉토리에 저장한 뒤 해당 URL을 리턴받아 
+	// MF로 파일 객체를 읽어 파일을 로컬 디렉토리에 저장한 뒤 해당 URL을 리턴받아
 	// recipeVO에 입력한 뒤 recipeVO를 DB에 저장한다.
 	@RequestMapping("/recipeInsert.do")
-	public String recipeInsert(RecipeVO recipeVO, HttpSession session, @RequestParam("titleImg") MultipartFile titleImg, @RequestParam("stepImg") MultipartFile[] stepImg) throws Exception {
-		
+	public String recipeInsert(RecipeVO recipeVO, HttpSession session, @RequestParam("titleImg") MultipartFile titleImg,
+			@RequestParam("stepImg") MultipartFile[] stepImg) throws Exception {
+
 		System.out.println("SYSTEM  :  레시피 입력 시작, 입력 받은 과정 목록의 개수는 총 " + recipeVO.getCooking_desc().length);
 		System.out.println("SYSTEM  :  레시피 입력 시작, 입력 받은 파일 객체의 개수는 총 " + stepImg.length);
-		if( recipeVO.getCooking_desc().length != stepImg.length ) {
+		if (recipeVO.getCooking_desc().length != stepImg.length) {
 			System.out.println("SYSTEM  :  레시피 입력 실패, 입력 받은 과정 목록의 개수와 stepImg 파일 객체의 개수가 같지 않습니다.");
 			return null;
 		}
@@ -499,7 +522,7 @@ public class FrontController {
 		// (성빈) stepImg를 Local Directory에 저장하고 저장한 경로를 배열 형태로 리턴받는 메소드
 		String[] step_img_url = recipeDAOService.getImgURLByImgFiles(stepImg);
 		recipeVO.setStep_img_url(step_img_url);
-		
+
 		// (성빈) recipeVO에 입력되어 있는 recipe 기본정보를 recipe_Info 테이블에 INSERT
 		recipeDAOService.insertRecipe(recipeVO);
 		// (성빈) recipeVO에 저장되어 있는 recipe 재료정보를 recipe_Irdnt 테이블에 INSERT
@@ -513,68 +536,58 @@ public class FrontController {
 			recipeDAOService.insertRecipeProcess(recipeProcessList.get(i));
 		}
 		// (성빈) 파라메터 전달 테스트 성공, 각각의 순서에 맞춰 스트링 배열이 얻어짐을 확인
-		/*System.out.println("레시피 입력 테스트 시작");
-		System.out.println("RecipeInfo 기본 정보 입력 결과 확인 시작....");
-		System.out.println("recipe_id : " + recipeVO.getRecipe_id());
-		System.out.println("recipe_title : " + recipeVO.getRecipe_title());
-		System.out.println("recipe_desc : " + recipeVO.getRecipe_desc());
-		System.out.println("nation_code : " + recipeVO.getNation_code());
-		System.out.println("ty_code : " + recipeVO.getTy_code());
-		System.out.println("cooking_time : " + recipeVO.getCooking_time());
-		System.out.println("img_url : " + recipeVO.getImg_url());
-		System.out.println("detail_url : " + recipeVO.getDetail_url());
-		System.out.println("MultipartFile titleImg에 입력되어 있는 사진의 이름은 " + titleImg.getOriginalFilename());
-		System.out.println("MultipartFile titleImg에 입력되어 있는 사진의 크기는 " + titleImg.getSize());
-		
-		System.out.println("RecipeIrdnt 기본 정보 입력 결과 확인 시작....");
-		String[] irdnt_name = recipeVO.getIrdnt_name();
-		for (int i = 0; i < irdnt_name.length; i++) {
-			System.out.println("입력된 총 재료명의 개수는 " + irdnt_name.length);
-			System.out.println(i + "번 째 irdnt_name : " + irdnt_name[i]);
-		}
-		String[] irdnt_cpcty = recipeVO.getIrdnt_cpcty();
-		for (int i = 0; i < irdnt_cpcty.length; i++) {
-			System.out.println("입력된 총 재료용량의 개수는 " + irdnt_cpcty.length);
-			System.out.println(i + "번 째 irdnt_cpcty : " + irdnt_cpcty[i]);
-		}
-		int[] irdnt_ty_code = recipeVO.getIrdnt_ty_code();
-		for (int i = 0; i < irdnt_ty_code.length; i++) {
-			System.out.println("입력된 총 재료타입의 개수는 " + irdnt_ty_code.length);
-			System.out.println(i + "번 째 irdnt_ty_code : " + irdnt_ty_code[i]);
-		}
-		System.out.println("입력된 재료명, 재료용량, 재료타입의 개수가 모두 동일하고, 각각의 순서가 맞는가 ?");
-		
-		System.out.println("RecipeProcess 기본 정보 입력 결과 확인 시작");
-		int[] cooking_no = recipeVO.getCooking_no();
-		for (int i = 0; i < cooking_no.length; i++) {
-			System.out.println("입력된 총 과정순서의 개수는 " + cooking_no.length);
-			System.out.println(i + "번 째 cooking_no : " + cooking_no[i]);
-		}
-		String[] cooking_desc = recipeVO.getCooking_desc();
-		for (int i = 0; i < cooking_desc.length; i++) {
-			System.out.println("입력된 총 과정설명의 개수는 " + cooking_desc.length);
-			System.out.println(i + "번 째 cooking_desc : " + cooking_desc[i]);
-		}
-		String[] step_tip = recipeVO.getStep_tip();
-		for (int i = 0; i < step_tip.length; i++) {
-			System.out.println("입력된 총 과정 팁의 개수는 " + step_tip.length);
-			System.out.println(i + "번 째 step_tip : " + step_tip[i]);
-		}
-		String[] step_img_url = recipeVO.getStep_img_url();
-		if(step_img_url != null) {
-			for (int i = 0; i < step_img_url.length; i++) {
-				System.out.println("입력된 총 과정 사진의 개수는 " + step_img_url.length);
-				System.out.println(i + "번 째 step_img_url : " + step_img_url[i]);
-			}
-		}
-		System.out.println("stepImg 파일 입력 체크 시작");
-		for (int i = 0; i < stepImg.length; i++) {
-			System.out.println("입력된 총 과정 사진 파일의 개수는 " + stepImg.length);
-			System.out.println(i + "번 째 stepImg : " + stepImg[i].getOriginalFilename());
-		}
-		System.out.println("입력된 과정순서, 과정설명, 과정 팁, 과정 사진의 개수가 모두 동일하고, 각각의 순서가 맞는가?");*/
-		
-		
+		/*
+		 * System.out.println("레시피 입력 테스트 시작");
+		 * System.out.println("RecipeInfo 기본 정보 입력 결과 확인 시작....");
+		 * System.out.println("recipe_id : " + recipeVO.getRecipe_id());
+		 * System.out.println("recipe_title : " + recipeVO.getRecipe_title());
+		 * System.out.println("recipe_desc : " + recipeVO.getRecipe_desc());
+		 * System.out.println("nation_code : " + recipeVO.getNation_code());
+		 * System.out.println("ty_code : " + recipeVO.getTy_code());
+		 * System.out.println("cooking_time : " + recipeVO.getCooking_time());
+		 * System.out.println("img_url : " + recipeVO.getImg_url());
+		 * System.out.println("detail_url : " + recipeVO.getDetail_url());
+		 * System.out.println("MultipartFile titleImg에 입력되어 있는 사진의 이름은 " +
+		 * titleImg.getOriginalFilename());
+		 * System.out.println("MultipartFile titleImg에 입력되어 있는 사진의 크기는 " +
+		 * titleImg.getSize());
+		 * 
+		 * System.out.println("RecipeIrdnt 기본 정보 입력 결과 확인 시작...."); String[]
+		 * irdnt_name = recipeVO.getIrdnt_name(); for (int i = 0; i <
+		 * irdnt_name.length; i++) { System.out.println("입력된 총 재료명의 개수는 " +
+		 * irdnt_name.length); System.out.println(i + "번 째 irdnt_name : " +
+		 * irdnt_name[i]); } String[] irdnt_cpcty = recipeVO.getIrdnt_cpcty();
+		 * for (int i = 0; i < irdnt_cpcty.length; i++) {
+		 * System.out.println("입력된 총 재료용량의 개수는 " + irdnt_cpcty.length);
+		 * System.out.println(i + "번 째 irdnt_cpcty : " + irdnt_cpcty[i]); }
+		 * int[] irdnt_ty_code = recipeVO.getIrdnt_ty_code(); for (int i = 0; i
+		 * < irdnt_ty_code.length; i++) { System.out.println("입력된 총 재료타입의 개수는 "
+		 * + irdnt_ty_code.length); System.out.println(i +
+		 * "번 째 irdnt_ty_code : " + irdnt_ty_code[i]); }
+		 * System.out.println("입력된 재료명, 재료용량, 재료타입의 개수가 모두 동일하고, 각각의 순서가 맞는가 ?"
+		 * );
+		 * 
+		 * System.out.println("RecipeProcess 기본 정보 입력 결과 확인 시작"); int[]
+		 * cooking_no = recipeVO.getCooking_no(); for (int i = 0; i <
+		 * cooking_no.length; i++) { System.out.println("입력된 총 과정순서의 개수는 " +
+		 * cooking_no.length); System.out.println(i + "번 째 cooking_no : " +
+		 * cooking_no[i]); } String[] cooking_desc = recipeVO.getCooking_desc();
+		 * for (int i = 0; i < cooking_desc.length; i++) {
+		 * System.out.println("입력된 총 과정설명의 개수는 " + cooking_desc.length);
+		 * System.out.println(i + "번 째 cooking_desc : " + cooking_desc[i]); }
+		 * String[] step_tip = recipeVO.getStep_tip(); for (int i = 0; i <
+		 * step_tip.length; i++) { System.out.println("입력된 총 과정 팁의 개수는 " +
+		 * step_tip.length); System.out.println(i + "번 째 step_tip : " +
+		 * step_tip[i]); } String[] step_img_url = recipeVO.getStep_img_url();
+		 * if(step_img_url != null) { for (int i = 0; i < step_img_url.length;
+		 * i++) { System.out.println("입력된 총 과정 사진의 개수는 " + step_img_url.length);
+		 * System.out.println(i + "번 째 step_img_url : " + step_img_url[i]); } }
+		 * System.out.println("stepImg 파일 입력 체크 시작"); for (int i = 0; i <
+		 * stepImg.length; i++) { System.out.println("입력된 총 과정 사진 파일의 개수는 " +
+		 * stepImg.length); System.out.println(i + "번 째 stepImg : " +
+		 * stepImg[i].getOriginalFilename()); } System.out.
+		 * println("입력된 과정순서, 과정설명, 과정 팁, 과정 사진의 개수가 모두 동일하고, 각각의 순서가 맞는가?");
+		 */
 
 		// 파일 업로드 안돼요 오빠가 하셔야해요
 		/*
@@ -597,21 +610,22 @@ public class FrontController {
 		 * recipeDAOService.insertRecipe(recipeVO);
 		 */
 
-		/*BoardVO boardVO = new BoardVO();
-
-		// boardVO.setUser_id(recipeVO.getUser_id());
-		boardVO.setBoard_title(recipeVO.getRecipe_title());
-		boardVO.setBoard_summry(recipeVO.getRecipe_desc());
-		boardVO.setBoard_img(recipeVO.getImg_url());
-		boardVO.setBoard_recipe_id(recipeVO.getRecipe_id());
-
-		boardDAOService.insertBoard(boardVO);
-
-		// mav.addObject("fileName", mf.getOriginalFilename());
-		mav.setViewName("redirect:/postList.do");*/
+		/*
+		 * BoardVO boardVO = new BoardVO();
+		 * 
+		 * // boardVO.setUser_id(recipeVO.getUser_id());
+		 * boardVO.setBoard_title(recipeVO.getRecipe_title());
+		 * boardVO.setBoard_summry(recipeVO.getRecipe_desc());
+		 * boardVO.setBoard_img(recipeVO.getImg_url());
+		 * boardVO.setBoard_recipe_id(recipeVO.getRecipe_id());
+		 * 
+		 * boardDAOService.insertBoard(boardVO);
+		 * 
+		 * // mav.addObject("fileName", mf.getOriginalFilename());
+		 * mav.setViewName("redirect:/postList.do");
+		 */
 		boardDAOService.insertBoard(recipeVO);
-		
-		
+
 		return "redirect:/postList.do";
 
 	}
@@ -667,7 +681,8 @@ public class FrontController {
 			response.setCharacterEncoding("utf-8");
 			try {
 				PrintWriter writer = response.getWriter();
-				writer.write("<script>");;
+				writer.write("<script>");
+				;
 				writer.write("alert('현재 내 냉장고가 비어있습니다.');");
 				writer.write("</script>");
 				model.addAttribute("recipeList", recipeList);
@@ -709,9 +724,10 @@ public class FrontController {
 		// notice_id로 notice_type을 식별
 		NotificationVO notificationVO = notificationDAOService.getMyNoticeByNoticeId(notice_id);
 		// 팔로우 신청의 경우 팔로우 신청에 대한 처리를 해주어야 함.
-		if(notificationVO.getNotice_type().equals("팔로우 신청")) {
-			if(followAdmit.equals("수락")) {
-				// 팔로우 받아주기 (member_follow테이블에  user_id에는 신청한 사람, following_user_id에는 나)
+		if (notificationVO.getNotice_type().equals("팔로우 신청")) {
+			if (followAdmit.equals("수락")) {
+				// 팔로우 받아주기 (member_follow테이블에 user_id에는 신청한 사람,
+				// following_user_id에는 나)
 				MemberFollowVO memberFollowVO = new MemberFollowVO();
 				String user_id = notificationVO.getNotice_from();
 				String following_user_id = notificationVO.getNotice_to();
@@ -723,13 +739,13 @@ public class FrontController {
 				memberFollowVO.setFollowing_user_img(following_user_img);
 				// 팔로우 추가 (member_follow 테이블에 데이터 추가)
 				memberDAOService.setFollowing(memberFollowVO);
-				// 해당 알림 메시지 업데이트 
+				// 해당 알림 메시지 업데이트
 				notificationDAOService.removeNoticeByNoticeId(notice_id);
 				// 팔로우 신청한 사람에게 수락되었다고 메시지 보내기
 				NotificationVO acceptNotice = new NotificationVO();
 				acceptNotice.setNotice_to(notificationVO.getNotice_from());
 				acceptNotice.setNotice_from(notificationVO.getNotice_to());
-				acceptNotice.setContent(notificationVO.getNotice_to()+"님께서 회원님의 팔로우 신청을 수락하셨습니다");
+				acceptNotice.setContent(notificationVO.getNotice_to() + "님께서 회원님의 팔로우 신청을 수락하셨습니다");
 				acceptNotice.setNotice_type("팔로우 수락");
 				// 해당 알림메시지 보내기
 				notificationDAOService.sendNoticeById(acceptNotice);
@@ -740,7 +756,7 @@ public class FrontController {
 				NotificationVO rejectNotice = new NotificationVO();
 				rejectNotice.setNotice_to(notificationVO.getNotice_from());
 				rejectNotice.setNotice_from(notificationVO.getNotice_to());
-				rejectNotice.setContent(notificationVO.getNotice_to()+"님께서 회원님의 팔로우 신청을 거부하셨습니다");
+				rejectNotice.setContent(notificationVO.getNotice_to() + "님께서 회원님의 팔로우 신청을 거부하셨습니다");
 				rejectNotice.setNotice_type("팔로우 거부");
 				// 해당 알림메시지 보내기
 				notificationDAOService.sendNoticeById(rejectNotice);
@@ -761,7 +777,7 @@ public class FrontController {
 		model.addAttribute("notificationList", notificationList);
 		return "notification";
 	}
-	
+
 	// 성빈 : 안 읽은 메시지를 읽어오는 메소드
 	@RequestMapping(value = "/message.do")
 	public String getMessage(Model model, String user_id) {
@@ -775,22 +791,24 @@ public class FrontController {
 	@ResponseBody
 	public int likeBoard(UserLikeBoVO userLikeBoVO, String writer) {
 		// 좋아요 누른 적 있는지 없는지 판단
-		UserLikeBoVO vo = boardDAOService.doesAlreadyLike(userLikeBoVO);		
-		if(vo == null) {
+		UserLikeBoVO vo = boardDAOService.doesAlreadyLike(userLikeBoVO);
+		if (vo == null) {
 			System.out.println("SYSTEM  :  UserLikeBo Select 결과 데이터가 존재하지 읺아 UserLikeVO가 null이 리턴되었습니다.");
-			System.out.println("SYSTEM  :  UserLikeBo 에 데이터를 추가합니다. user_id : " + userLikeBoVO.getUser_id() + "board_num : " + userLikeBoVO.getBoard_num());
+			System.out.println("SYSTEM  :  UserLikeBo 에 데이터를 추가합니다. user_id : " + userLikeBoVO.getUser_id()
+					+ "board_num : " + userLikeBoVO.getBoard_num());
 			// Board 테이블에 좋아요 카운트 증가
 			boardDAOService.updateBoardLikePlus(userLikeBoVO);
 			// 좋아요 알림 메시지 전송
 			NotificationVO notificationVO = new NotificationVO();
 			notificationVO.setNotice_to(writer);
 			notificationVO.setNotice_from(userLikeBoVO.getUser_id());
-			String content = userLikeBoVO.getUser_id()+"님이 회원님의 게시물을 좋아합니다.";
+			String content = userLikeBoVO.getUser_id() + "님이 회원님의 게시물을 좋아합니다.";
 			String notice_type = "좋아요 추가";
 			notificationVO.setContent(content);
 			notificationVO.setNotice_type(notice_type);
 			notificationDAOService.sendNoticeById(notificationVO);
-			System.out.println("SYSTEM  :  "+writer+"에게 좋아요 알림 메시지를 보냈습니다"+"  FROM  :  " + userLikeBoVO.getUser_id());
+			System.out.println(
+					"SYSTEM  :  " + writer + "에게 좋아요 알림 메시지를 보냈습니다" + "  FROM  :  " + userLikeBoVO.getUser_id());
 			// 좋아요 테이블에 추가
 			boardDAOService.insertUserLikeBo(userLikeBoVO);
 			return 1;
@@ -802,45 +820,45 @@ public class FrontController {
 			return 0;
 		}
 	}
-	
+
 	// 성빈 : recipeDetail에서 게시판 댓글 삭제 버튼 눌렀을 때 처리하는 메소드
-	@RequestMapping("/deleteReply")
+	@RequestMapping("/deleteReply.do")
 	@ResponseBody
 	public int deleteReply(BoardReplyVO boardReplyVO, HttpSession session) {
 		String user_id = (String) session.getAttribute("user_id");
-		if(user_id.equals(boardReplyVO.getUser_id())) {
-			boardDAOService.deleteReply(boardReplyVO);
-			return 1;
-		} else {
-			return 0;
-		}
+		boardDAOService.deleteReply(boardReplyVO);
+		return boardDAOService.getReplySizeByBoardNum(boardReplyVO);
 	}
-	
+
 	// 성빈 : recipeDetail에서 팔로우 버튼 눌렀을 때 처리하는 메소드
 	// 팔로우 요청 알림을 발생시킨다
 	@RequestMapping("/followRequest.do")
-	public void followRequest(MemberFollowVO memberFollowVO) throws Exception {
-		// 이미 팔로우한 사람인 경우 에러를 발생시켜 팔로우 신청을 막는다
-		MemberFollowVO checkFollow = memberDAOService.checkFollowing(memberFollowVO);
-		if(checkFollow != null) {
-			throw new Exception();
-		} else {
-			// 요청 객체 생성
-			NotificationVO notificationVO = new NotificationVO();
-			notificationVO.setNotice_to(memberFollowVO.getFollowing_user_id());
-			notificationVO.setNotice_from(memberFollowVO.getUser_id());
-			notificationVO.setContent(memberFollowVO.getUser_id()+"님께서 회원님을 팔로우 하셨습니다.");
-			notificationVO.setNotice_type("팔로우 신청");
-			// 해당 알림메시지 보내기
-			notificationDAOService.sendNoticeById(notificationVO);
-			System.out.println("SYSTEM  :  팔로우 요청 알림 생성, 요청한 아이디 : "+memberFollowVO.getUser_id()+" 요청받는 아이디 :"+memberFollowVO.getFollowing_user_id());
+	@ResponseBody
+	public int followRequest(MemberFollowVO memberFollowVO) {
+		int checkFollowing = memberDAOService.checkFollowing(memberFollowVO);
+		if(checkFollowing != 0) {
+			System.out.println("SYSTEM  :  현재 팔로우한 회원을 다시 팔로우할 순 없습니다. 팔로우 요청을 취소합니다. 요청자 : " + memberFollowVO.getUser_id() + " 요청 대상 : " + memberFollowVO.getFollowing_user_id());
+			return 0;
 		}
+		int checkFollowRequest = notificationDAOService.checkFollowRequest(memberFollowVO);
+		if(checkFollowRequest != 0) {
+			System.out.println("SYSTEM  :  현재 팔로우 요청 읍답 대기 중입니다. 팔로우 요청을 취소합니다. 요청자 : " + memberFollowVO.getUser_id() + " 요청 대상 : " + memberFollowVO.getFollowing_user_id());
+			return 1;
+		}
+		NotificationVO followRequest = new NotificationVO();
+		followRequest.setNotice_to(memberFollowVO.getFollowing_user_id());
+		followRequest.setNotice_from(memberFollowVO.getUser_id());
+		followRequest.setNotice_type("팔로우 신청");
+		followRequest.setContent(memberFollowVO.getUser_id()+"님께서 팔로우를 신청하셔습니다.");
+		notificationDAOService.sendNoticeById(followRequest);
+		return 2;
 	}
+
 	@RequestMapping("/snsJoin.do")
 	public String snsJoin() {
-		
+
 		return "sns_join";
-		
+
 	}
 //	
 //	(진산) 임시..웹소켓 기능

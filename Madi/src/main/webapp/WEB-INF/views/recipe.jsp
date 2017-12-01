@@ -30,6 +30,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
@@ -50,6 +51,23 @@
 	.carousel-caption {
 		display: none;
 	}
+}
+.parallax {
+    /* The image used */
+    background-image: url('./resources/image/wallpaper.jpg');
+
+    /* Full height */
+    height: 100%; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+.xrs {
+	 background-image: url('./resources/image/10.gif');
 }
 </style>
 <script>
@@ -176,7 +194,7 @@
 	}
 </script>
 </head>
-<body style="background-color: #FCFAF5">
+<body style="background-color: #FCFAF5" class="xrs">
 	<!-- HEADER -->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
@@ -232,27 +250,27 @@
 					</a>
 				</div>
 			</div>
-			<div class="col-sm-4 panel panel-default" style="padding-bottom: 15px;">
+			<div class="col-sm-4 panel panel-default w3-animate-right" style="padding-bottom: 15px;">
 				<div style="padding-left: 10px;">
 					<h3 class="madi_subtitle">레시피 검색</h3>
-					<p class="text-muted madi_content">재료 별 레시피 검색하기, 주로 쓰일 재료에 따라 레시피를 검색해주세요.
+					<p class="text-muted madi_content">재료 별 레시피 검색하기, <br/>주로 쓰일 재료에 따라 레시피를 검색해주세요.
 					<p>
 				</div>
 				<hr />
 				<form id="search_form" name="search_form">
 					<div class="form-group madi_content">
 						<label for="main">주재료</label> <input type="text"
-							class="form-control" id="main" placeholder="/베이컨/계란/밀가루/브로콜리"
+							class="form-control" id="main" placeholder="예) /베이컨/계란/밀가루/브로콜리"
 							name="main" />
 					</div>
 					<div class="form-group madi_content">
 						<label for="sub">부재료</label> <input type="text"
-							class="form-control" id="sub" placeholder="/베이컨/계란/밀가루/양파"
+							class="form-control" id="sub" placeholder="예) /베이컨/계란/밀가루/양파"
 							name="sub" />
 					</div>
 					<div class="form-group madi_content">
 						<label for="source">양념</label> <input type="text"
-							class="form-control" id="source" placeholder="/소금/올리브유/후추가루"
+							class="form-control" id="source" placeholder="예) /소금/올리브유/후추가루"
 							name="source" />
 					</div>
 				</form>
@@ -265,17 +283,27 @@
 		</div>
 	</div>
 
-	<div class="container text-center">
-		<h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc">Madi</font>가<br/>추천하는 당신의 <font class="madi_cc">Recipe</font></h3>
+	<div class="container-fluid text-center parallax w3-grayscale-min">
+		<div class="container">
+		<font color="white"><h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc">Madi</font>가<br/>추천하는 당신의 <font class="madi_cc">Recipe</font></h3></font>
 		<br /> 
-		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer;"></span> 
+		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:white;"></span>
+		<script>
+			$("#refresh").mouseenter(function() {
+				$(this).attr("class","glyphicon glyphicon-refresh moreOfIrdnt w3-spin");
+			});
+			$("#refresh").mouseleave(function() {
+				$(this).attr("class", "glyphicon glyphicon-refresh moreOfIrdnt");
+			});
+		</script> 
 		<br />
 		<hr />
 		<div class="row" id="search_Result_Area">
 			<br/><br/>
-			<h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1>
+			<font color="white"><h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1></font>
 			<br/><br/><br/>
 		</div>
+	</div>
 	</div>
 	<div class="container">
 		<div class="container-fluid text-center">

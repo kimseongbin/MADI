@@ -1,7 +1,6 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
@@ -225,6 +224,11 @@ public class BoardDAOService implements BoardDAO {
 		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
 		ArrayList<UserLikeBoVO> userLikeBoardList = boardMapper.getUserLikeBoardList(user_id);
 		return userLikeBoardList;
+	}
+	@Override
+	public int getReplySizeByBoardNum(BoardReplyVO boardReplyVO) {
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		return boardMapper.getReplySizeByBoardNum(boardReplyVO);
 	}
 }
 

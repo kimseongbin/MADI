@@ -26,4 +26,6 @@ public interface NotificationDAO {
 	public void sendNoticeById(NotificationVO notificaitonVO);
 	// 성빈 : notice_id로 알림 메시지 읽어오기
 	NotificationVO getMyNoticeByNoticeId(String notice_id);
+	
+	int checkFollowRequest(MemberFollowVO memberFollowVO);
 }

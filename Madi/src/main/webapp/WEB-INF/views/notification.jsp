@@ -33,7 +33,7 @@
 					</button>
 				</li>
 <%
-			} else if(notificationVO.getNotice_type().equals("좋아요 추가")) {
+			} else if(notificationVO.getNotice_type().equals("좋아요 추가") || notificationVO.getNotice_type().equals("팔로우 거부") || notificationVO.getNotice_type().equals("팔로우 수락")) {
 %>
 				<!-- 좋아요 추가 시 알림 메시지 -->		
 				<li class="list-group-item" id="n<%=notificationVO.getNotice_id()%>">
@@ -60,3 +60,8 @@
 		} // for
 	} // else
 %>
+<script>
+	$(document).ready(function() {
+		document.getElementById("no").innerHTML = "<%=notificationList.size()%>";
+	});
+</script>
