@@ -1,6 +1,7 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +15,7 @@ public interface MemberMapper {
 	//(진산) 팔로잉 수 구하기
 	ArrayList<MemberVO> getFollowing(String user_id);
 	//(진산) 팔로워 추천 리스트
-	ArrayList<MemberVO> getRecommendFollower(MemberFollowVO memberFollowVO);
+	ArrayList<MemberVO> getRecommendFollower(String user_id);
 	// (성빈) 팔로워 추천 팔로워 수 많은 순
 	ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
 	// (성빈) 팔로워 추천 레시피 작성 많은 순
@@ -53,6 +54,9 @@ public interface MemberMapper {
 	void setFollowing(MemberFollowVO memberFollowVO);
 	// 성빈 : following 체크
 	int checkFollowing(MemberFollowVO memberFollowVO);
+	
+	// 예진: 회원 정보 수정
+	int updateInfo(Map<String, Object> map);
 	
 
 }

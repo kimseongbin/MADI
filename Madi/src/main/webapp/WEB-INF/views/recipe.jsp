@@ -285,9 +285,9 @@
 
 	<div class="container-fluid text-center parallax w3-grayscale-min">
 		<div class="container">
-		<font color="white"><h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc">Madi</font>가<br/>추천하는 당신의 <font class="madi_cc">Recipe</font></h3></font>
+		<font color="#DE4F4F"><h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc">Madi</font>가<br/>추천하는 당신의 <font class="madi_cc">Recipe</font></h3></font>
 		<br /> 
-		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:white;"></span>
+		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:#DE4F4F;"></span>
 		<script>
 			$("#refresh").mouseenter(function() {
 				$(this).attr("class","glyphicon glyphicon-refresh moreOfIrdnt w3-spin");
@@ -300,7 +300,7 @@
 		<hr />
 		<div class="row" id="search_Result_Area">
 			<br/><br/>
-			<font color="white"><h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1></font>
+			<font color="#DE4F4F"><h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1></font>
 			<br/><br/><br/>
 		</div>
 	</div>

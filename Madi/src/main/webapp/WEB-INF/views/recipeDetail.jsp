@@ -395,10 +395,13 @@ footer {
 		height: auto;
 	}
 }
+.xrs {
+	 background-image: url('./resources/image/10.gif');
+}
 /* 본문 스타일 설정 */
 </style>
 </head>
-<body style="background-color: #F6F6F6">
+<body style="background-color: #F6F6F6" class="xrs">
 	<!-- Header 시작-->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>

@@ -1,61 +1,45 @@
-<%@page import="java.util.Map"%>
-<%@page import="com.spring.madi.BoardReplyVO"%>
-<%@page import="com.spring.madi.MemberFollowVO"%>
-<%@page import="com.spring.madi.RecipeVO"%>
-<%@page import="java.util.List"%>
-<%@page import="com.spring.madi.BoardVO"%>
-<%@page import="com.spring.madi.MemberBoxVO"%>
-<%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.*,com.spring.madi.*"%>
 <%@page import="com.spring.madi.MessageVO"%>
 <%@page import="com.spring.madi.NotificationVO"%>
 <%@page import="com.spring.madi.MemberVO"%>
-<%
+<% 
 	// Header에 들어갈 기본 정보 불러오기
-	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
+	MemberVO memberVO= (MemberVO)request.getAttribute("memberVO");
 	// 메시지 리시트 받아오기 
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 	// 내 재료 목록 받아오기
 	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
-
+	
 	// myPage에서 사용할 기본 정보 
 	// 내 팔로워 리스트 
-	List<MemberVO> followerList = (ArrayList<MemberVO>) request.getAttribute("followerList");
+	List<MemberVO> followerList= (ArrayList<MemberVO>)request.getAttribute("followerList");
 	// 내가 팔로잉 리스트
-	List<MemberVO> followingList = (ArrayList<MemberVO>) request.getAttribute("followingList");
+	List<MemberVO> followingList= (ArrayList<MemberVO>)request.getAttribute("followingList");
 	// 팔로잉 추천 리스트
-	Map<String, List<MemberVO>> recommendMap = (Map<String, List<MemberVO>>) request.getAttribute("recommendMap");
-	// 팔로우 추천 리스트 <followers>
-	List<MemberVO> followers = (ArrayList<MemberVO>)recommendMap.get("followers");
-	// 팔로우 추천 리스트 <followerCnt>
-	List<MemberVO> followerCnt = (ArrayList<MemberVO>)recommendMap.get("followerCnt");
-	// 팔로우 추천 리스트 <likeCnt>
-	List<MemberVO> likeCnt = (ArrayList<MemberVO>)recommendMap.get("likeCnt");
-	// 팔로우 추천 리스트 <recipeCnt>
-	List<MemberVO> recipeCnt = (ArrayList<MemberVO>)recommendMap.get("recipeCnt");
+	List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
 	// 나의 게시판 목록
-	List<BoardVO> myBoardList = (ArrayList<BoardVO>) request.getAttribute("myBoardList");
+	List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
 	// 팔로워 + 나 자신의 글 목록 불러옴
-	List<BoardVO> allBoardList = (ArrayList<BoardVO>) request.getAttribute("allBoardList");
+	List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
 	// 모달창의 사진 클릭시 레시피로 이동함 
-	List<RecipeVO> postList = (ArrayList<RecipeVO>) request.getAttribute("postList");
+	List<RecipeVO> postList = (ArrayList<RecipeVO>)request.getAttribute("postList");
 	//INCLUDE JSP 문서와 객체 공유
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("messageList", messageList);
 	request.setAttribute("myIrdntList", myIrdntList);
+
 %>
 <!DOCTYPE>
 <html>
-<head
-	style="position: relative; z-index: 1; height: 260px;  margin:0 auto;">
+<head style="position: relative; z-index: 1; height: 260px;  margin:0 auto;">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>마디 - 재료로 요리하다</title>
+<title>마디 - 재료로  요리하다</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
@@ -82,7 +66,6 @@
 .glyphicon.glyphicon-share-alt {
 	color: #487BE1;
 }
-
 .glyphicon.icon-size {
 	font-size: 17px;
 }
@@ -106,119 +89,138 @@ td {
 }
 
 .li.hori {
-	margin: 0 0 0 0;
-	padding: 15px;
-	border: 0;
-	float: left;
-	font-size: 15px;
+    margin: 0 0 0 0;
+    padding: 15px;
+    border : 0;
+    float: left;
+    font-size:15px;
 }
 /* 팔로워, 팔로잉 리스트 정렬 */
 .ul.fol {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+    list-style:none;
+    margin:0;
+    padding:0;
 }
 
 .li.fol {
-	margin: 0 0 0 0;
-	padding: 19px;
-	border: 0;
-	float: left;
-	font-size: 17px;
+    margin: 0 0 0 0;
+    padding: 19px;
+    border : 0;
+    float: left;
+    font-size:17px;
 }
 /* 팔로우 추천 정렬 */
 .ul.fol2 {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+    list-style:none;
+    margin:0;
+    padding:0;
 }
-
 .li.fol2 {
-	padding: 4px;
-	font-size: 17px;
+    padding: 4px;
+    font-size:17px;
 }
 /* 본문 아이콘 정렬 */
 .li.fol3 {
-	padding: 2px;
-	float: left;
-	border: 0;
-	margin: 0 0 0 0;
+    padding: 2px;
+    float: left;
+    border : 0;
+    margin: 0 0 0 0;
 }
 /* 내 사진 목록 */
 .ul.hori2 {
-	list-style: none;
-	margin: 0;
-	padding: 10px;
+	 list-style:none;
+	 margin:0;
+	 padding:10px;
 }
-
+	
 .li.hori2 {
 	margin: 5 5 5 5;
 	padding: 14px;
-	border: 10px;
+	border : 10px;
 	float: left;
-	font-size: 12px;
-	width: 70px;
-	height: 80px;
-}
+	font-size:12px;
+	width:70px;
+	height:80px;
+	}
 /* follow 모달 크기 조절 */
 .modal-dialog.follow-size {
-	width: 470px;
-	height: 50%;
-	margin: 0;
-	padding: 0;
+    width: 470px;
+    height: 50%;
+    margin: 0;
+    padding: 0;
 }
-
 .modal-content.follow-size {
-	height: auto;
-	min-height: 50%;
+    height: auto;
+    min-height: 50%;
 }
-
 .modal.modal-center {
-	text-align: center;
+	    text-align: center;
 }
-
 @media screen and (min-width: 768px) {
-	.modal.modal-center:before {
-		display: inline-block;
-		vertical-align: top;
-		content: " ";
-		height: 100%;
-	}
+    .modal.modal-center:before {
+        display: inline-block;
+        vertical-align: top;
+        content: " ";
+        height: 100%;
+    }
 }
-
 .modal-dialog.modal-center {
-	display: inline-block;
-	text-align: left;
-	vertical-align: top;
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
 }
+.xrs {
+	 background-image: url('./resources/image/10.gif');
+	}
 </style>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script>
-	function deleteFollowing(element, user_id, following_user_id) {
+	function deleteFollowing(user_id, following_user_id) {
+		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
+		//alert("팔로잉 삭제 성공");
+		var content = user_id+ "님께서 " + following_user_id+ "님을 팔로우 취소했습니다."
 		$.ajax({
-			url : "./deleteFollowing.do",
-			type : "GET",
-			data : {
-				user_id : user_id,
-				following_user_id : following_user_id
+			url: "./deleteFollowing.do",
+			type: "GET",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id,
+				notice_to : following_user_id,
+				notice_from : user_id,
+				content : content,
+				notice_type : "팔로잉 삭제"
 			},
-			success : function(data) {
-				element.parent().remove();
-				document.getElementById("followingSize").innerHTML = data;
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				$("#following_modal").empty();
+				$("#following_modal").append(data);
+				followingMinus();
 			}
 		});
 	}
-	function deleteFollower(element, user_id, following_user_id) {
+	function deleteFollower(user_id, following_user_id) {
+		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
+		//alert("팔로워 삭제 성공");
+		var content= user_id+ "님께서 " + following_user_id+ "님의 팔로우를 취소했습니다."
 		$.ajax({
-			url : "./deleteFollower.do",
-			type : "GET",
-			data : {
-				user_id : user_id,
-				following_user_id : following_user_id,
+			url: "./deleteFollower.do",
+			type: "GET",
+			data: {
+				user_id: user_id,
+				following_user_id: following_user_id,
+				notice_to : following_user_id,
+				notice_from : user_id,
+				content : content,
+				notice_type : "팔로워 삭제"
 			},
-			success : function(data) {
-				element.parent().remove();
-				document.getElementById("followerSize").innerHTML = data;
+			dataType: "text",
+			success: function(data) {
+				alert(data);
+				/* location.href="./mypage.do"; */
+				$("#follower_modal").empty();
+				$("#follower_modal").append(data);
+				followerMinus();
 			}
 		});
 	}
@@ -228,6 +230,13 @@ td {
 		if (user_id == following_user_id) {
 			return;
 		}
+
+	}	
+	function insertFollowing(user_id, following_user_id, user_img, following_user_img) {
+		//location.href="insertFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id +
+		//"&user_img=" + user_img + "&following_user_img=" + following_user_img;
+		//alert("팔로잉 추가 성공");
+		var content= user_id+ "님께서 " + following_user_id+ "님을 팔로우 했습니다."
 		$.ajax({
 			url : "./followRequest.do",
 			type : "POST",
@@ -236,6 +245,7 @@ td {
 				following_user_id : following_user_id,
 				user_img : user_img,
 				following_user_img : following_user_img,
+
 			},
 			success : function(data) {
 				if (data == 0) {
@@ -250,49 +260,46 @@ td {
 	}
 	function updateBoardLike(board_num, user_id, index) {
 		//location.href="updateBoardLike.do?user_id=" + user_id;
-
-		var content = user_id + "님께서" + board_num + "번 게시물에 좋아요를 입력했습니다.";
-		$
-				.ajax({
-					url : "./updateBoardLike.do",
-					type : "GET",
-					data : {
-						user_id : user_id,
-						board_num : board_num,
-						notice_to : board_num,
-						notice_from : user_id,
-						content : content,
-						notice_type : "좋아요 입력"
-					},
-					success : function(data) {
-						/* location.href="./mypage.do"; */
-						//alert("success");
-						if (data == 0) {
-							alert("좋아요 실패");
-							document.getElementsByClassName("boardLike")[index].innerHTML = Number(document
-									.getElementsByClassName("boardLike")[index].innerHTML) - 1;
-						} else {
-							alert("좋아요 성공");
-							document.getElementsByClassName("boardLike")[index].innerHTML = Number(document
-									.getElementsByClassName("boardLike")[index].innerHTML) + 1;
-						}
-					}
-				});
+		
+		var content= user_id+ "님께서" +board_num+ "번 게시물에 좋아요를 입력했습니다.";
+		$.ajax({
+			url: "./updateBoardLike.do",
+			type: "GET",
+			data: {
+				user_id: user_id,
+				board_num: board_num,
+				notice_to : board_num,
+				notice_from : user_id,
+				content : content,
+				notice_type : "좋아요 입력"
+			},
+			success: function(data) {
+				/* location.href="./mypage.do"; */
+				//alert("success");
+				if (data == 0) {
+					alert("좋아요 실패");
+					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) - 1;
+				} else {
+					alert("좋아요 성공");
+					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) + 1;				
+				}
+			}
+		});
 	}
 	//게시글 누르면 자기 게시글만 보이게함
 	function myBoard(user_id) {
 		$.ajax({
-			url : "./myBoard.do",
-			type : "POST",
-			data : {
-				user_id : user_id
+			url: "./myBoard.do",
+			type: "POST",
+			data: {
+				user_id: user_id
 			},
-			success : function(data) {
+			success: function(data) {
 				alert("성공");
 				$("#myBoard").empty();
 				$("#myBoard").append(data);
 			},
-			error : function() {
+			error: function() {
 				alert("실패");
 			}
 		});
@@ -300,17 +307,17 @@ td {
 	//내 사진 보기
 	function myPhoto(user_id) {
 		$.ajax({
-			url : "./myPhoto.do",
-			type : "POST",
-			data : {
-				user_id : user_id
+			url: "./myPhoto.do",
+			type: "POST",
+			data: {
+				user_id: user_id
 			},
-			success : function(data) {
+			success: function(data) {
 				alert("성공");
 				$("#myBoard").empty();
 				$("#myBoard").append(data);
 			},
-			error : function() {
+			error: function() {
 				alert("실패");
 			}
 		});
@@ -318,21 +325,22 @@ td {
 	//타임라인 보기
 	function allBoard(user_id) {
 		$.ajax({
-			url : "./allBoard.do",
-			type : "POST",
-			data : {
-				user_id : user_id
+			url: "./allBoard.do",
+			type: "POST",
+			data: {
+				user_id: user_id
 			},
-			success : function(data) {
+			success: function(data) {
 				alert("성공");
 				$("#myBoard").empty();
 				$("#myBoard").append(data);
 			},
-			error : function() {
+			error: function() {
 				alert("실패");
 			}
 		})
 	}
+<<<<<<< HEAD
 	//new 보드용 
 	// Accordion
 	function myFunction(id) {
@@ -356,14 +364,31 @@ td {
 			x.className = x.className.replace(" w3-show", "");
 		}
 	}
+=======
+	// 내 정보 보기
+	function myInfo(user_id) {
+		$.ajax({
+			url: "./myInfo.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert('실패');
+			}
+		});
+	}
 </script>
 </head>
 <body class="w3-theme-l5">
-	<!-- Header -->
+	<!-- 헤더 시작 -->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>
 	</div>
-
 	<!-- 컨테이너 시작 -->
 	<div class="w3-container w3-content"
 		style="max-width: 1400px; margin-top: 80px">
@@ -427,7 +452,7 @@ td {
 									</button></li>
 								<%
 									}
-									}
+								}
 								%>
 							</ul>
 						</div>
@@ -579,7 +604,8 @@ td {
 
 					</div>
 				<%
-		    		}//게시글 for문 끝
+		    		}
+				//게시글 for문 끝
 		    %>
 					<!-- div id 지정한거 끝 -->
 				</div>

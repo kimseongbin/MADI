@@ -89,7 +89,7 @@ $(".img-responsive").hover(function(){
 <%
 		} // for
 %>
-		<button class="btn btn-default btn-block moreOfCategory">
+		<button class="btn btn-default btn-block moreOfCategory" style="margin-bottom:15px;">
 			<img src="./resources/image/Expand Arrow_96px.png" width="30px;">
 			더보기
 		</button>
@@ -111,8 +111,7 @@ $(document).ready(function() {
 	var currentCategory = 0;
 	$(".moreOfCategory").click(function() {
 		currentCategory += 1;
-		var pos = category[currentCategory];
-		pos.style.display="block";
+		category[currentCategory].style.display="block";
 	});
 
 });
