@@ -161,7 +161,7 @@
 	</delete>
 	<delete id="deleteReply" parameterType="com.spring.madi.BoardReplyVO">
 		DELETE FROM BOARD_REPLY
-		WHERE USER_ID = #{user_id} AND REP_DATE = #{rep_date}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND REP_DATE = #{rep_date}
 	</delete>
 	<select id="getUserLikeBoardList" resultMap="UserLikeBoResultMap">
 		SELECT BOARD_NUM

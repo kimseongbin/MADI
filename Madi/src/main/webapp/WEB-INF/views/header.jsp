@@ -150,7 +150,7 @@
 	}
 	.header.list-group-item:last-child {
 		border-bottom-right-radius: 0;
-	    border-bottom-left-radius: 0;
+	    border-boft-radius: 0;
 	}
 	  
 	.header.btn {
@@ -198,19 +198,19 @@
                 <span class="icon-bar" style="background-color:white;"></span>
                 <span class="icon-bar" style="background-color:white;"></span>
             </button>
-            <a class="navbar-brand" href="#"><font class="madi_logo">Madi</font></a>
+            <a class="navbar-brand" href="./recipe.do"><font class="madi_logo">Madi</font></a>
         </div>
         <!--검색 창 -->
         <div class="collapse navbar-collapse" id="myNavbar" align="center">
-            <ul class="nav navbar-nav navbar" style="text-align: center;">
-                <form class="navbar-form navbar-right" role="search" style="margin-left: auto; margin-right: auto;">
+            <ul class="nav navbar-nav navbar" style="text-align: center; width:697px;">
+                <form class="navbar-form navbar-right" role="search" style="margin-left: auto; margin-right: auto;" action="./search.madi" method="GET">
                     <div class="form-group input-group">
-                        <input type="text" class="form-control" placeholder="Search.." size="80%"> 
-	                        	<span class="input-group-btn">
-	                            <button class="btn btn-default" type="button" style="padding-bottom:2px;margin-top:1px;bottom: 1px;">
-	                                <span class="glyphicon glyphicon-search header" style="font-size:24px;"></span>
-	                            </button>
-                        	</span>
+                        <input type="text" class="form-control" name="query" size="80%"> 
+	                    <span class="input-group-btn">
+	                    <button class="btn btn-default" type="button" role="submit" style="padding-bottom:2px;margin-top:1px;bottom: 1px; height:34px;">
+	                    	<span class="glyphicon glyphicon-search header" style="font-size:24px;"></span>
+	                    </button>
+                        </span>
                     </div>
                 </form>
             </ul>
@@ -250,7 +250,7 @@
                  <!-- 냉장고 아이콘 -->
                 <li>
                     <div style="padding-top: 9px; padding-left: 5px; border-top-width: 0px;">
-                        <button type="button" class="btn form header" data-toggle="modal" data-target="#fridge">
+                        <button type="button" class="btn form header" data-toggle="modal" data-target="#fridge" id="fridgeBtn">
                             <img src="./resources/food_icon/fridge_white.png" style="width:20px; height:20px;" onmouseover="hover(this);" onmouseout="unhover(this);">
                         </button>
                     </div>

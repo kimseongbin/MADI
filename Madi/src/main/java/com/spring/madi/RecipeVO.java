@@ -19,12 +19,6 @@ public class RecipeVO {
 	private String user_id;
 	private Timestamp time;
 	
-	public Timestamp getTime() {
-		return time;
-	}
-	public void setTime(Timestamp time) {
-		this.time = time;
-	}
 	//recipe_irdnt
 	private List<RecipeIrdntVO> recipeIrdnt; // MyBatis collection property DB에서 재료목록을 담기위한 필드
 	private String[] irdnt_name; // form으로부터 String Array를 받기 위한 변수 Mapper에서 Mapping 하지 않는다 input Form에서 submit 값들을 읽기 위한 필드
@@ -41,6 +35,12 @@ public class RecipeVO {
 	//recipe_type
 	private String ty_name;
 	
+	public Timestamp getTime() {
+		return time;
+	}
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 	public int getRecipe_id() {
 		return recipe_id;
 	}
@@ -161,6 +161,4 @@ public class RecipeVO {
 	public void setTy_name(String ty_name) {
 		this.ty_name = ty_name;
 	}
-	
-	
 }

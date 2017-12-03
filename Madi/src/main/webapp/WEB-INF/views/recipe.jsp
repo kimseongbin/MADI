@@ -63,14 +63,17 @@
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
-    
+    background-size: cover; 
 }
 .xrs {
 	 background-image: url('./resources/image/10.gif');
 }
 </style>
 <script>
+	window.onload = function() {
+		$("#fridgeBtn").css("padding-top", "5px");
+	}
+	
 	function likeBoard(element, user_id, board_num, writer) {
 		$.ajax({
 			url: "./likeBoard.do",
@@ -250,7 +253,7 @@
 					</a>
 				</div>
 			</div>
-			<div class="col-sm-4 panel panel-default w3-animate-right" style="padding-bottom: 15px;">
+			<div class="col-sm-4 panel panel-default w3-animate-right w3-card-4" style="padding-bottom: 15px;">
 				<div style="padding-left: 10px;">
 					<h3 class="madi_subtitle">레시피 검색</h3>
 					<p class="text-muted madi_content">재료 별 레시피 검색하기, <br/>주로 쓰일 재료에 따라 레시피를 검색해주세요.
@@ -287,7 +290,7 @@
 		<div class="container">
 		<font color="#DE4F4F"><h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc">Madi</font>가<br/>추천하는 당신의 <font class="madi_cc">Recipe</font></h3></font>
 		<br /> 
-		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:#DE4F4F;"></span>
+		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:white;"></span>
 		<script>
 			$("#refresh").mouseenter(function() {
 				$(this).attr("class","glyphicon glyphicon-refresh moreOfIrdnt w3-spin");
@@ -300,7 +303,7 @@
 		<hr />
 		<div class="row" id="search_Result_Area">
 			<br/><br/>
-			<font color="#DE4F4F"><h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1></font>
+			<font color="white"><h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1></font>
 			<br/><br/><br/>
 		</div>
 	</div>
