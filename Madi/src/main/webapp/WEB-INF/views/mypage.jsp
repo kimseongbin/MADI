@@ -13,6 +13,8 @@
 	ArrayList<NotificationVO> notificationList = (ArrayList<NotificationVO>) request.getAttribute("notificationList");
 	// 내 재료 목록 받아오기
 	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
+	// 레시피 정보를 좋아요를 위해 불러옴
+	RecipeVO recipe = (RecipeVO) request.getAttribute("recipe");
 	
 	// myPage에서 사용할 기본 정보 
 	// 내 팔로워 리스트 
@@ -21,6 +23,8 @@
 	List<MemberVO> followingList= (ArrayList<MemberVO>)request.getAttribute("followingList");
 	// 팔로잉 추천 리스트
 	List<MemberFollowVO> recommendList= (ArrayList<MemberFollowVO>)request.getAttribute("recommendList");
+	// 임시 필로잉 요청시 사용
+	List<MemberFollowVO> followingRequest= (ArrayList<MemberFollowVO>)request.getAttribute("followingRequest");
 	// 나의 게시판 목록
 	List<BoardVO> myBoardList= (ArrayList<BoardVO>)request.getAttribute("myBoardList");
 	// 팔로워 + 나 자신의 글 목록 불러옴
@@ -172,34 +176,37 @@ td {
 .xrs {
 	 background-image: url('./resources/image/10.gif');
 	}
+/* 사용자 배경 타이틀 이미지 */
+.bg {
+    background-image: url("./resources/image/wallpaper.jpg");
+    background-size: cover;
+    margin-top: 10px;
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script>
-	function deleteFollowing(user_id, following_user_id) {
-		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
-		//alert("팔로잉 삭제 성공");
-		var content = user_id+ "님께서 " + following_user_id+ "님을 팔로우 취소했습니다."
-		$.ajax({
-			url: "./deleteFollowing.do",
-			type: "GET",
-			data: {
-				user_id: user_id,
-				following_user_id: following_user_id,
-				notice_to : following_user_id,
-				notice_from : user_id,
-				content : content,
-				notice_type : "팔로잉 삭제"
-			},
-			dataType: "text",
-			success: function(data) {
-				alert(data);
-				$("#following_modal").empty();
-				$("#following_modal").append(data);
-				followingMinus();
+function deleteFollowing(e, user_id, following_user_id) {
+	$.ajax({
+		url: "./deleteFollowing.do",
+		type: "GET",
+		data: {
+			user_id: user_id,
+			following_user_id: following_user_id
+		},
+		success: function(data) {
+			e.parentNode.remove();
+			document.getElementById("followingSize").innerHTML = data;
+		}, 
+		complete: function(data) {
+			var remains = $("#following_modal").find("li").length;
+			if(remains == 0) {
+				var zero = "<li class='w3-animate-opacity'>현재 회원님께선 아직 팔로잉한 친구가 없습니다.</li>";
+				$("#following_modal").append(zero);
 			}
-		});
-	}
-	function deleteFollower(user_id, following_user_id) {
+		}
+	});
+}
+	function deleteFollower(e, user_id, following_user_id) {
 		//location.href="deleteFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id;
 		//alert("팔로워 삭제 성공");
 		var content= user_id+ "님께서 " + following_user_id+ "님의 팔로우를 취소했습니다."
@@ -208,30 +215,22 @@ td {
 			type: "GET",
 			data: {
 				user_id: user_id,
-				following_user_id: following_user_id,
-				notice_to : following_user_id,
-				notice_from : user_id,
-				content : content,
-				notice_type : "팔로워 삭제"
+				following_user_id: following_user_id
 			},
-			dataType: "text",
 			success: function(data) {
-				alert(data);
-				/* location.href="./mypage.do"; */
-				$("#follower_modal").empty();
-				$("#follower_modal").append(data);
-				followerMinus();
+				e.parentNode.remove();
+				document.getElementById("followerSize").innerHTML = data;
+			},
+			complete: function() {
+				var remains = $("#follower_modal").find("li").length;
+				if(remains == 0) {
+					var zero ="<li class='w3-animate-opacity'>현재 회원님의 팔로워 목록이 비어있습니다.</li>"
+					$("#follower_modal").append(zero);
+				}
 			}
 		});
 	}
-	function followRequest(user_id, following_user_id, user_img,
-			following_user_img) {
-		// 내가 날 팔로우할 순 없음
-		if (user_id == following_user_id) {
-			return;
-		}
 
-	}	
 	function insertFollowing(user_id, following_user_id, user_img, following_user_img) {
 		//location.href="insertFollowing.do?user_id=" + user_id + "&following_user_id=" + following_user_id +
 		//"&user_img=" + user_img + "&following_user_img=" + following_user_img;
@@ -258,34 +257,7 @@ td {
 			}
 		});
 	}
-	function updateBoardLike(board_num, user_id, index) {
-		//location.href="updateBoardLike.do?user_id=" + user_id;
-		
-		var content= user_id+ "님께서" +board_num+ "번 게시물에 좋아요를 입력했습니다.";
-		$.ajax({
-			url: "./updateBoardLike.do",
-			type: "GET",
-			data: {
-				user_id: user_id,
-				board_num: board_num,
-				notice_to : board_num,
-				notice_from : user_id,
-				content : content,
-				notice_type : "좋아요 입력"
-			},
-			success: function(data) {
-				/* location.href="./mypage.do"; */
-				//alert("success");
-				if (data == 0) {
-					alert("좋아요 실패");
-					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) - 1;
-				} else {
-					alert("좋아요 성공");
-					document.getElementsByClassName("boardLike")[index].innerHTML = Number(document.getElementsByClassName("boardLike")[index].innerHTML) + 1;				
-				}
-			}
-		});
-	}
+
 	//게시글 누르면 자기 게시글만 보이게함
 	function myBoard(user_id) {
 		$.ajax({
@@ -295,7 +267,6 @@ td {
 				user_id: user_id
 			},
 			success: function(data) {
-				alert("성공");
 				$("#myBoard").empty();
 				$("#myBoard").append(data);
 			},
@@ -338,9 +309,8 @@ td {
 			error: function() {
 				alert("실패");
 			}
-		})
+		});
 	}
-<<<<<<< HEAD
 	//new 보드용 
 	// Accordion
 	function myFunction(id) {
@@ -364,7 +334,6 @@ td {
 			x.className = x.className.replace(" w3-show", "");
 		}
 	}
-=======
 	// 내 정보 보기
 	function myInfo(user_id) {
 		$.ajax({
@@ -399,12 +368,13 @@ td {
 				<!-- 프로필 -->
 				<div class="w3-card w3-round w3-white">
 					<div class="w3-container">
-						<h4 class="w3-center">My Profile</h4>
-						<p class="w3-center">
+					    <div class="w3-container bg" style="height: 180px;"></div>
 							<img src="<%=memberVO.getUser_img()%>" class="w3-circle"
-								style="height: 106px; width: 106px" alt="Avatar">
-						</p>
-						<h4 style="text-align: center; font-color: #1245AB;"><%=memberVO.getUser_id()%></h4>
+								style="position:relative; height: 106px; width: 106px; bottom:50px; 
+								margin-left: auto; margin-right: auto; display: block;" alt="Avatar">
+						<h3 style="text-align: center; font-color: #1245AB; margin-top: 0px;margin-bottom: 0px;">
+							<strong><%=memberVO.getUser_id()%></strong>
+						</h3>
 						<hr>
 						<p>
 							<i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>
@@ -416,7 +386,7 @@ td {
 						</p>
 						<p>
 							<i class="fa fa-at fa-fw w3-margin-right w3-text-theme"></i>
-							AAA@gmail.com
+							<%=memberVO.getUser_email()%>
 						</p>
 					</div>
 				</div>
@@ -428,6 +398,7 @@ td {
 						<button onclick="myFunction('following')"
 							class="w3-button w3-block w3-theme-l1 w3-left-align">
 							<i class="fa fa-users fa-fw w3-margin-right"></i> FOLLOWING
+							<span class="badge" id="followingSize"><%=followingList.size()%></span>
 						</button>
 						<div id="following" class="w3-hide w3-container">
 							<ul class="w3-ul w3-hoverable" id="following_modal"
@@ -446,7 +417,7 @@ td {
 									height="30" width="30"> &nbsp; <strong><%=following.getUser_name()%></strong>
 									&nbsp;
 									<button type="button" class="btn btn-danger btn-sm"
-										onclick="deleteFollowing(this,'<%=memberVO.getUser_id()%>', '<%=following.getUser_id()%>')"
+										onclick="deleteFollowing(this, '<%=memberVO.getUser_id()%>', '<%=following.getUser_id()%>')"
 										style="border-radius: 20px;">
 										<strong>삭제</strong>
 									</button></li>
@@ -459,9 +430,10 @@ td {
 						<button onclick="myFunction('follower')"
 							class="w3-button w3-block w3-theme-l1 w3-left-align">
 							<i class="fa fa-star fa-fw w3-margin-right"></i> FOLLOWER
+							<span class="badge" id="followerSize"><%=followerList.size()%></span>
 						</button>
 						<div id="follower" class="w3-hide w3-container">
-							<ul class="w3-ul w3-hoverable" id="following_modal"
+							<ul class="w3-ul w3-hoverable" id="follower_modal"
 								style="text-align: center;">
 								<%
 									if (followerList.size() == 0) {
@@ -477,7 +449,7 @@ td {
 									height="30" width="30"> &nbsp; <strong><%=follower.getUser_name()%></strong>
 									&nbsp;
 									<button type="button" class="btn btn-danger btn-sm"
-										onclick="deleteFollowing(this,'<%=memberVO.getUser_id()%>', '<%=follower.getUser_id()%>')"
+										onclick="deleteFollower(this, '<%=memberVO.getUser_id()%>', '<%=follower.getUser_id()%>')"
 										style="border-radius: 20px;">
 										<strong>삭제</strong>
 									</button></li>
@@ -496,7 +468,16 @@ td {
 								<br>
 								<!-- 사진 내용들 -->
 									<%
-										for (int i = 0; i < myBoardList.size(); i++) {
+										if(myBoardList.size() == 0) {
+				
+									%>
+										<div class="w3-animate-opacity text-center text-muted" style="margin-top:25%;">
+											레시피를 등록해주세요
+											<br/>
+											<span class="glyphicon glyphicon-picture" style="font-size:100px;"></span>
+										</div>
+									<% } else {
+											for (int i = 0; i < myBoardList.size(); i++) {
 											BoardVO myBoard = myBoardList.get(i);
 									%>
 									<div class="w3-half container">
@@ -508,6 +489,7 @@ td {
 										</a>
 									</div>
 									<%
+											}
 										}
 									%>
 							</div>
@@ -548,9 +530,6 @@ td {
 					<button type="button" class="btn btn-default"
 						onclick="myBoard('<%=memberVO.getUser_id()%>')">게시글</button>
 					<button type="button" class="btn btn-default"
-						style="cursor: pointer; margin-bottom: 0px;"
-						onclick="myPhoto('<%=memberVO.getUser_id()%>')">사진</button>
-					<button type="button" class="btn btn-default"
 						style="cursor: pointer; margin-bottom: 0px;" onclick="">정보</button>
 				</div>
 				<!-- 글 시작 -->
@@ -568,13 +547,14 @@ td {
 						<hr class="w3-clear">
 						<img src="<%=board.getBoard_img()%>" style="width: 50%"
 							class="w3-margin-bottom">
-						<p>
-							좋아요 :
-							<%=board.getBoard_like()%></p>
+						<h6>
+						<span>좋아요 : </span> 
+							<span id="likeCnt"><%=board.getBoard_like()%></span>
+						</h6>
 						<p><%=board.getBoard_summry()%></p>
 						<button type="button"
 							class="w3-button w3-theme-d1 w3-margin-bottom" 
-							onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">
+							onclick="likeBoard('<%=memberVO.getUser_id()%>','<%=board.getBoard_num()%>','<%=board.getUser_id()%>');">
 							<i class="fa fa-thumbs-up"></i>  Like
 						</button>
 						<button type="button"
@@ -582,7 +562,34 @@ td {
 							onclick="myFunction('comment<%=board.getBoard_num()%>')">
 							<i class="fa fa-comment"></i>  Comment
 						</button>
-
+						
+						<script>				
+						//new like 좋아요
+						function likeBoard(user_id, board_num, writer) {
+						    $.ajax({
+						        url: "./likeBoard.do",
+						        type: "POST",
+						        data: {
+						            user_id: user_id,
+						            board_num: board_num,
+						            writer: writer
+						        },
+						        success: function(data) {
+						            if(data == 1) {
+						                document.getElementById("no").innerHTML = Number(document.getElementById("no").innerHTML) + 1;
+						                document.getElementById("likeCnt").innerHTML = Number(document.getElementById("likeCnt").innerHTML) + 1;
+						            } else {
+						                document.getElementById("likeCnt").innerHTML = Number(document.getElementById("likeCnt").innerHTML) - 1;
+						            }
+						        },
+								error: function(data) {
+									alert(user_id + "/" + board_num + "/" + writer);
+								}
+						    });
+						}
+						
+						</script>
+						
 						<!-- 댓글창 -->
 						<div id="comment<%=board.getBoard_num()%>"
 							class="w3-hide w3-container">
@@ -616,34 +623,78 @@ td {
 			<!-- Right Column -->
 			<div class="w3-col m2">
 				<br>
+				<div class="w3-card w3-round w3-white w3-padding-16 w3-center">
+					<div class="w3-container" >
+					<p>추천</p>
 
-				<div class="w3-card w3-round w3-white w3-center">
-					<div class="w3-container">
-						<p>나한테 팔로우 신청한 사람</p>
-						<img src="./resources/profile/hansomedog.jpg" alt="Avatar" style="width: 50%"><br>
-						<span>HANSOME DOG</span>
-						<div class="w3-row w3-opacity">
-							<div class="w3-half">
-								<button class="w3-button w3-block w3-green w3-section"
-									title="Accept">
-									<i class="fa fa-check"></i>
-								</button>
-							</div>
-							<div class="w3-half">
-								<button class="w3-button w3-block w3-red w3-section"
-									title="Decline">
-									<i class="fa fa-remove"></i>
-								</button>
-							</div>
-						</div>
 					</div>
 				</div>
 				<br>
-
+				
 				<div class="w3-card w3-round w3-white w3-padding-16 w3-center">
-				</div>
-				<br>
+					<div class="w3-container" >
 
+					<p>요청</p>
+					<%
+						for(int r= 0; r< followingRequest.size(); r++) {
+							MemberFollowVO reque= followingRequest.get(r);
+							System.out.println("requestsize + " +followingRequest.size());
+							if (r == 0) {
+					%>
+						<div class="recommend">
+							<ul class="w3-ul">
+								<li class="w3-left">
+									<img src="<%=reque.getFollowing_user_img()%>" class="img-circle" height="40"
+										width="40">&nbsp; <a href="#">
+									<strong><%=reque.getFollowing_user_id()%></strong></a>
+										&emsp;
+									<button type="button" class="btn btn-danger btn"
+										onclick="insertFollowing('<%=memberVO.getUser_id()%>', 
+										'<%=reque.getFollowing_user_id()%>',
+										'<%=memberVO.getUser_img()%>', '<%=reque.getFollowing_user_img()%>')"
+										style="border-radius: 10px;">
+										<strong style="font-size:15px;">팔로우</strong>
+									</button>&nbsp;
+								</li>
+							</ul>
+					<%	} else { %>
+						</div>	
+					<%
+						}
+					%>	
+					<%	
+					}
+					%>
+					</div>
+				</div>
+				<script>
+					function followRequest(user_id, following_user_id, user_img, following_user_img) {
+				        // 내가 날 팔로우할 순 없음
+				        if(user_id == following_user_id) {
+				            return;
+				        }
+				        $.ajax({
+				            url: "./followRequest.do",
+				            type: "POST",
+				            data: {
+				                user_id: user_id,
+				                following_user_id: following_user_id,
+				                user_img: user_img,
+				                following_user_img: following_user_img,
+				            },
+				            success: function(data) {
+				                if(data == 0) {
+				                    alert("이미 팔로우 한 회원입니다.");
+				                } else if(data == 1){
+				                    alert("현재 "+following_user_id+"님의 요청 수락을 기다리고 있습니다.");
+				                } else if(data == 2){
+				                    alert(following_user_id+"님께 팔로우를 신청하셨습니다.");                
+				                }
+				            }
+				        });
+				    }
+				</script>
+				
 				<div class="w3-card w3-round w3-white w3-padding-32 w3-center">
 					<p>
 						<i class="fa fa-bug w3-xxlarge"></i>
