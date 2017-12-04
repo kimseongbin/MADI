@@ -9,17 +9,16 @@
 %>
 
 <div class="w3-sidebar w3-bar-block w3-card-4"
-	style="width: 25%; height: auto; top: 7%; right: 0; margin-right: 1%;">
+	style="width:25%; height: 700px; top:7%; right:0; margin-right: 1%; overflow:hidden;">
 	<div class="w3-white w3-text-grey">
-		<div class="w3-display-container">
-			<img src="<%=activeSide.getImg_url()%>" style="width: 100%"
+		<div class="w3-display-container d">
+			<img src="<%=activeSide.getImg_url()%>" style="width:100%; height:250px;"
 				alt="Avatar" class="w3-grayscale-min">
 			<div class="w3-display-bottomleft w3-container w3-text-white">
 				<h2><%=activeSide.getRecipe_title()%></h2>
 			</div>
 		</div>
-		<br />
-		<div class="w3-container">
+		<div class="w3-container" style="margin-top: 15px; overflow-y:scroll; height:450px;">
 			<p>
 				<i
 					class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i><%=activeSide.getNation_name()%>,
@@ -95,25 +94,6 @@
 				%>
 			</table>
 
-			<br>
-
-			<p class="w3-large w3-text-theme">
-				<b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>요리
-					과정</b>
-			</p>
-			<%
-				ArrayList<RecipeProcessVO> activeProList = (ArrayList<RecipeProcessVO>) activeSide.getRecipeProcess();
-				for (int i = 0; i < activeProList.size(); i++) {
-					RecipeProcessVO activePro = activeProList.get(i);
-			%>
-			<p>
-				과정&nbsp;<%=activePro.getCooking_no()%></p>
-			<div class="w3-light-grey w3-card-4">
-				<%=activePro.getCooking_desc()%>
-			</div>
-			<%
-				}
-			%>
 			<br>
 		</div>
 	</div>

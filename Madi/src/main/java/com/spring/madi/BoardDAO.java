@@ -55,4 +55,6 @@ public interface BoardDAO {
 	// (성빈) 유저가 좋아하는 게시글 목록 불러오기
 	ArrayList<UserLikeBoVO> getUserLikeBoardList(String user_id);
 	int getReplySizeByBoardNum(BoardReplyVO boardReplyVO);
+	// (성빈) 타임라인 구하기
+	ArrayList<BoardVO> getTimelineBoard(MemberFollowVO memberFollowVO);
 }

@@ -13,7 +13,7 @@
 	}
 	//html5기능. 웹서버주소/웹소켓/uri를 브로드캐스팅으로 하면 servlet-context에서 socketHandler를 사용가능
 	//소켓 객체 생성 후 소켓 변환 후 웹 소켓에 접속
-	w= new WebSocket("ws://localhost:8080/websocket/broadcasting");
+	w= new WebSocket("ws://localhost:8080/madi/broadcasting");
 	w.onopen= function() {
 		alert("WebSocket Connected");
 	}
@@ -42,10 +42,10 @@
 </script>
 </head>
 <body>
-<input type="text" id="input" placeholder="input message..." size="55">
-<button id="send_button">Send</button>
-대화명<input type="text" id="nicname" placeholder="대화명 입력" size="10">
-<p/>
-<textarea id="output" readonly rows="30" cols="80"></textarea>
+	<input type="text" id="input" placeholder="input message..." size="55">
+	<button id="send_button">Send</button>
+	대화명<input type="text" id="nicname" placeholder="대화명 입력" size="10">
+	<p/>
+	<textarea id="output" readonly rows="30" cols="80"></textarea>
 </body>
 </html>

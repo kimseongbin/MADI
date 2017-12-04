@@ -366,6 +366,19 @@
 <!-- 하이차트 끝 -->
 
 <style>
+.parallax {
+    /* The image used */
+    background-image: url('https://static.pexels.com/photos/416537/pexels-photo-416537.jpeg');
+
+    /* Full height */
+    height: 100%; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+}
 /* 본문 스타일 설정 */
 /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
 .row.content {
@@ -401,7 +414,7 @@ footer {
 /* 본문 스타일 설정 */
 </style>
 </head>
-<body style="background-color: #F6F6F6" class="xrs">
+<body style="background-color: #F6F6F6" class="parallax">
 	<!-- Header 시작-->
 	<div class="header">
 		<jsp:include page="header.jsp"></jsp:include>

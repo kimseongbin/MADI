@@ -126,6 +126,19 @@
 	    height: 100%;
 	    opacity: 10;
 	}
+	.parallax {
+	    /* The image used */
+	    background-image: url('https://static.pexels.com/photos/616409/pexels-photo-616409.jpeg');
+	
+	    /* Full height */
+	    height: 100%; 
+	
+	    /* Create the parallax scrolling effect */
+	    background-attachment: fixed;
+	    background-position: center;
+	    background-repeat: no-repeat;
+	    background-size: cover; 
+	}
 	.xrs {
 	 background-image: url('./resources/image/10.gif');
 	}
@@ -270,7 +283,7 @@
   	
   </head>
   
-  <body style="background-color: #F6F6F6" class="xrs">
+  <body style="background-color: #F6F6F6" class="parallax">
     <div class="header">
     	<jsp:include page="header.jsp"></jsp:include>
     </div>

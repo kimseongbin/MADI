@@ -71,6 +71,7 @@ public class NotificationDAOService implements NotificationDAO{
 			System.out.println("SYSTEM  :  NoticationDAOServcie, sendNoticeById, 알림 메시지 전송에 실패했습니다, 알림 내용 : " + notificationVO.getContent());
 			e.printStackTrace();
 		}
+		System.out.println("SYSTEM  :  NoticationDAOServcie, sendNoticeById, 알림 메시지를 전송했습니다, 알림 내용 : " + notificationVO.getContent() + " To : " + notificationVO.getNotice_to());
 	}
 	// 성빈 : notice_id로 알림 메시지 읽어이고
 	@Override
@@ -91,6 +92,14 @@ public class NotificationDAOService implements NotificationDAO{
 		return notificationMapper.checkFollowRequest(memberFollowVO);
 		
 	}
+
+	@Override
+	public ArrayList<NotificationVO> getFollowRequest(String user_id) {
+		NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+		return notificationMapper.getFollowRequest(user_id);
+	}
+	
+	
 	
 	
 }

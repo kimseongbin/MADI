@@ -99,12 +99,12 @@
 	<!-- (진산) 팔로잉 한 명 지우기 -->
 	<delete id="deleteFollowing" parameterType="com.spring.madi.MemberFollowVO">
 		DELETE FROM member_follow 
-		WHERE user_id= #{user_id, javaType=String} and following_user_id= #{following_user_id, javaType=String}
+		WHERE user_id= #{user_id, jdbcType=VARCHAR} and following_user_id= #{following_user_id, jdbcType=VARCHAR}
 	</delete>
 	<!-- (진산) 팔로워 한 명 지우기 -->
 	<delete id="deleteFollower" parameterType="com.spring.madi.MemberFollowVO">
 		DELETE FROM member_follow 
-		WHERE user_id= #{user_id, javaType=String} and following_user_id= #{following_user_id, javaType=String}
+		WHERE user_id= #{user_id, jdbcType=VARCHAR} and following_user_id= #{following_user_id, jdbcType=VARCHAR}
 	</delete>
 	<!-- (진산) 팔로잉 한 명 추가 -->
 	<insert id="insertFollowing" parameterType="com.spring.madi.MemberFollowVO">
@@ -136,7 +136,7 @@
 	<select id="getCheckIrdnt" resultMap="MemberBoxResultMap">
 		SELECT *
 		FROM MEMBER_BOX
-		WHERE USER_ID = #{user_id} AND my_irdnt= #{my_irdnt}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND my_irdnt= #{my_irdnt}
 	</select>
 	<!-- (진산) 냉장고 재료를 입력하기 -->
 	<insert id="insertIrdnt" parameterType="com.spring.madi.MemberBoxVO">
@@ -144,14 +144,14 @@
 	</insert>
 	<delete id="deleteIrdnt" parameterType="com.spring.madi.MemberBoxVO">
 		DELETE FROM MEMBER_BOX
-		WHERE USER_ID = #{user_id} AND MY_IRDNT = #{my_irdnt}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND MY_IRDNT = #{my_irdnt}
 	</delete>
 	<!-- 성빈: 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
 	<!-- 전달 파라미터 String user_id -->
 	<select id="getUserInfoById" resultMap="MemberResultMap">
 		SELECT USER_ID, USER_IMG, USER_EMAIL, USER_NAME
 		FROM MEMBER
-		WHERE USER_ID = #{user_id}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
 	</select>
 	<!-- 성빈: 회원 기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
 	<!-- 전달 파라미터 String[] user_id -->

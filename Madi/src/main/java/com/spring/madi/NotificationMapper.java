@@ -28,4 +28,6 @@ public interface NotificationMapper {
 	NotificationVO getMyNoticeByNoticeId(String notice_id);
 	
 	int checkFollowRequest(MemberFollowVO memberFollowVO);
+	
+	ArrayList<NotificationVO> getFollowRequest(String user_id);
 }

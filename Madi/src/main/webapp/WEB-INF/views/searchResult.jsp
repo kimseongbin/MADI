@@ -20,7 +20,7 @@
 	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 	
 	// 검색결과 recipe
-	ArrayList<RecipeVO> recipe = (ArrayList<RecipeVO>) request.getAttribute("reicpe");
+	ArrayList<RecipeVO> recipe = (ArrayList<RecipeVO>) request.getAttribute("recipe");
 	
 	//INCLUDE JSP 문서와 객체 공유
 	request.setAttribute("memberVO", memberVO);
@@ -28,7 +28,7 @@
 	request.setAttribute("messageList", messageList);
 	request.setAttribute("myIrdntList", myIrdntList);
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -132,15 +132,15 @@
 	/* 폼 mouserover 시 우측 sidebar 디스플레이 */
 	function rightSideDp(recipe_id) {
 		$.ajax({
-			url: "./search.madi?side=active",
-			type: "POST",
+			url: "./search.madi?side=active&recipe_id="+recipe_id,
+			type: "GET",
 			data: { 
 				recipe_id: recipe_id
 			},
 			data: "text",
 			success: function(data) {
 				$("#sideBar").empty();
-				$("#sideBar").append();
+				$("#sideBar").append(data);
 			}
 		});
 	}
@@ -152,22 +152,21 @@
 	</div>
 	<!-- 우측 사이드 바 -->
 	<!-- 검색 결과를 나타내는 폼에 hover시 해당 내용을 display 할 영역 -->
-<%
-	RecipeVO activeSide = recipe.get(0);	
+<%	
+	RecipeVO activeSide = recipe.get(0);
 %>
 	<div class="right-side" id="sideBar">
-		<div class="w3-sidebar w3-bar-block w3-card-4" style="width:25%; height: auto; top:7%; right:0; margin-right: 1%;">
+		<div class="w3-sidebar w3-bar-block w3-card-4" style="width:25%; height: 700px; top:7%; right:0; margin-right: 1%; overflow:hidden;">
 			<div class="w3-white w3-text-grey">
 	        	<div class="w3-display-container">
-	          		<img src="<%=activeSide.getImg_url() %>" style="width:100%" alt="Avatar" class="w3-grayscale-min">
+	          		<img src="<%=activeSide.getImg_url() %>" style="width:100%; height:250px;" alt="Avatar" class="w3-grayscale-min">
 	          		<div class="w3-display-bottomleft w3-container w3-text-white">
 	            		<h2><%=activeSide.getRecipe_title() %></h2>
 	          		</div>
 	        	</div>
-	        	<br/>
-	        	<div class="w3-container">
+	        	<div class="w3-container" style="margin-top: 15px; overflow-y:scroll; height:450px;">
 	          		<p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i><%=activeSide.getNation_name() %>, <small><%=activeSide.getNation_code() %></small></p>
-	          		<p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i><%=activeSide.getTy_name() %>, <small><%=activeSide.getTy_name() %></small></p>
+	          		<p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i><%=activeSide.getTy_name() %>, <small><%=activeSide.getTy_code() %></small></p>
 	          		<p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i><%=activeSide.getCooking_time() %></p>
 	          		<p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>재료 : <b><%=activeSide.getRecipeIrdnt().size() %></b> 가지</p>
 	          		<hr>
@@ -226,22 +225,6 @@
 %>
 					</table>
 					
-	          		<br>
-	          		
-	          		<p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>요리 과정</b></p>
-<%
-					ArrayList<RecipeProcessVO> activeProList = (ArrayList<RecipeProcessVO>)activeSide.getRecipeProcess();
-					for(int i = 0; i < activeProList.size(); i++) {
-						RecipeProcessVO activePro = activeProList.get(i);
-%>
-		          		<p>과정&nbsp;<%=activePro.getCooking_no() %></p>
-		          		<div class="w3-light-grey w3-card-4">
-		            		<%=activePro.getCooking_desc() %>
-		          		</div>
-<%
-					}
-%>
-	          		<br>
 	        	</div>
       		</div>
       	<br>
@@ -319,8 +302,8 @@
 	<!-- 재료 -->
 	
 	<!-- 바텀 -->
-	<footer class="container-fluid text-center" style="position:absolute; bottom:0;">
-		<p>Footer Text</p>
+	<footer class="container-fluid text-center" style="position:relative; bottom:0; width:100%;">
+		<p>MADI</p>
 	</footer>
 	<!-- 바텀 -->
 </body>

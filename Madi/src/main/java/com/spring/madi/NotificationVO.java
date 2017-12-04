@@ -10,7 +10,9 @@ public class NotificationVO {
 	private int notice_id;
 	private String notice_to;
 	private String notice_from;
-	private String content;
+	private String notice_from_img;
+	private String notice_from_name;
+	private String content; 
 	private String notice_type;
 	private int check_not;
 	private Timestamp time;
@@ -56,6 +58,18 @@ public class NotificationVO {
 	}
 	public void setTime(Timestamp time) {
 		this.time = time;
+	}
+	public String getNotice_from_img() {
+		return notice_from_img;
+	}
+	public void setNotice_from_img(String notice_from_img) {
+		this.notice_from_img = notice_from_img;
+	}
+	public String getNotice_from_name() {
+		return notice_from_name;
+	}
+	public void setNotice_from_name(String notice_from_name) {
+		this.notice_from_name = notice_from_name;
 	}
 	
 	

@@ -53,7 +53,7 @@ public class WebSearch {
 	public static void main(String[] args) {
 		WebSearch webSearch = new WebSearch();
 		SearchEngine searchEngine = new SearchEngine();
-		String text = "녹두로 할 수 있는 서양 요리";
+		String text = "녹두로 할 수 있는 서양 면 요리";
 		List<String> nounList = webSearch.getNounFromText(text);
 		String sql = searchEngine.getSearchQueryByNoun(nounList);
 		log(sql);
@@ -62,5 +62,4 @@ public class WebSearch {
 	private static void log(String log) {
 		System.out.println("SYSTEM  :  " + log);
 	}
-	
 }

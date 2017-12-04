@@ -37,6 +37,10 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <style>
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+.hanna {
+	font-family: "hanna", "serif";
+}
 .carousel-inner {
 	width: 100%; /* Set width to 100% */
 	min-height: 500px;
@@ -54,7 +58,7 @@
 }
 .parallax {
     /* The image used */
-    background-image: url('./resources/image/wallpaper.jpg');
+    background-image: url('https://static.pexels.com/photos/616409/pexels-photo-616409.jpeg');
 
     /* Full height */
     height: 100%; 
@@ -66,7 +70,17 @@
     background-size: cover; 
 }
 .xrs {
-	 background-image: url('./resources/image/10.gif');
+	  /* The image used */
+    background-image: url('https://static.pexels.com/photos/139259/pexels-photo-139259.jpeg');
+
+    /* Full height */
+    height: 100%; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
 }
 </style>
 <script>
@@ -286,11 +300,11 @@
 		</div>
 	</div>
 
-	<div class="container-fluid text-center parallax w3-grayscale-min">
+	<div class="container-fluid text-center parallax">
 		<div class="container">
-		<font color="#DE4F4F"><h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc">Madi</font>가<br/>추천하는 당신의 <font class="madi_cc">Recipe</font></h3></font>
+		<h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc" color="#DE4F4F">Madi</font>&nbsp;<font color="#F15F5F">가<br/>추천하는 당신의</font> <font class="madi_cc" color="#DE4F4F">Recipe</font></h3>
 		<br /> 
-		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:white;"></span>
+		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:#F15F5F;"></span>
 		<script>
 			$("#refresh").mouseenter(function() {
 				$(this).attr("class","glyphicon glyphicon-refresh moreOfIrdnt w3-spin");
@@ -303,16 +317,17 @@
 		<hr />
 		<div class="row" id="search_Result_Area">
 			<br/><br/>
-			<font color="white"><h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1></font>
+			<font color="white"><h1 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font color="#DE4F4F">재료를 입력해 레시피를 조회해주세요</font></h1></font>
 			<br/><br/><br/>
 		</div>
 	</div>
 	</div>
+	
+	<div class="container-fluid text-center" style="padding:0; background:; margin-top:15px;">
+		<h1 class="madi_content" style="font-family:'hanna', 'serif';">레시피 목록</h1>
+	</div>
 	<div class="container">
 		<div class="container-fluid text-center">
-			<div class="container-fluid">
-				<h3 class="madi_content">레시피 목록</h3>
-			</div>
 			<br>
 			<div class="row madi_content" style="padding: 0;">
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
@@ -443,7 +458,7 @@
 		</div>
 	</div>
 	<footer class="container-fluid text-center">
-		<p>Footer Text</p>
+		<p>MADI</p>
 	</footer>
 </body>
 </html>

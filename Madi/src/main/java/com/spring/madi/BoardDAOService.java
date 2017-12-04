@@ -230,5 +230,11 @@ public class BoardDAOService implements BoardDAO {
 		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
 		return boardMapper.getReplySizeByBoardNum(boardReplyVO);
 	}
+	// 타임라인 구하기 (성빈)
+	@Override
+	public ArrayList<BoardVO> getTimelineBoard(MemberFollowVO memberFollowVO) {
+		BoardMapper boardMapper = sqlSession.getMapper(BoardMapper.class);
+		return boardMapper.getTimelineBoard(memberFollowVO);
+	}
 }
 
