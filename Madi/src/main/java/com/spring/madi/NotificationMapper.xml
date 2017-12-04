@@ -7,6 +7,8 @@
 		<result property="notice_id" column="NOTICE_ID" />
 		<result property="notice_to" column="NOTICE_TO" />
 		<result property="notice_from" column="NOTICE_FROM" />
+		<result property="notice_from_img" column="NOTICE_FROM_IMG" />
+		<result property="notice_from_name" column="NOTICE_FROM_NAME" />
 		<result property="content" column="CONTENT" />
 		<result property="notice_type" column="NOTICE_TYPE" />
 		<result property="check_not" column="CHECK_NOT" />
@@ -64,5 +66,16 @@
 		FROM NOTIFICATION
 		WHERE NOTICE_TO = #{following_user_id, jdbcType=VARCHAR} AND NOTICE_FROM = #{user_id, jdbcType=VARCHAR} AND NOTICE_TYPE = '팔로우 신청' AND CHECK_NOT = 0
 	</select>
-
+	<select id="getFollowRequest" resultMap="NotificationResultMap">
+		SELECT A.NOTICE_ID AS NOTICE_ID,
+			   A.NOTICE_TO AS NOTICE_TO,
+			   A.NOTICE_FROM AS NOTICE_FROM,
+			   B.USER_NAME AS NOTICE_FROM_NAME,
+			   B.USER_IMG AS NOTICE_FROM_IMG,
+			   A.CONTENT AS CONTENT
+		FROM NOTIFICATION A, MEMBER B
+		WHERE NOTICE_TYPE = '팔로우 신청' AND CHECK_NOT = 0 AND NOTICE_TO = #{user_id, jdbcType=VARCHAR}
+		AND A.NOTICE_FROM = B.USER_ID
+		ORDER BY TIME DESC
+	</select>
 </mapper>

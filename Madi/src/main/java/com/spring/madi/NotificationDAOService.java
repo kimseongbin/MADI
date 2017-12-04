@@ -92,6 +92,14 @@ public class NotificationDAOService implements NotificationDAO{
 		return notificationMapper.checkFollowRequest(memberFollowVO);
 		
 	}
+
+	@Override
+	public ArrayList<NotificationVO> getFollowRequest(String user_id) {
+		NotificationMapper notificationMapper = sqlSession.getMapper(NotificationMapper.class);
+		return notificationMapper.getFollowRequest(user_id);
+	}
+	
+	
 	
 	
 }

@@ -12,6 +12,8 @@ public class BoardVO {
 	private String board_title;
 	private String board_summry;
 	private String board_img;
+	private String user_email;
+	private String user_name;
 	private int board_recipe_id;
 	private int board_like;
 	private Timestamp board_time;
@@ -80,6 +82,18 @@ public class BoardVO {
 	}
 	public void setBoardReplyList(List<BoardReplyVO> boardReplyList) {
 		this.boardReplyList = boardReplyList;
+	}
+	public String getUser_email() {
+		return user_email;
+	}
+	public void setUser_email(String user_email) {
+		this.user_email = user_email;
+	}
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 	
 	

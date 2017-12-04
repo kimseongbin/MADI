@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 // 성빈 : 재료 별 레시피 검색을 위한 Class
@@ -185,8 +186,64 @@ public class SearchEngine {
 		return recipeList;
 		
 	}
-	// 성빈 : 상단  Header 검색창 기능 구현을 위한 메소드
-	// 검색 기능이 작동하는 순서 1) 빈칸에 의한 단어 구분 2) 영문, 한문, 숫자, 특수문자에 의한  	
+
+	// 상단 검색 바의 검색어로부터 검색할 DB 쿼리문 생성 메소드
+	public String getSearchQueryByNoun(List<String> nounList) {
+		
+		String select = "DISTINCT(RECIPE_ID)";
+		String view = " SELECT A.RECIPE_ID AS RECIPE_ID, "
+					+ " A.RECIPE_TITLE AS RECIPE_TITLE, "
+					+ " A.RECIPE_DESC AS RECIPE_DESC, "
+					+ " A.IMG_URL AS IMG_URL, "
+					+ " A.COOKING_TIME AS COOKING_TIME, "
+					+ " A.USER_ID AS USER_ID, "
+					+ " B.COOKING_NO AS COOKING_NO, "
+					+ " B.COOKING_DESC AS COOKING_DESC, "
+					+ " C.NATION_NAME AS NATION_NAME, "
+					+ " D.TY_NAME AS TY_NAME "
+					+ " FROM RECIPE_INFO A, RECIPE_PROCESS B, NATION C, RECIPE_TYPE D"
+					+ " WHERE A.RECIPE_ID = B.RECIPE_ID AND A.NATION_CODE = C.NATION_CODE AND A.TY_CODE = D.TY_CODE"
+					+ " ORDER BY A.RECIPE_ID, B.COOKING_NO";
+		String sql = "SELECT " + select + " " 
+				   + "FROM (" + view + ") "
+				   + "WHERE";
+		int i = 0;
+		for (String noun : nounList) {
+			String where = " RECIPE_TITLE LIKE '%" + noun + "%'"
+					 	 + " OR RECIPE_DESC LIKE '%" + noun + "%'"
+					 	 + " OR COOKING_DESC LIKE '%" + noun + "%'"
+					 	 + " OR TY_NAME LIKE '%" + noun + "%'"
+					 	 + " OR NATION_NAME LIKE '%" + noun + "%'";
+			if( i == 0) {
+				sql += where;
+				i = 1;
+			} else {
+				sql += " OR " + where;
+			}
+			
+		}
+		
+		return sql;
+	}
 	
+	// 검색 결과에 따른 레시피 아이디를 구하는 메소드
+	public List<Integer> getRecipeIdByNoun(String sql) {
+		
+		List<Integer> recipeList = new ArrayList<Integer>();
+		
+		try {
+			Connection conn = JDBCUtil.getConnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				recipeList.add(rs.getInt(1));
+			}
+		} catch (Exception e) {
+			System.out.println("SYSTEM  :  SearchEngine, getRecipeIdByNoun, DB로부터 검색어에 따른 레시피 목록 산출에 실패했습니다.");
+			e.printStackTrace();
+		}
+		
+		return recipeList;
+	}
 	
 }

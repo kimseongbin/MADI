@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-	<title>Bootstrap Example</title>
+	<title>마디 - 재료로 요리하다</title>
 	<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
 	
 	<!-- 카카오 api 연동 -->

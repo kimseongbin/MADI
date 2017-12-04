@@ -17,7 +17,7 @@
 	<select id="getMyMessageById" resultMap="MessageResultMap" parameterType="String">
 		SELECT *
 		FROM MESSAGE
-		WHERE USER_ID = #{user_id} AND CHECK_MSG = 0 
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND CHECK_MSG = 0 
 		ORDER BY TIME DESC
 	</select>
 	<!-- 성빈 : 읽은 메시지 업데이트 -->
@@ -35,7 +35,7 @@
 	<update id="removeMessageByMessageId" parameterType="String">
 		UPDATE MESSAGE
 		SET CHECK_MSG = 1
-		WHERE MESSAGE_ID = #{message_id}
+		WHERE MESSAGE_ID = #{message_id, jdbcType=VARCHAR}
 	</update>
 	<!-- 성빈 : 읽은 메시지 업데이트 -->
 	<!-- 해당 메시지를 읽은 경우 다음 번 페이지 로딩 시 메시지를 다시 읽어오지 않도록 CHECK_MSG의 값을 1로 변경하는 쿼리 -->

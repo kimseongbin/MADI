@@ -13,8 +13,10 @@
 		<result property="board_time" column="BOARD_TIME" />
 		<!-- (진산) 본문 글쓴이의 프로필 이미지를 위해 넣음 -->
 		<result property="user_img" column="USER_IMG" />
+		<result property="user_email" column="USER_EMAIL"/>
+		<result property="user_name" column="USER_NAME"/>
 		<!-- (성빈) board_num을 기준으로 Board의 모든 댓글 정보를 List에 담아 boardReplyList 필드로 리턴하는 collection 설정-->
-		<collection property="boardReplyList" column="board_num" javaType="java.util.ArrayList" ofType="com.spring.madi.BoardReplyVO" select="getReplyListByBoardNum"/>
+		<collection property="boardReplyList" column="board_num" javaType="java.util.ArrayList" ofType="com.spring.madi.BoardReplyVO" select="getReplyList"/>
 		<!-- (성빈) 자신과 팔로잉한 사람들 모두의 게시글을 불러온다 
 		<collection property="getAllboards" column="user_id" javaType="java.util.ArrayList" ofType="com.spring.madi.BoardVO" select="getAllBoardsByUser_id"/> -->
 	</resultMap>
@@ -32,7 +34,14 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="board_num" column="BOARD_NUM"/>
 	</resultMap>	
-
+	
+	<select id="getReplyList" resultType="com.spring.madi.BoardReplyVO">
+		SELECT *
+		FROM BOARD_REPLY
+		WHERE BOARD_NUM = #{board_num}
+		ORDER BY REP_DATE DESC
+	</select>
+	
 	<!-- 댓글에 입력하면 DB에 저장 -->
 	<insert id="writeBoard" parameterType="BoardReplyVO">
 		INSERT INTO BOARD_REPLY (BOARD_NUM, USER_ID, REP_CONTENT, USER_IMG) 
@@ -92,7 +101,18 @@
 		a.board_img, a.board_recipe_id, a.board_like, a.board_time, b.rep_content
 		FROM board a, board_reply b, member c 
 		WHERE a.user_id = b_user_id and a.user_id = c.user_id and user_id= #{user_id, javaType=String} -->
-		SELECT * FROM board WHERE user_id= #{user_id, javaType=String}
+		SELECT A.BOARD_NUM AS BOARD_NUM,
+			   A.BOARD_TITLE AS BOARD_TITLE,
+			   A.BOARD_SUMMRY AS BOARD_SUMMRY,
+			   A.BOARD_IMG AS BOARD_IMG,
+			   A.BOARD_LIKE AS BOARD_LIKE,
+			   A.BOARD_TIME AS BOARD_TIME,
+			   B.USER_ID AS USER_ID,
+			   B.USER_NAME AS USER_NAME,
+			   B.USER_IMG AS USER_IMG,
+			   B.USER_EMAIL AS USER_EMAIL 
+		FROM BOARD A, MEMBER B 
+		WHERE A.USER_ID = B.USER_ID AND A.USER_ID= #{user_id, jdbcType=VARCHAR}
 	</select>
 	<!-- (진산) 임시..연월일만 구하기 -->
 	<select id="getTime" resultMap="BoardResultMap">
@@ -161,7 +181,7 @@
 	</delete>
 	<delete id="deleteReply" parameterType="com.spring.madi.BoardReplyVO">
 		DELETE FROM BOARD_REPLY
-		WHERE USER_ID = #{user_id} AND REP_DATE = #{rep_date}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND REP_DATE = #{rep_date}
 	</delete>
 	<select id="getUserLikeBoardList" resultMap="UserLikeBoResultMap">
 		SELECT BOARD_NUM
@@ -173,4 +193,27 @@
 		FROM BOARD_REPLY
 		WHERE BOARD_NUM = #{board_num}
 	</select>
+	<select id="getTimelineBoard" parameterType="com.spring.madi.MemberFollowVO" resultMap="BoardResultMap">
+		SELECT A.BOARD_NUM AS BOARD_NUM,
+			   A.BOARD_TITLE AS BOARD_TITLE,
+			   A.BOARD_SUMMRY AS BOARD_SUMMRY,
+			   A.BOARD_IMG AS BOARD_IMG,
+			   A.BOARD_LIKE AS BOARD_LIKE,
+			   A.BOARD_TIME AS BOARD_TIME,
+			   B.USER_ID AS USER_ID,
+			   B.USER_NAME AS USER_NAME,
+			   B.USER_IMG AS USER_IMG,
+			   B.USER_EMAIL AS USER_EMAIL
+		FROM BOARD A, MEMBER B
+		WHERE BOARD_NUM IN (SELECT DISTINCT(BOARD_NUM)
+							FROM BOARD
+							WHERE USER_ID IN (SELECT USER_ID
+											  FROM MEMBER_FOLLOW
+											  WHERE FOLLOWING_USER_ID = #{following_user_id, jdbcType=VARCHAR})
+							OR	  USER_ID IN (SELECT FOLLOWING_USER_ID
+										      FROM MEMBER_FOLLOW
+											  WHERE USER_ID = #{user_id, jdbcType=VARCHAR}))
+		AND A.USER_ID = B.USER_ID											  	
+		ORDER BY BOARD_TIME
+	</select>	
 </mapper>
