@@ -1141,9 +1141,7 @@ public class FrontController {
 		WebSearch webSearch = new WebSearch();
 		SearchEngine searchEngine = new SearchEngine();
 		System.out.println("SYSTEM  :  검색어를 입력받았습니다. 입력값은 " + query + " || 형태소 분석을 시작합니다. ");
-		List<String> nounList = new ArrayList<String>();
-		nounList.add("녹두");
-		nounList.add("케이크");
+		List<String> nounList = webSearch.getNounFromText(query);
 		String searchSQL = searchEngine.getSearchQueryByNoun(nounList);
 		List<Integer> recipeList = searchEngine.getRecipeIdByNoun(searchSQL);
 		System.out.println("SYSTEM  :  총 " + recipeList.size() + "개의 검색결과를 얻었습니다. 해당 레시피 정보를 수집합니다.");

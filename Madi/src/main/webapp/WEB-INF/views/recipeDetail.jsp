@@ -408,6 +408,9 @@ footer {
 	.row.content {
 		height: auto;
 	}
+	.mobile-img {
+		width: 80%;
+	}
 }
 .xrs {
 	 background-image: url('./resources/image/10.gif');
@@ -426,17 +429,14 @@ footer {
 		<!-- body wrapper 끝 -->
 		<div class="row content">
 			<!-- 좌측 Sidenav -->
-			<div class="col-sm-3 sidenav">
+			<div class="col-sm-3">
 				<div class="panel panel-default text-center"
-					style="padding-left: 5px; padding-right: 5px; padding-bottom: 10px;">
+					style="padding-left: 5px; padding-right: 5px;">
 					<h3>
-						<%=recipeOwner.getUser_id()%>님의 레시피
+						<%=recipeOwner.getUser_name()%>님의 레시피
 					</h3>
 					<img src="<%=recipeOwner.getUser_img()%>" class="img-rounded"
 						width="80%;"> <br /> <br />
-					<p>
-					<h4><%=recipeOwner.getUser_name()%></h4>
-					</p>
 					<p>
 					<h4><%=recipeOwner.getUser_email()%></h4>
 					</p>
@@ -455,7 +455,7 @@ footer {
 					</div>
 					<!-- 하이차트 끝 -->
 					<!-- 재료 목록 시작-->
-					<table class="table table-borderd">
+					<table class="table table-borderd">	
 						<thead>
 							<tr>
 								<td>재료명</td>
@@ -534,7 +534,7 @@ footer {
 				</p>
 				<br>
 				<!-- recipe 타이틀 이미지 -->
-				<img src="<%=recipe.getImg_url()%>" class="img-rounded w3-animate-opacity" width="40%" />
+				<img src="<%=recipe.getImg_url()%>" class="img-rounded w3-animate-opacity mobile-img" width="40%" />
 				<h5>
 					<small><%=recipe.getRecipe_title()%></small>
 				</h5>
@@ -581,6 +581,7 @@ footer {
 								<img src="<%=recipeProcessVO.getStep_img_url() %>" class="img-rounded w3-animate-left" height="auto" width="100%"/>
 						</div>
 						<div class="col-sm-6">
+								<br/>
 								<p>과정 <%=recipeProcessVO.getCooking_no() %></p>
 								<p>
 									<%=recipeProcessVO.getCooking_desc() %>

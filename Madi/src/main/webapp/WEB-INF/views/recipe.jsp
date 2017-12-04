@@ -19,7 +19,6 @@
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("messageList", messageList);
-
 	request.setAttribute("myIrdntList", myIrdntList);
 
 %>
@@ -44,7 +43,7 @@
 .hanna {
 	font-family: "hanna", "serif";
 }
-.carousel-inner {
+.carousel-inner {	
 	width: 100%; /* Set width to 100% */
 	min-height: 500px;
 	max-height: 500px;
@@ -87,14 +86,10 @@
 }
 </style>
 <script>
-<<<<<<< HEAD
 	window.onload = function() {
 		$("#fridgeBtn").css("padding-top", "5px");
 	}
 	
-=======
-
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
 	function likeBoard(element, user_id, board_num, writer) {
 		$.ajax({
 			url: "./likeBoard.do",
