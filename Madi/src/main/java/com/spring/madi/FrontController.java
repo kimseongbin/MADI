@@ -96,6 +96,7 @@ public class FrontController {
 			try {
 				PrintWriter writer = response.getWriter();
 				writer.write("<script>alert('아이디가 존재하지 않습니다.\n아이디를 다시 확인해주세요.')</script>");
+				System.out.println("system  :  로그인 화면, 로그인 에러 발생(아이디 체크). 로그인 실패로 인한 실패 알림 메시지 전송 실패sd");
 			} catch (Exception e) {
 				System.out.println("system  :  로그인 화면, 로그인 에러 발생(아이디 체크). 로그인 실패로 인한 실패 알림 메시지 전송 실패");
 				e.printStackTrace();
@@ -109,6 +110,7 @@ public class FrontController {
 				try {
 					PrintWriter writer = response.getWriter();
 					writer.write("<script>alert('비밀번호가 일치하지 않습니다.\n비밀번호를 다시 확인해주세요.')</script>");
+					System.out.println("system  :  로그인 화면, 로그인 에러 발생(아이디 체크). 로그인 실패로 인한 실패 알림 메시지 전송 실패as");
 				} catch (Exception e) {
 					System.out.println("system  :  로그인 화면, 로그인 에러 발생(비밀번호 체크). 로그인 실패로 인한 실패 알림 메시지 전송 실패");
 					e.printStackTrace();
@@ -219,7 +221,7 @@ public class FrontController {
 		
 		
 		}
-		return "recipe";
+		return "redirect:/recipe.do";
 		
 	}
 	
@@ -709,15 +711,15 @@ public class FrontController {
 	}
 	//카카오 로그인정보 체크 (이미 있는 이메일 인지 없는 이메일 인지)
 	@RequestMapping("/checkMember.do")
-	public ModelAndView checkMember(MemberVO memberVO)
+	public ModelAndView checkMember(MemberVO memberVO, HttpSession session)
 	{	
 		
 		ModelAndView model = new ModelAndView();
 		
 		
-		//System.out.println(memberVO.getUser_id());
-		//System.out.println(memberVO.getUser_name());
-		//System.out.println(memberVO.getUser_img());
+		System.out.println(memberVO.getUser_id());
+		System.out.println(memberVO.getUser_name());
+		System.out.println(memberVO.getUser_img());
 		
 		//카카오 아이디, 이미지 저장
 		String kakao_id = memberVO.getUser_id();
@@ -740,7 +742,7 @@ public class FrontController {
 			model.setViewName("sns_join");
 			return model;
 			
-		}else{
+		}
 			// Header에 들어가야 할 기본 데이터 읽어오기
 			// 내 알림 메시지 읽어오기
 			ArrayList<NotificationVO> notificationList = notificationDAOService.getMyNoticeById(xx.getUser_id());
@@ -756,20 +758,22 @@ public class FrontController {
 			model.addObject("notificationList", notificationList);
 			model.addObject("MemberVO", memVO);
 			//카카오 아이디, 이메일만 저장
-						
-			model.setViewName("recipe");	
+			
+			//session.setAttribute("user_id", kakao_id);
+			
+			model.setViewName("redirect:/recipe.do");	
 			//아이디정보 세션 저장
 			//세션으로 저장해서 전달해 주기 session.getAttribute 로 값 받을수 있어요
-			/*session.setAttribute("user_id", userInfo.getUser_id());
-			session.setAttribute("user_email", userInfo.getUser_email());
-			session.setAttribute("user_name", userInfo.getUser_name());
-			session.setAttribute("user_img", userInfo.getUser_img());*/
+			session.setAttribute("user_id", xx.getUser_id());
+			session.setAttribute("user_email", xx.getUser_email());
+			session.setAttribute("user_name", xx.getUser_name());
+			session.setAttribute("user_img", xx.getUser_img());
 			
 			
 			return model;
-		}
-				
 	}
+				
+	
 	/*@RequestMapping("/snsJoin.do")
 	public String snsJoin() {
 		
@@ -1012,13 +1016,13 @@ public class FrontController {
 		notificationDAOService.sendNoticeById(followRequest);
 		return 2;
 	}
-
+/*
 	@RequestMapping("/snsJoin.do")
 	public String snsJoin() {
 
 		return "sns_join";
 
-	}
+	}*/
 
 	
 	@RequestMapping("/sendMessage.do")

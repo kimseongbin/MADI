@@ -6,6 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%	
+
 	// 메시지 리시트 받아오기 
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
@@ -73,9 +74,7 @@
 }
 </style>
 <script>
-<<<<<<< HEAD
-	
-=======
+
 	function likeBoard(element, user_id, board_num, writer) {
 		$.ajax({
 			url: "./likeBoard.do",
@@ -95,7 +94,6 @@
 			}
 		});
 	}
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
 	function addCategory(element) {
 		var category_selected_form = document
 				.getElementById("category_selected_form");
