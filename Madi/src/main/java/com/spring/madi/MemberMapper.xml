@@ -103,12 +103,12 @@
 	<!-- (진산) 팔로잉 한 명 지우기 -->
 	<delete id="deleteFollowing" parameterType="com.spring.madi.MemberFollowVO">
 		DELETE FROM member_follow 
-		WHERE user_id= #{user_id, javaType=String} and following_user_id= #{following_user_id, javaType=String}
+		WHERE user_id= #{user_id, jdbcType=VARCHAR} and following_user_id= #{following_user_id, jdbcType=VARCHAR}
 	</delete>
 	<!-- (진산) 팔로워 한 명 지우기 -->
 	<delete id="deleteFollower" parameterType="com.spring.madi.MemberFollowVO">
 		DELETE FROM member_follow 
-		WHERE user_id= #{user_id, javaType=String} and following_user_id= #{following_user_id, javaType=String}
+		WHERE user_id= #{user_id, jdbcType=VARCHAR} and following_user_id= #{following_user_id, jdbcType=VARCHAR}
 	</delete>
 	<!-- (진산) 팔로잉 한 명 추가 -->
 	<insert id="insertFollowing" parameterType="com.spring.madi.MemberFollowVO">

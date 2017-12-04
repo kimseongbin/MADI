@@ -283,6 +283,13 @@
                         <span class="glyphicon glyphicon-globe color"></span>
                     </button>
                 </li>
+                <!-- 임시 채팅 아이콘-->
+                <li>
+                	<button type="button" class="btn from header" style="padding-top: 10px; margin-top:10px; margin-left:1px;"
+                	 data-toggle="modal" data-target="#chat" onclick="chat();">
+                		<span class="glyphicon glyphicon-thumbs-up"></span>
+                	</button>
+                </li>
           	</ul>
        	</div>
     </div>
@@ -3478,4 +3485,63 @@ $(document).ready(function() {
 				}
 			});
 	}
+	//임시 채팅
+	function chat() {
+		location.href="./chat.do";
+	}
 </script>
+<!-- 임시..채팅모달  -->
+<div id="chat" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%=memberVO.getUser_id()%></h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+			<textarea id="output" readonly rows="10" cols="30"></textarea>
+		</div>
+		<div class="row">
+			<input type="text" id="input" placeholder="input message..." size="20">
+			<button id="send_button">Send</button>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<%-- <script>
+	var log= function(s) {
+		//밑의 textarea의 output을 찾아서 s 내용과 줄바꿈 문자를 넣어서 기존 내용과 연결하겠다
+		document.getElementById("output").textContent += (s + "\n");
+	}
+	//html5기능. 웹서버주소/웹소켓/uri를 브로드캐스팅으로 하면 servlet-context에서 socketHandler를 사용가능
+	//소켓 객체 생성 후 소켓 변환 후 웹 소켓에 접속
+	w= new WebSocket("ws://localhost:8080/madi/broadcasting");
+//	w.onopen= function() {
+//	alert("WebSocket Connected");
+//	}
+	//서버가 온라인으로 보내면 그걸 수신하는 메시지가 온메시지
+	w.onmessage= function(e) {
+		log(e.data.toString());
+	}
+	w.onclose= function(e) {
+		log("WebSocket closed");
+	}
+	w.onerror= function(e) {
+		log("WebSocket error");
+	}
+	//온로드는 해당 문서가 로딩이 완료될시 자동으로 호출
+	window.onload= function() {
+		document.getElementById("send_button").onclick= function() {
+
+				var user_id= document.getElementById("<%=memberVO.getUser_id()%>").value;
+				var input= document.getElementById("input").value;
+				w.send(user_id + ">" + input);
+
+		}
+	}
+</script> --%>

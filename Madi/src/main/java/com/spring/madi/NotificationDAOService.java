@@ -71,6 +71,7 @@ public class NotificationDAOService implements NotificationDAO{
 			System.out.println("SYSTEM  :  NoticationDAOServcie, sendNoticeById, 알림 메시지 전송에 실패했습니다, 알림 내용 : " + notificationVO.getContent());
 			e.printStackTrace();
 		}
+		System.out.println("SYSTEM  :  NoticationDAOServcie, sendNoticeById, 알림 메시지를 전송했습니다, 알림 내용 : " + notificationVO.getContent() + " To : " + notificationVO.getNotice_to());
 	}
 	// 성빈 : notice_id로 알림 메시지 읽어이고
 	@Override

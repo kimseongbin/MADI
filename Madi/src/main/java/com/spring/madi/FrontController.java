@@ -336,7 +336,7 @@ public class FrontController {
 	// (진산)팔로잉 한 명 삭제
 	@RequestMapping("/deleteFollowing.do")
 	@ResponseBody
-	public int deleteFollowing(String user_id, String following_user_id) {
+	public String deleteFollowing(String user_id, String following_user_id) {
 
 		// 팔로잉 삭제
 		memberDAOService.deleteFollowing(user_id, following_user_id);
@@ -346,33 +346,33 @@ public class FrontController {
 		notificationVO.setNotice_to(following_user_id);
 		notificationVO.setNotice_from(user_id);
 		notificationVO.setNotice_type("팔로우 거부");
-		notificationVO.setContent(user_id + "님께서 팔로우를 취소하셨습니다.");
+		notificationVO.setContent(user_id + "님께서 팔로잉를 취소하셨습니다.");
 		notificationDAOService.sendNoticeById(notificationVO);
 
 		List<MemberVO> followingList = memberDAOService.getFollowing(user_id);
-
-		return followingList.size();
+		System.out.println("followinglist + " + followingList.size());
+		return Integer.toString(followingList.size());
 	}
 
 	// (진산)팔로워 한 명 삭제
 	@RequestMapping("/deleteFollower.do")
 	@ResponseBody
-	public int deleteFollower(String user_id, String following_user_id) {
+	public String deleteFollower(String user_id, String following_user_id) {
 
 		// 팔로워 삭제
-		memberDAOService.deleteFollower(user_id, following_user_id);
+		memberDAOService.deleteFollower(following_user_id, user_id);
 
 		// 팔로워 취소 알림 메시지 보내기
 		NotificationVO notificationVO = new NotificationVO();
-		notificationVO.setNotice_to(user_id);
-		notificationVO.setNotice_from(following_user_id);
+		notificationVO.setNotice_to(following_user_id);
+		notificationVO.setNotice_from(user_id);
 		notificationVO.setNotice_type("팔로우 거부");
-		notificationVO.setContent(following_user_id + "님께서 회원님의 팔로우를 취소하셨습니다.");
+		notificationVO.setContent(user_id + "님께서 회원님의 팔로우를 취소하셨습니다.");
 		notificationDAOService.sendNoticeById(notificationVO);
 
-		List<MemberVO> followerList = memberDAOService.getFollower(following_user_id);
-
-		return followerList.size();
+		List<MemberVO> followerList = memberDAOService.getFollower(user_id);
+		System.out.println("followerlist + " + followerList.size());
+		return Integer.toString(followerList.size());
 	}
 
 	// (진산) 팔로잉 한 명 추가
@@ -406,7 +406,7 @@ public class FrontController {
 	// (진산) 좋아요 클릭시 한 개 추가...@ResponseBody를 써서 json오브젝트만 리턴하게 된다
 	@RequestMapping("/updateBoardLike.do")
 	@ResponseBody
-	public int updateBoardLike(BoardVO boardVO, NotificationVO notificaitonVO) {
+	public String updateBoardLike(BoardVO boardVO, NotificationVO notificaitonVO) {
 		// String[] following_user_id= null;
 		// ModelAndView result= new ModelAndView();
 		String user_id = boardVO.getUser_id();
@@ -421,14 +421,14 @@ public class FrontController {
 			System.out.println("좋아요 성공");
 			System.out.println(notificaitonVO.getNotice_to());
 			notificationDAOService.sendNoticeById(notificaitonVO);
-			return 1;
+			return "1";
 		} else {
 			boardDAOService.deleteUserLike(boardVO);
 			boardDAOService.likeMinusOne(boardVO);
 			System.out.println("좋아요가 중복입니다. 삭제합니다");
 			System.out.println(notificaitonVO.getNotice_to());
 			notificationDAOService.sendNoticeById(notificaitonVO);
-			return 0;
+			return "0";
 		}
 	}
 
@@ -952,13 +952,13 @@ public class FrontController {
 	// 성빈 : recipeDetail에서 게시판 좋아요 눌렀을 때 처리 하는 메소드
 	@RequestMapping("/likeBoard.do")
 	@ResponseBody
-	public int likeBoard(UserLikeBoVO userLikeBoVO, String writer) {
+	public String likeBoard(UserLikeBoVO userLikeBoVO, String writer) {
 		// 좋아요 누른 적 있는지 없는지 판단
 		UserLikeBoVO vo = boardDAOService.doesAlreadyLike(userLikeBoVO);
 		if (vo == null) {
 			System.out.println("SYSTEM  :  UserLikeBo Select 결과 데이터가 존재하지 읺아 UserLikeVO가 null이 리턴되었습니다.");
 			System.out.println("SYSTEM  :  UserLikeBo 에 데이터를 추가합니다. user_id : " + userLikeBoVO.getUser_id()
-					+ "board_num : " + userLikeBoVO.getBoard_num());
+					+ "  board_num : " + userLikeBoVO.getBoard_num());
 			// Board 테이블에 좋아요 카운트 증가
 			boardDAOService.updateBoardLikePlus(userLikeBoVO);
 			// 좋아요 알림 메시지 전송
@@ -974,47 +974,47 @@ public class FrontController {
 					"SYSTEM  :  " + writer + "에게 좋아요 알림 메시지를 보냈습니다" + "  FROM  :  " + userLikeBoVO.getUser_id());
 			// 좋아요 테이블에 추가
 			boardDAOService.insertUserLikeBo(userLikeBoVO);
-			return 1;
+			return "1";
 		} else {
 			// 좋아요 감소
 			boardDAOService.updateBoardLikeMinus(userLikeBoVO);
 			// 좋아요 테이블 삭제
 			boardDAOService.deleteUserLikeBo(userLikeBoVO);
-			return 0;
+			return "0";
 		}
 	}
 
 	// 성빈 : recipeDetail에서 게시판 댓글 삭제 버튼 눌렀을 때 처리하는 메소드
 	@RequestMapping("/deleteReply.do")
 	@ResponseBody
-	public int deleteReply(BoardReplyVO boardReplyVO, HttpSession session) {
+	public String deleteReply(BoardReplyVO boardReplyVO, HttpSession session) {
 		String user_id = (String) session.getAttribute("user_id");
 		boardDAOService.deleteReply(boardReplyVO);
-		return boardDAOService.getReplySizeByBoardNum(boardReplyVO);
+		return Integer.toString(boardDAOService.getReplySizeByBoardNum(boardReplyVO));
 	}
 
 	// 성빈 : recipeDetail에서 팔로우 버튼 눌렀을 때 처리하는 메소드
 	// 팔로우 요청 알림을 발생시킨다
 	@RequestMapping("/followRequest.do")
 	@ResponseBody
-	public int followRequest(MemberFollowVO memberFollowVO) {
+	public String followRequest(MemberFollowVO memberFollowVO) {
 		int checkFollowing = memberDAOService.checkFollowing(memberFollowVO);
 		if(checkFollowing != 0) {
 			System.out.println("SYSTEM  :  현재 팔로우한 회원을 다시 팔로우할 순 없습니다. 팔로우 요청을 취소합니다. 요청자 : " + memberFollowVO.getUser_id() + " 요청 대상 : " + memberFollowVO.getFollowing_user_id());
-			return 0;
+			return "0";
 		}
 		int checkFollowRequest = notificationDAOService.checkFollowRequest(memberFollowVO);
 		if(checkFollowRequest != 0) {
 			System.out.println("SYSTEM  :  현재 팔로우 요청 읍답 대기 중입니다. 팔로우 요청을 취소합니다. 요청자 : " + memberFollowVO.getUser_id() + " 요청 대상 : " + memberFollowVO.getFollowing_user_id());
-			return 1;
+			return "1";
 		}
 		NotificationVO followRequest = new NotificationVO();
 		followRequest.setNotice_to(memberFollowVO.getFollowing_user_id());
 		followRequest.setNotice_from(memberFollowVO.getUser_id());
 		followRequest.setNotice_type("팔로우 신청");
-		followRequest.setContent(memberFollowVO.getUser_id()+"님께서 팔로우를 신청하셔습니다.");
+		followRequest.setContent(memberFollowVO.getUser_id()+"님께서 팔로우를 신청하셨습니다.");
 		notificationDAOService.sendNoticeById(followRequest);
-		return 2;
+		return "2";
 	}
 /*
 	@RequestMapping("/snsJoin.do")
@@ -1022,6 +1022,7 @@ public class FrontController {
 
 		return "sns_join";
 
+<<<<<<< HEAD
 	}*/
 
 	
@@ -1037,6 +1038,9 @@ public class FrontController {
 		
 		return "redirect:/recipe.do";
 	}
+
+	
+
 
 	
 

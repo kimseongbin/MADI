@@ -13,93 +13,55 @@ MemberVO memberVO= (MemberVO)request.getAttribute("memberVO");
 List<BoardVO> allBoardList= (ArrayList<BoardVO>)request.getAttribute("allBoardList");
 %>
 <!-- 본문 글 시작 -->
-<%
-	for(int i=0; i<allBoardList.size(); i++) {
-		BoardVO board= allBoardList.get(i);
-%>
-<div class="well content_color" style="padding-bottom: 0px;">
-	<div class="row">
-		<div class="col-sm-4" style="font-size: 16px; text-align: left;">
-			<!-- profile -->
-			<img src="<%=board.getUser_img()%>" class="img-circle" height="40"
-				width="40">&nbsp;<a href="#"><strong><%=board.getUser_id()%></strong></a>
-		</div>
-		<!-- title -->
-		<div class="col-sm-8" style="text-align: left;">
-			<p>
-				<strong style="font-size: 25px;"><%=board.getBoard_title()%></strong>
-			</p>
-		</div>
-	</div>
-	<!-- image and date, like-->
-	<img src="<%=board.getBoard_img()%>" style="width: 40%; height: 40%;"
-		class="img-squere"><br>
-	<div class="row">
-		<table style="border-spacing: 20px; font-size: 17px;">
-			<tr>
-				<td>
-					<p>
-						<%=board.getBoard_time()%>
-					</p>
-				</td>
-				<td><span class="glyphicon glyphicon-heart"
-					style="padding-bottom: 14px;"></span></td>
-				<td>
-					<p style="padding-bottom: 3px;">
-						<em class="boardLike"><%=board.getBoard_like()%></em>
-					</p>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<!-- 글 내용 -->
-	<div class="row">
-		<p style="font-size: 17px;"><%=board.getBoard_summry()%></p>
-	</div>
-	<br> <br>
-	<!-- Icon -->
-	<div class="row">
-		<div class="pull-left">
-			<table>
-				<tr>
-					<td style="padding: 5px;"><span style="cursor: pointer;"
-						class="glyphicon glyphicon-comment icon-size"
-						data-toggle="collapse"
-						data-target="#comment<%=board.getBoard_num()%>"></span></td>
-					<td style="margin-top: 30px; cursor: pointer;"
-						data-toggle="collapse"
-						data-target="#comment<%=board.getBoard_num()%>">댓글보기</td>
-					<td style="padding: 5px;"><span style="cursor: pointer"
-						class="glyphicon glyphicon-heart icon-size"
-						onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')"></span>
-					</td>
-					<td style="margin-top: 30px; cursor: pointer;"
-						onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">좋아요</td>
-					<td style="padding: 5px;"><span style="cursor: pointer"
-						class="glyphicon glyphicon-share-alt icon-size"></span></td>
-					<td style="margin-top: 30px; cursor: pointer;">공유하기</td>
-				</tr>
-			</table>
-		</div>
-	</div>
-	<!-- 댓글 comment -->
-	<div id="comment<%=board.getBoard_num()%>" class="collapse">
-		<ul class="list-group" style="text-align: left;">
-			<%
-				List<BoardReplyVO> replyList = board.getBoardReplyList(); 
-					for(int j = 0; j < replyList.size(); j++) {
-						BoardReplyVO reply= replyList.get(j);
-			%>
-			<li class="list-group-item"><img src="<%=reply.getUser_img()%>"
-				class="img-circle" height="30" width="30">&nbsp; <a href="#"><strong><%=reply.getUser_id()%></strong></a>
-				&emsp; <strong><%=reply.getRep_content()%></strong></li>
-			<%
-					} // for replyList
-			%>
-		</ul>
-	</div>
-	<!-- 본문 글 끝 -->
-</div>
-<%
-	} // for allBoardList
-%>
+				<%
+					for (int i = 0; i < allBoardList.size(); i++) {
+						BoardVO board = allBoardList.get(i);
+    				%>
+					<div class="w3-container w3-card w3-white w3-round w3-margin">
+						<br> <img src="<%=board.getUser_img()%>" alt="Avatar"
+							class="w3-left w3-circle w3-margin-right" style="width: 60px">
+						<span class="w3-right w3-opacity"><%=board.getBoard_time()%></span>
+						<h4><%=board.getUser_id()%></h4>
+						<br>
+						<hr class="w3-clear">
+						<img src="<%=board.getBoard_img()%>" style="width: 50%"
+							class="w3-margin-bottom">
+						<p>
+							좋아요 :
+							<%=board.getBoard_like()%></p>
+						<p><%=board.getBoard_summry()%></p>
+						<button type="button"
+							class="w3-button w3-theme-d1 w3-margin-bottom" 
+							onclick="updateBoardLike('<%=board.getBoard_num()%>', '<%=memberVO.getUser_id()%>', '<%=i%>')">
+							<i class="fa fa-thumbs-up"></i>  Like
+						</button>
+						<button type="button"
+							class="w3-button w3-theme-d2 w3-margin-bottom"
+							onclick="myFunction('comment<%=board.getBoard_num()%>')">
+							<i class="fa fa-comment"></i>  Comment
+						</button>
+
+						<!-- 댓글창 -->
+						<div id="comment<%=board.getBoard_num()%>"
+							class="w3-hide w3-container">
+							<%
+							List<BoardReplyVO> replyList = board.getBoardReplyList();
+								for (int j = 0; j < replyList.size(); j++) {
+								BoardReplyVO reply = replyList.get(j);
+       						%>
+							<p style="font-size: 27px; margin-bottom: 0px; margin-top: 0px;">
+								<img src="<%=reply.getUser_img()%>" class="w3-circle"
+									style="width: 40px;" alt="Avatar">
+								<%=reply.getUser_id()%>
+								:
+								<%=reply.getRep_content()%></p>
+							<%
+								}//reply 끝
+							%>
+						</div>
+
+					</div>
+				<%
+		    		}
+				//게시글 for문 끝
+		    %>
