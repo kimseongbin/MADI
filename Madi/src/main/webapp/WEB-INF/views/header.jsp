@@ -3223,28 +3223,29 @@
 					</div>
 					<div id="message" class="tab-pane fade">
 						<ul class="list-group">
-							<div class="row">
+							<%-- <div class="row">
 								<div class="col-sm-2" style="padding-bottom: 5px;">
 									<img src="./resources/profile/bird.jpg" class="img-circle"
 										height="40" width="40" alt="Avatar">
 								</div>
 								<div class="col-sm-6">
 									<h5 class="text-primary header" style="magin-bottom:5px;">
-<<<<<<< HEAD
+
 										<strong>&nbsp;이글이글</strong>
 										<input type="button" id="irdntAddBtn" value="메세지보내기"class="btn btn-primary btn-xs">
 									</h5>
-=======
+
 										<strong>&nbsp;<%=memberVO.getUser_id() %></strong>
 									</h5>
->>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
+
 								</div>
+							</div>	 --%>
 							<!-- 메시지 내용들 -->
 							
 							<!--  <iframe name="param" style="width: 0px; height: 0px;border: 0px;"></iframe> -->
 							<form id="send" target="param">
 								<div id="addBtn">
-								<input type="hidden" name="sender_id"value="<%=memberVO.getUser_id()%>">
+								<input type="hidden" name="sender_id" value="<%=memberVO.getUser_id()%>">
 								받는사람:</br><input type="text" name="user_id" id="user_id"> </br> 
 								내 용:<textarea name="content" id="content"style="width: 100%;"></textarea>
 								<input class="btn btn-primary btn-xs" type="button" id="sendmessage" value="전송">
