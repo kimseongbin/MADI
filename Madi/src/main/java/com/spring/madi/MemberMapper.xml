@@ -8,7 +8,11 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="user_pw" column="USER_PW" />
 		<result property="user_name" column="USER_NAME" />
+
+		<result property="user_gender" column="USER_GENDER"/>
+
 		<result property="user_gender" column="USER_GENDER" />
+
 		<result property="user_email" column="USER_EMAIL" />
 		<result property="user_img" column="USER_IMG" />
 	</resultMap>
@@ -113,6 +117,25 @@
 		#{user_img, javaType=String}, #{following_user_img, javaType=String})
 	</insert>
 	
+
+	
+	<!-- (인욱) 카카오 아이디 DB에서 조회후 불러옴 -->
+	<select id ="checkMember" resultMap="MemberResultMap" parameterType="com.spring.madi.MemberVO">
+		select * from member where user_id = #{user_id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id ="checkEmail" resultType="int" parameterType="com.spring.madi.MemberVO">
+		
+		select count(*) from member where user_email = #{user_email, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- (인욱) 카카오 간편회원가입 insert -->
+	<insert id="set_Member" parameterType="com.spring.madi.MemberVO">
+		insert into member(user_id,  user_name, user_gender, user_email, user_img) 
+		values (#{user_id, jdbcType=VARCHAR}, #{user_name, jdbcType=VARCHAR}, #{user_gender, jdbcType=VARCHAR}, #{user_email, jdbcType=VARCHAR}, #{user_img, jdbcType=VARCHAR})
+	
+	</insert>
+
 	<!-- 성빈 : 로그인 체크를 위한 user_pw 조회 쿼리-->
 	<select id="getPasswordByUserId" resultMap="MemberResultMap"  parameterType="com.spring.madi.MemberVO">
 		SELECT USER_PW
@@ -181,5 +204,6 @@
 		SET USER_EMAIL=#{user_email}, USER_PW=#{user_pw}
 		WHERE USER_ID=#{user_id}
 	</update>
+
 
 </mapper>

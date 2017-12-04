@@ -5,6 +5,13 @@
 <head>
 	<title>마디 - 재료로 요리하다</title>
 	<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+	
+	<!-- 카카오 api 연동 -->
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+	
+	
+	
 	<style>
 		@import url('https://fonts.googleapis.com/css?family=Pacifico');
 		@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');	
@@ -151,9 +158,8 @@
   			<h2 class="madi_title">Madi</h2>
   			<p class = "text-muted"><b class="madi_content">지금 마디를 시작하세요.</b></p>
   			<hr/>
-    		<button class="btn btn-primary btn-block" style="background-color:yellow; border:none;">
-    			<font class="madi_content" color="#703800">카카오로 로그인하기</font>
-    		</button>
+    		<!-- 카카오버튼입니다 -->
+  			<a id="kakao-login-btn1"></a>
   			<button class="btn btn-success btn-block madi_content">네이버로 로그인하기</button>
   			<button class="btn btn-danger btn-block madi_content">Google+로 로그인하기</button>
   			<hr/>
@@ -177,9 +183,8 @@
   			<h2 class="madi_title" style="margin-top:0;">Madi</h2>
   			<p class="text-muted madi_content"><b>레시피를 검색하고 요리를 공유하려면<br/>가입하세요.</b></p>
   			<hr/>
-  			<button class="btn btn-default btn-block madi_content" style="background-color:yellow; border:none;">
-  				<font color="#7080300">카카오로 로그인하기</font>
-  			</button>
+  			<!-- 카카오버튼입니다 -->
+  			<a id="kakao-login-btn"></a>
   			<button class="btn btn-success btn-block madi_content">네이버로 로그인하기</button>
   			<button class="btn btn-danger btn-block madi_content">Google+로 로그인하기</button>
   			<hr/>
@@ -209,4 +214,70 @@
 </div>
 </div>
 </body>
+
+<script type='text/javascript'>
+  //<![CDATA[
+    // 사용할 앱의 JavaScript 키를 설정해 주세요.
+    Kakao.init("ec2bc08d0edf68093b110c9b65f97883");
+   
+    
+    
+    // 카카오 로그인 버튼을 생성합니다.(첫번째 버튼)
+    Kakao.Auth.createLoginButton({
+    	   
+      container: '#kakao-login-btn',
+      success: function(authObj) {
+      	 getProfile();
+      	 
+      },
+      fail: function(err) {
+         alert(JSON.stringify(err));
+      }
+    }); 
+ // 카카오 로그인 버튼을 생성합니다.(두번째 버튼)  	
+    Kakao.Auth.createLoginButton({
+ 	   
+        container: '#kakao-login-btn1',
+        success: function(authObj) {
+        	 getProfile();
+        	 
+        },
+        fail: function(err) {
+           alert(JSON.stringify(err));
+        }
+      }); 
+    
+    //카카오 로그아웃
+    function logout(){
+    	Kakao.Auth.logout(function() { 
+    		alert('로그아웃되었습니다');
+    		location.href="./kakaologout.do"; 
+    		
+    		});
+    };
+   	//카카오버튼 클릭시 수행할 메소드    
+    function getProfile(){
+    	Kakao.API.request({
+			url: '/v1/user/me',
+			success: function(res) {
+				var a = res.properties.nickname;
+				var b = res.properties.profile_image;
+				var c = res.kaccount_email;	
+				var d = res.id;
+				location.href="./checkMember.do?user_name="+ a + "&user_img=" + b + "&user_email=" + c + "&user_id=" + d ; 				
+				//$("#kakao-profile").append(res.properties.nickname);
+				//$("#kakao-profile").append($("<img/>",{"src":res.properties.profile_image,"alt":res.properties.nickname+"님의 프로필 사진"}));
+				//$("#kakao-profile").append(res.kaccount_email);
+				//$("#kakao-profile").append(res.kaccount_email_verified);
+					
+				
+			},
+			fail: function(error) {
+				console.log(error);
+			}
+		});
+    };
+  //]]>
+</script>
+
 </html>

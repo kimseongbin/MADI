@@ -19,7 +19,7 @@
 	// 내 재료 목록 받아오기
 	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 %>
-  <style>  	
+  <style>
   	/*font 설정*/
   	@import url('https://fonts.googleapis.com/css?family=Pacifico');
 	@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');	
@@ -187,7 +187,13 @@
 	    width:70px;
 	    height:80px;
 	}
-
+	#irdntAddBtn {
+		float:right;
+		padding-top:0px;
+		padding-bottom:0px;
+		padding-left:5px;
+		padding-right:5px;
+	
   </style>
 <!-- 헤더 시작 -->
  <nav class="navbar navbar-default head header" data-spy="affix" data-offset-top="197">
@@ -3224,11 +3230,33 @@
 								</div>
 								<div class="col-sm-6">
 									<h5 class="text-primary header" style="magin-bottom:5px;">
+<<<<<<< HEAD
+										<strong>&nbsp;이글이글</strong>
+										<input type="button" id="irdntAddBtn" value="메세지보내기"class="btn btn-primary btn-xs">
+									</h5>
+=======
 										<strong>&nbsp;<%=memberVO.getUser_id() %></strong>
 									</h5>
+>>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
 								</div>
 							<!-- 메시지 내용들 -->
+							
+							<!--  <iframe name="param" style="width: 0px; height: 0px;border: 0px;"></iframe> -->
+							<form id="send" target="param">
+								<div id="addBtn">
+								<input type="hidden" name="sender_id"value="<%=memberVO.getUser_id()%>">
+								받는사람:</br><input type="text" name="user_id" id="user_id"> </br> 
+								내 용:<textarea name="content" id="content"style="width: 100%;"></textarea>
+								<input class="btn btn-primary btn-xs" type="button" id="sendmessage" value="전송">
+								</div>
+							</form>
+							
+
+
 							<div id="messageList">
+								
+							
+							
 								<!-- ajax, 메시지 리스트 로드 영역 -->
 							</div>
 						</ul>
@@ -3270,6 +3298,54 @@
 	</div>
 </div>
 <script>
+//메세지보내기버튼 숨기기/보이기
+$(document).ready(function(){
+	$("#addBtn").hide();	
+	    $("#irdntAddBtn").click(function(){
+    	$("#addBtn").toggle();
+    });
+});
+//메세지전송 ajax
+$(document).ready(function() {
+	$("#sendmessage").click(function() {
+		var param = $("#send").serialize();
+		alert(param);
+		$.ajax({
+			url: "./sendMessage.do",
+			type: "POST",
+			data: param,
+			contentType : 'application/x-www-form-urlencoded; charset=utf-8',
+			dataType: "text",
+			success: function(data) {
+				//$("#addBtn").empty();
+				$("#user_id").val("");
+				$("#content").val("");
+				//$("#addBtn").append('받는사람:</br><input type="text" name="sender_id" id="sender_id"> </br>');
+				//$("#addBtn").append('내 용:<textarea name="content" id="content"style="width: 100%;"></textarea>');
+				alert("메세지보내기 성공");
+			},
+			error:function(request,status,error){
+			    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+	});
+});
+	
+	
+/* 
+	$("#sendmessage").click(function(){
+		
+		$("#addBtn").empty();
+		$("#addBtn").append('받는사람:</br><input type="text" name="sender_id" id="sender_id"> </br>');
+		$("#addBtn").append('내 용:<textarea name="content" id="content"style="width: 100%;"></textarea>');
+		$("#addBtn").append('<input type="submit" id="sendmessage">');
+		
+		alert("메세지를 보냈습니다");
+	}) */
+
+
+
+
 	function recipeDo() {
 		location.href = "./recipe.do";
 	}

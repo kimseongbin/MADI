@@ -20,5 +20,7 @@ public interface MessageDAO {
 	//public void removeMessageByMessageId(int message_id);
 	// 성빈 : 특정인에게 메시지를 보내는 메소드
 	public void sendMessageToId(MessageVO messageVO);
+	
+	
 
 }

@@ -6,6 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%	
+
 	// 메시지 리시트 받아오기 
 	ArrayList<MessageVO> messageList = (ArrayList<MessageVO>) request.getAttribute("messageList");
 	// 알림 리스트 받아오기
@@ -18,7 +19,9 @@
 	request.setAttribute("memberVO", memberVO);
 	request.setAttribute("notificationList", notificationList);
 	request.setAttribute("messageList", messageList);
+
 	request.setAttribute("myIrdntList", myIrdntList);
+
 %>
 
 <!DOCTYPE html>
@@ -84,10 +87,14 @@
 }
 </style>
 <script>
+<<<<<<< HEAD
 	window.onload = function() {
 		$("#fridgeBtn").css("padding-top", "5px");
 	}
 	
+=======
+
+>>>>>>> branch 'master' of https://github.com/kimseongbin/MADI.git
 	function likeBoard(element, user_id, board_num, writer) {
 		$.ajax({
 			url: "./likeBoard.do",

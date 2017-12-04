@@ -106,6 +106,21 @@ public class MemberDAOService implements MemberDAO {
 		System.out.println("회원가입 요청 : 회원가입 성공");
 		return;
 	}
+	@Override// 인욱: 카카오 로그인시 간편회원가입 메소드
+	public void set_Member(MemberVO memberVO){
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		memberMapper.set_Member(memberVO);
+		//MemberVO memberinfo = memberMapper.getUserInfoById(memberVO.getUser_id());
+		
+		return ;
+	}
+	public int checkEmail(MemberVO memberVO){
+		
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		int x = memberMapper.checkEmail(memberVO);
+		return x;
+	}
+	
 
 	@Override // 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 메소드
 	public ArrayList<MemberBoxVO> getMyIrdntByUserId(String user_id) {
@@ -149,6 +164,17 @@ public class MemberDAOService implements MemberDAO {
 		MemberVO memberVO = memberMapper.getUserInfoById(user_id);
 		return memberVO;
 	}
+
+	
+	//(인욱)카카오 아이디 db에서 확인 후 ->값을 가져옴 
+	@Override
+	public MemberVO checkMember(MemberVO memberVO){
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		System.out.println();
+		MemberVO x = memberMapper.checkMember(memberVO);
+		
+		return x;
+	}
 	@Override
 	public void setFollowing(MemberFollowVO memberFollowVO) {
 		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
@@ -187,5 +213,6 @@ public class MemberDAOService implements MemberDAO {
 	@Override 
 	public int updateInfo(MemberVO memberVO) {
 		return sqlSession.update(namespace + ".updateInfo", memberVO);
+
 	}
 }

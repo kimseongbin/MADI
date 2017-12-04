@@ -20,6 +20,16 @@ public interface MemberDAO {
 	void deleteFollowing(String following_user_id, String user_id);
 	//(진산)팔로워 한 명 삭제
 	void deleteFollower(String user_id, String following_user_id);
+	
+
+	
+	
+	//(인욱) 카카오 아이디 DB에서 불러옴
+	public MemberVO checkMember(MemberVO memberVO);
+	//(인욱) 카카오 로그인시 간편회원가입(insert 메소드)
+	public void set_Member(MemberVO memberVO);
+	//(인욱) 카카오 중복이메일 체크
+	public int checkEmail(MemberVO memberVO);
 	//(진산)팔로잉 한 명 추가
 	void insertFollowing(String user_id, String following_user_id, String user_img, String following_user_img);
 
@@ -37,6 +47,10 @@ public interface MemberDAO {
 	public void deleteIrdnt(MemberBoxVO memberBoxVO);
 
 	// 성빈 : 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐)
+
+	
+
+
 	public MemberVO getUserInfoById(String user_id);
 	// 성빈 : following 추가
 	public void setFollowing(MemberFollowVO memberFollowVO);
@@ -49,4 +63,5 @@ public interface MemberDAO {
 	public ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
 	public ArrayList<MemberVO> getRecommendByRecipeCnt();
 	public ArrayList<MemberVO> getRecommendByLikeCnt();
+
 }
