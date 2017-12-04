@@ -19,7 +19,7 @@
 	// 내 재료 목록 받아오기
 	ArrayList<MemberBoxVO> myIrdntList = (ArrayList<MemberBoxVO>) request.getAttribute("myIrdntList");
 %>
-  <style>  	
+  <style>
   	/*font 설정*/
   	@import url('https://fonts.googleapis.com/css?family=Pacifico');
 	@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');	
