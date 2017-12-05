@@ -27,6 +27,7 @@
 	    
 	    .madi_content {
 	    	font-family: 'Nanum Gothic', sans-serif;
+	    	font-color: white;
 	    }
 	    
 	    
@@ -49,20 +50,27 @@
   		display: flex;
   		align-items: center;
 	}
-	.container-fluid {
-		background-image: url("./resources/image/wallpaper.jpg");
-		background-size: cover;
+    .parallax {
+    /* The image used */
+    background-image: url("./resources/image/wallpaper_v2.png");
+
+    /* Full height */
+    height: 100%; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+	
+	}
+    
+    .form-control {
+    	color: white;
+    	font-weight: bold;
+    	font-family: 'Nanum Gothic', sans-serif;
     }
     
-    #color-overlay {
-    	position: absolute;
-    	top: 0;
-    	left: 0;
-    	width: 100vw;
-    	height: 100vh;
-    	background-color: black;
-    	opacity: 0.3;
-    }
     .panel-default {
     	border: 1px solid #fafafa;
         border-radius: 0;
@@ -94,8 +102,17 @@
     	margin-top: 35px;
     }
    }
+   ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  	color: pink;
+	}
+	input:focus {
+  		outline: none;
+	}
 </style>
 <script>
+	function falseReciver() {
+		return false;
+	}
 	function dpLogin() {
     	var lo = document.getElementById("login");
         var jo = document.getElementById("join");
@@ -110,15 +127,40 @@
         jo.style.display = "block";
       
     }
+    var idcheck;
     function joinIdCheck() {
     	var id = $("#join_user_id").val();
 		var reg =  /^[a-zA-Z0-9]{6,20}$/;
 		if(!reg.test(id)) {
-			alert("아이디는 6~20자의 영문 대소문자와 숫자를 혼합하여 입력해주세요.");
-			return false;
+			$("#idReporter").empty();
+			$("#idReporter").css("color","red");
+			$("#idReporter").append("6~20자의 영문 대소문자와 숫자를 혼합해 입력해주세요");
+			idcheck=0;
 		}
-		return true;
+		if(reg.test(id)){
+			$.ajax({
+				url: "./join.do?ck=id",
+				type: "POST",
+				data: {
+					user_id: id
+				},
+				success: function(data) {
+					if(data != 0) {
+						$("#idReporter").empty();
+						$("#idReporter").css("color","red");
+						$("#idReporter").append("아이디가 중복되었습니다");
+						idcheck=0;
+					} else {
+						$("#idReporter").empty();
+						$("#idReporter").css("color","green");
+						$("#idReporter").append("사용할 수 있는 아이디입니다");
+						idcheck=1;
+					}
+				}
+			});
+		}
     }
+    var pwcheck;
     function joinPwCheck() {
     	 var pw = $("#join_user_pw").val();
 		 var num = pw.search(/[0-9]/g);
@@ -126,89 +168,137 @@
 		 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 		 
 		 if(pw.length < 8 || pw.length > 20){
-		  alert("비밀번호는 8자리 ~ 20자리 이내로 입력해주세요.");
-		  return false;
+			 $("#pwReporter").empty();
+		     $("#pwReporter").css("color","red");
+			 $("#pwReporter").append("비밀번호는 8자리 ~ 20자리 이내로 입력해주세요");
+		  	 pwcheck=0;
+		  	 return;
 		 }
 		 if(pw.search(/₩s/) != -1){
-		  alert("비밀번호는 공백업이 입력해주세요.");
-		  return false;
+			 $("#pwReporter").empty();
+		     $("#pwReporter").css("color","red");
+			 $("#pwReporter").append("비밀번호는 공백업이 입력해주세요");
+			 pwcheck=0;
+			 return;
 		 }
 		 if(num < 0 || eng < 0 || spe < 0 ){
-		  alert("비밀번호는 영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
-		  return false;
+			 $("#pwReporter").empty();
+		     $("#pwReporter").css("color","red");
+			 $("#pwReporter").append("비밀번호는 영문, 숫자, 특수문자를 혼합하여 입력해주세요");
+			 pwcheck=0;
+			 return;
 		 }
-		 return true;
+		 pwcheck=1;
+    }
+    var emailcheck;
+    function joinEmailCheck() {
+    	var email = $("#join_user_email").val();
+    	$.ajax({
+			url: "./join.do?ck=email",
+			type: "POST",
+			data: {
+				user_email: email
+			},
+			success: function(data) {
+				if(data != 0) {
+					$("#emailReporter").empty();
+					$("#emailReporter").css("color","red");
+					$("#emailReporter").append("중복된 이메일입니다");
+					emailcheck=0;
+				} else {
+					$("#emailReporter").empty();
+					$("#emailReporter").css("color","green");
+					$("#emailReporter").append("사용할 수 있는 이메일입니다");
+					emailcheck=1;
+				}
+			}
+		});
     }
    function joinFormCheck() {
 		var name = $("#join_user_name").val();
-		var email = $("#join_user_emial").val();
+		var email = $("#join_user_email").val();
 		
-		if(joinIdCheck() && joinPwCheck() && name.length >= 1 && email != null) {
-			return true;
+		if(name.length == 0) {
+			alert("이름을 입력해주세요.");
+			return false;
 		}
+		if(email.length == 0) {
+			alert("이메일을 입력해주세요.");
+			return false;
+		}
+		
+		if(idcheck==0) {
+			alert("아이디가 잘못 입력되었습니다");
+			return false;
+		}
+		
+		if(pwcheck==0) {
+			alert("비밀번호가 잘못 입력되었습니다");
+			return false;
+		}
+		if(emailcheck==0) {
+			alert("이메일이 잘못 입력되었습니다");
+			return false;
+		}
+		return true;
 	   
    }
 </script> 
-<body> <!-- background="./resources/image/wallpaper.jpg;"  -->
+<body class="parallax">
 <div class="container-fluid row vertical-center">
-	<div id="color-overlay"></div>
 	<div class="container col-sm-3">
 		<div id="login">
-		<div class = "panel panel-default text-center" style="width:100%; border-radius: 8px;">
-  			<h2 class="madi_title">Madi</h2>
-  			<p class = "text-muted"><b class="madi_content">지금 마디를 시작하세요.</b></p>
+		<div class = "panel panel-default text-center" style="border:none; border-radius:8px; background: rgba(72,72,72,.4);">
+  			<h2 class="madi_title" style="margin-top:0; opacity:0.9;"><font color="#DE4F4F">Madi</font></h2>
+  			<p class="madi_content"><b><font color="white"><big>지금 마디를 시작하세요</big></font></b></p>
   			<hr/>
     		<!-- 카카오버튼입니다 -->
   			<a id="kakao-login-btn1"></a>
-  			<button class="btn btn-success btn-block madi_content">네이버로 로그인하기</button>
-  			<button class="btn btn-danger btn-block madi_content">Google+로 로그인하기</button>
   			<hr/>
   			<form action="./login.do" method="post">
     			<div class="form-group ">
-    	  			<input type="text" class="form-control" id="login_user_id" placeholder="아이디" name="user_id">
-	      			<input type="password" class="form-control" id="login_user_pw" placeholder="비밀번호" name="user_pw">
+    	  			<input type="text" class="form-control" id="login_user_id" placeholder="아이디" name="user_id" style="background-color:transparent; outline:none; border-radius: 0;">
+	      			<input type="password" class="form-control" id="login_user_pw" placeholder="비밀번호" name="user_pw" style="background-color:transparent; outline:none; border-radius: 0;">
     			</div>
     			<hr/>
       			<button type="submit" class="btn btn-primary btn-block madi_content">로그인</button>
       			<br/>
-      			<p class="madi_content"><a href="#">비밀번호를 잊으셨나요?</a></p>
+      			<p class="madi_content"><a href="#" style="font-weight:bold; font-color:#4948FF;">비밀번호를 잊으셨나요?</a></p>
   			</form>
 		</div>
-		<div class="panel panel-default text-center" style="border-radius: 8px;">
-			<span class="madi_content madi_content">계정이 없으신가요?</span>&nbsp;<a class="madi_content" href="javascript:dpJoin();">가입하기</a>
+		<div class="panel panel-default text-center" style="border:none; border-radius:8px; background:rgba(72,72,72,.4);">
+			<span><font color="white">계정이 없으신가요?</font></span>&nbsp;<a class="madi_content" href="javascript:dpJoin();" style="font-weight:bold; font-color:#4948FF;"><big>가입하기</big></a>
 		</div>
 	</div>
 	<div id = "join">
-		<div class = "panel panel-default text-center" style="border-radius: 8px;">
-  			<h2 class="madi_title" style="margin-top:0;">Madi</h2>
-  			<p class="text-muted madi_content"><b>레시피를 검색하고 요리를 공유하려면<br/>가입하세요.</b></p>
+		<div class ="panel panel-default text-center opa" style="border:none; border-radius:8px; background: rgba(72,72,72,.4);">
+  			<h2 class="madi_title" style="margin-top:0; opacity:0.9;"><font color="#DE4F4F">Madi</font></h2>
+  			<p class="madi_content"><b><font color="white"><big>레시피를 검색하고<br/>요리를 공유하려면 가입하세요</big></font></b></p>
   			<hr/>
   			<!-- 카카오버튼입니다 -->
-  			<a id="kakao-login-btn"></a>
-  			<button class="btn btn-success btn-block madi_content">네이버로 로그인하기</button>
-  			<button class="btn btn-danger btn-block madi_content">Google+로 로그인하기</button>
+  			<div id="kakao-login-btn"></div>
   			<hr/>
   			<form action="./join.do" method="post" onsubmit="return joinFormCheck();">
-    			<div class="form-group">
-      				<input type="text" class="form-control" id="join_user_id" placeholder="아이디" name="user_id" maxlength="20" />
-      				<input type="text" class="form-control" id="join_user_name" placeholder="이름" name="user_name" />
-      				<input type="password" class="form-control" id="join_user_pw" placeholder="비밀번호" name="user_pw" maxlength="20" />
-      				<input type="email" class="form-control" id="join_user_email" placeholder=" 이메일" name="user_email" />
-                    <div class="btn-group" data-toggle="buttons" style="width:inherit;">
-  						<label class="btn btn-default" style="width:184px; outline:none;">
-    						<input type="radio" name="user_gender" id="join_user_gender" autocomplete="off" value="0">남
- 						</label>
-  						<label class="btn btn-default" style="width:184px; outline:none;">
-    						<input type="radio" name="user_gender" id="join_user_gender" autocomplete="off" value="1">여
-    					</label>
-                 	</div>
+    			<div class="form-group" style="margin-bottom: 0px;">
+      				<input type="text" class="form-control" id="join_user_id" onChange="joinIdCheck();"
+      				placeholder="아이디" name="user_id" maxlength="20" style="margin-top:0; margin-bottom:0; background-color:transparent; outline:none; border-radius: 0;"/>
+      				<div id="idReporter" style="color:red; height:20px;"></div>
+      				<input type="password" class="form-control" id="join_user_pw" onchange="joinPwCheck();" 
+      				placeholder="비밀번호" name="user_pw" maxlength="20" style=" margin-top:0; margin-bottom:0;background-color:transparent; border-radius: 0;"/>
+      				<div id="pwReporter" style="color:red; height:20px;"></div>
+      				<input type="text" class="form-control" id="join_user_name"
+      				placeholder="이름" name="user_name"  style="margin-top:0; margin-bottom:0; background-color:transparent; border-radius: 0;"/>
+      				<div style="color:red; height:20px;"></div>
+      				<input type="email" class="form-control" id="join_user_email" onchange="joinEmailCheck();"
+      				placeholder="이메일" name="user_email" style="margin-top:0; margin-bottom:0; background-color:transparent; border-radius: 0;"/>
+      				<div id="emailReporter" style="color:red; height:20px;"></div>
     			</div>
-    			<hr/>
+    			<hr style="margin-top: 0px;"/>
       			<button type="submit" class="btn btn-primary btn-block">회원가입</button>
   			</form>
 		</div>
-		<div class = "panel panel-default text-center madi_content" style="border-radius: 8px;">
-			<span>계정이 있으신가요?</span>&nbsp;<a class="madi_content" href="javascript:dpLogin();">로그인</a>
+		<div class = "panel panel-default text-center madi_content" style="border:none; border-radius:8px; background:rgba(72,72,72,.4);">
+			<span><font color="white">계정이 있으신가요?</font></span>&nbsp;<a class="madi_content" href="javascript:dpLogin();" style="font-weight:bold; font-color:#4948FF;"><big>로그인</big></a>
 		</div>
 	</div>
 </div>

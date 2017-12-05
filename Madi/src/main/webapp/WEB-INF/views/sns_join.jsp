@@ -45,15 +45,21 @@
 		overflow: hidden;
 	}
 	.vertical-center {
-  		min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  		min-height: 50%;  /* Fallback for browsers do NOT support vh unit */
   		min-height: 100vh; /* These two lines are counted as one :s-)       */
-
   		display: flex;
   		align-items: center;
 	}
-	.container-fluid {
-		background-image: url("./resources/image/wallpaper.jpg");
-		background-size: cover;
+	 @media screen and (max-width:650px) {
+	 	.vertical-center {
+	 		min-height: 140vh;
+	 	}
+	 }
+    
+    .form-control {
+    	color: white;
+    	font-weight: bold;
+    	font-family: 'Nanum Gothic', sans-serif;
     }
     
     #color-overlay {
@@ -97,6 +103,20 @@
     	margin-top: 35px;
     }
    }
+   .parallax {
+    /* The image used */
+    background-image: url("./resources/image/wallpaper_v2.png");
+
+    /* Full height */
+    height: 100%; 
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+	
+	}
 </style>
 <script>
 	/*
@@ -171,14 +191,14 @@
 			alert('이름은 2글자 이상 입력해주세요');
 			return false;
 		}
-		//남녀체크
+		/* //남녀체크
 		//if($("#join_user_gender").is(":checked")==true){
 		if($('input:radio[name=user_gender]').is(':checked')==true){
 				
 		}else{
 			alert("성별을 체크해 주세요");
 			return false;
-		}
+		} */
 				
 		if(name.length >= 2 && email != null) {
 			return true;
@@ -202,29 +222,20 @@
    
    
 </script> 
-<body> <!-- background="./resources/image/wallpaper.jpg;"  -->
+<body class="parallax"> <!-- background="./resources/image/wallpaper.jpg;"  -->
 <div class="container-fluid row vertical-center">
-	<div id="color-overlay"></div>
 	<div class="container col-sm-3">
 	<div id = "join">
-		<div class = "panel panel-default text-center" style="border-radius: 8px;">
-  			<h2 class="madi_title" style="margin-top:0;">Madi</h2>
-  			<p class="text-muted madi_content"><b>간편 회원가입<br/>레시피를 검색하고 요리를 공유하려면<br/>가입하세요.</b></p>
+		<div class = "panel panel-default text-center" style="border:none; border-radius:8px; background: rgba(72,72,72,.4);">
+  			<h2 class="madi_title" style="margin-top:0; opacity:0.9;"><font color="#DE4F4F">Madi</font></h2>
+  			<p class="madi_content"><b><font color="white"><big>간편 회원가입</big><br/>마디에 가입해 요리를 시작합니다</font></b></p>
   			<hr/>
  			<form action="./sns_join.do" method="post" onsubmit="return joinFormCheck();">
  				<input type="hidden" name= "user_id" value="<%= user_id %>">
  				<input type="hidden" name="user_img" value="<%= user_img %>">
     			<div class="form-group">
-      				<input type="email" class="form-control" id="join_user_email" placeholder="이메일을 입력해주세요" name="user_email" />
-      				<input type="text" class="form-control" id="join_user_name" placeholder="이름을 입력해주세요" name="user_name" />
-                    <div class="btn-group" data-toggle="buttons" style="width:inherit;">
-  						<label class="btn btn-default" style="width:184px; outline:none;">
-    						<input type="radio" name="user_gender" id="join_user_gender" autocomplete="off" value="0">남
- 						</label>
-  						<label class="btn btn-default" style="width:184px; outline:none;">
-    						<input type="radio" name="user_gender" id="join_user_gender" autocomplete="off" value="1">여
-    					</label>
-                 	</div>
+      				<input type="email" class="form-control" id="join_user_email" placeholder="이메일을 입력해주세요" name="user_email" style="background-color:transparent; outline:none; border-radius: 0;"/>
+      				<input type="text" class="form-control" id="join_user_name" placeholder="이름을 입력해주세요" name="user_name" style="background-color:transparent; outline:none; border-radius: 0;"/>
     			</div>
     			<hr/>
       			<button type="submit" class="btn btn-primary btn-block">회원가입</button>

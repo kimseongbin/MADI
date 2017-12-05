@@ -309,17 +309,17 @@
 				</h3>
 				<ul class="nav nav-tabs" style="font-size: 14px;border-bottom: 0px;">
 					<li class="active">
-						<a data-toggle="tab" href="#home">재료 목록 </a>
+						<a data-toggle="tab" href="#listOfIrdnt">재료 목록 </a>
 					</li>
 					<li >
-						<a data-toggle="tab" href="#message">내 냉장고 </a>
+						<a data-toggle="tab" href="#listOfMyFridge">내 냉장고 </a>
 					</li>
 				</ul>
 			</div>
 			
 			<div class="modal-body">
 				<div class="tab-content">
-					<div id="home" class="tab-pane fade in active">
+					<div id="listOfIrdnt" class="tab-pane fade in active">
 						<div class="row">
 							<!-- 왼쪽 카테고리 -->
 							<div class="col-sm-2" style="overflow-y:scroll; height:272px;">
@@ -3146,7 +3146,7 @@
 								<!-- 모달 풋터 -->
 							</div>
 						</div>
-					<div id="message" class="tab-pane fade">
+					<div id="listOfMyFridge" class="tab-pane fade">
 						<div class="row">
 							<div class="col-sm-2"></div>
 							<div class="col-sm-8" style="background-color: #FFEAEA; text-align: center; padding-right:0;">
@@ -3212,84 +3212,45 @@
 							</div>
 							
 							<div class="col-sm-6" style="padding-left: 0px;">
-								<h4 class="text-primary"><%=memberVO.getUser_id() %></h4>
+								<h4 class="text-primary"><%=memberVO.getUser_name() %></h4>
 							</div>
 						</div>
 						<ul class="list-group" id="notificationList">
 							<!-- 알림 내용들 -->
 							
-								<!-- 알림 내용들 -->
+							<!-- 알림 내용들 -->
 						</ul>
 					</div>
-					<div id="message" class="tab-pane fade">
-						<ul class="list-group">
-							<%-- <div class="row">
-								<div class="col-sm-2" style="padding-bottom: 5px;">
-									<img src="./resources/profile/bird.jpg" class="img-circle"
-										height="40" width="40" alt="Avatar">
-								</div>
-								<div class="col-sm-6">
-									<h5 class="text-primary header" style="magin-bottom:5px;">
-
-										<strong>&nbsp;이글이글</strong>
-										<input type="button" id="irdntAddBtn" value="메세지보내기"class="btn btn-primary btn-xs">
-									</h5>
-
-										<strong>&nbsp;<%=memberVO.getUser_id() %></strong>
-									</h5>
-
-								</div>
-							</div>	 --%>
+					<div id="message" class="tab-pane fade in">
+						<div class="row">
+							<div class="col-sm-2">
+								<img src="<%=memberVO.getUser_img()%>" class="img-circle"
+									height="40" width="40" alt="Avatar" style="margin-bottom: 5px;">
+							</div>
+							<div class="col-sm-6" style="padding-left: 0px;">
+								<h4 class="text-primary"><%=memberVO.getUser_name() %></h4>
+							</div>
+							<div class="col-sm-3" style="padding-left: 0px;">
+								<h4 class="text-primary"><input type="button" id="irdntAddBtn" value="메세지보내기"class="btn btn-primary btn-xs"></h4>
+							</div>
+						</div>
+						<form id="send" target="param">
+							<div id="addBtn">
+						 		<input type="hidden" name="sender_id" value="<%=memberVO.getUser_id()%>">
+						 		받는사람:</br><input type="text" name="user_id" id="user_id"> </br>
+						 		내 용:<textarea name="content" id="content"style="width: 100%;"></textarea>
+						 		<input class="btn btn-primary btn-xs" type="button" id="sendmessage" value="전송">
+						 	</div>
+                        </form>
+						<ul class="list-group" id="messageList">
 							<!-- 메시지 내용들 -->
 							
-							<!--  <iframe name="param" style="width: 0px; height: 0px;border: 0px;"></iframe> -->
-							<form id="send" target="param">
-								<div id="addBtn">
-								<input type="hidden" name="sender_id" value="<%=memberVO.getUser_id()%>">
-								받는사람:</br><input type="text" name="user_id" id="user_id"> </br> 
-								내 용:<textarea name="content" id="content"style="width: 100%;"></textarea>
-								<input class="btn btn-primary btn-xs" type="button" id="sendmessage" value="전송">
-								</div>
-							</form>
-							
-
-
-							<div id="messageList">
-								
-							
-							
-								<!-- ajax, 메시지 리스트 로드 영역 -->
-							</div>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<!-- 알림 내용 끝  -->
-			<!-- 메시지 내용 시작  -->
-			<div class="modal-body header">
-				<div class="tab-content">
-					<div id="message" class="tab-pane fade">
-						<div class="row">
-							<div class="col-sm-2" style="padding-bottom: 5px;">
-								<img src="<%=memberVO.getUser_img()%>" class="img-circle"
-									height="40" width="40" alt="Avatar">
-							</div>	
-							<div class="col-sm-6">
-								<h5 class="text-primary header" style="magin-bottom:5px;">
-									<strong>&nbsp;<%=memberVO.getUser_id() %></strong>
-								</h5>
-							</div>
-						</div>
-						<ul class="list-group" id="messageList">
-							<!-- 메시지 내용들 -->
-							
-								<!-- ajax, 메시지 리스트 로드 영역 -->
-							
-						</ul>
-					</div>
-				</div>
-			</div>
-			<!-- 메시지 내용 끝 -->
+			
 <!-- //없는게 더 깔끔한 느낌			
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default header" data-dismiss="modal">Close</button>

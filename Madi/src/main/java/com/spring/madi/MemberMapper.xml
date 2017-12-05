@@ -116,7 +116,11 @@
 		VALUES (#{user_id, javaType=String}, #{following_user_id, javaType=String}, 
 		#{user_img, javaType=String}, #{following_user_img, javaType=String})
 	</insert>
-	
+	<select id="checkUserId" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
+	</select>
 
 	
 	<!-- (인욱) 카카오 아이디 DB에서 조회후 불러옴 -->
@@ -125,14 +129,13 @@
 	</select>
 	
 	<select id ="checkEmail" resultType="int" parameterType="com.spring.madi.MemberVO">
-		
 		select count(*) from member where user_email = #{user_email, jdbcType=VARCHAR}
 	</select>
 	
 	<!-- (인욱) 카카오 간편회원가입 insert -->
 	<insert id="set_Member" parameterType="com.spring.madi.MemberVO">
-		insert into member(user_id,  user_name, user_gender, user_email, user_img) 
-		values (#{user_id, jdbcType=VARCHAR}, #{user_name, jdbcType=VARCHAR}, #{user_gender, jdbcType=VARCHAR}, #{user_email, jdbcType=VARCHAR}, #{user_img, jdbcType=VARCHAR})
+		insert into member(user_id,  user_name, user_gender, user_email, user_img, user_pw) 
+		values (#{user_id, jdbcType=VARCHAR}, #{user_name, jdbcType=VARCHAR}, #{user_gender, jdbcType=VARCHAR}, #{user_email, jdbcType=VARCHAR}, #{user_img, jdbcType=VARCHAR}, 'null')
 	
 	</insert>
 
@@ -145,8 +148,8 @@
 	
 	<!-- 성빈 : 회원가입을 위한 회원정보 삽입 쿼리 -->
 	<insert id="setMember" parameterType="com.spring.madi.MemberVO">
-		INSERT INTO MEMBER(USER_ID, USER_PW, USER_NAME, USER_GENDER, USER_EMAIL, USER_IMG)
-		VALUES (#{user_id}, #{user_pw}, #{user_name}, #{user_gender}, #{user_email}, #{user_img})
+		INSERT INTO MEMBER(USER_ID, USER_PW, USER_NAME, USER_EMAIL, USER_IMG)
+		VALUES (#{user_id, jdbcType=VARCHAR}, #{user_pw, jdbcType=VARCHAR}, #{user_name, jdbcType=VARCHAR}, #{user_email, jdbcType=VARCHAR}, #{user_img, jdbcType=VARCHAR})
 	</insert>
 	
 	<!-- 성빈 : Member_Box 테이블에서 내 재료 목록을 불러오기 위한 조회 쿼리 -->
@@ -159,7 +162,7 @@
 	<select id="getCheckIrdnt" resultMap="MemberBoxResultMap">
 		SELECT *
 		FROM MEMBER_BOX
-		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND my_irdnt= #{my_irdnt}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND my_irdnt= #{my_irdnt, jdbcType=VARCHAR}
 	</select>
 	<!-- (진산) 냉장고 재료를 입력하기 -->
 	<insert id="insertIrdnt" parameterType="com.spring.madi.MemberBoxVO">
@@ -167,7 +170,7 @@
 	</insert>
 	<delete id="deleteIrdnt" parameterType="com.spring.madi.MemberBoxVO">
 		DELETE FROM MEMBER_BOX
-		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND MY_IRDNT = #{my_irdnt}
+		WHERE USER_ID = #{user_id, jdbcType=VARCHAR} AND MY_IRDNT = #{my_irdnt, jdbcType=VARCHAR}
 	</delete>
 	<!-- 성빈: 회원  기본 정보 조회 쿼리 (사용안한 메소드, 필요할까봐) -->
 	<!-- 전달 파라미터 String user_id -->

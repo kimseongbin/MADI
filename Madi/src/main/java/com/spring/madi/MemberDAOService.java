@@ -103,7 +103,6 @@ public class MemberDAOService implements MemberDAO {
 			e.printStackTrace();
 			System.out.println("회원가입 요청 : 회원가입 실패 " + e.getMessage());
 		}
-		System.out.println("회원가입 요청 : 회원가입 성공");
 		return;
 	}
 	@Override// 인욱: 카카오 로그인시 간편회원가입 메소드
@@ -214,5 +213,10 @@ public class MemberDAOService implements MemberDAO {
 	public int updateInfo(MemberVO memberVO) {
 		return sqlSession.update(namespace + ".updateInfo", memberVO);
 
+	}
+	@Override
+	public int checkUserId(String user_id) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		return memberMapper.checkUserId(user_id);
 	}
 }

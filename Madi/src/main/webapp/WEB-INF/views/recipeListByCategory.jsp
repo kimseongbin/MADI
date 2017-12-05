@@ -34,12 +34,12 @@ $(".img-responsive").hover(function(){
 <%
 			if(i % 8 == 0) {
 %>
-				<div class="category w3-animate-opacity">
+				<div class="category w3-animate-opacity hanna">
 <%
 			}
 %>
 				<div class="col-sm-3 col-lg-3s">
-				   <div class="thumbnail">
+				   <div class="thumbnail w3-card-4">
 				   	  <div class="recipe_item_title">
 				   	  <!-- 이미지 링크 recipe_id값 전달 클릭 시 recipe_detail화면으로-->
 				      <a href="./recipeDetail.do?recipe_id=<%=recipeVO.getRecipe_id()%>">
@@ -49,7 +49,7 @@ $(".img-responsive").hover(function(){
 				      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0; height:180px; overflow:hidden;">
 				      	<!-- user_id 링크 -->
 				      	<img src="./resources/profile/bird.jpg" class="img-circle" height="61" width="61" alt="Avatar">
-				        <p><strong><%=recipeVO.getUser_id() %></strong></p>
+				        <div style="margin-top:5px;"><strong><b><%=recipeVO.getUser_id() %><b></strong></div>
 				        <h5><b><%=recipeVO.getRecipe_title() %></b></h5>
 				        <span><%=recipeVO.getRecipe_desc() %></span>
 				      </div>
@@ -98,7 +98,6 @@ $(".img-responsive").hover(function(){
 %>
 <script>
 $(document).ready(function() {
-	alert("카테고리 검색");
 	var category = document.getElementsByClassName("category");
 	for(var i = 0; i < category.length; i++) {
 		if(i==0) {

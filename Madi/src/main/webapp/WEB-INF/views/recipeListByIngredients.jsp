@@ -22,12 +22,12 @@
 			
 			if(i % 4 == 0) {
 %>
-				<div class="IrdntResult  w3-animate-right">
+				<div class="IrdntResult  w3-animate-right hanna" style="margin-top:15px;"> 
 <%
 			}
 %>
 			<div class="col-sm-3 col-lg-3s">
-				   <div class="thumbnail">
+				   <div class="thumbnail w3-card-4">
 				   	  <div class="recipe_item_title">
 				   	  <!-- 이미지 링크 recipe_id값 전달 클릭 시 recipe_detail화면으로-->
 				      <a href="./recipeDetail.do?recipe_id=<%=recipeVO.getRecipe_id()%>">
@@ -37,7 +37,7 @@
 				      <div class="container-fluid" style="margin-top:-33px; z-index:5; position:relative; padding-left:0; padding-right:0; height:180px; overflow:hidden;">
 				      	<!-- user_id 링크 -->
 				      	<img src="./resources/profile/bird.jpg" class="img-circle" height="61" width="61" alt="Avatar">
-				        <p><strong><%=recipeVO.getUser_id() %></strong></p>
+				        <div style="margin-top:5px;"><strong><b><%=recipeVO.getUser_id() %><b></strong></div>
 				        <h5><b><%=recipeVO.getRecipe_title() %></b></h5>
 				        <span><%=recipeVO.getRecipe_desc() %></span>
 				      </div>
@@ -78,7 +78,6 @@
 %>
 
 	<script>
-		alert("재료검색");
 		//$("#refresh").attr("class", "glyphicon glyphicon-refresh moreOfIrdnt")
 		var IrdntResult = document.getElementsByClassName("IrdntResult");
 		for(var i = 0; i < IrdntResult.length; i++) {

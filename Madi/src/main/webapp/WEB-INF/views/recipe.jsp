@@ -96,12 +96,23 @@
     background-size: cover; 
 
 }
+th {
+	text-align: center;
+}
 </style>
 <script>
 	window.onload = function() {
 		$("#fridgeBtn").css("padding-top", "5px");
+		show();
 	}
-
+	function showOff() {
+		$("#fade").fadeOut(1700);
+		return show();
+	}
+	function show() {
+		$("#fade").fadeIn(1700);
+		return showOff();
+	}
 	function likeBoard(element, user_id, board_num, writer) {
 		$.ajax({
 			url: "./likeBoard.do",
@@ -124,16 +135,18 @@
 	function addCategory(element) {
 		var category_selected_form = document
 				.getElementById("category_selected_form");
-		if (element.style.background == "white") {
-			element.style.background = "";
+		if (element.style.background == "rgba(241, 95, 95, 0.5)") {
+			element.style.background = "rgb(241,95,95)";
+			element.style.color = "#333";
 			document.getElementById(element.textContent).remove();
 			getRecipeByTy_Code();
 
 		} else {
-			element.style.background = "white";
+			element.style.background = "rgba(241,95,95,0.5)";
+			element.style.color = "#FFFFFF";
 			category_selected_form.innerHTML += "<button id='"
 					+ element.textContent
-					+ "' class='btn btn-default' style='border:none; outline:none;' onclick='removeCategory(this);'>"
+					+ "' class='btn btn-default hanna w3-animate-opacity' style='border:none; outline:none; background:rgba(0,0,0,0); font-size:20px;' onclick='removeCategory(this);'>"
 					+ element.textContent
 					+ "<span class='glyphicon glyphicon-remove'>"
 					+ "<input type='hidden' name='ty_code' value='"+element.value+"'/>"
@@ -145,7 +158,8 @@
 		var category_selected_form = document
 				.getElementById("category_selected_form");
 		element.remove();
-		document.getElementsByName(element.textContent)[0].style.background = "";
+		document.getElementsByName(element.textContent)[0].style.background = "rgb(241,95,95)";
+		document.getElementsByName(element.textContent)[0].style.color = "#333";
 		getRecipeByTy_Code();
 	}
 	function getRecipeByTy_Code() {
@@ -321,31 +335,32 @@
 
 	<div class="container-fluid text-center parallax">
 		<div class="container">
-		<h3 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font class="madi_cc" color="#DE4F4F">Madi</font>&nbsp;<font color="#F15F5F">가<br/>추천하는 당신의</font> <font class="madi_cc" color="#DE4F4F">Recipe</font></h3>
-		<br /> 
-		<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:#F15F5F;"></span>
-		<script>
+			<h3 class="madi_content" style="margin-top: 60px;font-size: 34px; font-weight: bold;">
+				<font class="madi_cc" color="#DE4F4F">Madi</font>
+				
+				<font color="#F15F5F" class="hanna">가<br/>추천하는 당신의</font>
+				<font class="madi_cc" color="#DE4F4F">Recipe</font>
+			</h3>
+			<span id="refresh" onclick="refresh();" class="glyphicon glyphicon-refresh moreOfIrdnt" style="font-size: 35px; cursor: pointer; color:#997000;"></span>
+			<script>
 			$("#refresh").mouseenter(function() {
 				$(this).attr("class","glyphicon glyphicon-refresh moreOfIrdnt w3-spin");
 			});
 			$("#refresh").mouseleave(function() {
 				$(this).attr("class", "glyphicon glyphicon-refresh moreOfIrdnt");
 			});
-		</script> 
-		<br />
-		<hr />
-		<div class="row" id="search_Result_Area">
+			</script>
+			<div class="row" id="search_Result_Area">
+				<div id="fade" style="margin-top:-60px;">
+					<h1 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;">
+						<font color="#333" calss="hanna">재료를 입력해 레시피를 조회해주세요</font>
+					</h1>
+				</div>
+			</div>
 			<br/><br/>
-
-			<font color="#DE4F4F" style="font-family: 'Hanna', serif;"><h1 class="madi_content">재료를 입력해 레시피를 조회해주세요.</h1></font>
-
-			<font color="white"><h1 class="madi_content" style="margin-top: 120px;font-size: 34px; font-weight: bold;"><font color="#DE4F4F">재료를 입력해 레시피를 조회해주세요</font></h1></font>
-
-			<br/><br/><br/>
+			<br/>
 		</div>
 	</div>
-	</div>
-	
 	<div class="container-fluid text-center" style="padding:0; background:; margin-top:15px;">
 		<h1 class="madi_content" style="font-family:'hanna', 'serif';">레시피 목록</h1>
 	</div>
@@ -361,114 +376,114 @@
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="밥" class="btn btn-default btn-block" value="3010001"
-							onclick="addCategory(this);" style="font-family: 'Hanna', serif;">밥</button>
+							onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">밥</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="국" class="btn btn-default btn-block" value="3010002"
-							onclick="addCategory(this);" style="font-family: 'Hanna', serif;">국</button>
+							onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">국</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="조림" class="btn btn-default btn-block"
-							value="3010003" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">조림</button>
+							value="3010003" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">조림</button>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="구이" class="btn btn-default btn-block"
-							value="3010004" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">구이</button>
+							value="3010004" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">구이</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="튀김/커틀릿" class="btn btn-default btn-block"
-							value="3010005" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">튀김/커틀릿</button>
+							value="3010005" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">튀김/커틀릿</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="찜" class="btn btn-default btn-block" value="3010006"
-							onclick="addCategory(this);" style="font-family: 'Hanna', serif;">찜</button>
+							onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">찜</button>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="나물/생채/샐러드" class="btn btn-default btn-block"
-							value="3010007" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">나물/샐러드</button>
+							value="3010007" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">나물/샐러드</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="밑반찬/김치" class="btn btn-default btn-block"
-							value="3010008" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">밑반찬/김치</button>
+							value="3010008" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">밑반찬/김치</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="양식" class="btn btn-default btn-block"
-							value="3010009" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">양식</button>
+							value="3010009" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">양식</button>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="도시락/간식" class="btn btn-default btn-block"
-							value="3010010" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">도시락/간식</button>
+							value="3010010" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">도시락/간식</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="양념장" class="btn btn-default btn-block"
-							value="3010012" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">양념장</button>
+							value="3010012" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">양념장</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="떡/한과" class="btn btn-default btn-block"
-							value="3010013" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">떡/한과</button>
+							value="3010013" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">떡/한과</button>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="빵/과자" class="btn btn-default btn-block"
-							value="3010014" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">빵/과자</button>
+							value="3010014" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">빵/과자</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="음료" class="btn btn-default btn-block"
-							value="3010015" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">음료</button>
+							value="3010015" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">음료</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="만두/면류" class="btn btn-default btn-block"
-							value="3010016" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">만두/면류</button>
+							value="3010016" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">만두/면류</button>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="찌개/전골/스튜" class="btn btn-default btn-block"
-							value="3010017" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">찌개/전골/스튜</button>
+							value="3010017" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">찌개/전골/스튜</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="부침" class="btn btn-default btn-block"
-							value="3010018" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">부침</button>
+							value="3010018" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">부침</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="그랑조/리조또" class="btn btn-default btn-block"
-							value="3010019" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">그랑조/리조또</button>
+							value="3010019" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">그랑조/리조또</button>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6" style="padding: 0;">
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="샌드위치/햄버거" class="btn btn-default btn-block"
-							value="3010020" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">샌드위치/햄버거</button>
+							value="3010020" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">샌드위치/햄버거</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="피자" class="btn btn-default btn-block"
-							value="3010021" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">피자</button>
+							value="3010021" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">피자</button>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="padding: 0;">
 						<button name="볶음" class="btn btn-default btn-block"
-							value="3010022" onclick="addCategory(this);" style="font-family: 'Hanna', serif;">볶음</button>
+							value="3010022" onclick="addCategory(this);" style="font-family: 'Hanna', serif; background:rgb(241,95,95);">볶음</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<br>
-		<div class="container text-center">
-			<div class="row">
+		<div class="container-fluid text-center">
+			<div class="row" style="border:thin; border-radius:20px; background:rgba(241,95,95,0.3); color:white;">
 				<table class="madi_content">
-					<tr height="56px">
-						<th width="98px">
+					<tr height="56px" width="100%;">
+						<th width="98px" class="hanna" align="center" style="padding-left: 10px;">
 							<!-- <div class="col-xs-3 col-sm-3 panel panel-default madi_content" style="padding: 0; margin-top: 5px;"> -->
-								결과
+								<font size="5px">결과</font>
 							<!-- </div> -->
 						</th>
-						<td>
+						<td style="padding-left:10px; padding-right:10px;">
 						<!-- 	<div id="category_selected" class="col-xs-9 col-sm-9 panel panel-default text-left madi_content" style="padding-left: 20px;"> -->
 								<form id="category_selected_form" name="category_selected_form" class="madi_content"></form>
 							<!-- </div> -->
@@ -478,6 +493,7 @@
 			</div>
 		</div>
 	</div>
+	<br>
 	<div class="container text-center">
 		<div class="row madi_content" id="category_List_Area">
 			<br/><br/>
@@ -485,8 +501,8 @@
 			<br/><br/>
 		</div>
 	</div>
-	<footer class="container-fluid text-center">
-		<p>MADI</p>
+	<footer class="container-fluid text-center" style="height:55px; border-radius:4px; font-family: Pacifico, cursive; font-size:25px;">
+		Madi
 	</footer>
 </body>
 </html>

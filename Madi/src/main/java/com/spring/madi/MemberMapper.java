@@ -84,4 +84,6 @@ public interface MemberMapper {
 	
 	//(인욱) 카카오 로그아웃
 	public String logout(HttpSession session);
+	
+	int checkUserId(String user_id);
 }

@@ -21,6 +21,8 @@ public interface MemberDAO {
 	//(진산)팔로워 한 명 삭제
 	void deleteFollower(String user_id, String following_user_id);
 	
+	int checkUserId(String user_id);
+	
 
 	
 	

@@ -142,25 +142,22 @@ public class FrontController {
 	// DB에 Insert한 뒤 초기화면으로 돌아간다.
 	@RequestMapping("/join.do")
 	public String joinMadi(MemberVO memberVO, HttpServletResponse response) {
-		try {
-			memberVO.setUser_img("");
-			memberDAOService.setMember(memberVO);
-		} catch (Exception e) {
-			System.out.println("system  :  회원가입 화면, 회원가입 에러 발생. 회원정보 INSERT 실패");
-			e.printStackTrace();
-			try {
-				response.setCharacterEncoding("UTF-8");
-				response.setContentType("text/html");
-				PrintWriter writer = response.getWriter();
-				writer.write("<script>현재 서버가 정상적으로 작동하지 않습니다. 잠시 후에 다시 시도해주세요.</script>");
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-			return null;
-		}
+		memberVO.setUser_img("");
+		memberDAOService.setMember(memberVO);
 		return "redirect:/";
 	}
-
+	
+	@RequestMapping(value="/join.do", params="ck=id")
+	@ResponseBody
+	public String checkUserId(String user_id) {
+		return Integer.toString(memberDAOService.checkUserId(user_id));
+	}
+	@RequestMapping(value="/join.do", params="ck=email")
+	@ResponseBody
+	public String checkUserEmail(MemberVO memberVO) {
+		return Integer.toString(memberDAOService.checkEmail(memberVO));
+	}
+	
 	// 카카오톡 처음 로그인
 	@RequestMapping("/sns_join.do")
 	public String snsJoin(MemberVO memberVO,  Model model, HttpSession session, HttpServletResponse response ) {
