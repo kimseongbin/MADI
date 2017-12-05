@@ -66,7 +66,7 @@
 	}
     
     .form-control {
-    	color: white;
+    	color: black;
     	font-weight: bold;
     	font-family: 'Nanum Gothic', sans-serif;
     }
@@ -243,6 +243,9 @@
 		return true;
 	   
    }
+   function forgotPassword() {
+	   location.href="./forgotPassword.do";
+   }
 </script> 
 <body class="parallax">
 <div class="container-fluid row vertical-center">
@@ -263,7 +266,7 @@
     			<hr/>
       			<button type="submit" class="btn btn-primary btn-block madi_content">로그인</button>
       			<br/>
-      			<p class="madi_content"><a href="#" style="font-weight:bold; font-color:#4948FF;">비밀번호를 잊으셨나요?</a></p>
+      			<p class="madi_content"><a href="javascript:forgotPassword();" style="font-weight:bold; font-color:#4948FF;">비밀번호를 잊으셨나요?</a></p>
   			</form>
 		</div>
 		<div class="panel panel-default text-center" style="border:none; border-radius:8px; background:rgba(72,72,72,.4);">

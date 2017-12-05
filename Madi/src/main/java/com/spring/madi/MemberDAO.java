@@ -1,7 +1,7 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 public interface MemberDAO {
 	//(진산) 로그인한 아이디 자신에 대한 member정보
@@ -61,6 +61,16 @@ public interface MemberDAO {
 	
 	// 예진: 회원 정보수정
 	public int updateInfo(MemberVO memberVO);
+	// 예진: 차단 목록 추가
+	public int insertBlockMember(BlockMemberVO blockVO);
+	// 예진: 차단 리스트
+	public List<BlockMemberVO> getBlockMember(String user_id);
+	// 예진: 차단한 id 팔로잉에서 지우기
+	public void deleteBlockMember(BlockMemberVO blockVO);
+	// 예진: 임시 비밀번호 부여
+	public void tempPassword(String tempPassword, String user_email);
+	// 예진: 이메일 존재 여부
+	public int existEmail(String userEmail);
 	
 	public ArrayList<MemberVO> getRecommendByFollowerCnt(String user_id);
 	public ArrayList<MemberVO> getRecommendByRecipeCnt();

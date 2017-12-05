@@ -57,6 +57,7 @@ public class WebSearch {
 		List<String> nounList = webSearch.getNounFromText(text);
 		String sql = searchEngine.getSearchQueryByNoun(nounList);
 		log(sql);
+		
 	}
 	
 	private static void log(String log) {

@@ -27,10 +27,21 @@
 	</repositories>
 	<dependencies>
 		<dependency>
-    <groupId>kr.bydelta</groupId>
-    <artifactId>koalanlp-komoran_2.10</artifactId>
-    <version>1.5.0</version>
-</dependency>
+		    <groupId>kr.bydelta</groupId>
+		    <artifactId>koalanlp-komoran_2.10</artifactId>
+		    <version>1.5.0</version>
+		</dependency>
+		<!-- 메일 기능 추가 -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
 		<!-- WebSocket 기능 추가 -->
 		<dependency>
 		    <groupId>org.springframework</groupId>

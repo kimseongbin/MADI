@@ -30,7 +30,11 @@
 		<result property="user_id" column="USER_ID" />
 		<result property="my_irdnt" column="MY_IRDNT" />
 	</resultMap>
-
+	
+	<resultMap type="BlockMemberVO" id="BlockMemberResultMap">
+		<result property="user_id" column="USER_ID" />
+		<result property="block_user_id" column="BLOCK_USER_ID" />
+	</resultMap>
 	<!-- (진산) 로그인한 아이디 자신에 대한 member정보 -->
 	<select id="getMember" resultMap="MemberResultMap">
 		SELECT * FROM member WHERE user_id= #{user_id, javaType=String}
@@ -207,6 +211,40 @@
 		SET USER_EMAIL=#{user_email}, USER_PW=#{user_pw}
 		WHERE USER_ID=#{user_id}
 	</update>
-
+	<!-- 예진: 차단 리스트 추가 -->
+	<insert id="insertBlockMember" parameterType="hashmap">
+		INSERT INTO BLOCK_MEMBER (USER_ID, BLOCK_USER_ID) VALUES (#{user_id}, #{block_user_id})
+	</insert>
+	
+	<!-- 예진: 차단 목록 검색-->
+	<select id="getBlockMember" resultMap="BlockMemberResultMap" parameterType="String">
+		SELECT * FROM BLOCK_MEMBER WHERE user_id=#{user_id}
+	</select>
+	
+	<!-- 예진: 팔로잉/팔로워 차단 삭제 -->
+	<delete id="deleteBlockMember" parameterType="hashmap">
+		DELETE
+		FROM MEMBER_FOLLOW
+		WHERE USER_ID IN (
+			SELECT user_id 
+			FROM BLOCK_MEMBER 
+		)  
+        AND user_id = #{user_id}
+        AND following_user_id = #{block_user_id}
+	</delete>
+	
+	<!-- 예진: 임시 비밀번호 저장 -->
+	<update id="randomPassword" parameterType="hashmap">
+		UPDATE MEMBER 
+		SET USER_PW = #{temp_pwd}
+		WHERE USER_EMAIL = #{user_email}
+	</update>
+	
+	<!-- 예진: 이메일 존재 여부 -->
+	<select id="existEmail" parameterType="String" resultType="int">
+		SELECT COUNT(USER_EMAIL)
+		FROM MEMBER
+		WHERE USER_EMAIL = #{user_email}
+	</select>
 
 </mapper>

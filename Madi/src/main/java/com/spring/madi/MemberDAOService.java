@@ -1,10 +1,13 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberDAOService implements MemberDAO {
@@ -218,5 +221,37 @@ public class MemberDAOService implements MemberDAO {
 	public int checkUserId(String user_id) {
 		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
 		return memberMapper.checkUserId(user_id);
+	}
+	// 예진 차단 등록
+	@Override
+	public int insertBlockMember(BlockMemberVO blockVO) {		
+		return sqlSession.insert(namespace + ".insertBlockMember", blockVO); 		
+	}
+	
+	// 예진 차단 리스트
+	@Override
+	public List<BlockMemberVO> getBlockMember(String user_id) {
+		return sqlSession.selectList(namespace + ".getBlockMember", user_id);
+	}
+	
+	//예진 차단한 id 팔로잉에서 지우기
+	public void deleteBlockMember(BlockMemberVO blockVO) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", blockVO.getUser_id());
+		map.put("block_user_id", blockVO.getBlock_user_id());	
+		sqlSession.delete(namespace + ".deleteBlockMember", map);	
+	}
+	// 예진: 임시 비밀번호 부여
+	@Transactional
+	public void tempPassword(String tempPassword, String user_email) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("temp_pwd", tempPassword);
+		map.put("user_email", user_email);
+		sqlSession.update(namespace + ".randomPassword", map);
+		
+	}
+	// 예진: 이메일 존재 여부
+	public int existEmail(String userEmail) {
+		return sqlSession.selectOne(namespace + ".existEmail", userEmail);	
 	}
 }

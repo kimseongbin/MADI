@@ -1,19 +1,10 @@
 package com.spring.madi;
 
 import java.util.ArrayList;
-
-
-
-import javax.servlet.http.HttpSession;
-
-import com.spring.madi.MemberFollowVO;
-import com.spring.madi.MemberVO;
-
-
-
-
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -86,4 +77,15 @@ public interface MemberMapper {
 	public String logout(HttpSession session);
 	
 	int checkUserId(String user_id);
+	
+	// 예진: 차단목록추가
+	int insertBlockMember(Map<String, Object> map);
+	// 예진: 차단 리스트
+	List<BlockMemberVO> getBlockMember(String user_id);
+	// 예진: 차단한 id 팔로잉에서 지우기
+	void deleteBlockMember(BlockMemberVO blockVO);
+	// 예진: 임시 비밀번호 부여
+	public void tempPassword(String tempPassword, String user_email);
+	// 예진: 이메일 존재 여부
+	public int existEmail(String userEmail);
 }

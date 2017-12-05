@@ -283,6 +283,47 @@ html, body, h1, h2, h3, h4, h5 {
 			}
 		});
 	}
+	function setting(user_id) {
+		$.ajax ({
+			url: "./getBlockMember.do",
+			type: "POST",
+			data: {
+				user_id: user_id
+			},
+			success: function(data) {
+				$("#myBoard").empty();
+				$("#myBoard").append(data);
+			},
+			error: function() {
+				alert('실패');
+			}
+		});
+	}
+	
+	function blockMember(user_id, block_user_id) {		var r = confirm(block_user_id + "님을 정말로 차단하실 건가요?");
+		
+		if (r == true) {
+			$.ajax({
+				url: "./blockMember.do",
+				type: "POST",
+				data: {
+					user_id: user_id,
+					block_user_id: block_user_id
+				},
+				success: function (data) {
+				},
+				complete: function() {
+					location.reload();
+				}, 
+				error:function(request,status,error){
+			        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+			       }
+			});
+		} else {
+			alert('취소!');
+		}
+		
+	}
 </script>
 </head>
 <body class="w3-theme-l5 parallax">
@@ -509,6 +550,30 @@ html, body, h1, h2, h3, h4, h5 {
 	        			<span class="w3-right w3-opacity"><%=board.getBoard_time() %></span>
 	        			<h4><%=board.getUser_name()%></h4>
 	        			<h5><%=board.getUser_email() %></h5>
+	        			<!-- dropdown -->
+						<div class="dropdown" align="right">
+							<img src="./resources/image/Menu Vertical_96px.png" class="dropdown-toggle" width="20px" id="menu1" data-toggle="dropdown" onclick="showDropDown(this);"/>	
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li>
+									<a role="menuitem" tabindex="-1" href="#" onclick="blockMember('<%=memberVO.getUser_id() %>','<%=board.getUser_id()%>');">
+										<font color="red">차단</font>
+									</a>
+								</li>
+							    <li><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
+							    <li><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
+							</ul>
+						</div>
+						<script>
+						function showDropDown(e) {
+							if($(e).siblings("ul").css("display") == "block") {
+								$(e).siblings("ul").css("display","none");	
+							} else {
+								$(e).siblings("ul").css("display","block");
+							}
+							
+						}
+						</script>
+						
 	        			<hr class="w3-clear">
 	          			<div class="w3-row-padding" style="margin:0 -16px">
 	            			<div class="w3-middle">

@@ -1,28 +1,27 @@
 package com.spring.madi;
 
 import java.io.PrintWriter;
-import java.net.StandardSocketOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
-import javax.servlet.http.HttpServlet;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.HTTP;
-import org.junit.runner.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +44,8 @@ public class FrontController {
 	private NotificationDAOService notificationDAOService;
 	@Autowired
 	private MemberDAOService memberDAOService;
+	@Autowired
+	private JavaMailSender mailSender;
 
 	private static final Logger logger = LoggerFactory.getLogger(FrontController.class);
 
@@ -1078,12 +1079,6 @@ public class FrontController {
 		return "redirect:/recipe.do";
 	}
 
-	
-
-
-	
-
-
 	//(예진) 내 정보 보기
 	@RequestMapping("/myInfo.do")
 	public ModelAndView getMyInfo(BoardVO boardVO, HttpSession session) {
@@ -1162,6 +1157,123 @@ public class FrontController {
 		System.out.println("SYSTEM  :  " + recipeVO.getRecipe_id() + "에 대한 SideBar 데이터를 생성 성공. 화면에 노출시킵니다.");
 		model.addAttribute("recipeVO", result);
 		return "searchSide";
+	}
+/*	
+	// 예진: 내 정보 보기
+	@RequestMapping("/myInfo.do")
+	public ModelAndView getMyInfo(BoardVO boardVO, HttpSession session) {
+		String user_id = (String)session.getAttribute("user_id");
+		ModelAndView result= new ModelAndView();
+		MemberVO vo = memberDAOService.getMember(user_id);
+		System.out.println("user" + user_id);
+		result.addObject("user", vo);
+		result.setViewName("myInfo");
+		return result;
+	}
+	
+	// 예진: 회원 정보 수정
+	@RequestMapping("/updateInfo.do")
+	public String updateInfo(MemberVO memberVO, HttpSession session) {		
+		memberVO.setUser_id((String)session.getAttribute("user_id"));
+		memberDAOService.updateInfo(memberVO);			
+		return "redirect:/mypage.do";
+	}
+	*/
+	// 예진: 설정탭
+	@RequestMapping("/setting.do")
+	public String setting() {
+		return "setting";
+	}
+	
+	// 예진: 차단
+	@RequestMapping("/blockMember.do")
+	public String blockMember(BlockMemberVO blockVO) {
+		
+		//ID 차단
+		int result = memberDAOService.insertBlockMember(blockVO);
+		if(result > 0 ) memberDAOService.deleteBlockMember(blockVO);
+		return "redirect:/mypage.do";
+	}
+	
+	// 예진: 차단리스트
+	@RequestMapping("/getBlockMember.do")
+	public ModelAndView getBlockMember(MemberVO memberVO) {
+		List<BlockMemberVO> list = memberDAOService.getBlockMember(memberVO.getUser_id());
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("blockList", list);
+		mav.setViewName("blockMemberList");
+		
+		return mav;
+	}
+	
+	//예진: 비밀번호 찾기 화면
+	@RequestMapping("/forgotPassword.do")
+	public String forgotPassword() {
+		return "forgotPassword";
+	}
+	
+	//예진: 임시비밀번호 메일 발송
+	@RequestMapping("/sendMail.do")
+	public ModelAndView sendMailProcess(
+		@RequestParam(value="userEmail",required=false,defaultValue="") String userEmail ) {
+		ModelAndView mav = new ModelAndView();
+	
+		//비밀번호 난수 발생(8자리)
+		Random rnd = new Random();
+		StringBuffer tempPassword = new StringBuffer();
+		 
+		for (int i = 0; i < 8; i++) {
+		    if (rnd.nextBoolean()) {
+		    	tempPassword.append((char)((int)(rnd.nextInt(26)) + 97));
+		    }else{
+		    	tempPassword.append((rnd.nextInt(10))); 
+		    }
+		}
+		
+		if (memberDAOService.existEmail(userEmail) > 0) {
+			if(sendEmail(userEmail, tempPassword)){
+				memberDAOService.tempPassword(tempPassword.toString(), userEmail);
+				mav.addObject("code", "0");
+				mav.addObject("message", "메일이 전송되었습니다.");
+			}else{
+				mav.addObject("code", "-1");
+				mav.addObject("message", "메일이 실패되었습니다.");
+			}
+		} else {
+			mav.addObject("code", "-2");
+			mav.addObject("message", "존재하는 메일이 아닙니다.");
+		}
+				
+		mav.setViewName("forgotPassword");
+		
+		return mav;
+	}
+
+	// 예진: 메일발송 메소드
+	private Boolean sendEmail(String userEmail, StringBuffer tempPassword) {
+		Boolean result = false;
+		String setfrom = "madiproject03@gmail.com";         
+	    String tomail  = userEmail;     // 받는 사람 이메일
+	    String title   = "[madi] 마디에서 임시 비밀번호를 보내드립니다.";      // 제목
+	    String content = "임시비밀번호: " + tempPassword + "\n로그인 후 비밀번호흘 변경해 주시기 바랍니다.";    // 내용
+	   
+	    try {
+	      MimeMessage message = mailSender.createMimeMessage();
+	      MimeMessageHelper messageHelper 
+	                        = new MimeMessageHelper(message, true, "UTF-8");
+	 
+	      messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
+	      messageHelper.setTo(tomail);     // 받는사람 이메일
+	      messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+	      messageHelper.setText(content);  // 메일 내용
+	     
+	      mailSender.send(message);
+	      result = true;
+	    } catch(Exception e){
+	      System.out.println(e);
+	    }
+	    return result;
 	}
 
 	//
